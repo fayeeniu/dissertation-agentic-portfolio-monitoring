@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Agent trace {{ run.id }}{% endblock %}
+{% block content %}
+<nav aria-label="Breadcrumb"><a href="/">Work queue</a> / Agent trace</nav>
+<section class="hero compact">
+  <div><p class="eyebrow">Reproducible run</p><h1>Agent trace</h1><p><code>{{ run.id }}</code></p></div>
+  <dl class="assurance-list"><div><dt>Status</dt><dd>{{ run.status }}</dd></div><div><dt>Current gate</dt><dd>{{ run.stage }}</dd></div><div><dt>Dataset</dt><dd><code>{{ run.dataset_id }}</code></dd></div></dl>
+</section>
+<section class="panel" aria-labelledby="trace-title">
+  <h2 id="trace-title">Bounded stage ledger</h2>
+  <div class="table-wrap"><table>
+    <caption>Each role has a hashed input and output; values are not copied into the trace.</caption>
+    <thead><tr><th scope="col">Stage</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Duration</th><th scope="col">Input hash</th><th scope="col">Output hash</th></tr></thead>
+    <tbody>{% for agent in agent_runs %}<tr><td>{{ agent.stage }}</td><td>{{ agent.role }}</td><td>{{ agent.status }}</td><td>{{ agent.duration_ms if agent.duration_ms is not none else '—' }} ms</td><td><code>{{ agent.input_hash[:12] }}…</code></td><td>{% if agent.output_hash %}<code>{{ agent.output_hash[:12] }}…</code>{% else %}—{% endif %}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% if report %}<p class="next-action"><a class="button" href="/reports/{{ report.id }}">Review report</a></p>{% endif %}
+</section>
+{% endblock %}
+

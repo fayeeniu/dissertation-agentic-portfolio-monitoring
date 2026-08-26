@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "classification": "synthetic",
+  "reporting_period": {
+    "label": "SYN-2025-Q2",
+    "start_date": "2025-04-01",
+    "end_date": "2025-06-30"
+  },
+  "companies": [
+    {
+      "external_id": "SYN-ASTER",
+      "name": "Aster Analytics",
+      "metrics": {
+        "employees_total": 42,
+        "jobs_created": 0,
+        "grant_funding": "GBP 250000",
+        "external_investment": "GBP 1000000",
+        "awards_received": 1,
+        "new_partnerships": 3,
+        "products_launched": 2,
+        "ai_hours_saved": "120.5",
+        "gross_margin": "not reported"
+      }
+    },
+    {
+      "external_id": "SYN-REDWOOD",
+      "name": "Redwood Quantum",
+      "metrics": {
+        "employees_total": "17",
+        "grant_funding": "",
+        "external_investment": "USD 400000",
+        "technology_readiness_level": 7,
+        "ai_core_process_coverage": "40%",
+        "products_launched": "none",
+        "custom_narrative": "Synthetic unmapped field retained as an import warning"
+      }
+    },
+    {
+      "external_id": "SYN-CYPRESS",
+      "name": "Cypress Circular",
+      "metrics": {
+        "employees_total": null,
+        "grant_funding": "not found publicly",
+        "external_investment": "n/a",
+        "material_news_items": 0,
+        "process_efficiency_improvement": "15%",
+        "new_markets_entered": 1
+      }
+    }
+  ]
+}
+

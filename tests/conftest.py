@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+
+from portfolio_agent.bootstrap import Runtime, create_runtime, project_root
+from portfolio_agent.config import Settings
+
+
+@pytest.fixture
+def runtime(tmp_path: Path) -> Runtime:
+    settings = Settings(
+        project_root=project_root(),
+        database_url=f"sqlite:///{tmp_path / 'portfolio-test.db'}",
+        raw_data_dir=tmp_path / "raw",
+        allow_external_llm=False,
+    )
+    created = create_runtime(settings)
+    try:
+        yield created
+    finally:
+        created.engine.dispose()
+
+
+@pytest.fixture
+def synthetic_portfolio_path() -> Path:
+    return project_root() / "fixtures" / "synthetic_portfolio.json"
+
+
+@pytest.fixture
+def evaluation_cases_path() -> Path:
+    return project_root() / "fixtures" / "evaluation_cases.json"

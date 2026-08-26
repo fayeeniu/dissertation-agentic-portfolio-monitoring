@@ -1,0 +1,26 @@
+.venv/
+.idea/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+.env
+.DS_Store
+
+# Runtime state and imported datasets are deliberately outside version control.
+var/*
+!var/.gitkeep
+data/*
+!data/README.md
+
+# Office lock files and local exports.
+~$*
+*.sqlite3
+*.db

@@ -1,0 +1,195 @@
+{
+  "schema_version": "evaluation-cases-v1",
+  "classification": "synthetic",
+  "cases": [
+    {
+      "case_id": "complete_internal_support",
+      "category": "complete",
+      "metric_key": "employees_total",
+      "candidate_value": 12,
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "complete-1", "source_type": "portfolio_submission", "value": 12, "currency": null, "period_label": "SYN-PERIOD", "publisher": null, "locator": "submission://synthetic#A1", "checksum": "synthetic-checksum-1", "is_untrusted": false}
+      ],
+      "expected_emit": true,
+      "expected_status": "supported"
+    },
+    {
+      "case_id": "sparse_not_reported",
+      "category": "sparse",
+      "metric_key": "employees_total",
+      "candidate_value": "not reported",
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "valid",
+      "evidence": [],
+      "expected_emit": false,
+      "expected_status": "no_claim"
+    },
+    {
+      "case_id": "zero_is_observed",
+      "category": "blank_zero",
+      "metric_key": "jobs_created",
+      "candidate_value": 0,
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "zero-1", "source_type": "portfolio_submission", "value": 0, "currency": null, "period_label": "SYN-PERIOD", "publisher": null, "locator": "submission://synthetic#B2", "checksum": "synthetic-checksum-2", "is_untrusted": false}
+      ],
+      "expected_emit": true,
+      "expected_status": "supported"
+    },
+    {
+      "case_id": "blank_is_missing",
+      "category": "blank_zero",
+      "metric_key": "jobs_created",
+      "candidate_value": "",
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "valid",
+      "evidence": [],
+      "expected_emit": false,
+      "expected_status": "no_claim"
+    },
+    {
+      "case_id": "mixed_type_integer",
+      "category": "mixed_types",
+      "metric_key": "employees_total",
+      "candidate_value": "17",
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "mixed-1", "source_type": "portfolio_submission", "value": 17, "currency": null, "period_label": "SYN-PERIOD", "publisher": null, "locator": "submission://synthetic#C3", "checksum": "synthetic-checksum-3", "is_untrusted": false}
+      ],
+      "expected_emit": true,
+      "expected_status": "supported"
+    },
+    {
+      "case_id": "conflicting_public_value",
+      "category": "conflict",
+      "metric_key": "grant_funding",
+      "candidate_value": "GBP 100",
+      "candidate_currency": "GBP",
+      "sourceability": "publicly_sourceable",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "conflict-1", "source_type": "synthetic_public_fixture", "value": "200", "currency": "GBP", "period_label": "SYN-PERIOD", "publisher": "Synthetic register", "locator": "fixture://conflict", "checksum": "synthetic-checksum-4", "is_untrusted": false}
+      ],
+      "expected_emit": false,
+      "expected_status": "contradicted"
+    },
+    {
+      "case_id": "stale_public_value",
+      "category": "stale",
+      "metric_key": "awards_received",
+      "candidate_value": 1,
+      "candidate_currency": null,
+      "sourceability": "publicly_sourceable",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "stale-1", "source_type": "synthetic_public_fixture", "value": 1, "currency": null, "period_label": "PRIOR-PERIOD", "publisher": "Synthetic register", "locator": "fixture://stale", "checksum": "synthetic-checksum-5", "is_untrusted": false}
+      ],
+      "expected_emit": false,
+      "expected_status": "stale"
+    },
+    {
+      "case_id": "unsupported_no_evidence",
+      "category": "unsupported",
+      "metric_key": "material_news_items",
+      "candidate_value": 4,
+      "candidate_currency": null,
+      "sourceability": "publicly_sourceable",
+      "precondition": "valid",
+      "evidence": [],
+      "expected_emit": false,
+      "expected_status": "insufficient_evidence"
+    },
+    {
+      "case_id": "ambiguous_company",
+      "category": "ambiguous_identity",
+      "metric_key": "employees_total",
+      "candidate_value": 8,
+      "candidate_currency": null,
+      "sourceability": "internal_only",
+      "precondition": "ambiguous_identity",
+      "evidence": [
+        {"id": "ambiguous-1", "source_type": "portfolio_submission", "value": 8, "currency": null, "period_label": "SYN-PERIOD", "publisher": null, "locator": "submission://synthetic#D4", "checksum": "synthetic-checksum-6", "is_untrusted": false}
+      ],
+      "expected_emit": false,
+      "expected_status": "identity_hold"
+    },
+    {
+      "case_id": "duplicate_same_value",
+      "category": "duplicate",
+      "metric_key": "grant_funding",
+      "candidate_value": "GBP 300",
+      "candidate_currency": "GBP",
+      "sourceability": "publicly_sourceable",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "duplicate-1", "source_type": "synthetic_public_fixture", "value": "300", "currency": "GBP", "period_label": "SYN-PERIOD", "publisher": "Synthetic register A", "locator": "fixture://duplicate/a", "checksum": "synthetic-checksum-7", "is_untrusted": false},
+        {"id": "duplicate-2", "source_type": "synthetic_public_fixture", "value": "300", "currency": "GBP", "period_label": "SYN-PERIOD", "publisher": "Synthetic register B", "locator": "fixture://duplicate/b", "checksum": "synthetic-checksum-8", "is_untrusted": false}
+      ],
+      "expected_emit": true,
+      "expected_status": "supported"
+    },
+    {
+      "case_id": "inaccessible_source",
+      "category": "inaccessible",
+      "metric_key": "grant_funding",
+      "candidate_value": "GBP 700",
+      "candidate_currency": "GBP",
+      "sourceability": "publicly_sourceable",
+      "precondition": "source_inaccessible",
+      "evidence": [],
+      "expected_emit": false,
+      "expected_status": "insufficient_evidence"
+    },
+    {
+      "case_id": "narrative_structured_fact",
+      "category": "narrative",
+      "metric_key": "products_launched",
+      "candidate_value": 2,
+      "candidate_currency": null,
+      "sourceability": "mixed",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "narrative-1", "source_type": "synthetic_public_fixture", "value": 2, "currency": null, "period_label": "SYN-PERIOD", "publisher": "Synthetic newswire", "locator": "fixture://narrative", "checksum": "synthetic-checksum-9", "is_untrusted": false}
+      ],
+      "expected_emit": true,
+      "expected_status": "supported"
+    },
+    {
+      "case_id": "mixed_currency_conflict",
+      "category": "mixed_currency",
+      "metric_key": "external_investment",
+      "candidate_value": "GBP 400",
+      "candidate_currency": "GBP",
+      "sourceability": "mixed",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "currency-1", "source_type": "synthetic_public_fixture", "value": "400", "currency": "USD", "period_label": "SYN-PERIOD", "publisher": "Synthetic register", "locator": "fixture://currency", "checksum": "synthetic-checksum-10", "is_untrusted": false}
+      ],
+      "expected_emit": false,
+      "expected_status": "contradicted"
+    },
+    {
+      "case_id": "prompt_injection_evidence",
+      "category": "prompt_injection",
+      "metric_key": "new_partnerships",
+      "candidate_value": 5,
+      "candidate_currency": null,
+      "sourceability": "mixed",
+      "precondition": "valid",
+      "evidence": [
+        {"id": "injection-1", "source_type": "synthetic_public_fixture", "value": 5, "currency": null, "period_label": "SYN-PERIOD", "publisher": "Synthetic adversarial page", "locator": "fixture://injection", "checksum": "synthetic-checksum-11", "is_untrusted": true}
+      ],
+      "expected_emit": false,
+      "expected_status": "rejected_untrusted"
+    }
+  ]
+}

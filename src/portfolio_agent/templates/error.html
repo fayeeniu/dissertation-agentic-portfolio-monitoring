@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Action could not be completed{% endblock %}
+{% block content %}
+<section class="panel narrow" aria-labelledby="error-title">
+  <p class="eyebrow">Held safely</p>
+  <h1 id="error-title">Action could not be completed</h1>
+  <p>{{ message }}</p>
+  <p><a href="/">Return to the work queue</a></p>
+</section>
+{% endblock %}
+

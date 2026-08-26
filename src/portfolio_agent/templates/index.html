@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero" aria-labelledby="page-title">
+  <div>
+    <p class="eyebrow">Ingestion → evidence → review</p>
+    <h1 id="page-title">A bounded wayfinder for portfolio reporting</h1>
+    <p class="lede">Import one reporting period, inspect the agent trace, and review every supported or held claim before export.</p>
+  </div>
+  <dl class="assurance-list">
+    <div><dt>Default model path</dt><dd>Deterministic and local</dd></div>
+    <div><dt>External publication</dt><dd>Disabled</dd></div>
+    <div><dt>Approval boundary</dt><dd>Named reviewer + rationale</dd></div>
+  </dl>
+</section>
+
+<section class="panel" aria-labelledby="import-title">
+  <p class="step">Step 1</p>
+  <h2 id="import-title">Import a reporting-period snapshot</h2>
+  <form action="/imports" method="post" enctype="multipart/form-data" class="form-grid">
+    <div class="field wide">
+      <label for="file">XLSX, CSV, or JSON file</label>
+      <input id="file" name="file" type="file" accept=".xlsx,.csv,.json" required>
+      <p class="hint">Maximum 20 MiB. The immutable snapshot is kept under ignored local runtime storage.</p>
+    </div>
+    <div class="field">
+      <label for="period_label">Period label</label>
+      <input id="period_label" name="period_label" type="text" placeholder="Required for XLSX/CSV">
+    </div>
+    <div class="field">
+      <label for="classification">Data classification</label>
+      <select id="classification" name="classification">
+        <option value="restricted">Restricted</option>
+        <option value="internal">Internal</option>
+        <option value="synthetic">Synthetic</option>
+      </select>
+    </div>
+    <button type="submit">Import snapshot</button>
+  </form>
+</section>
+
+<section class="panel" aria-labelledby="datasets-title">
+  <p class="step">Step 2</p>
+  <h2 id="datasets-title">Run a verified workflow</h2>
+  {% if datasets %}
+  <div class="table-wrap">
+    <table>
+      <caption>Available immutable datasets</caption>
+      <thead><tr><th scope="col">Dataset</th><th scope="col">Period</th><th scope="col">Class</th><th scope="col">Action</th></tr></thead>
+      <tbody>
+      {% for dataset in datasets %}
+        <tr>
+          <td><code>{{ dataset.dataset_id }}</code></td>
+          <td>{{ dataset.reporting_period.label }}</td>
+          <td>{{ dataset.classification }}</td>
+          <td>
+            <form action="/runs" method="post">
+              <input type="hidden" name="dataset_id" value="{{ dataset.dataset_id }}">
+              <button type="submit" class="secondary">Run to review</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No datasets imported yet. Use the fictional fixture via the CLI for a safe demonstration.</p>
+  {% endif %}
+</section>
+
+<div class="two-column">
+  <section class="panel" aria-labelledby="runs-title">
+    <h2 id="runs-title">Recent agent traces</h2>
+    {% if runs %}<ul class="record-list">
+      {% for run in runs %}<li><a href="/runs/{{ run.id }}"><code>{{ run.id }}</code></a><span class="status status-{{ run.status }}">{{ run.status }}</span><small>{{ run.stage }}</small></li>{% endfor %}
+    </ul>{% else %}<p class="empty">No workflow runs.</p>{% endif %}
+  </section>
+  <section class="panel" aria-labelledby="reports-title">
+    <h2 id="reports-title">Reports awaiting decisions</h2>
+    {% if reports %}<ul class="record-list">
+      {% for report in reports %}<li><a href="/reports/{{ report.id }}">{{ report.title }}</a><span class="status status-{{ report.status }}">{{ report.status }}</span><small>Version {{ report.version }}</small></li>{% endfor %}
+    </ul>{% else %}<p class="empty">No reports composed.</p>{% endif %}
+  </section>
+</div>
+{% endblock %}
+

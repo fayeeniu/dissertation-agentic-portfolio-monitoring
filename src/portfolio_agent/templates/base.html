@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Portfolio evidence review{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">MSc research prototype</p>
+        <a class="brand" href="/">Portfolio evidence review</a>
+      </div>
+      <p class="boundary">Local-only · synthetic fixtures by default · human approval required</p>
+    </header>
+    <main id="main-content" tabindex="-1">
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <p>Evidence states are shown in text as well as colour. No report is exported automatically.</p>
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}{{ report.title }}{% endblock %}
+{% block content %}
+<nav aria-label="Breadcrumb"><a href="/">Work queue</a> / <a href="/runs/{{ report.run_id }}">Agent trace</a> / Report</nav>
+<section class="hero compact">
+  <div><p class="eyebrow">Human review gate</p><h1>{{ report.title }}</h1><p><code>{{ report.id }}</code></p></div>
+  <dl class="assurance-list"><div><dt>Status</dt><dd><span class="status status-{{ report.status }}">{{ report.status }}</span></dd></div><div><dt>Version</dt><dd>{{ report.version }}</dd></div><div><dt>Content hash</dt><dd><code>{{ report.content_hash[:12] if report.content_hash else 'pending' }}…</code></dd></div></dl>
+</section>
+
+{% if report.status == 'pending_review' %}
+<section class="decision-panel" aria-labelledby="decision-title">
+  <h2 id="decision-title">Record a review decision</h2>
+  <p>Approval confirms that the reviewer inspected the report and verification states. It does not convert held claims into supported claims.</p>
+  <div class="two-column">
+    <form action="/reports/{{ report.id }}/approve" method="post" class="stacked-form">
+      <h3>Approve</h3><label for="approve-actor">Reviewer</label><input id="approve-actor" name="actor" required maxlength="255"><label for="approve-reason">Rationale</label><textarea id="approve-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit">Approve report</button>
+    </form>
+    <form action="/reports/{{ report.id }}/reject" method="post" class="stacked-form">
+      <h3>Reject</h3><label for="reject-actor">Reviewer</label><input id="reject-actor" name="actor" required maxlength="255"><label for="reject-reason">Rationale</label><textarea id="reject-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit" class="danger">Reject report</button>
+    </form>
+  </div>
+</section>
+{% elif report.status == 'approved' %}
+<section class="decision-panel"><h2>Approved and ready to export</h2><form action="/reports/{{ report.id }}/export" method="post"><button type="submit">Export JSON, Markdown, and HTML</button></form></section>
+{% elif report.status == 'exported' %}
+<section class="decision-panel"><h2>Approved export</h2><ul class="download-list"><li><a href="/reports/{{ report.id }}/download/json">Download JSON</a></li><li><a href="/reports/{{ report.id }}/download/md">Download Markdown</a></li><li><a href="/reports/{{ report.id }}/download/html">Download HTML</a></li></ul></section>
+{% endif %}
+
+<section aria-labelledby="sections-title"><h2 id="sections-title">Current report sections</h2>
+  {% for section in sections %}
+  <article class="panel report-section" aria-labelledby="heading-{{ loop.index }}">
+    <div class="section-heading"><h3 id="heading-{{ loop.index }}">{{ section.heading }}</h3><span>Section v{{ section.version }}</span></div>
+    <div class="markdown-source">{{ section.body_markdown }}</div>
+    {% if report.status not in ['exported', 'rejected'] %}
+    <details><summary>Edit this section and create a new version</summary>
+      <form action="/reports/{{ report.id }}/sections/{{ section.section_key }}/edit" method="post" class="stacked-form">
+        <label for="body-{{ loop.index }}">Section Markdown</label><textarea id="body-{{ loop.index }}" name="body_markdown" required maxlength="50000" rows="10">{{ section.body_markdown }}</textarea>
+        <label for="actor-{{ loop.index }}">Reviewer</label><input id="actor-{{ loop.index }}" name="actor" required maxlength="255">
+        <label for="reason-{{ loop.index }}">Edit rationale</label><textarea id="reason-{{ loop.index }}" name="reason" required minlength="3" maxlength="2000"></textarea>
+        <button type="submit" class="secondary">Save new section version</button>
+      </form>
+    </details>
+    {% endif %}
+  </article>
+  {% endfor %}
+</section>
+
+<section class="panel" aria-labelledby="claims-title"><h2 id="claims-title">Claim verification and provenance</h2>
+  <div class="table-wrap"><table><caption>Every candidate claim and its independent verification result</caption><thead><tr><th scope="col">Company / metric</th><th scope="col">Claim</th><th scope="col">State</th><th scope="col">Evidence</th></tr></thead><tbody>
+  {% for claim in claims %}<tr><td>{{ claim.company.canonical_name }}<br><small>{{ claim.metric_definition.key }}</small></td><td>{{ claim.text }}</td><td><span class="status status-{{ claim.verification_status }}">{{ claim.verification_status }}</span>{% if claim.verifications %}<small>{{ claim.verifications[0].rationale }}</small>{% endif %}</td><td>{% if claim.evidence_items %}<ul>{% for evidence in claim.evidence_items %}<li><code>{{ evidence.id }}</code><br><small>{{ evidence.source_type }} · {{ evidence.locator }}</small></li>{% endfor %}</ul>{% else %}No supporting evidence linked{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+
+<section class="panel" aria-labelledby="audit-title"><h2 id="audit-title">Review audit trail</h2>{% if decisions %}<ol class="audit-list">{% for decision in decisions %}<li><strong>{{ decision.decision }}</strong> by {{ decision.actor }} for report v{{ decision.report_version }}<br><span>{{ decision.reason }}</span><br><small>{{ decision.created_at }}</small></li>{% endfor %}</ol>{% else %}<p class="empty">No human decision recorded yet.</p>{% endif %}</section>
+{% endblock %}
+
