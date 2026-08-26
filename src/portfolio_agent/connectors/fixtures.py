@@ -54,12 +54,21 @@ class FixtureConnector:
     def collect(self, query: ConnectorQuery) -> tuple[EvidenceItem, ...]:
         matches: list[EvidenceItem] = []
         for record in self._document.evidence:
-            identity_match = (
-                query.external_id is not None
-                and record.external_id is not None
-                and query.external_id == record.external_id
-            ) or query.company_name.casefold().strip() == record.company_name.casefold().strip()
+            if query.external_id is not None and record.external_id is not None:
+                identity_match = query.external_id == record.external_id
+            elif query.external_id is None and record.external_id is None:
+                identity_match = (
+                    query.company_name.casefold().strip() == record.company_name.casefold().strip()
+                )
+            else:
+                identity_match = False
             if not identity_match or record.metric_key != query.metric_key:
+                continue
+            if (
+                query.reporting_cutoff is not None
+                and record.published_at is not None
+                and record.published_at.date() > query.reporting_cutoff
+            ):
                 continue
             content: dict[str, Any] = {
                 "company_name": record.company_name,
@@ -92,3 +101,14 @@ class FixtureConnector:
                 )
             )
         return tuple(matches)
+
+
+class NoopConnector:
+    """Explicit offline default: collect no external evidence."""
+
+    name = "no_external_connector"
+    version = "1.0.0"
+
+    def collect(self, query: ConnectorQuery) -> tuple[EvidenceItem, ...]:
+        del query
+        return ()

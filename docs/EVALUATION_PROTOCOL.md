@@ -77,6 +77,11 @@ evidence, unsupported claims, ambiguous identity, duplicate evidence, inaccessib
 narrative evidence, mixed currency, and prompt injection. D0 is for engineering regression and
 mechanism validation, not claims about real portfolio performance.
 
+The executable D0 artifact is admitted only through `fixtures/evaluation_manifest.json`. Its
+checksum, `benchmark:d0` namespace, source version, and test-only partition policy are verified
+before cases load. Case and evidence IDs are rewritten into that namespace and are rejected by
+operational source collection.
+
 ### D1 — authorised pilot/calibration set
 
 Use the smallest authorised historical subset sufficient to:
@@ -95,6 +100,10 @@ Select and seal company-period units before final system runs. Record a manifest
 exposing restricted content. Do not inspect, tune catalogue aliases, modify prompts/rules, select
 models, or repair connectors based on D2. Any post-access change creates a new exploratory run
 and invalidates confirmatory labelling unless the protocol is amended transparently.
+
+The current D2 manifest entry is `sealed` with no path or checksum. Application code exposes no
+unlock token or bypass: loading D2 raises a sealed-dataset error. Opening it requires a separately
+approved manifest transition after G6; this is a governance boundary, not a hidden feature flag.
 
 ## Gold/reference standard
 
@@ -134,6 +143,10 @@ reported.
   emitted claims.
 - **Claim-support rate** = emitted claims satisfying the frozen support rule / emitted claims.
 - **Contradiction detection recall** = correctly flagged gold conflicts / all gold conflicts.
+- Identity, extraction, temporal, source-quality, contradiction, provenance, abstention,
+  event-linkage, and report outcomes are recorded separately; a layer with no labelled cases is
+  `null`, never zero.
+- Reviewer utility remains `null` until an authorised participant/reviewer observation exists.
 
 ### Extraction and normalization
 
@@ -183,15 +196,17 @@ Run:
 
 ```bash
 .venv/bin/portfolio-agent evaluate \
-  --cases fixtures/evaluation_cases.json \
+  --manifest fixtures/evaluation_manifest.json \
   --output var/evaluation/latest.json \
   --repeats 3
 ```
 
-The output includes fixture SHA-256, case count, repeats, condition summaries, and case-level
-confusion components. C0 and C3 deliberately contain null metrics and explanatory notes until
-real authorised observations exist. The output file is ignored runtime evidence; archive an
-immutable copy/hash in the dissertation evidence package after the protocol/version is frozen.
+The v2 output includes manifest and dataset SHA-256, namespace/tier/partition policy, a declared
+condition-parity table, repeats, condition summaries, case confusion components, and
+layer-specific outcomes. C0 and C3 deliberately contain null metrics and explanatory notes until
+real authorised observations exist. Event accuracy is also null in D0 because the current pack
+has no labelled event-linkage outcome. Archive the ignored runtime output/hash only after protocol
+and code freeze.
 
 ## Manual baseline capture
 
@@ -290,4 +305,3 @@ supervisor/ethics direction rather than adapting silently.
 
 Mitigate through pairing, frozen protocols, independent/adjudicated labels, blinded scoring where
 possible, full error accounting, versioned evidence, and appropriately narrow conclusions.
-

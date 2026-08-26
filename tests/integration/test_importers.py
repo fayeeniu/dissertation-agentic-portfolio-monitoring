@@ -27,9 +27,11 @@ def test_json_import_is_immutable_idempotent_and_preserves_missing_states(
 
     assert first.company_count == 3
     assert first.observation_count == 21
+    assert first.programme_start_count == 3
     assert any(issue.code == "unknown_metric" for issue in first.issues)
     assert second.reused_existing
     assert second.dataset_id == first.dataset_id
+    assert second.programme_start_count == 3
 
     snapshot = next((runtime.settings.raw_data_dir / first.dataset_id).iterdir())
     assert stat.S_IMODE(snapshot.stat().st_mode) == 0o600
@@ -44,6 +46,68 @@ def test_json_import_is_immutable_idempotent_and_preserves_missing_states(
     assert {MissingState.ZERO.value, MissingState.BLANK.value}.issubset(states)
     assert MissingState.NOT_REPORTED.value in states
     assert MissingState.NOT_FOUND_PUBLICLY.value in states
+
+
+def test_invalid_programme_start_is_held_without_guessing(runtime: Runtime) -> None:
+    payload = {
+        "reporting_period": {
+            "label": "INVALID-PROGRAMME-START-Q2",
+            "end_date": "2025-06-30",
+        },
+        "companies": [
+            {
+                "name": "Period Synthetic Ltd",
+                "external_id": "SYN-PERIOD",
+                "programme_start_date": "Spring 2024",
+                "metrics": {"grant_funding": "GBP 100"},
+            }
+        ],
+    }
+    result = runtime.importer.import_bytes(
+        json.dumps(payload).encode(),
+        filename="invalid-programme-start.json",
+        classification=DataClassification.SYNTHETIC,
+    )
+    assert result.programme_start_count == 0
+    assert any(issue.code == "invalid_programme_start" for issue in result.issues)
+
+
+def test_json_import_holds_non_finite_numeric_literals(runtime: Runtime) -> None:
+    payload = {
+        "reporting_period": {"label": "NON-FINITE-Q2", "end_date": "2025-06-30"},
+        "companies": [
+            {
+                "name": "Finite Synthetic Ltd",
+                "external_id": "SYN-FINITE",
+                "metrics": {
+                    "employees_total": float("nan"),
+                    "grant_funding": "GBP Infinity",
+                    "gross_margin": "-Infinity%",
+                    "ai_hours_saved": "NaN",
+                },
+            }
+        ],
+    }
+    result = runtime.importer.import_bytes(
+        json.dumps(payload).encode(),
+        filename="non-finite.json",
+        classification=DataClassification.SYNTHETIC,
+    )
+    with runtime.session_factory() as session:
+        observations = list(
+            session.scalars(
+                select(ObservationModel).where(
+                    ObservationModel.raw_submission_id == result.raw_submission_id
+                )
+            ).all()
+        )
+    assert len(observations) == 4
+    assert {observation.missing_state for observation in observations} == {
+        MissingState.INVALID.value
+    }
+    assert {observation.normalization_issue_code for observation in observations} == {
+        "non_finite_number"
+    }
 
 
 def test_matrix_import_supports_csv_and_xlsx(runtime: Runtime) -> None:
@@ -96,7 +160,9 @@ def test_conflicting_company_identity_is_held(runtime: Runtime) -> None:
         filename="second.json",
         classification=DataClassification.SYNTHETIC,
     )
-    assert result.company_count == 0
+    assert result.company_count == 1
+    assert result.observation_count == 1
+    assert result.identity_hold_count == 1
     assert any(issue.code == "ambiguous_company_identity" for issue in result.issues)
 
 

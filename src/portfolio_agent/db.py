@@ -4,8 +4,11 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 
+from alembic.config import Config
 from sqlalchemy import Engine, create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+
+from alembic import command
 
 
 class Base(DeclarativeBase):
@@ -38,9 +41,19 @@ def create_session_factory(engine: Engine) -> sessionmaker[Session]:
 
 
 def initialize_database(engine: Engine) -> None:
-    from . import models  # noqa: F401
+    """Bring runtime databases to the declared migration head.
 
-    Base.metadata.create_all(engine)
+    Runtime startup deliberately follows the same migration path as deployed and
+    research-replay databases; ``metadata.create_all`` is reserved for schema-
+    equivalence tests only.
+    """
+
+    project_root = Path(__file__).resolve().parents[2]
+    alembic_config = Config(str(project_root / "alembic.ini"))
+    alembic_config.set_main_option("script_location", str(project_root / "alembic"))
+    with engine.begin() as connection:
+        alembic_config.attributes["connection"] = connection
+        command.upgrade(alembic_config, "head")
 
 
 @contextmanager

@@ -34,6 +34,10 @@ class MissingState(StrEnum):
     NOT_APPLICABLE = "not_applicable"
     NOT_REPORTED = "not_reported"
     NOT_FOUND_PUBLICLY = "not_found_publicly"
+    FILING_NOT_DUE = "filing_not_due"
+    DORMANT = "dormant"
+    NOT_REQUIRED = "not_required"
+    SOURCE_UNAVAILABLE = "source_unavailable"
     INVALID = "invalid"
 
 
@@ -41,6 +45,69 @@ class ResolutionStatus(StrEnum):
     RESOLVED = "resolved"
     AMBIGUOUS = "ambiguous"
     UNRESOLVED = "unresolved"
+
+
+class IdentifierScheme(StrEnum):
+    COMPANIES_HOUSE_NUMBER = "companies_house_number"
+    UKRI_ORGANISATION_ID = "ukri_organisation_id"
+    LEGACY = "legacy"
+    REVIEWED_ALIAS = "reviewed_alias"
+
+
+class IdentityCandidateStatus(StrEnum):
+    PENDING = "pending"
+    ACCEPTED = "accepted"
+    REJECTED = "rejected"
+
+
+class IdentityDecisionType(StrEnum):
+    ACCEPT = "accept"
+    REJECT = "reject"
+
+
+class TemporalEligibilityStatus(StrEnum):
+    ELIGIBLE = "eligible"
+    FUTURE_PUBLISHED = "future_published"
+    FUTURE_EFFECTIVE = "future_effective"
+    EXPIRED = "expired"
+    MISSING_PUBLISHED_AT = "missing_published_at"
+    NOT_APPLICABLE = "not_applicable"
+
+
+class QualityDisposition(StrEnum):
+    PASS = "pass"
+    WARN = "warn"
+    HOLD = "hold"
+    EXCLUDE = "exclude"
+
+
+class CollectionStatus(StrEnum):
+    SUCCEEDED = "succeeded"
+    NO_RECORD = "no_record"
+    SOURCE_UNAVAILABLE = "source_unavailable"
+    FAILED = "failed"
+
+
+class ExtractionAttemptStatus(StrEnum):
+    SUCCEEDED = "succeeded"
+    ABSTAINED = "abstained"
+    REJECTED = "rejected"
+    FAILED = "failed"
+
+
+class EventType(StrEnum):
+    INCORPORATED = "incorporated"
+    DISSOLVED = "dissolved"
+    STATUS_CHANGED = "status_changed"
+    ACCOUNTS_FILED = "accounts_filed"
+    CHARGE_REGISTERED = "charge_registered"
+    SHARE_EVENT = "share_event"
+    UKRI_OPPORTUNITY = "ukri_opportunity"
+    UKRI_DECISION = "ukri_decision"
+    UKRI_AWARD = "ukri_award"
+    UKRI_PROJECT = "ukri_project"
+    UKRI_OUTCOME = "ukri_outcome"
+    PRIVATE_FUNDING_REPORTED = "private_funding_reported"
 
 
 class WorkflowStage(StrEnum):
@@ -77,6 +144,7 @@ class ReportStatus(StrEnum):
     DRAFT = "draft"
     PENDING_REVIEW = "pending_review"
     APPROVED = "approved"
+    EXPORTING = "exporting"
     REJECTED = "rejected"
     EXPORTED = "exported"
 

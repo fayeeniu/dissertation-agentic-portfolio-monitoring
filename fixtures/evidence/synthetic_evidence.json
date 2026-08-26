@@ -6,7 +6,7 @@
       "company_name": "Aster Analytics",
       "external_id": "SYN-ASTER",
       "metric_key": "grant_funding",
-      "period_label": "SYN-2025-Q2",
+      "period_label": "from 2024-10-01 through 2025-06-30",
       "value": "GBP 250000",
       "unit": "currency_units",
       "currency": "GBP",
@@ -21,7 +21,7 @@
       "company_name": "Aster Analytics",
       "external_id": "SYN-ASTER",
       "metric_key": "grant_funding",
-      "period_label": "SYN-2025-Q2",
+      "period_label": "from 2024-10-01 through 2025-06-30",
       "value": "GBP 250000",
       "unit": "currency_units",
       "currency": "GBP",
@@ -96,7 +96,7 @@
       "company_name": "Redwood Quantum",
       "external_id": "SYN-REDWOOD",
       "metric_key": "grant_funding",
-      "period_label": "SYN-2025-Q2",
+      "period_label": "from 2025-01-01 through 2025-06-30",
       "value": "GBP 50000",
       "unit": "currency_units",
       "currency": "GBP",
@@ -153,4 +153,3 @@
     }
   ]
 }
-

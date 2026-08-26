@@ -10,6 +10,7 @@
     {
       "external_id": "SYN-ASTER",
       "name": "Aster Analytics",
+      "programme_start_date": "2024-10-01",
       "metrics": {
         "employees_total": 42,
         "jobs_created": 0,
@@ -25,6 +26,7 @@
     {
       "external_id": "SYN-REDWOOD",
       "name": "Redwood Quantum",
+      "programme_start_date": "2025-01-01",
       "metrics": {
         "employees_total": "17",
         "grant_funding": "",
@@ -38,6 +40,7 @@
     {
       "external_id": "SYN-CYPRESS",
       "name": "Cypress Circular",
+      "programme_start_date": "2024-07-01",
       "metrics": {
         "employees_total": null,
         "grant_funding": "not found publicly",
@@ -49,4 +52,3 @@
     }
   ]
 }
-

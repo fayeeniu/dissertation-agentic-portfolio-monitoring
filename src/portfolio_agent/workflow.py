@@ -3,44 +3,77 @@ from __future__ import annotations
 import time
 from collections import Counter, defaultdict
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Any
 
 from sqlalchemy import insert, select
 from sqlalchemy.orm import Session, joinedload, sessionmaker
 
-from .connectors.base import Connector, ConnectorQuery
+from .cbit_contract import PeriodSemantics
+from .connectors.base import Connector, ConnectorQuery, SourceRequest
+from .connectors.registry import SourceRegistry
+from .context import compare_with_prior_periods, derive_context_statistics
 from .enums import (
+    CollectionStatus,
     DataClassification,
+    ExtractionAttemptStatus,
+    IdentifierScheme,
     MetricDataType,
     MissingState,
     ReportStatus,
     ResolutionStatus,
     RunStatus,
     Sourceability,
+    TemporalEligibilityStatus,
     VerificationStatus,
     WorkflowStage,
 )
+from .events import events_for_run, persist_private_funding_events
 from .ids import stable_hash
-from .llm.base import ExtractionProvider, ExtractionRequest
+from .llm.base import (
+    ExtractionProvider,
+    ExtractionProviderError,
+    ExtractionRequest,
+    ProviderAttempt,
+)
 from .models import (
     AgentRunModel,
     ClaimModel,
+    CompanyIdentifierModel,
     CompanyModel,
+    CompanyProgrammeMembershipModel,
+    EvidenceFactModel,
     EvidenceItemModel,
+    ExtractionAttemptModel,
     ExtractionModel,
     MetricDefinitionModel,
     ObservationModel,
+    QualityViolationModel,
     RawSubmissionModel,
     ReportingPeriodModel,
     ReportModel,
     ReportSectionModel,
+    SourceSnapshotModel,
     VerificationModel,
     WorkflowRunModel,
     run_evidence,
+    run_source_snapshots,
 )
 from .normalization import normalize_value
+from .quality import (
+    QUALITY_CONTRACT_VERSION,
+    QualityRecord,
+    evaluate_quality,
+    persist_quality_evaluation,
+)
 from .schemas import EvidenceItem, MetricDefinition, PipelineResult
+from .temporal import (
+    TemporalDecision,
+    TemporalEvidence,
+    TemporalWindow,
+    restore_persisted_utc,
+    temporal_eligibility,
+)
 from .verification import VerificationEvidence, verify_claim
 
 StageFunction = Callable[[Session, WorkflowRunModel], dict[str, Any]]
@@ -60,6 +93,7 @@ def _metric_contract(row: MetricDefinitionModel) -> MetricDefinition:
         unit=row.unit,
         aliases=tuple(row.aliases_json),
         description=row.description,
+        period_semantics=PeriodSemantics(row.period_semantics or PeriodSemantics.NONE.value),
     )
 
 
@@ -82,6 +116,22 @@ def _evidence_contract(row: EvidenceItemModel) -> EvidenceItem:
     )
 
 
+def _public_evidence_company_reference(
+    *, snapshot_sha256: str | None, source_key: str, source_locator: str
+) -> str:
+    """Return a model-safe alias derived only from public evidence provenance."""
+    return (
+        "public-evidence:"
+        + stable_hash(
+            {
+                "snapshot_sha256": snapshot_sha256,
+                "source_key": source_key,
+                "source_locator": source_locator,
+            }
+        )[:20]
+    )
+
+
 def _claim_text(
     company: CompanyModel,
     metric: MetricDefinitionModel,
@@ -91,7 +141,48 @@ def _claim_text(
 ) -> str:
     unit = currency or metric.unit or ""
     suffix = f" {unit}" if unit else ""
-    return f"{company.canonical_name}: {metric.label} was {value}{suffix} for {period_label}."
+    semantics = PeriodSemantics(metric.period_semantics or PeriodSemantics.NONE.value)
+    if semantics is PeriodSemantics.SINCE_PROGRAMME_START:
+        relation = f"cumulatively {period_label}"
+    elif semantics in {
+        PeriodSemantics.AS_AT_CUTOFF,
+        PeriodSemantics.BEFORE_PROGRAMME,
+    }:
+        relation = period_label
+    else:
+        relation = f"for {period_label}"
+    return f"{company.canonical_name}: {metric.label} was {value}{suffix} {relation}."
+
+
+def _semantic_period_label(
+    metric: MetricDefinitionModel,
+    *,
+    reporting_period_label: str,
+    reporting_cutoff: date,
+    programme_start_date: date | None,
+) -> str | None:
+    semantics = PeriodSemantics(metric.period_semantics or PeriodSemantics.NONE.value)
+    if semantics is PeriodSemantics.SINCE_PROGRAMME_START:
+        if programme_start_date is None or programme_start_date > reporting_cutoff:
+            return None
+        return f"from {programme_start_date.isoformat()} through {reporting_cutoff.isoformat()}"
+    if semantics is PeriodSemantics.AS_AT_CUTOFF:
+        return f"as at {reporting_cutoff.isoformat()}"
+    if semantics is PeriodSemantics.BEFORE_PROGRAMME:
+        return (
+            f"before programme start {programme_start_date.isoformat()}"
+            if programme_start_date is not None
+            else None
+        )
+    if semantics is PeriodSemantics.LIFETIME:
+        return f"lifetime through {reporting_cutoff.isoformat()}"
+    return reporting_period_label
+
+
+def _fact_period_label(fact: EvidenceFactModel) -> str | None:
+    if fact.period_start is not None and fact.period_end is not None:
+        return f"from {fact.period_start.isoformat()} through {fact.period_end.isoformat()}"
+    return None
 
 
 class PortfolioWorkflow:
@@ -101,10 +192,12 @@ class PortfolioWorkflow:
         *,
         connector: Connector,
         extraction_provider: ExtractionProvider,
+        source_registry: SourceRegistry | None = None,
     ) -> None:
         self._session_factory = session_factory
         self._connector = connector
         self._extraction_provider = extraction_provider
+        self._source_registry = source_registry
 
     def run(self, dataset_id: str) -> PipelineResult:
         with self._session_factory.begin() as session:
@@ -124,6 +217,9 @@ class PortfolioWorkflow:
                     "extraction_provider": self._extraction_provider.name,
                     "completed_stages": [],
                 },
+                reporting_cutoff=raw.reporting_cutoff,
+                evidence_contract_version="uk-public-evidence-v2",
+                quality_contract_version=QUALITY_CONTRACT_VERSION,
             )
             session.add(workflow_run)
             session.flush()
@@ -198,6 +294,8 @@ class PortfolioWorkflow:
             session.flush()
             agent_run_id = agent_run.id
         try:
+            if stage is WorkflowStage.COLLECT:
+                self._prepare_source_collections(run_id)
             with self._session_factory.begin() as session:
                 workflow_run = session.get(WorkflowRunModel, run_id)
                 assert workflow_run is not None
@@ -226,6 +324,100 @@ class PortfolioWorkflow:
                     failed_agent_run.finished_at = datetime.now(UTC)
             raise
 
+    def _prepare_source_collections(self, run_id: str) -> None:
+        if self._source_registry is None or not self._source_registry.manifests:
+            return
+        with self._session_factory() as session:
+            run = session.get(WorkflowRunModel, run_id)
+            if run is None or run.reporting_cutoff is None:
+                raise ValueError("Source collection requires a persisted reporting cutoff.")
+            company_ids = sorted(
+                set(
+                    session.scalars(
+                        select(ObservationModel.company_id)
+                        .join(RawSubmissionModel)
+                        .where(RawSubmissionModel.dataset_id == run.dataset_id)
+                    ).all()
+                )
+            )
+            identifiers = list(
+                session.scalars(
+                    select(CompanyIdentifierModel).where(
+                        CompanyIdentifierModel.company_id.in_(company_ids),
+                        CompanyIdentifierModel.reviewed.is_(True),
+                    )
+                ).all()
+            )
+            programme_starts = self._programme_starts(session, run.dataset_id)
+            requests: list[SourceRequest] = []
+            for manifest in self._source_registry.manifests:
+                if "offline_snapshot" not in manifest.retrieval_modes:
+                    continue
+                for company_id in company_ids:
+                    active = [
+                        identifier
+                        for identifier in identifiers
+                        if identifier.company_id == company_id
+                        and identifier.source_key == manifest.key
+                        and identifier.scheme
+                        in {scheme.value for scheme in manifest.identifier_schemes}
+                        and (
+                            identifier.valid_from is None
+                            or identifier.valid_from <= run.reporting_cutoff
+                        )
+                        and (
+                            identifier.valid_to is None
+                            or identifier.valid_to >= run.reporting_cutoff
+                        )
+                    ]
+                    if len(active) > 1:
+                        raise ValueError(
+                            "Multiple active reviewed identifiers exist for one company/source."
+                        )
+                    if not active:
+                        continue
+                    identifier = active[0]
+                    requests.append(
+                        SourceRequest(
+                            source_key=manifest.key,
+                            company_id=company_id,
+                            identifier_scheme=IdentifierScheme(identifier.scheme),
+                            identifier_value=identifier.value,
+                            reporting_cutoff=run.reporting_cutoff,
+                            programme_start_date=programme_starts.get(company_id),
+                            fact_keys=manifest.fact_keys,
+                            mode="offline_snapshot",
+                        )
+                    )
+
+        for request in requests:
+            result = self._source_registry.collect(request)
+            with self._session_factory.begin() as session:
+                run = session.get(WorkflowRunModel, run_id)
+                snapshot = session.get(SourceSnapshotModel, result.snapshot_id)
+                if run is None or run.reporting_cutoff is None or snapshot is None:
+                    raise ValueError("Collected source snapshot could not be bound to its run.")
+                if (
+                    snapshot.company_id != request.company_id
+                    or snapshot.reporting_cutoff != run.reporting_cutoff
+                ):
+                    raise ValueError("Source snapshot identity or cutoff changed before run link.")
+                existing = session.execute(
+                    select(run_source_snapshots).where(
+                        run_source_snapshots.c.run_id == run.id,
+                        run_source_snapshots.c.source_snapshot_id == snapshot.id,
+                    )
+                ).first()
+                if existing is None:
+                    session.execute(
+                        insert(run_source_snapshots).values(
+                            run_id=run.id,
+                            source_snapshot_id=snapshot.id,
+                            reporting_cutoff=run.reporting_cutoff,
+                            linked_at=datetime.now(UTC),
+                        )
+                    )
+
     @staticmethod
     def _dataset_observations(session: Session, dataset_id: str) -> list[ObservationModel]:
         return list(
@@ -243,6 +435,23 @@ class PortfolioWorkflow:
             ).all()
         )
 
+    @staticmethod
+    def _programme_starts(session: Session, dataset_id: str) -> dict[str, date]:
+        return {
+            company_id: programme_start
+            for company_id, programme_start in session.execute(
+                select(
+                    CompanyProgrammeMembershipModel.company_id,
+                    CompanyProgrammeMembershipModel.programme_start_date,
+                )
+                .join(
+                    RawSubmissionModel,
+                    RawSubmissionModel.id == CompanyProgrammeMembershipModel.raw_submission_id,
+                )
+                .where(RawSubmissionModel.dataset_id == dataset_id)
+            ).all()
+        }
+
     def _plan(self, session: Session, run: WorkflowRunModel) -> dict[str, Any]:
         observations = self._dataset_observations(session, run.dataset_id)
         public_tasks = sum(
@@ -250,6 +459,10 @@ class PortfolioWorkflow:
             in {Sourceability.PUBLICLY_SOURCEABLE.value, Sourceability.MIXED.value}
             for observation in observations
         )
+        if public_tasks and run.reporting_cutoff is None:
+            raise ValueError(
+                "Public evidence planning requires the immutable submission reporting cutoff."
+            )
         config = dict(run.configuration_json)
         config["plan"] = {
             "observation_count": len(observations),
@@ -275,28 +488,65 @@ class PortfolioWorkflow:
             )
         return {"resolved_company_count": len(companies), "unresolved_company_count": 0}
 
-    def _link_evidence(self, session: Session, run_id: str, evidence_id: str) -> None:
+    def _link_evidence(
+        self,
+        session: Session,
+        *,
+        run: WorkflowRunModel,
+        evidence_id: str,
+        temporal: TemporalDecision,
+    ) -> None:
+        if run.reporting_cutoff is None:
+            raise ValueError("Run-relative evidence requires a reporting cutoff.")
         existing = session.execute(
             select(run_evidence).where(
-                run_evidence.c.run_id == run_id,
+                run_evidence.c.run_id == run.id,
                 run_evidence.c.evidence_item_id == evidence_id,
             )
         ).first()
         if existing is None:
             session.execute(
-                insert(run_evidence).values(run_id=run_id, evidence_item_id=evidence_id)
+                insert(run_evidence).values(
+                    run_id=run.id,
+                    evidence_item_id=evidence_id,
+                    reporting_cutoff=run.reporting_cutoff,
+                    temporal_status=temporal.status.value,
+                    temporal_reason=temporal.rationale,
+                    evaluated_at=datetime.now(UTC),
+                )
             )
+            return
+        if (
+            existing.reporting_cutoff != run.reporting_cutoff
+            or existing.temporal_status != temporal.status.value
+            or existing.temporal_reason != temporal.rationale
+        ):
+            raise ValueError("Run evidence link was reused with changed temporal semantics.")
 
     def _collect(self, session: Session, run: WorkflowRunModel) -> dict[str, Any]:
         observations = self._dataset_observations(session, run.dataset_id)
+        period = session.get(ReportingPeriodModel, run.reporting_period_id)
+        assert period is not None
+        if run.reporting_cutoff is None:
+            raise ValueError("Evidence collection requires a reporting cutoff.")
+        private_event_count = persist_private_funding_events(
+            session, observations=tuple(observations)
+        )
         internal_count = 0
         external_count = 0
         untrusted_count = 0
+        programme_starts = self._programme_starts(session, run.dataset_id)
         for observation in observations:
+            semantic_period_label = _semantic_period_label(
+                observation.metric_definition,
+                reporting_period_label=observation.raw_submission.reporting_period.label,
+                reporting_cutoff=run.reporting_cutoff,
+                programme_start_date=programme_starts.get(observation.company_id),
+            )
             internal_content = {
                 "company_name": observation.company.canonical_name,
                 "metric_key": observation.metric_definition.key,
-                "period_label": observation.raw_submission.reporting_period.label,
+                "period_label": semantic_period_label,
                 "value": observation.normalized_value_json,
                 "unit": observation.unit,
                 "currency": observation.currency,
@@ -336,10 +586,27 @@ class PortfolioWorkflow:
                     classification=observation.raw_submission.classification,
                     is_untrusted=False,
                     is_stale=False,
+                    temporal_status="eligible",
                 )
                 session.add(internal)
                 session.flush()
-            self._link_evidence(session, run.id, internal.id)
+            internal_temporal = temporal_eligibility(
+                TemporalEvidence(
+                    published_at=None,
+                    is_internal_submission=True,
+                ),
+                TemporalWindow(
+                    reporting_cutoff=run.reporting_cutoff,
+                    period_start=period.start_date,
+                    period_end=period.end_date,
+                ),
+            )
+            self._link_evidence(
+                session,
+                run=run,
+                evidence_id=internal.id,
+                temporal=internal_temporal,
+            )
             internal_count += 1
 
             if observation.metric_definition.sourceability not in {
@@ -347,14 +614,25 @@ class PortfolioWorkflow:
                 Sourceability.MIXED.value,
             }:
                 continue
+            if semantic_period_label is None:
+                continue
             query = ConnectorQuery(
                 company_id=observation.company.id,
                 company_name=observation.company.canonical_name,
                 external_id=observation.company.external_id,
                 metric_key=observation.metric_definition.key,
-                period_label=observation.raw_submission.reporting_period.label,
+                period_label=semantic_period_label,
+                reporting_cutoff=run.reporting_cutoff,
             )
             for evidence in self._connector.collect(query):
+                temporal = temporal_eligibility(
+                    TemporalEvidence(published_at=evidence.published_at),
+                    TemporalWindow(
+                        reporting_cutoff=run.reporting_cutoff,
+                        period_start=period.start_date,
+                        period_end=period.end_date,
+                    ),
+                )
                 stored = session.get(EvidenceItemModel, evidence.id)
                 if stored is None:
                     stored = EvidenceItemModel(
@@ -373,8 +651,8 @@ class PortfolioWorkflow:
                         connector_version=evidence.connector_version,
                         classification=evidence.classification.value,
                         is_untrusted=evidence.is_untrusted,
-                        is_stale=evidence.content.get("period_label")
-                        != observation.raw_submission.reporting_period.label,
+                        is_stale=evidence.content.get("period_label") != semantic_period_label,
+                        temporal_status=temporal.status.value,
                     )
                     session.add(stored)
                     session.flush()
@@ -386,31 +664,192 @@ class PortfolioWorkflow:
                     raise ValueError(
                         "Fixture evidence ID collision with different immutable content."
                     )
-                self._link_evidence(session, run.id, stored.id)
+                self._link_evidence(
+                    session,
+                    run=run,
+                    evidence_id=stored.id,
+                    temporal=temporal,
+                )
                 external_count += 1
                 untrusted_count += int(stored.is_untrusted)
-        return {
-            "internal_evidence_count": internal_count,
-            "external_evidence_count": external_count,
-            "untrusted_evidence_count": untrusted_count,
-        }
-
-    def _run_evidence(self, session: Session, run_id: str) -> list[EvidenceItemModel]:
-        return list(
-            session.scalars(
-                select(EvidenceItemModel)
-                .join(run_evidence, run_evidence.c.evidence_item_id == EvidenceItemModel.id)
-                .where(run_evidence.c.run_id == run_id)
-                .options(joinedload(EvidenceItemModel.metric_definition))
+        registry_fact_count = self._collect_registry_facts(session, run=run, period=period)
+        source_snapshot_count = len(
+            session.execute(
+                select(run_source_snapshots.c.source_snapshot_id).where(
+                    run_source_snapshots.c.run_id == run.id
+                )
             ).all()
         )
+        return {
+            "internal_evidence_count": internal_count,
+            "external_evidence_count": external_count + registry_fact_count,
+            "registry_fact_evidence_count": registry_fact_count,
+            "source_snapshot_count": source_snapshot_count,
+            "untrusted_evidence_count": untrusted_count,
+            "private_funding_event_count": private_event_count,
+        }
+
+    def _collect_registry_facts(
+        self,
+        session: Session,
+        *,
+        run: WorkflowRunModel,
+        period: ReportingPeriodModel,
+    ) -> int:
+        reporting_cutoff = run.reporting_cutoff
+        if reporting_cutoff is None:
+            raise ValueError("Registry fact collection requires a reporting cutoff.")
+        rows = session.execute(
+            select(EvidenceFactModel, SourceSnapshotModel)
+            .join(
+                SourceSnapshotModel,
+                SourceSnapshotModel.id == EvidenceFactModel.source_snapshot_id,
+            )
+            .join(
+                run_source_snapshots,
+                run_source_snapshots.c.source_snapshot_id == SourceSnapshotModel.id,
+            )
+            .where(
+                run_source_snapshots.c.run_id == run.id,
+            )
+        ).all()
+        publishers = (
+            {manifest.key: manifest.publisher for manifest in self._source_registry.manifests}
+            if self._source_registry is not None
+            else {}
+        )
+        created_or_linked = 0
+        for fact, snapshot in rows:
+            company = session.get(CompanyModel, fact.company_id)
+            metric = (
+                session.get(MetricDefinitionModel, fact.metric_definition_id)
+                if fact.metric_definition_id is not None
+                else None
+            )
+            if company is None or (fact.metric_definition_id is not None and metric is None):
+                raise ValueError("Source fact lost its company or metric definition.")
+            published_at = restore_persisted_utc(fact.published_at) or restore_persisted_utc(
+                snapshot.published_at
+            )
+            public_company_reference = _public_evidence_company_reference(
+                snapshot_sha256=snapshot.sha256,
+                source_key=snapshot.source_key,
+                source_locator=fact.source_locator,
+            )
+            content = {
+                "company_name": public_company_reference,
+                "metric_key": metric.key if metric is not None else None,
+                "period_label": _fact_period_label(fact),
+                "value": fact.value_json,
+                "unit": fact.unit,
+                "currency": fact.currency,
+                "fact_key": fact.fact_key,
+                "period_start": fact.period_start.isoformat() if fact.period_start else None,
+                "period_end": fact.period_end.isoformat() if fact.period_end else None,
+                "reporting_cutoff": reporting_cutoff.isoformat(),
+                "snapshot_sha256": snapshot.sha256,
+                "structured_locator": fact.structured_locator_json,
+                "extraction_method": fact.extraction_method,
+                "extraction_schema_version": fact.extraction_schema_version,
+                "missing_state": (
+                    fact.value_json if fact.fact_key.endswith("_missing_state") else None
+                ),
+            }
+            checksum = stable_hash(
+                {
+                    "source_snapshot_id": snapshot.id,
+                    "source_sha256": snapshot.sha256,
+                    "locator": fact.source_locator,
+                    "content": content,
+                }
+            )
+            evidence = session.scalar(
+                select(EvidenceItemModel).where(
+                    EvidenceItemModel.source_snapshot_id == snapshot.id,
+                    EvidenceItemModel.metric_definition_id == fact.metric_definition_id,
+                    EvidenceItemModel.locator == fact.source_locator,
+                )
+            )
+            if evidence is None:
+                evidence = EvidenceItemModel(
+                    company_id=fact.company_id,
+                    metric_definition_id=fact.metric_definition_id,
+                    raw_submission_id=None,
+                    source_snapshot_id=snapshot.id,
+                    source_type="public_source_fact",
+                    connector=snapshot.source_key,
+                    locator=fact.source_locator,
+                    publisher=publishers.get(snapshot.source_key),
+                    retrieved_at=snapshot.retrieved_at,
+                    published_at=published_at,
+                    content_json=content,
+                    checksum=checksum,
+                    connector_version=snapshot.source_version,
+                    classification=snapshot.classification,
+                    is_untrusted=False,
+                    is_stale=False,
+                    temporal_status=None,
+                )
+                session.add(evidence)
+                session.flush()
+            elif evidence.checksum != checksum or evidence.company_id != fact.company_id:
+                raise ValueError("Source fact evidence changed under an immutable locator.")
+            temporal = temporal_eligibility(
+                TemporalEvidence(
+                    published_at=published_at,
+                    effective_from=restore_persisted_utc(fact.effective_at) or fact.period_start,
+                    effective_to=fact.period_end,
+                ),
+                TemporalWindow(
+                    reporting_cutoff=reporting_cutoff,
+                    period_start=period.start_date,
+                    period_end=period.end_date,
+                ),
+            )
+            self._link_evidence(
+                session,
+                run=run,
+                evidence_id=evidence.id,
+                temporal=temporal,
+            )
+            created_or_linked += 1
+        return created_or_linked
+
+    def _run_evidence(
+        self, session: Session, run_id: str, *, eligible_only: bool = False
+    ) -> list[EvidenceItemModel]:
+        statement = (
+            select(EvidenceItemModel)
+            .join(run_evidence, run_evidence.c.evidence_item_id == EvidenceItemModel.id)
+            .where(run_evidence.c.run_id == run_id)
+            .options(joinedload(EvidenceItemModel.metric_definition))
+        )
+        if eligible_only:
+            statement = statement.where(
+                run_evidence.c.temporal_status == TemporalEligibilityStatus.ELIGIBLE.value
+            )
+        return list(session.scalars(statement).all())
+
+    @staticmethod
+    def _run_temporal_decisions(session: Session, run_id: str) -> dict[str, str]:
+        return {
+            evidence_id: status
+            for evidence_id, status in session.execute(
+                select(
+                    run_evidence.c.evidence_item_id,
+                    run_evidence.c.temporal_status,
+                ).where(run_evidence.c.run_id == run_id)
+            ).all()
+            if status is not None
+        }
 
     def _extract(self, session: Session, run: WorkflowRunModel) -> dict[str, Any]:
-        evidence_items = self._run_evidence(session, run.id)
+        evidence_items = self._run_evidence(session, run.id, eligible_only=True)
         period = session.get(ReportingPeriodModel, run.reporting_period_id)
         assert period is not None
         extracted = 0
         rejected_untrusted = 0
+        failed_attempts = 0
         provider_models: Counter[str] = Counter()
         for evidence in evidence_items:
             if evidence.source_type == "portfolio_submission":
@@ -418,8 +857,9 @@ class PortfolioWorkflow:
             if evidence.is_untrusted:
                 rejected_untrusted += 1
                 continue
+            if evidence.metric_definition_id is None:
+                continue
             assert evidence.company_id is not None
-            assert evidence.metric_definition_id is not None
             metric_definition = evidence.metric_definition
             assert metric_definition is not None
             company = session.get(CompanyModel, evidence.company_id)
@@ -432,46 +872,122 @@ class PortfolioWorkflow:
             )
             if existing is not None:
                 continue
-            outcome = self._extraction_provider.extract(
-                ExtractionRequest(
-                    evidence=_evidence_contract(evidence),
-                    expected_company_name=company.canonical_name,
-                    expected_metric_key=metric_definition.key,
-                    expected_period_label=period.label,
-                )
+            expected_period_label = evidence.content_json.get("period_label")
+            if not isinstance(expected_period_label, str) or not expected_period_label:
+                continue
+            expected_company_reference = evidence.content_json.get("company_name")
+            if not isinstance(expected_company_reference, str) or not expected_company_reference:
+                raise ValueError("Public evidence is missing its model-safe company reference.")
+            request = ExtractionRequest(
+                evidence=_evidence_contract(evidence),
+                expected_company_name=expected_company_reference,
+                expected_metric_key=metric_definition.key,
+                expected_period_label=expected_period_label,
             )
+            try:
+                outcome = self._extraction_provider.extract(request)
+            except ExtractionProviderError as exc:
+                self._persist_provider_attempts(
+                    session,
+                    run_id=run.id,
+                    evidence_item_id=evidence.id,
+                    extraction_id=None,
+                    attempts=exc.attempt_records,
+                )
+                failed_attempts += len(exc.attempt_records)
+                continue
             extraction = outcome.extraction
             if extraction.metric_key != metric_definition.key:
                 raise ValueError("Extraction metric does not match the planned metric.")
             if (
                 extraction.company_name.casefold().strip()
-                != company.canonical_name.casefold().strip()
+                != expected_company_reference.casefold().strip()
             ):
-                raise ValueError("Extraction company identity does not match the resolved company.")
-            session.add(
-                ExtractionModel(
-                    run_id=run.id,
-                    evidence_item_id=evidence.id,
-                    company_id=company.id,
-                    metric_definition_id=evidence.metric_definition_id,
-                    extracted_value_json=extraction.value,
-                    normalized_value_json=None,
-                    missing_state=None,
-                    unit=extraction.unit,
-                    currency=extraction.currency,
-                    period_label=extraction.period_label,
+                raise ValueError("Extraction company reference does not match public evidence.")
+            stored_extraction = ExtractionModel(
+                run_id=run.id,
+                evidence_item_id=evidence.id,
+                company_id=company.id,
+                metric_definition_id=evidence.metric_definition_id,
+                extracted_value_json=extraction.value,
+                normalized_value_json=None,
+                missing_state=None,
+                unit=extraction.unit,
+                currency=extraction.currency,
+                period_label=extraction.period_label,
+                provider=outcome.provider,
+                model=outcome.model,
+                schema_version="strict-extraction-v2",
+                evidence_locator=extraction.evidence_locator,
+                evidence_span=extraction.evidence_span,
+                abstain_reason=extraction.abstain_reason,
+                confidence=extraction.confidence,
+            )
+            session.add(stored_extraction)
+            session.flush()
+            attempts = outcome.attempt_records or (
+                ProviderAttempt(
+                    attempt_number=1,
                     provider=outcome.provider,
                     model=outcome.model,
-                    schema_version="strict-extraction-v1",
-                )
+                    status=ExtractionAttemptStatus.SUCCEEDED.value,
+                    duration_ms=0,
+                    input_hash=stable_hash(
+                        {
+                            "evidence_id": evidence.id,
+                            "metric_key": metric_definition.key,
+                        }
+                    ),
+                    input_tokens=outcome.input_tokens,
+                    output_tokens=outcome.output_tokens,
+                ),
+            )
+            self._persist_provider_attempts(
+                session,
+                run_id=run.id,
+                evidence_item_id=evidence.id,
+                extraction_id=stored_extraction.id,
+                attempts=attempts,
             )
             extracted += 1
             provider_models[outcome.model or "deterministic"] += 1
         return {
             "extraction_count": extracted,
             "rejected_untrusted_count": rejected_untrusted,
+            "failed_provider_attempt_count": failed_attempts,
             "provider_models": dict(sorted(provider_models.items())),
         }
+
+    @staticmethod
+    def _persist_provider_attempts(
+        session: Session,
+        *,
+        run_id: str,
+        evidence_item_id: str,
+        extraction_id: str | None,
+        attempts: tuple[ProviderAttempt, ...],
+    ) -> None:
+        for attempt in attempts:
+            session.add(
+                ExtractionAttemptModel(
+                    run_id=run_id,
+                    evidence_item_id=evidence_item_id,
+                    extraction_id=extraction_id,
+                    provider=attempt.provider,
+                    model=attempt.model,
+                    prompt_version=attempt.prompt_version,
+                    attempt_number=attempt.attempt_number,
+                    status=attempt.status,
+                    input_hash=attempt.input_hash,
+                    output_hash=attempt.output_hash,
+                    input_tokens=attempt.input_tokens,
+                    output_tokens=attempt.output_tokens,
+                    cost_usd=None,
+                    duration_ms=attempt.duration_ms,
+                    error=attempt.error,
+                    escalation_cause=attempt.escalation_cause,
+                )
+            )
 
     def _normalize(self, session: Session, run: WorkflowRunModel) -> dict[str, Any]:
         extractions = list(
@@ -512,6 +1028,7 @@ class PortfolioWorkflow:
             ).all()
         )
         evidence_items = self._run_evidence(session, run.id)
+        temporal_by_evidence = self._run_temporal_decisions(session, run.id)
         evidence_by_pair: dict[tuple[str, str], list[EvidenceItemModel]] = defaultdict(list)
         for item in evidence_items:
             if item.company_id and item.metric_definition_id:
@@ -526,6 +1043,113 @@ class PortfolioWorkflow:
             for observation in observations
         }
         all_pairs = set(observation_by_pair) | set(extraction_by_pair)
+        if run.reporting_cutoff is None:
+            raise ValueError("Verification requires a persisted reporting cutoff.")
+        programme_starts = self._programme_starts(session, run.dataset_id)
+        quality_records: list[QualityRecord] = []
+        for item in evidence_items:
+            quality_extraction = next(
+                (row for row in extractions if row.evidence_item_id == item.id),
+                None,
+            )
+            value = (
+                item.content_json.get("value")
+                if item.source_type == "portfolio_submission"
+                else quality_extraction.normalized_value_json
+                if quality_extraction is not None
+                else item.content_json.get("value")
+            )
+            missing_state = (
+                item.content_json.get("missing_state")
+                if item.source_type == "portfolio_submission"
+                else quality_extraction.missing_state
+                if quality_extraction is not None
+                else item.content_json.get("missing_state")
+            )
+            period_label = (
+                item.content_json.get("period_label")
+                if item.source_type == "portfolio_submission"
+                else quality_extraction.period_label
+                if quality_extraction is not None
+                else item.content_json.get("period_label")
+            )
+            unit = (
+                item.content_json.get("unit")
+                if item.source_type == "portfolio_submission"
+                else quality_extraction.unit
+                if quality_extraction is not None
+                else item.content_json.get("unit")
+            )
+            currency = (
+                item.content_json.get("currency")
+                if item.source_type == "portfolio_submission"
+                else quality_extraction.currency
+                if quality_extraction is not None
+                else item.content_json.get("currency")
+            )
+            quality_records.append(
+                QualityRecord(
+                    evidence_item_id=item.id,
+                    source_snapshot_id=item.source_snapshot_id,
+                    company_id=item.company_id,
+                    metric_definition_id=item.metric_definition_id,
+                    source_type=item.source_type,
+                    locator=item.locator,
+                    checksum=item.checksum,
+                    is_untrusted=item.is_untrusted,
+                    temporal_status=temporal_by_evidence[item.id],
+                    value=value,
+                    missing_state=(missing_state if isinstance(missing_state, str) else None),
+                    period_label=(period_label if isinstance(period_label, str) else None),
+                    unit=(unit if isinstance(unit, str) else None),
+                    currency=(currency if isinstance(currency, str) else None),
+                )
+            )
+        source_snapshots = list(
+            session.scalars(
+                select(SourceSnapshotModel)
+                .join(
+                    run_source_snapshots,
+                    run_source_snapshots.c.source_snapshot_id == SourceSnapshotModel.id,
+                )
+                .where(
+                    run_source_snapshots.c.run_id == run.id,
+                    SourceSnapshotModel.status.in_(("no_record", "source_unavailable", "failed")),
+                )
+            ).all()
+        )
+        quality_records.extend(
+            QualityRecord(
+                evidence_item_id=None,
+                source_snapshot_id=snapshot.id,
+                company_id=snapshot.company_id,
+                metric_definition_id=None,
+                source_type="public_source_snapshot",
+                locator=snapshot.locator,
+                checksum=snapshot.derivation_sha256 or snapshot.request_fingerprint,
+                is_untrusted=False,
+                temporal_status=TemporalEligibilityStatus.ELIGIBLE.value,
+                value={
+                    "status": snapshot.status,
+                    "error_code": snapshot.error_code,
+                },
+                missing_state=(
+                    MissingState.NOT_FOUND_PUBLICLY.value
+                    if snapshot.status == CollectionStatus.NO_RECORD.value
+                    else MissingState.SOURCE_UNAVAILABLE.value
+                    if snapshot.status == CollectionStatus.SOURCE_UNAVAILABLE.value
+                    else MissingState.INVALID.value
+                ),
+                source_terminal_status=snapshot.status,
+            )
+            for snapshot in source_snapshots
+        )
+        quality_evaluation = evaluate_quality(tuple(quality_records))
+        persist_quality_evaluation(
+            session,
+            run_id=run.id,
+            evaluation=quality_evaluation,
+        )
         status_counts: Counter[str] = Counter()
         for company_id, metric_id in sorted(all_pairs):
             observation = observation_by_pair.get((company_id, metric_id))
@@ -539,6 +1163,14 @@ class PortfolioWorkflow:
             assert company is not None
             period = session.get(ReportingPeriodModel, run.reporting_period_id)
             assert period is not None
+            expected_period_label = _semantic_period_label(
+                metric,
+                reporting_period_label=period.label,
+                reporting_cutoff=run.reporting_cutoff,
+                programme_start_date=programme_starts.get(company_id),
+            )
+            if expected_period_label is None:
+                continue
 
             candidate_value: Any = None
             candidate_currency: str | None = None
@@ -554,7 +1186,7 @@ class PortfolioWorkflow:
                     for extraction in candidates
                     if extraction.missing_state
                     in {MissingState.OBSERVED.value, MissingState.ZERO.value}
-                    and extraction.period_label == period.label
+                    and extraction.period_label == expected_period_label
                 ]
                 if eligible and metric.sourceability in {
                     Sourceability.PUBLICLY_SOURCEABLE.value,
@@ -592,11 +1224,12 @@ class PortfolioWorkflow:
                         value=value,
                         currency=currency if isinstance(currency, str) else None,
                         period_label=period_label if isinstance(period_label, str) else None,
-                        expected_period_label=period.label,
+                        expected_period_label=expected_period_label,
                         publisher=item.publisher,
                         locator=item.locator,
                         checksum=item.checksum,
                         is_untrusted=item.is_untrusted,
+                        temporal_status=temporal_by_evidence[item.id],
                     )
                 )
             outcome = verify_claim(
@@ -604,6 +1237,7 @@ class PortfolioWorkflow:
                 candidate_currency=candidate_currency,
                 sourceability=Sourceability(metric.sourceability),
                 evidence=tuple(verification_evidence),
+                require_currency=metric.data_type == MetricDataType.CURRENCY.value,
             )
             claim = ClaimModel(
                 run_id=run.id,
@@ -611,7 +1245,11 @@ class PortfolioWorkflow:
                 metric_definition_id=metric_id,
                 reporting_period_id=period.id,
                 text=_claim_text(
-                    company, metric, candidate_value, candidate_currency, period.label
+                    company,
+                    metric,
+                    candidate_value,
+                    candidate_currency,
+                    expected_period_label,
                 ),
                 normalized_value_json=candidate_value,
                 verification_status=outcome.status.value,
@@ -635,6 +1273,8 @@ class PortfolioWorkflow:
         return {
             "claim_count": sum(status_counts.values()),
             "verification_statuses": dict(sorted(status_counts.items())),
+            "quality_dispositions": quality_evaluation.disposition_counts,
+            "quality_violation_count": len(quality_evaluation.findings),
         }
 
     def _compose(self, session: Session, run: WorkflowRunModel) -> dict[str, Any]:
@@ -653,6 +1293,45 @@ class PortfolioWorkflow:
             ).unique()
         )
         observations = self._dataset_observations(session, run.dataset_id)
+        evidence_items = list(
+            session.scalars(
+                select(EvidenceItemModel)
+                .join(run_evidence, run_evidence.c.evidence_item_id == EvidenceItemModel.id)
+                .where(run_evidence.c.run_id == run.id)
+            ).all()
+        )
+        source_snapshots = list(
+            session.scalars(
+                select(SourceSnapshotModel)
+                .join(
+                    run_source_snapshots,
+                    run_source_snapshots.c.source_snapshot_id == SourceSnapshotModel.id,
+                )
+                .where(run_source_snapshots.c.run_id == run.id)
+            ).all()
+        )
+        source_versions = {
+            item.connector: item.connector_version
+            for item in sorted(
+                evidence_items, key=lambda row: (row.connector, row.connector_version)
+            )
+        }
+        source_versions.update(
+            {
+                snapshot.source_key: snapshot.source_version
+                for snapshot in sorted(
+                    source_snapshots,
+                    key=lambda row: (row.source_key, row.source_version),
+                )
+            }
+        )
+        context_summaries = derive_context_statistics(
+            session,
+            run=run,
+            observations=tuple(observations),
+            source_versions=source_versions,
+        )
+        changes = compare_with_prior_periods(session, observations=tuple(observations))
         report = ReportModel(
             run_id=run.id,
             dataset_id=run.dataset_id,
@@ -751,6 +1430,39 @@ class PortfolioWorkflow:
                 is_current=True,
             )
         )
+        change_rows = [
+            "| Company | Metric | Current period | Prior period | Status | Current | Prior "
+            "| Change | % change |",
+            "|---|---|---|---|---|---:|---:|---:|---:|",
+        ]
+        for change in changes:
+            change_rows.append(
+                "| {company} | {metric} | {current_period} | {prior_period} | {status} | "
+                "{current} | {prior} | {absolute} | {percentage} |".format(
+                    company=change.company_name,
+                    metric=change.metric_label,
+                    current_period=change.current_period,
+                    prior_period=change.prior_period or "—",
+                    status=change.status,
+                    current=change.current_value or "—",
+                    prior=change.prior_value or "—",
+                    absolute=change.absolute_change or "—",
+                    percentage=(
+                        f"{change.percentage_change}%" if change.percentage_change else "—"
+                    ),
+                )
+            )
+        sections.append(
+            ReportSectionModel(
+                report_id=report.id,
+                section_key="period-change",
+                heading="Period change and comparability",
+                order_index=905,
+                body_markdown="\n".join(change_rows),
+                version=1,
+                is_current=True,
+            )
+        )
         data_quality_body = "\n".join(
             f"- {state}: {count}" for state, count in sorted(missing_counts.items())
         )
@@ -761,6 +1473,158 @@ class PortfolioWorkflow:
                 heading="Data quality and missingness",
                 order_index=910,
                 body_markdown=data_quality_body or "No observations were imported.",
+                version=1,
+                is_current=True,
+            )
+        )
+        source_counts = Counter(item.connector for item in evidence_items)
+        snapshot_counts = Counter(
+            (snapshot.source_key, snapshot.status) for snapshot in source_snapshots
+        )
+        source_rows = [
+            "| Connector | Version | Evidence items | Snapshots | Snapshot status |",
+            "|---|---|---:|---:|---|",
+        ]
+        for connector in sorted(set(source_counts) | {key for key, _ in snapshot_counts}):
+            statuses = [
+                f"{status}: {count}"
+                for (key, status), count in sorted(snapshot_counts.items())
+                if key == connector
+            ]
+            source_rows.append(
+                f"| {connector} | {source_versions[connector]} | "
+                f"{source_counts[connector]} | "
+                f"{sum(count for (key, _), count in snapshot_counts.items() if key == connector)} "
+                f"| {', '.join(statuses) or 'not applicable'} |"
+            )
+        sections.append(
+            ReportSectionModel(
+                report_id=report.id,
+                section_key="source-coverage",
+                heading="Source coverage",
+                order_index=912,
+                body_markdown="\n".join(source_rows),
+                version=1,
+                is_current=True,
+            )
+        )
+        quality_findings = list(
+            session.scalars(
+                select(QualityViolationModel)
+                .where(QualityViolationModel.run_id == run.id)
+                .order_by(QualityViolationModel.fingerprint)
+            ).all()
+        )
+        quality_counts = Counter(finding.disposition for finding in quality_findings)
+        quality_rows = [
+            "| Disposition | Findings |",
+            "|---|---:|",
+        ]
+        quality_rows.extend(
+            f"| {disposition} | {count} |" for disposition, count in sorted(quality_counts.items())
+        )
+        if len(quality_rows) == 2:
+            quality_rows.append("| pass | 0 explicit violations |")
+        else:
+            quality_rows.extend(
+                [
+                    "",
+                    "| Rule | Disposition | Finding |",
+                    "|---|---|---|",
+                    *(
+                        "| {rule} | {disposition} | {message} |".format(
+                            rule=finding.rule_key,
+                            disposition=finding.disposition,
+                            message=finding.message.replace("|", "\\|"),
+                        )
+                        for finding in quality_findings
+                    ),
+                ]
+            )
+        sections.append(
+            ReportSectionModel(
+                report_id=report.id,
+                section_key="quality-contract",
+                heading="Executable quality-contract outcomes",
+                order_index=914,
+                body_markdown="\n".join(quality_rows),
+                version=1,
+                is_current=True,
+            )
+        )
+        events = list(events_for_run(session, run_id=run.id))
+        event_rows = [
+            "| Date | Source | Event | Stage | Amount | Evidence locator |",
+            "|---|---|---|---|---:|---|",
+        ]
+        event_rows.extend(
+            "| {date} | {source} | {title} | {stage} | {amount} | `{locator}` |".format(
+                date=event.event_date.isoformat() if event.event_date else "—",
+                source=event.source_key,
+                title=event.title,
+                stage=event.lifecycle_stage or "—",
+                amount=(
+                    f"{event.amount} {event.currency or ''}".strip()
+                    if event.amount is not None
+                    else "—"
+                ),
+                locator=event.source_locator,
+            )
+            for event in events
+        )
+        if len(event_rows) == 2:
+            event_rows.append("| — | — | No eligible events were recorded. | — | — | — |")
+        sections.append(
+            ReportSectionModel(
+                report_id=report.id,
+                section_key="event-timeline",
+                heading="Event timeline",
+                order_index=916,
+                body_markdown="\n".join(event_rows),
+                version=1,
+                is_current=True,
+            )
+        )
+        context_rows = [
+            "| Metric | Exposure window | Status | N | Minimum N | Min | Q1 | Median | Q3 | "
+            "Max | Unit / currency |",
+            "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---|",
+        ]
+        context_rows.extend(
+            "| {metric} | {exposure} | {status} | {sample} | {minimum_sample} | {minimum} | {q1} | "
+            "{median} | {q3} | {maximum} | {measure} |".format(
+                metric=item.metric_label,
+                exposure=item.exposure_window,
+                status=item.status,
+                sample=item.sample_size,
+                minimum_sample=item.minimum_sample_size,
+                minimum=item.minimum or "—",
+                q1=item.first_quartile or "—",
+                median=item.median or "—",
+                q3=item.third_quartile or "—",
+                maximum=item.maximum or "—",
+                measure=item.currency or item.unit or "unitless",
+            )
+            for item in context_summaries
+        )
+        if len(context_rows) == 2:
+            context_rows.append("| — | — | no_numeric_cohort | 0 | 3 | — | — | — | — | — | — |")
+        context_rows.extend(
+            [
+                "",
+                f"Within-portfolio cutoff: **{run.reporting_cutoff}**. Statistics describe only "
+                "companies in this imported portfolio; they are not an external UK benchmark. "
+                "Statistics are suppressed below N=3, and missing states are excluded rather "
+                "than imputed. No ranking or recommendation is produced.",
+            ]
+        )
+        sections.append(
+            ReportSectionModel(
+                report_id=report.id,
+                section_key="portfolio-context",
+                heading="Within-portfolio context",
+                order_index=918,
+                body_markdown="\n".join(context_rows),
                 version=1,
                 is_current=True,
             )

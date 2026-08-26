@@ -15,6 +15,22 @@ class ExtractionRequest:
 
 
 @dataclass(frozen=True, slots=True)
+class ProviderAttempt:
+    attempt_number: int
+    provider: str
+    model: str | None
+    status: str
+    duration_ms: int
+    input_hash: str
+    output_hash: str | None = None
+    prompt_version: str | None = None
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    error: str | None = None
+    escalation_cause: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class ProviderOutcome:
     extraction: StrictExtraction
     provider: str
@@ -22,6 +38,13 @@ class ProviderOutcome:
     attempts: int
     input_tokens: int | None = None
     output_tokens: int | None = None
+    attempt_records: tuple[ProviderAttempt, ...] = ()
+
+
+class ExtractionProviderError(RuntimeError):
+    def __init__(self, message: str, attempts: tuple[ProviderAttempt, ...]) -> None:
+        super().__init__(message)
+        self.attempt_records = attempts
 
 
 class ExtractionProvider(Protocol):

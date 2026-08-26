@@ -54,3 +54,19 @@ def test_non_integral_count_is_invalid() -> None:
     result = normalize_value("2.5", metric)
     assert result.missing_state is MissingState.INVALID
     assert result.issue_code == "non_integral_count"
+
+
+@pytest.mark.parametrize(
+    ("metric_key", "raw"),
+    (
+        ("employees_total", float("nan")),
+        ("grant_funding", "GBP Infinity"),
+        ("gross_margin", "-Infinity%"),
+        ("ai_hours_saved", "NaN"),
+    ),
+)
+def test_non_finite_numbers_are_invalid(metric_key: str, raw: object) -> None:
+    result = normalize_value(raw, MetricCatalogue().get(metric_key))
+    assert result.missing_state is MissingState.INVALID
+    assert result.value is None
+    assert result.issue_code == "non_finite_number"

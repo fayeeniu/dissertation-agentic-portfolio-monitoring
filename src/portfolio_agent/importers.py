@@ -5,25 +5,37 @@ import io
 import json
 import os
 import re
-import unicodedata
+from collections import OrderedDict
 from collections.abc import Iterable
+from contextlib import suppress
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
 from openpyxl import load_workbook
+from openpyxl.cell.cell import Cell
 from openpyxl.utils import get_column_letter
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
 
 from .catalogue import MetricCatalogue, seed_catalogue
-from .enums import DataClassification, ResolutionStatus
+from .cbit_contract import (
+    CBIT_CONTRACT_VERSION,
+    CBIT_PROFILE_KEY,
+    CBIT_ROWS_BY_LABEL,
+    CbitRowRole,
+    canonicalize_label,
+    detect_cbit_profile,
+)
+from .enums import DataClassification, IdentifierScheme
+from .identity import parse_companies_house_identity, resolve_company_identity
 from .ids import dataset_id_for, sha256_bytes
 from .models import (
-    CompanyModel,
+    CompanyProgrammeMembershipModel,
     MetricDefinitionModel,
     ObservationModel,
+    ObservationNarrativeModel,
     RawSubmissionModel,
     ReportingPeriodModel,
 )
@@ -40,18 +52,70 @@ class ParsedMetric:
     label: str
     value: Any
     location: str | None
+    row_number: int | None = None
+    role: CbitRowRole | None = None
+    metric_key: str | None = None
+    narrative_for: str | None = None
+    is_formula: bool = False
 
 
 @dataclass(frozen=True, slots=True)
 class ParsedCompany:
     name: str
     external_id: str | None
+    identifier_scheme: IdentifierScheme
     metrics: tuple[ParsedMetric, ...]
+    programme_start_value: Any = None
+    programme_start_location: str | None = None
 
 
-def normalize_company_name(name: str) -> str:
-    normalized = unicodedata.normalize("NFKC", name).casefold().strip()
-    return re.sub(r"[^a-z0-9]+", " ", normalized).strip()
+@dataclass(frozen=True, slots=True)
+class ParsedSubmission:
+    companies: tuple[ParsedCompany, ...]
+    profile_key: str | None = None
+    profile_version: str | None = None
+
+
+@dataclass(slots=True)
+class _IssueAggregate:
+    severity: str
+    code: str
+    message: str
+    location: str | None
+    occurrences: int = 1
+
+
+class _IssueAccumulator:
+    def __init__(self) -> None:
+        self._items: OrderedDict[tuple[str, str], _IssueAggregate] = OrderedDict()
+
+    def add(
+        self,
+        *,
+        severity: str,
+        code: str,
+        message: str,
+        location: str | None = None,
+        aggregate_key: str | None = None,
+    ) -> None:
+        key = (code, aggregate_key or location or message)
+        existing = self._items.get(key)
+        if existing is not None:
+            existing.occurrences += 1
+            return
+        self._items[key] = _IssueAggregate(severity, code, message, location)
+
+    def as_tuple(self) -> tuple[ImportIssue, ...]:
+        return tuple(
+            ImportIssue(
+                severity=item.severity,
+                code=item.code,
+                message=item.message,
+                location=item.location,
+                occurrences=item.occurrences,
+            )
+            for item in self._items.values()
+        )
 
 
 def _safe_filename(filename: str) -> str:
@@ -63,12 +127,52 @@ def _safe_filename(filename: str) -> str:
 def _date_or_none(value: Any) -> date | None:
     if value in {None, ""}:
         return None
+    if isinstance(value, date):
+        return value
     if not isinstance(value, str):
         raise ImportValidationError("Reporting-period dates must use ISO 8601 strings.")
     try:
         return date.fromisoformat(value)
     except ValueError as exc:
         raise ImportValidationError(f"Invalid reporting-period date: {value}") from exc
+
+
+def _has_value(value: Any) -> bool:
+    return value is not None and (not isinstance(value, str) or bool(value.strip()))
+
+
+_PROGRAMME_QUARTER_PATTERNS = (
+    re.compile(r"^(?P<year>\d{4})\s*[-/]?\s*[Qq](?P<quarter>[1-4])$"),
+    re.compile(r"^[Qq](?P<quarter>[1-4])\s*[-/]?\s*(?P<year>\d{4})$"),
+)
+
+
+def _programme_start(value: Any) -> tuple[date | None, str | None]:
+    """Parse an explicit programme period to its deterministic first day.
+
+    Quarter-only values identify an interval, so the persisted start is the first
+    day of that quarter. Unrecognised non-blank values are held rather than guessed.
+    """
+
+    if value is None or (isinstance(value, str) and not value.strip()):
+        return None, None
+    if isinstance(value, datetime):
+        return value.date(), None
+    if isinstance(value, date):
+        return value, None
+    if not isinstance(value, str):
+        return None, "invalid_programme_start"
+    text = value.strip()
+    try:
+        return date.fromisoformat(text), None
+    except ValueError:
+        pass
+    for pattern in _PROGRAMME_QUARTER_PATTERNS:
+        match = pattern.fullmatch(text)
+        if match is not None:
+            quarter = int(match.group("quarter"))
+            return date(int(match.group("year")), (quarter - 1) * 3 + 1, 1), None
+    return None, "invalid_programme_start"
 
 
 class PortfolioImporter:
@@ -87,6 +191,7 @@ class PortfolioImporter:
         path: Path,
         *,
         period_label: str | None = None,
+        reporting_cutoff: date | None = None,
         classification: DataClassification = DataClassification.RESTRICTED,
     ) -> ImportResult:
         payload = path.read_bytes()
@@ -94,6 +199,7 @@ class PortfolioImporter:
             payload,
             filename=path.name,
             period_label=period_label,
+            reporting_cutoff=reporting_cutoff,
             classification=classification,
         )
 
@@ -103,6 +209,7 @@ class PortfolioImporter:
         *,
         filename: str,
         period_label: str | None = None,
+        reporting_cutoff: date | None = None,
         classification: DataClassification = DataClassification.RESTRICTED,
     ) -> ImportResult:
         suffix = Path(filename).suffix.lower().lstrip(".")
@@ -112,10 +219,15 @@ class PortfolioImporter:
         parsed_period_label = period_label
         start_date: date | None = None
         end_date: date | None = None
+        embedded_classification: str | None = None
         if suffix == "json":
-            parsed, parsed_period_label, start_date, end_date = self._parse_json(
-                payload, period_label
-            )
+            (
+                parsed,
+                parsed_period_label,
+                start_date,
+                end_date,
+                embedded_classification,
+            ) = self._parse_json(payload, period_label)
         else:
             if not parsed_period_label or not parsed_period_label.strip():
                 raise ImportValidationError(
@@ -123,98 +235,254 @@ class PortfolioImporter:
                 )
             parsed = self._parse_xlsx(payload) if suffix == "xlsx" else self._parse_csv(payload)
 
+        if embedded_classification and embedded_classification != classification.value:
+            raise ImportValidationError(
+                "Requested classification conflicts with the submission classification."
+            )
         assert parsed_period_label is not None
         parsed_period_label = parsed_period_label.strip()
+        effective_cutoff = reporting_cutoff or end_date
+        if parsed.profile_key == CBIT_PROFILE_KEY and effective_cutoff is None:
+            raise ImportValidationError(
+                "The CBIT workbook profile requires an explicit reporting cutoff date."
+            )
+
         content_hash = sha256_bytes(payload)
         dataset_id = dataset_id_for(payload, parsed_period_label)
-        issues: list[ImportIssue] = []
+        issue_accumulator = _IssueAccumulator()
+        if effective_cutoff is None:
+            issue_accumulator.add(
+                severity="warning",
+                code="missing_reporting_cutoff",
+                message=(
+                    "No reporting cutoff was supplied; public evidence collection will fail closed."
+                ),
+                aggregate_key="submission",
+            )
 
-        with self._session_factory.begin() as session:
-            seed_catalogue(session, self._catalogue)
-            session.flush()
-            period = self._get_or_create_period(
-                session, parsed_period_label, start_date=start_date, end_date=end_date
-            )
-            existing = session.scalar(
-                select(RawSubmissionModel).where(
-                    RawSubmissionModel.sha256 == content_hash,
-                    RawSubmissionModel.reporting_period_id == period.id,
+        created_snapshot: Path | None = None
+        try:
+            with self._session_factory.begin() as session:
+                seed_catalogue(session, self._catalogue)
+                session.flush()
+                period = self._get_or_create_period(
+                    session, parsed_period_label, start_date=start_date, end_date=end_date
                 )
-            )
-            if existing is not None:
-                company_count, observation_count = self._existing_counts(session, existing.id)
-                return ImportResult(
-                    dataset_id=existing.dataset_id,
-                    raw_submission_id=existing.id,
+                existing = session.scalar(
+                    select(RawSubmissionModel).where(
+                        RawSubmissionModel.sha256 == content_hash,
+                        RawSubmissionModel.reporting_period_id == period.id,
+                    )
+                )
+                if existing is not None:
+                    self._assert_reimport_compatible(
+                        existing,
+                        classification=classification,
+                        reporting_cutoff=effective_cutoff,
+                        profile_key=parsed.profile_key,
+                    )
+                    (
+                        company_count,
+                        observation_count,
+                        narrative_count,
+                        programme_start_count,
+                    ) = self._existing_counts(session, existing.id)
+                    summary = existing.import_summary_json
+                    return ImportResult(
+                        dataset_id=existing.dataset_id,
+                        raw_submission_id=existing.id,
+                        reporting_period_id=period.id,
+                        company_count=company_count,
+                        observation_count=observation_count,
+                        reused_existing=True,
+                        profile_key=existing.profile_key,
+                        profile_version=existing.profile_version,
+                        reporting_cutoff=existing.reporting_cutoff,
+                        narrative_count=narrative_count,
+                        held_field_count=int(summary.get("held_field_count", 0)),
+                        formula_cell_count=int(summary.get("formula_cell_count", 0)),
+                        identity_hold_count=int(summary.get("identity_hold_count", 0)),
+                        programme_start_count=programme_start_count,
+                    )
+
+                snapshot_path, snapshot_was_created = self._write_snapshot(
+                    dataset_id, filename, payload, content_hash
+                )
+                if snapshot_was_created:
+                    created_snapshot = snapshot_path
+                raw = RawSubmissionModel(
+                    dataset_id=dataset_id,
                     reporting_period_id=period.id,
-                    company_count=company_count,
-                    observation_count=observation_count,
-                    reused_existing=True,
+                    source_format=suffix,
+                    original_filename=_safe_filename(filename),
+                    sha256=content_hash,
+                    snapshot_path=str(snapshot_path),
+                    classification=classification.value,
+                    reporting_cutoff=effective_cutoff,
+                    profile_key=parsed.profile_key,
+                    profile_version=parsed.profile_version,
+                    catalogue_version=self._catalogue.version,
+                    catalogue_sha256=self._catalogue.sha256,
+                    import_summary_json={},
                 )
+                session.add(raw)
+                session.flush()
 
-            snapshot_path = self._write_snapshot(dataset_id, filename, payload, content_hash)
-            raw = RawSubmissionModel(
-                dataset_id=dataset_id,
-                reporting_period_id=period.id,
-                source_format=suffix,
-                original_filename=_safe_filename(filename),
-                sha256=content_hash,
-                snapshot_path=str(snapshot_path),
-                classification=classification.value,
-            )
-            session.add(raw)
-            session.flush()
+                definitions = {
+                    row.key: row for row in session.scalars(select(MetricDefinitionModel)).all()
+                }
+                seen_observations: set[tuple[str, str]] = set()
+                imported_company_ids: set[str] = set()
+                observation_count = 0
+                narrative_count = 0
+                held_field_count = 0
+                formula_cell_count = 0
+                identity_hold_count = 0
+                programme_start_count = 0
 
-            definitions = {
-                row.key: row for row in session.scalars(select(MetricDefinitionModel)).all()
-            }
-            seen_observations: set[tuple[str, str]] = set()
-            imported_company_ids: set[str] = set()
-            observation_count = 0
-            for parsed_company in parsed:
-                company, resolution_issue = self._resolve_company(
-                    session,
-                    name=parsed_company.name,
-                    external_id=parsed_company.external_id,
-                    classification=classification,
-                )
-                if resolution_issue is not None:
-                    issues.append(resolution_issue)
-                if company is None:
-                    continue
-                imported_company_ids.add(company.id)
-                for parsed_metric in parsed_company.metrics:
-                    metric = self._catalogue.resolve(parsed_metric.label)
-                    if metric is None:
-                        if parsed_metric.value not in {None, ""}:
-                            issues.append(
-                                ImportIssue(
+                for parsed_company in parsed.companies:
+                    resolution = resolve_company_identity(
+                        session,
+                        raw_submission_id=raw.id,
+                        name=parsed_company.name,
+                        external_id=parsed_company.external_id,
+                        identifier_scheme=parsed_company.identifier_scheme,
+                        classification=classification,
+                    )
+                    if resolution.issue_code is not None:
+                        issue_accumulator.add(
+                            severity="warning" if resolution.company is not None else "error",
+                            code=resolution.issue_code,
+                            message=resolution.issue_message or resolution.issue_code,
+                            aggregate_key=resolution.issue_code,
+                        )
+                        identity_hold_count += 1
+                    company = resolution.company
+                    if company is None:
+                        continue
+                    imported_company_ids.add(company.id)
+                    programme_start, programme_start_issue = _programme_start(
+                        parsed_company.programme_start_value
+                    )
+                    if programme_start_issue is not None:
+                        issue_accumulator.add(
+                            severity="warning",
+                            code=programme_start_issue,
+                            message=(
+                                "Programme start was not an ISO date or an unambiguous quarter "
+                                "label; cumulative metrics will abstain from public support."
+                            ),
+                            location=parsed_company.programme_start_location,
+                            aggregate_key=parsed_company.programme_start_location
+                            or parsed_company.name,
+                        )
+                    elif programme_start is not None:
+                        if effective_cutoff is not None and programme_start > effective_cutoff:
+                            issue_accumulator.add(
+                                severity="warning",
+                                code="programme_start_after_cutoff",
+                                message=(
+                                    "Programme start follows the reporting cutoff; cumulative "
+                                    "metrics will abstain from public support."
+                                ),
+                                location=parsed_company.programme_start_location,
+                                aggregate_key=parsed_company.programme_start_location
+                                or parsed_company.name,
+                            )
+                        else:
+                            session.add(
+                                CompanyProgrammeMembershipModel(
+                                    raw_submission_id=raw.id,
+                                    company_id=company.id,
+                                    programme_start_date=programme_start,
+                                    submitted_period_label=str(
+                                        parsed_company.programme_start_value
+                                    ).strip(),
+                                    source_cell=parsed_company.programme_start_location,
+                                )
+                            )
+                            programme_start_count += 1
+                    observations_by_key: dict[str, ObservationModel] = {}
+                    narratives: list[ParsedMetric] = []
+
+                    for parsed_metric in parsed_company.metrics:
+                        if parsed_metric.role is CbitRowRole.NARRATIVE:
+                            if _has_value(parsed_metric.value):
+                                narratives.append(parsed_metric)
+                            continue
+                        if parsed_metric.is_formula or parsed_metric.role is CbitRowRole.DERIVED:
+                            if _has_value(parsed_metric.value):
+                                formula_cell_count += 1
+                                issue_accumulator.add(
+                                    severity="info",
+                                    code="formula_held",
+                                    message=(
+                                        "Derived/formula row held outside canonical facts: "
+                                        f"{parsed_metric.label}"
+                                    ),
+                                    location=(
+                                        f"row {parsed_metric.row_number}"
+                                        if parsed_metric.row_number
+                                        else parsed_metric.location
+                                    ),
+                                    aggregate_key=parsed_metric.label,
+                                )
+                            continue
+                        if parsed_metric.role is CbitRowRole.HELD:
+                            if _has_value(parsed_metric.value):
+                                held_field_count += 1
+                                issue_accumulator.add(
+                                    severity="warning",
+                                    code="mixed_field_held",
+                                    message=(
+                                        "Ambiguous mixed-shape field requires split collection: "
+                                        f"{parsed_metric.label}"
+                                    ),
+                                    location=(
+                                        f"row {parsed_metric.row_number}"
+                                        if parsed_metric.row_number
+                                        else parsed_metric.location
+                                    ),
+                                    aggregate_key=parsed_metric.label,
+                                )
+                            continue
+
+                        metric = (
+                            self._catalogue.get(parsed_metric.metric_key)
+                            if parsed_metric.metric_key
+                            else self._catalogue.resolve(parsed_metric.label)
+                        )
+                        if metric is None:
+                            if _has_value(parsed_metric.value):
+                                issue_accumulator.add(
                                     severity="warning",
                                     code="unknown_metric",
                                     message=f"Unmapped metric label: {parsed_metric.label}",
-                                    location=parsed_metric.location,
+                                    location=(
+                                        f"row {parsed_metric.row_number}"
+                                        if parsed_metric.row_number
+                                        else parsed_metric.location
+                                    ),
+                                    aggregate_key=parsed_metric.label,
                                 )
-                            )
-                        continue
-                    key = (company.id, metric.key)
-                    if key in seen_observations:
-                        issues.append(
-                            ImportIssue(
+                            continue
+                        key = (company.id, metric.key)
+                        if key in seen_observations:
+                            issue_accumulator.add(
                                 severity="error",
                                 code="duplicate_observation",
                                 message=(
-                                    f"Duplicate value for {metric.key}; "
-                                    "later value was not imported."
+                                    f"Duplicate value for {metric.key}; later value was not "
+                                    "imported."
                                 ),
                                 location=parsed_metric.location,
+                                aggregate_key=f"{company.id}:{metric.key}",
                             )
-                        )
-                        continue
-                    seen_observations.add(key)
-                    normalized = normalize_value(parsed_metric.value, metric)
-                    definition = definitions[metric.key]
-                    session.add(
-                        ObservationModel(
+                            continue
+                        seen_observations.add(key)
+                        normalized = normalize_value(parsed_metric.value, metric)
+                        definition = definitions[metric.key]
+                        observation = ObservationModel(
                             company_id=company.id,
                             metric_definition_id=definition.id,
                             reporting_period_id=period.id,
@@ -228,21 +496,83 @@ class PortfolioImporter:
                             normalization_issue_code=normalized.issue_code,
                             normalization_issue_message=normalized.issue_message,
                         )
-                    )
-                    observation_count += 1
+                        session.add(observation)
+                        session.flush()
+                        observations_by_key[metric.key] = observation
+                        observation_count += 1
 
-            return ImportResult(
-                dataset_id=dataset_id,
-                raw_submission_id=raw.id,
-                reporting_period_id=period.id,
-                company_count=len(imported_company_ids),
-                observation_count=observation_count,
-                issues=tuple(issues),
+                    for narrative in narratives:
+                        assert narrative.narrative_for is not None
+                        parent = observations_by_key.get(narrative.narrative_for)
+                        session.add(
+                            ObservationNarrativeModel(
+                                observation_id=parent.id if parent else None,
+                                raw_submission_id=raw.id,
+                                company_id=company.id,
+                                parent_metric_key=narrative.narrative_for,
+                                body=str(narrative.value),
+                                source_label=narrative.label,
+                                source_cell=narrative.location or "unknown",
+                            )
+                        )
+                        narrative_count += 1
+
+                issues = issue_accumulator.as_tuple()
+                raw.import_summary_json = {
+                    "company_count": len(imported_company_ids),
+                    "observation_count": observation_count,
+                    "narrative_count": narrative_count,
+                    "held_field_count": held_field_count,
+                    "formula_cell_count": formula_cell_count,
+                    "identity_hold_count": identity_hold_count,
+                    "programme_start_count": programme_start_count,
+                    "issue_codes": sorted({issue.code for issue in issues}),
+                }
+                return ImportResult(
+                    dataset_id=dataset_id,
+                    raw_submission_id=raw.id,
+                    reporting_period_id=period.id,
+                    company_count=len(imported_company_ids),
+                    observation_count=observation_count,
+                    issues=issues,
+                    profile_key=parsed.profile_key,
+                    profile_version=parsed.profile_version,
+                    reporting_cutoff=effective_cutoff,
+                    narrative_count=narrative_count,
+                    held_field_count=held_field_count,
+                    formula_cell_count=formula_cell_count,
+                    identity_hold_count=identity_hold_count,
+                    programme_start_count=programme_start_count,
+                )
+        except Exception:
+            if created_snapshot is not None:
+                self._remove_failed_snapshot(created_snapshot, content_hash)
+            raise
+
+    @staticmethod
+    def _assert_reimport_compatible(
+        existing: RawSubmissionModel,
+        *,
+        classification: DataClassification,
+        reporting_cutoff: date | None,
+        profile_key: str | None,
+    ) -> None:
+        if existing.classification != classification.value:
+            raise ImportValidationError(
+                "Immutable submission already exists under a different classification."
+            )
+        if reporting_cutoff is not None and existing.reporting_cutoff != reporting_cutoff:
+            raise ImportValidationError(
+                "Immutable submission already exists under a different reporting cutoff."
+            )
+        if existing.profile_key != profile_key:
+            raise ImportValidationError(
+                "Immutable submission profile differs from the stored import profile."
             )
 
     def _write_snapshot(
         self, dataset_id: str, filename: str, payload: bytes, expected_hash: str
-    ) -> Path:
+    ) -> tuple[Path, bool]:
         target_dir = self._raw_data_dir / dataset_id
         target_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
         target = target_dir / _safe_filename(filename)
@@ -251,13 +581,20 @@ class PortfolioImporter:
                 raise ImportValidationError(
                     "Immutable snapshot path already contains different bytes."
                 )
-            return target
+            return target, False
         with target.open("xb") as handle:
             handle.write(payload)
             handle.flush()
             os.fsync(handle.fileno())
         target.chmod(0o600)
-        return target
+        return target, True
+
+    @staticmethod
+    def _remove_failed_snapshot(path: Path, expected_hash: str) -> None:
+        if path.is_file() and sha256_bytes(path.read_bytes()) == expected_hash:
+            path.unlink()
+            with suppress(OSError):
+                path.parent.rmdir()
 
     @staticmethod
     def _get_or_create_period(
@@ -284,65 +621,7 @@ class PortfolioImporter:
         return period
 
     @staticmethod
-    def _resolve_company(
-        session: Session,
-        *,
-        name: str,
-        external_id: str | None,
-        classification: DataClassification,
-    ) -> tuple[CompanyModel | None, ImportIssue | None]:
-        clean_name = name.strip()
-        normalized_name = normalize_company_name(clean_name)
-        if not normalized_name:
-            return None, ImportIssue(
-                severity="error",
-                code="missing_company_name",
-                message="Company row has no usable identity and was skipped.",
-            )
-        if external_id:
-            by_external = session.scalar(
-                select(CompanyModel).where(CompanyModel.external_id == external_id.strip())
-            )
-            if by_external is not None:
-                if by_external.normalized_name != normalized_name:
-                    by_external.resolution_status = ResolutionStatus.AMBIGUOUS.value
-                    return None, ImportIssue(
-                        severity="error",
-                        code="identity_conflict",
-                        message=(
-                            "External company identifier conflicts with the stored canonical name."
-                        ),
-                        location=external_id,
-                    )
-                return by_external, None
-        by_name = session.scalar(
-            select(CompanyModel).where(CompanyModel.normalized_name == normalized_name)
-        )
-        if by_name is not None:
-            if external_id and by_name.external_id and by_name.external_id != external_id.strip():
-                by_name.resolution_status = ResolutionStatus.AMBIGUOUS.value
-                return None, ImportIssue(
-                    severity="error",
-                    code="ambiguous_company_identity",
-                    message="Exact company name maps to a different external identifier.",
-                    location=clean_name,
-                )
-            if external_id and not by_name.external_id:
-                by_name.external_id = external_id.strip()
-            return by_name, None
-        company = CompanyModel(
-            canonical_name=clean_name,
-            normalized_name=normalized_name,
-            external_id=external_id.strip() if external_id else None,
-            classification=classification.value,
-            resolution_status=ResolutionStatus.RESOLVED.value,
-        )
-        session.add(company)
-        session.flush()
-        return company, None
-
-    @staticmethod
-    def _existing_counts(session: Session, raw_submission_id: str) -> tuple[int, int]:
+    def _existing_counts(session: Session, raw_submission_id: str) -> tuple[int, int, int, int]:
         company_count = session.scalar(
             select(func.count(func.distinct(ObservationModel.company_id))).where(
                 ObservationModel.raw_submission_id == raw_submission_id
@@ -353,12 +632,27 @@ class PortfolioImporter:
                 ObservationModel.raw_submission_id == raw_submission_id
             )
         )
-        return int(company_count or 0), int(observation_count or 0)
+        narrative_count = session.scalar(
+            select(func.count(ObservationNarrativeModel.id)).where(
+                ObservationNarrativeModel.raw_submission_id == raw_submission_id
+            )
+        )
+        programme_start_count = session.scalar(
+            select(func.count(CompanyProgrammeMembershipModel.id)).where(
+                CompanyProgrammeMembershipModel.raw_submission_id == raw_submission_id
+            )
+        )
+        return (
+            int(company_count or 0),
+            int(observation_count or 0),
+            int(narrative_count or 0),
+            int(programme_start_count or 0),
+        )
 
     @staticmethod
     def _parse_json(
         payload: bytes, override_period: str | None
-    ) -> tuple[tuple[ParsedCompany, ...], str, date | None, date | None]:
+    ) -> tuple[ParsedSubmission, str, date | None, date | None, str | None]:
         try:
             document = json.loads(payload)
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -374,6 +668,9 @@ class PortfolioImporter:
             raise ImportValidationError("JSON submission requires reporting_period.label.")
         if override_period and embedded_label and override_period != embedded_label:
             raise ImportValidationError("Requested period conflicts with embedded JSON period.")
+        embedded_classification = document.get("classification")
+        if embedded_classification is not None and not isinstance(embedded_classification, str):
+            raise ImportValidationError("JSON classification must be a string when present.")
         companies = document.get("companies")
         if not isinstance(companies, list) or not companies:
             raise ImportValidationError("JSON submission requires a non-empty companies array.")
@@ -387,46 +684,171 @@ class PortfolioImporter:
             external_id = item.get("external_id")
             if external_id is not None and not isinstance(external_id, str):
                 raise ImportValidationError(f"companies[{index}].external_id must be a string.")
+            programme_start_value = item.get("programme_start_date")
+            if programme_start_value is not None and not isinstance(programme_start_value, str):
+                raise ImportValidationError(
+                    f"companies[{index}].programme_start_date must be a string."
+                )
             parsed.append(
                 ParsedCompany(
                     name=item["name"],
                     external_id=external_id,
+                    identifier_scheme=IdentifierScheme.LEGACY,
                     metrics=tuple(
                         ParsedMetric(
                             label=str(key), value=value, location=f"companies[{index}].{key}"
                         )
                         for key, value in metrics.items()
                     ),
+                    programme_start_value=programme_start_value,
+                    programme_start_location=f"companies[{index}].programme_start_date",
                 )
             )
         return (
-            tuple(parsed),
+            ParsedSubmission(tuple(parsed)),
             label,
             _date_or_none(period.get("start_date")),
             _date_or_none(period.get("end_date")),
+            embedded_classification,
         )
 
     @staticmethod
-    def _parse_xlsx(payload: bytes) -> tuple[ParsedCompany, ...]:
+    def _parse_xlsx(payload: bytes) -> ParsedSubmission:
         try:
             workbook = load_workbook(io.BytesIO(payload), read_only=True, data_only=False)
         except Exception as exc:
             raise ImportValidationError("Workbook could not be opened as XLSX.") from exc
         try:
             worksheet = workbook.active
-            rows = list(worksheet.iter_rows(values_only=True))
-            return PortfolioImporter._parse_matrix_rows(rows, location_style="xlsx")
+            rows = [list(row) for row in worksheet.iter_rows()]
+            labels_by_row = {
+                index: str(row[0].value).strip()
+                for index, row in enumerate(rows, start=1)
+                if row and row[0].value is not None and str(row[0].value).strip()
+            }
+            if detect_cbit_profile(labels_by_row):
+                return PortfolioImporter._parse_cbit_rows(rows)
+            return ParsedSubmission(
+                PortfolioImporter._parse_cell_matrix_rows(rows, location_style="xlsx")
+            )
         finally:
             workbook.close()
 
     @staticmethod
-    def _parse_csv(payload: bytes) -> tuple[ParsedCompany, ...]:
+    def _parse_cbit_rows(rows: list[list[Cell]]) -> ParsedSubmission:
+        if not rows or len(rows[0]) < 2:
+            raise ImportValidationError("CBIT workbook has no company columns.")
+        company_columns: list[tuple[int, str]] = []
+        for column_index, cell in enumerate(rows[0][1:], start=2):
+            if cell.value is None or not str(cell.value).strip():
+                continue
+            company_columns.append((column_index, str(cell.value).strip()))
+        if not company_columns:
+            raise ImportValidationError("CBIT workbook has no company columns.")
+
+        parsed: list[ParsedCompany] = []
+        for column_index, header_name in company_columns:
+            identity_value = (
+                rows[2][column_index - 1].value
+                if len(rows) >= 3 and len(rows[2]) >= column_index
+                else None
+            )
+            official_name, company_number = parse_companies_house_identity(
+                identity_value, fallback_name=header_name
+            )
+            metrics: list[ParsedMetric] = []
+            programme_start_value: Any = None
+            programme_start_location: str | None = None
+            for row_number, row_cells in enumerate(rows[1:], start=2):
+                if not row_cells or row_cells[0].value is None:
+                    continue
+                label = str(row_cells[0].value).strip()
+                if not label:
+                    continue
+                value_cell = row_cells[column_index - 1] if len(row_cells) >= column_index else None
+                value = value_cell.value if value_cell is not None else None
+                is_formula = bool(
+                    value_cell is not None
+                    and (
+                        value_cell.data_type == "f"
+                        or (isinstance(value, str) and value.startswith("="))
+                    )
+                )
+                definition = CBIT_ROWS_BY_LABEL.get(canonicalize_label(label))
+                if definition is not None and definition.role is CbitRowRole.JOIN_PERIOD:
+                    programme_start_value = value
+                    programme_start_location = f"{get_column_letter(column_index)}{row_number}"
+                    continue
+                if definition is not None and definition.role in {
+                    CbitRowRole.SECTION,
+                    CbitRowRole.IDENTITY,
+                }:
+                    continue
+                metrics.append(
+                    ParsedMetric(
+                        label=label,
+                        value=value,
+                        location=f"{get_column_letter(column_index)}{row_number}",
+                        row_number=row_number,
+                        role=definition.role if definition else None,
+                        metric_key=definition.metric_key if definition else None,
+                        narrative_for=definition.narrative_for if definition else None,
+                        is_formula=is_formula,
+                    )
+                )
+            parsed.append(
+                ParsedCompany(
+                    name=official_name,
+                    external_id=company_number,
+                    identifier_scheme=IdentifierScheme.COMPANIES_HOUSE_NUMBER,
+                    metrics=tuple(metrics),
+                    programme_start_value=programme_start_value,
+                    programme_start_location=programme_start_location,
+                )
+            )
+        return ParsedSubmission(
+            companies=tuple(parsed),
+            profile_key=CBIT_PROFILE_KEY,
+            profile_version=CBIT_CONTRACT_VERSION,
+        )
+
+    @staticmethod
+    def _parse_csv(payload: bytes) -> ParsedSubmission:
         try:
             decoded = payload.decode("utf-8-sig")
         except UnicodeDecodeError as exc:
             raise ImportValidationError("CSV submission must use UTF-8 encoding.") from exc
         rows = list(csv.reader(io.StringIO(decoded)))
-        return PortfolioImporter._parse_matrix_rows(rows, location_style="csv")
+        return ParsedSubmission(PortfolioImporter._parse_matrix_rows(rows, location_style="csv"))
+
+    @staticmethod
+    def _parse_cell_matrix_rows(
+        rows: list[list[Cell]], *, location_style: str
+    ) -> tuple[ParsedCompany, ...]:
+        values = [[cell.value for cell in row] for row in rows]
+        parsed = PortfolioImporter._parse_matrix_rows(values, location_style=location_style)
+        formula_locations = {
+            cell.coordinate for row in rows for cell in row if cell.data_type == "f"
+        }
+        return tuple(
+            ParsedCompany(
+                name=company.name,
+                external_id=company.external_id,
+                identifier_scheme=company.identifier_scheme,
+                metrics=tuple(
+                    ParsedMetric(
+                        label=metric.label,
+                        value=metric.value,
+                        location=metric.location,
+                        is_formula=metric.location in formula_locations,
+                    )
+                    for metric in company.metrics
+                ),
+                programme_start_value=company.programme_start_value,
+                programme_start_location=company.programme_start_location,
+            )
+            for company in parsed
+        )
 
     @staticmethod
     def _parse_matrix_rows(
@@ -461,6 +883,11 @@ class PortfolioImporter:
                     ParsedMetric(label=str(row[0]).strip(), value=value, location=location)
                 )
             parsed.append(
-                ParsedCompany(name=company_name, external_id=None, metrics=tuple(metrics))
+                ParsedCompany(
+                    name=company_name,
+                    external_id=None,
+                    identifier_scheme=IdentifierScheme.LEGACY,
+                    metrics=tuple(metrics),
+                )
             )
         return tuple(parsed)

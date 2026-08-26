@@ -1,6 +1,8 @@
 from __future__ import annotations
 
-from portfolio_agent.enums import Sourceability, VerificationStatus
+import pytest
+
+from portfolio_agent.enums import Sourceability, TemporalEligibilityStatus, VerificationStatus
 from portfolio_agent.verification import VerificationEvidence, verify_claim
 
 
@@ -23,6 +25,7 @@ def _evidence(
         locator="fixture://evidence",
         checksum="synthetic-checksum",
         is_untrusted=untrusted,
+        temporal_status=TemporalEligibilityStatus.ELIGIBLE.value,
     )
 
 
@@ -94,3 +97,21 @@ def test_currency_conflict_is_not_converted() -> None:
         evidence=(_evidence(value="400", currency="USD"),),
     )
     assert result.status is VerificationStatus.CONTRADICTED
+
+
+@pytest.mark.parametrize(
+    ("candidate_currency", "evidence_currency"),
+    (("GBP", None), (None, "GBP"), (None, None)),
+)
+def test_currency_metrics_require_explicit_exact_currency_on_both_sides(
+    candidate_currency: str | None,
+    evidence_currency: str | None,
+) -> None:
+    result = verify_claim(
+        candidate_value="125000",
+        candidate_currency=candidate_currency,
+        sourceability=Sourceability.PUBLICLY_SOURCEABLE,
+        evidence=(_evidence(value="125000", currency=evidence_currency),),
+        require_currency=True,
+    )
+    assert result.status is not VerificationStatus.SUPPORTED

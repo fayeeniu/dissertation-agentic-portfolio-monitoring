@@ -1,0 +1,38 @@
+{
+  "schema_version": "evaluation-dataset-manifest-v1",
+  "datasets": [
+    {
+      "tier": "D0",
+      "namespace": "benchmark:d0",
+      "status": "executable",
+      "classification": "synthetic",
+      "path": "evaluation_cases.json",
+      "sha256": "f403d59ed8db8b3a7c8e2f19cae9e8d098317f6c09da94be361ffcf8a122c94b",
+      "source_version": "evaluation-cases-v1",
+      "partition_policy": "Test-only synthetic cases; entity groups never cross partitions.",
+      "permitted_use": "Automated functional and repeatability evaluation only."
+    },
+    {
+      "tier": "D1",
+      "namespace": "benchmark:d1",
+      "status": "protocol_only",
+      "classification": "public-research",
+      "path": null,
+      "sha256": null,
+      "source_version": "not-admitted",
+      "partition_policy": "Group- and period-aware partitions must be frozen before admission.",
+      "permitted_use": "Protocol definition only until licences, provenance, and gates are approved."
+    },
+    {
+      "tier": "D2",
+      "namespace": "benchmark:d2",
+      "status": "sealed",
+      "classification": "sealed-holdout",
+      "path": null,
+      "sha256": null,
+      "source_version": "sealed",
+      "partition_policy": "Final untouched holdout; no development access.",
+      "permitted_use": "One final approved dissertation evaluation after all models and rules freeze."
+    }
+  ]
+}

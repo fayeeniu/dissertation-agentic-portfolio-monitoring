@@ -7,21 +7,40 @@
   <dl class="assurance-list"><div><dt>Status</dt><dd><span class="status status-{{ report.status }}">{{ report.status }}</span></dd></div><div><dt>Version</dt><dd>{{ report.version }}</dd></div><div><dt>Content hash</dt><dd><code>{{ report.content_hash[:12] if report.content_hash else 'pending' }}…</code></dd></div></dl>
 </section>
 
+<section class="panel" aria-labelledby="visual-summary-title">
+  <p class="step">Visual review</p><h2 id="visual-summary-title">Run evidence at a glance</h2>
+  <div class="visual-grid">
+  {% for heading, values in visual_summary.items() %}
+    <article class="visual-card"><h3>{{ heading }}</h3>
+    {% if values %}{% set total = values.values() | sum %}
+      {% for label, value in values.items() %}<label><span>{{ label | replace('_', ' ') }}</span><progress max="{{ total if total else 1 }}" value="{{ value }}">{{ value }} of {{ total }}</progress><strong>{{ value }}</strong></label>{% endfor %}
+    {% else %}<p class="empty">No recorded items.</p>{% endif %}
+    </article>
+  {% endfor %}
+  </div>
+</section>
+
 {% if report.status == 'pending_review' %}
 <section class="decision-panel" aria-labelledby="decision-title">
   <h2 id="decision-title">Record a review decision</h2>
   <p>Approval confirms that the reviewer inspected the report and verification states. It does not convert held claims into supported claims.</p>
   <div class="two-column">
+    {% if reviewer_name %}
     <form action="/reports/{{ report.id }}/approve" method="post" class="stacked-form">
-      <h3>Approve</h3><label for="approve-actor">Reviewer</label><input id="approve-actor" name="actor" required maxlength="255"><label for="approve-reason">Rationale</label><textarea id="approve-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit">Approve report</button>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="expected_lock_version" value="{{ report.lock_version }}">
+      <h3>Approve</h3><p>Reviewer: <strong>{{ reviewer_name }}</strong></p><label for="approve-reason">Rationale</label><textarea id="approve-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit">Approve report</button>
     </form>
     <form action="/reports/{{ report.id }}/reject" method="post" class="stacked-form">
-      <h3>Reject</h3><label for="reject-actor">Reviewer</label><input id="reject-actor" name="actor" required maxlength="255"><label for="reject-reason">Rationale</label><textarea id="reject-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit" class="danger">Reject report</button>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="expected_lock_version" value="{{ report.lock_version }}">
+      <h3>Reject</h3><p>Reviewer: <strong>{{ reviewer_name }}</strong></p><label for="reject-reason">Rationale</label><textarea id="reject-reason" name="reason" required minlength="3" maxlength="2000"></textarea><button type="submit" class="danger">Reject report</button>
     </form>
+    {% else %}<p class="empty">Review mutations are disabled until <code>PORTFOLIO_REVIEWER_NAME</code> is configured.</p>{% endif %}
   </div>
 </section>
 {% elif report.status == 'approved' %}
-<section class="decision-panel"><h2>Approved and ready to export</h2><form action="/reports/{{ report.id }}/export" method="post"><button type="submit">Export JSON, Markdown, and HTML</button></form></section>
+<section class="decision-panel"><h2>Approved and ready to export</h2>{% if reviewer_name %}<form action="/reports/{{ report.id }}/export" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="expected_lock_version" value="{{ report.lock_version }}"><button type="submit">Export JSON, Markdown, and HTML</button></form>{% else %}<p class="empty">Export is disabled until a reviewer identity is configured.</p>{% endif %}</section>
+{% elif report.status == 'exporting' %}
+<section class="decision-panel"><h2>Export is being finalized</h2><p>The report is immutable while its manifest and artifacts are finalized.</p></section>
 {% elif report.status == 'exported' %}
 <section class="decision-panel"><h2>Approved export</h2><ul class="download-list"><li><a href="/reports/{{ report.id }}/download/json">Download JSON</a></li><li><a href="/reports/{{ report.id }}/download/md">Download Markdown</a></li><li><a href="/reports/{{ report.id }}/download/html">Download HTML</a></li></ul></section>
 {% endif %}
@@ -30,14 +49,15 @@
   {% for section in sections %}
   <article class="panel report-section" aria-labelledby="heading-{{ loop.index }}">
     <div class="section-heading"><h3 id="heading-{{ loop.index }}">{{ section.heading }}</h3><span>Section v{{ section.version }}</span></div>
-    <div class="markdown-source">{{ section.body_markdown }}</div>
-    {% if report.status not in ['exported', 'rejected'] %}
+    <div class="markdown-source rendered-markdown">{{ section.body_markdown | safe_markdown | safe }}</div>
+    {% if report.status in ['pending_review', 'approved'] %}
     <details><summary>Edit this section and create a new version</summary>
       <form action="/reports/{{ report.id }}/sections/{{ section.section_key }}/edit" method="post" class="stacked-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="expected_lock_version" value="{{ report.lock_version }}">
         <label for="body-{{ loop.index }}">Section Markdown</label><textarea id="body-{{ loop.index }}" name="body_markdown" required maxlength="50000" rows="10">{{ section.body_markdown }}</textarea>
-        <label for="actor-{{ loop.index }}">Reviewer</label><input id="actor-{{ loop.index }}" name="actor" required maxlength="255">
+        <p>Reviewer: <strong>{{ reviewer_name or 'not configured' }}</strong></p>
         <label for="reason-{{ loop.index }}">Edit rationale</label><textarea id="reason-{{ loop.index }}" name="reason" required minlength="3" maxlength="2000"></textarea>
-        <button type="submit" class="secondary">Save new section version</button>
+        <button type="submit" class="secondary"{% if not reviewer_name %} disabled{% endif %}>Save new section version</button>
       </form>
     </details>
     {% endif %}
@@ -47,10 +67,14 @@
 
 <section class="panel" aria-labelledby="claims-title"><h2 id="claims-title">Claim verification and provenance</h2>
   <div class="table-wrap"><table><caption>Every candidate claim and its independent verification result</caption><thead><tr><th scope="col">Company / metric</th><th scope="col">Claim</th><th scope="col">State</th><th scope="col">Evidence</th></tr></thead><tbody>
-  {% for claim in claims %}<tr><td>{{ claim.company.canonical_name }}<br><small>{{ claim.metric_definition.key }}</small></td><td>{{ claim.text }}</td><td><span class="status status-{{ claim.verification_status }}">{{ claim.verification_status }}</span>{% if claim.verifications %}<small>{{ claim.verifications[0].rationale }}</small>{% endif %}</td><td>{% if claim.evidence_items %}<ul>{% for evidence in claim.evidence_items %}<li><code>{{ evidence.id }}</code><br><small>{{ evidence.source_type }} · {{ evidence.locator }}</small></li>{% endfor %}</ul>{% else %}No supporting evidence linked{% endif %}</td></tr>{% endfor %}
+  {% for claim in claims %}<tr><td>{{ claim.company.canonical_name }}<br><small>{{ claim.metric_definition.key }}</small></td><td>{{ claim.text }}</td><td><span class="status status-{{ claim.verification_status }}">{{ claim.verification_status }}</span>{% if claim.verifications %}<small>{{ claim.verifications[0].rationale }}</small>{% endif %}</td><td>{% if claim.evidence_items %}<ul>{% for evidence in claim.evidence_items %}{% set temporal = temporal_by_evidence[evidence.id] %}<li><code>{{ evidence.id }}</code><br><small>{{ evidence.source_type }} · {{ evidence.connector }} v{{ evidence.connector_version }}<br>{{ evidence.locator }}<br>Temporal for this run: {{ temporal.status or 'not recorded' }} at {{ temporal.reporting_cutoff or 'unknown cutoff' }}<br>{{ temporal.reason or 'No temporal rationale recorded.' }}<br>SHA-256 {{ evidence.checksum[:12] }}…</small></li>{% endfor %}</ul>{% else %}No supporting evidence linked{% endif %}</td></tr>{% endfor %}
   </tbody></table></div>
 </section>
 
+<div class="two-column">
+  <section class="panel" aria-labelledby="quality-title"><h2 id="quality-title">Quality holds and exclusions</h2>{% if quality_findings %}<div class="table-wrap"><table><thead><tr><th scope="col">Rule</th><th scope="col">Disposition</th><th scope="col">Finding</th></tr></thead><tbody>{% for finding in quality_findings %}<tr><td><code>{{ finding.rule_key }}</code></td><td><span class="status status-{{ finding.disposition }}">{{ finding.disposition }}</span></td><td>{{ finding.message }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p>No explicit violations were recorded.</p>{% endif %}</section>
+  <section class="panel" aria-labelledby="events-title"><h2 id="events-title">Evidence-linked events</h2>{% if events %}<ol class="timeline">{% for event in events %}<li><time>{{ event.event_date or 'date unavailable' }}</time><strong>{{ event.title }}</strong><span>{{ event.source_key }} · {{ event.lifecycle_stage or 'non-lifecycle event' }}</span><code>{{ event.source_locator }}</code></li>{% endfor %}</ol>{% else %}<p>No eligible events were recorded.</p>{% endif %}</section>
+</div>
+
 <section class="panel" aria-labelledby="audit-title"><h2 id="audit-title">Review audit trail</h2>{% if decisions %}<ol class="audit-list">{% for decision in decisions %}<li><strong>{{ decision.decision }}</strong> by {{ decision.actor }} for report v{{ decision.report_version }}<br><span>{{ decision.reason }}</span><br><small>{{ decision.created_at }}</small></li>{% endfor %}</ol>{% else %}<p class="empty">No human decision recorded yet.</p>{% endif %}</section>
 {% endblock %}
-

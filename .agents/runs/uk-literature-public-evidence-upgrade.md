@@ -2,15 +2,17 @@
 
 ## Control
 
-- **Mode:** PLAN
-- **State:** AWAITING_APPROVAL
+- **Mode:** EXECUTE
+- **State:** IN_PROGRESS
 - **Risk:** Critical
-- **Approval:** Required and not yet granted. The user's permission to commit and push this
-  planning state is not permission to execute the implementation packets below.
+- **Approval:** Granted by the user on 2026-08-26 for the Critical scope, rollback boundaries,
+  local validation, dissertation visual artifacts, and independent review defined in this ledger.
+  Live public/API retrieval, OpenAI calls, deployment, commits, pushes, and held packets remain
+  unauthorised.
 - **Execution trigger:** `engineering EXECUTE .agents/runs/uk-literature-public-evidence-upgrade.md`
-- **Baseline:** Discovery began on the unborn `production` branch with no `HEAD`; the project was
-  entirely untracked. Execute only from a clean committed `HEAD` containing this ledger, record that
-  commit in the first execution update, and stop if production files have drifted materially.
+- **Baseline:** Clean `production` branch at
+  `a9058aa5893ab8fb5432f6c1ac7ac90f8b3f5b83` (`origin/production`), containing this ledger and the
+  initial prototype. Production files had not drifted when execution began.
 - **Policy:** Additive and reversible changes only; preserve the current local-only, human-approved,
   evidence-first contracts. Schema, financial semantics, public-person data, and external-model
   boundaries make this Critical work.
@@ -34,8 +36,9 @@ reports through a bounded agent workflow.
 5. A typed event ledger for filings, grants, funding evidence, and company changes.
 6. Deterministic document extraction with precise locators; optional OpenAI extraction for public
    or synthetic evidence only, with strict abstention and independent verification.
-7. Descriptive UK cohort context, evidence coverage, missingness, changes, exceptions, and human
-   review in the report/UI.
+7. Descriptive within-portfolio distribution context, evidence coverage, missingness, changes,
+   exceptions, and human review in the report/UI. An external UK comparator remains held until an
+   admitted aggregate source and compatible cohort definition exist.
 8. A UK-only evaluation pack that separates synthetic/open benchmark evidence, authorised
    supplied-data evaluation, and a sealed final out-of-sample set.
 
@@ -92,7 +95,8 @@ The upgrade is complete only when all of the following are proved on the final s
    persisted attempts/tokens/errors. No model result can approve or publish.
 9. Migration upgrade, downgrade, and re-upgrade preserve legacy P0 rows and foreign-key integrity.
 10. Formatting, lint, strict type checks, unit/integration/e2e tests, coverage, source-admission
-    audit, secret scan, and restricted-file exclusion all pass on the exact committed state.
+    audit, secret scan, and restricted-file exclusion all pass on the exact final working-tree
+    state. Committing remains a separate user-authorised action.
 
 ## Discovery evidence
 
@@ -120,9 +124,9 @@ The upgrade is complete only when all of the following are proved on the final s
   row 1, section rows, paired explanation/narrative rows, and heterogeneous numeric/text cells.
 - Only 1 of 14 company columns has a populated Companies House name/number cell; the join-period
   row is empty across all 14.
-- There are two formulas: a valuation-change expression and an aggregate average. Formulas are
-  derived workbook logic, not source observations, and must be held/re-derived from validated
-  inputs rather than executed during ingestion.
+- The final counts-only smoke identified five populated formula cells across derived
+  valuation-change/aggregate rows. Formulas are derived workbook logic, not source observations,
+  and are held/re-derived from validated inputs rather than executed during ingestion.
 - A restricted local dry run against the current code created 14 company rows but **0 canonical
   observations** because the workbook labels do not match the generic catalogue. This is the first
   implementation blocker.
@@ -165,7 +169,7 @@ and complete references remain in `UK_EARLY_STAGE_AGENTIC_PORTFOLIO_LITERATURE_R
 | F7 UKRI/GtR grant lifecycle | **Core** | Mondal/Mellor; Thorne et al. | Public funding is directly relevant, but association is not proof of causal impact |
 | F8 Round/dilution intelligence | **Narrowed** | Estrin et al.; Wasti et al. | Store supplied/publicly evidenced events; do not scrape platforms or infer valuation/dilution |
 | F9 Director/PSC ownership graph | **Conditional** | Surak/Inkley | Useful for identity/governance only after privacy approval; property graph is out of scope |
-| F10 Cohort context | **Core, descriptive** | Estrin et al.; Mondal/Mellor; Galanakis/Savagar | Use sector/geography/age/period comparators; no ranking or causal label |
+| F10 Context distribution | **Narrowed now; external comparator held** | Estrin et al.; Mondal/Mellor; Galanakis/Savagar | Current implementation describes only the imported portfolio with minimum N; sector/geography/age UK comparison requires admitted ONS evidence and must not imply ranking or causality |
 | F11 Hierarchical retrieval/abstention | **Core for eligible documents** | Thorne et al. | Smallest sufficient context plus null/abstention reduces plausible fabricated fields |
 | F12 OCR/table benchmark | **Evaluation first** | Bradley et al. | Use released synthetic benchmark; add runtime OCR only if real filing evidence proves need |
 | F13 Change/exception narrative | **Core** | Cross-paper synthesis | Reviewer utility comes from material changes, gaps, conflicts, and evidence, not prose volume |
@@ -203,7 +207,7 @@ flowchart LR
     X -. public or synthetic only .-> L[Optional OpenAI<br/>5.4-mini then one 5.4 attempt]
     X --> V[Independent verifier<br/>claim-relative temporal eligibility]
     L --> V
-    V --> C[Descriptive context<br/>UK cohort + minimum sample rule]
+    V --> C[Descriptive context<br/>within-portfolio distribution + minimum N]
     C --> REP[Change/exception report<br/>source class + uncertainty]
     REP --> H[Named human decision<br/>approval-gated export]
 ```
@@ -223,8 +227,10 @@ flowchart LR
    grant, funding, status, and related events; they are not mutable “latest” fields.
 6. **Quality is a protocol, not one score.** Persist rule version, object, violation type, severity,
    evidence, and disposition. Expected missingness is not a source defect.
-7. **Public context is descriptive.** Cohorts require compatible sector, geography, age, period,
-   source coverage, and minimum sample count; otherwise report `not_comparable`.
+7. **Context is descriptive.** The current distribution contains only compatible observations in
+   the imported portfolio and uses a minimum sample count. Any later external UK comparator
+   requires admitted aggregate evidence with compatible sector, geography, age, period, and source
+   coverage; otherwise report `not_comparable`.
 8. **The agent is bounded.** The orchestrator may add explicit Quality and Contextualize stages,
    but retains a fixed acyclic state machine, budgets, stop states, and no publishing tool.
 9. **The LLM is a parser of admitted evidence, not an investor.** It may extract/describe only
@@ -269,6 +275,8 @@ on a failed Critical invariant.
 
 ### P00 — Repair the existing ORM/Alembic contract
 
+- **Status:** COMPLETE (2026-08-26).
+
 - **Files:** `src/portfolio_agent/models.py`, new
   `tests/integration/test_schema_equivalence.py`, this ledger.
 - **Change:** make ORM declarations accurately describe the already-created `0001` schema: JSON
@@ -283,6 +291,8 @@ on a failed Critical invariant.
 
 ### P01 — Freeze supplied-workbook and source contracts
 
+- **Status:** COMPLETE (2026-08-26).
+
 - **Files:** new `src/portfolio_agent/cbit_contract.py`, `catalogue.py`, new
   `tests/unit/test_cbit_contract.py`, `docs/DATA_DICTIONARY.md`, `docs/REQUIREMENTS.md`, new
   `docs/adr/0006-uk-public-evidence-boundaries.md`.
@@ -295,6 +305,8 @@ on a failed Critical invariant.
 - **Rollback:** remove the new contract/tests/docs; no persisted state yet.
 
 ### P02 — Make ingestion compatible with the supplied matrix
+
+- **Status:** COMPLETE (2026-08-26).
 
 - **Files:** `src/portfolio_agent/importers.py`, `schemas.py`, `catalogue.py`, new
   `tests/integration/test_cbit_importer.py`.
@@ -311,6 +323,8 @@ on a failed Critical invariant.
 
 ### P03 — Add reviewed, source-scoped company identity
 
+- **Status:** COMPLETE (2026-08-26).
+
 - **Files:** `src/portfolio_agent/models.py`, `enums.py`, `schemas.py`, new `identity.py`,
   `importers.py`, new `alembic/versions/0002_uk_evidence_foundation.py`, new
   `tests/integration/test_identity_migration.py`.
@@ -323,11 +337,17 @@ on a failed Critical invariant.
   registry numbers; the same Companies House number cannot attach to two companies; conflicting
   IDs hold the run; no automatic fuzzy merge.
 - **Proof:** 0001→0002→0001→0002 migration test with retained legacy rows; identity unit/integration
-  cases for exact, collision, ambiguous, and reviewed-alias paths.
-- **Rollback:** downgrade to 0001 after proving no new identifier rows are required; otherwise make
-  a data-preserving forward repair rather than destructive rollback.
+  cases for exact, collision, ambiguous, and reviewed-alias paths. A separate loss-boundary test
+  proves that two valid companies whose names normalise identically cause the environment-level
+  downgrade preflight to fail before any revision mutates schema or data.
+- **Rollback:** downgrade to 0001 only when the legacy globally unique-name model can represent all
+  current identities. Duplicate normalised names fail closed before the first downgrade step; they
+  must be resolved by an explicit data-preserving forward change, never an invented automatic
+  merge.
 
 ### P04 — Introduce source capability manifests and connector v2
+
+- **Status:** COMPLETE OFFLINE (2026-08-26); live G2 remains open.
 
 - **Files:** `connectors/base.py`, new `connectors/registry.py`, new `connectors/http_client.py`,
   `connectors/fixtures.py`, `config.py`, `bootstrap.py`, new
@@ -343,6 +363,8 @@ on a failed Critical invariant.
 - **Rollback:** select the legacy fixture adapter; additive snapshot tables remain unused.
 
 ### P05 — Implement temporal eligibility and executable quality contracts
+
+- **Status:** COMPLETE (2026-08-26).
 
 - **Files:** new `temporal.py`, new `quality.py`, `models.py`, `verification.py`, `workflow.py`,
   `reporting.py`, new `tests/unit/test_temporal_quality.py`, new
@@ -360,6 +382,8 @@ on a failed Critical invariant.
 
 ### P06 — Add the Companies House connector
 
+- **Status:** COMPLETE FOR IMMUTABLE SYNTHETIC REPLAY (2026-08-26); live G2 held.
+
 - **Files:** new `connectors/companies_house.py`, `connectors/registry.py`, `config.py`, new
   `fixtures/evidence/companies_house_synthetic.json`, new
   `tests/integration/test_companies_house_connector.py`.
@@ -376,6 +400,8 @@ on a failed Critical invariant.
 
 ### P07 — Add UKRI/GtR lifecycle and the event ledger
 
+- **Status:** COMPLETE FOR IMMUTABLE SYNTHETIC REPLAY (2026-08-26); live G2 held.
+
 - **Files:** new `connectors/ukri.py`, new `events.py`, `models.py`, `workflow.py`, new
   `fixtures/evidence/ukri_synthetic.json`, new `tests/integration/test_ukri_events.py`.
 - **Change:** represent opportunity → application/decision → project/award → outcome with public
@@ -390,6 +416,8 @@ on a failed Critical invariant.
   source/version.
 
 ### P08 — Add precise public-document extraction and bounded LLM evaluation
+
+- **Status:** COMPLETE FOR DETERMINISTIC/MOCKED BOUNDARIES (2026-08-26); G4 unexecuted.
 
 - **Files:** new `document_extraction.py`, `schemas.py`, `models.py`,
   `llm/deterministic.py`, `llm/openai_provider.py`, `workflow.py`, new
@@ -407,22 +435,28 @@ on a failed Critical invariant.
 
 ### P09 — Add descriptive context, change detection, and report logic
 
+- **Status:** COMPLETE (2026-08-26).
+
 - **Files:** new `context.py`, `reporting.py`, `workflow.py`, `schemas.py`, new
   `tests/integration/test_context_reporting.py`.
-- **Change:** derive comparable UK cohorts from admitted fields only; enforce minimum sample/source
-  coverage; calculate medians, quantiles, and counts with explicit definitions; compare only
-  compatible periods; compose change/exception/source-coverage/quality/event sections.
-- **Acceptance:** no prior period yields `no_comparable_prior_period`; small/incompatible cohorts
+- **Change:** derive a within-import portfolio distribution from compatible fields; enforce minimum
+  sample/source coverage; calculate medians, quantiles, and counts with explicit definitions;
+  compare only compatible periods; compose change/exception/source-coverage/quality/event
+  sections. The originally proposed external UK cohort is not implemented while G2 is open.
+- **Acceptance:** no prior period yields `no_comparable_prior_period`; small/incompatible groups
   yield `not_comparable`; outliers cannot be hidden by mean-only output; every contextual statistic
-  retains cohort definition, N, cutoff, and source versions; no score or recommendation appears.
+  retains its within-portfolio definition, N, cutoff, and source versions; no score or
+  recommendation appears and no external UK benchmark is claimed.
 - **Proof:** deterministic cohort, low-N, missingness, period compatibility, outlier, and no-prior
   tests.
 - **Rollback:** omit context sections while retaining verified claims/events.
 
 ### P10 — Add identity/source/evidence review UI
 
+- **Status:** COMPLETE STATIC/ROUTE VALIDATION (2026-08-26); browser audit unrun.
+
 - **Files:** `web.py`, `templates/index.html`, `templates/run.html`, `templates/report.html`,
-  `static/styles.css`, new `tests/integration/test_review_ui.py`.
+  `static/styles.css`, `tests/integration/test_web.py`.
 - **Change:** show identity holds, admitted-source status, temporal eligibility, quality violations,
   exact locators, evidence class, event timeline, and change exceptions. Add named approve/reject
   decisions for identity candidates; retain existing report approval gate.
@@ -434,8 +468,11 @@ on a failed Critical invariant.
 
 ### P11 — Expand the UK-only evaluation harness
 
+- **Status:** COMPLETE FOR D0 AND SEAL CONTROLS (2026-08-26); D1/D2 empirical gates open.
+
 - **Files:** `evaluation.py`, `schemas.py`, new `evaluation_datasets.py`,
-  `fixtures/evaluation_cases.json`, new `tests/unit/test_uk_evaluation.py`,
+  `fixtures/evaluation_manifest.json`, `fixtures/evaluation_cases.json`,
+  `tests/unit/test_evaluation.py`,
   `docs/EVALUATION_PROTOCOL.md`.
 - **Change:** add separate identity, extraction, temporal, quality, contradiction, provenance,
   abstention, event-linkage, report, and reviewer-utility outcomes. Namespace D0 synthetic/open
@@ -448,6 +485,9 @@ on a failed Critical invariant.
 - **Rollback:** preserve the original v1 synthetic evaluation output while v2 is disabled.
 
 ### P12 — Final traceability, governance, and evidence freeze
+
+- **Status:** IN PROGRESS — implementation/docs/visual manifest complete; final review remediation,
+  exact-state gates, and independent re-reviews pending.
 
 - **Files:** `README.md`, `docs/ARCHITECTURE.md`, `docs/AGENT_CONTRACTS.md`,
   `docs/SECURITY_AND_DATA_GOVERNANCE.md`, `docs/DISSERTATION_EVIDENCE_MAP.md`,
@@ -495,7 +535,7 @@ on a failed Critical invariant.
 
 | Gate | Required before | Evidence required | Status |
 |---|---|---|---|
-| G1 Critical implementation approval | P01 | Explicit user approval of this ledger and intended Critical scope | **OPEN** |
+| G1 Critical implementation approval | P01 | Explicit user approval of this ledger and intended Critical scope | **GRANTED 2026-08-26** |
 | G2 Source admission and identity authority | First live public retrieval | Source/licence/terms review, reporting cutoff, local storage path, reviewed company-number map | **OPEN** |
 | G3 Public-person privacy/ethics | C01 or director/PSC collection | Purpose/lawful basis, minimisation, retention, access/export rules, supervisor/ethics approval | **OPEN** |
 | G4 External OpenAI experiment | Any real API call | Public/synthetic-only dataset manifest, budget, prompt/schema freeze, API setting review | **OPEN** |
@@ -591,7 +631,112 @@ The order is deliberate:
 
 ## Execution log
 
-No implementation packet has been executed. Planning discovery, a restricted local structural
-smoke test, and planning-state validation were completed; company-level values were not copied into
-this ledger or Git. The pre-existing Alembic metadata drift remains open and is explicitly assigned
-to P00.
+- 2026-08-26: execution authorised from clean baseline
+  `a9058aa5893ab8fb5432f6c1ac7ac90f8b3f5b83`. No live connector, external-model, deployment, or
+  remote Git action was authorised. Baseline validation and P00 proof design started. Company-level
+  values remain excluded from this ledger and Git.
+- 2026-08-26 P00: aligned ORM nullability and unique/index declarations with migration `0001`.
+  `tests/integration/test_schema_equivalence.py` and the focused workflow test passed; a fresh
+  `alembic upgrade head` followed by `alembic check` reported no new upgrade operations.
+- 2026-08-26 P01–P03: froze the 102-row CBIT structural contract, versioned its catalogue, imported
+  a structural twin and the authorised restricted workbook counts-only smoke, preserved narratives
+  and formula/mixed holds, and added exact source-scoped identity plus reversible legacy migration.
+  The final restricted smoke recorded 14 company columns, 518 canonical observation rows, 78
+  narrative rows, 40 mixed-field holds, five formula holds, and 14 identity holds. The one
+  structurally valid public identifier remains held until named review; the issue codes were
+  `formula_held`, `identity_review_required`, and `mixed_field_held`; no names, values,
+  narratives, source bytes, or workbook path entered Git or the ledger.
+- 2026-08-26 P04–P08: added source v2, bounded local HTTP contracts, immutable snapshots/facts,
+  offline Companies House and UKRI lifecycles, time/quality rules, append-only events, exact
+  document locators/abstention, and persisted deterministic/mocked model attempts. No network,
+  credential, live source, or OpenAI call occurred.
+- 2026-08-26 P09–P11: added compatible changes, minimum-N five-number context, exception/source/
+  quality/event report tables, loopback/Host/CSRF/configured-reviewer/optimistic-lock controls,
+  manifest-backed export finalization, namespaced D0, protocol-only D1, and pathless sealed D2.
+- 2026-08-26 P12: generated 15 accessible deterministic SVG figures with textual alternatives,
+  source/N/cutoff labels, CSV/JSON metadata, and SHA-256 hashes; reconciled requirements, data,
+  architecture, security, source-admission, evaluation, ADR, evidence-map, and wayfinder documents.
+- 2026-08-26 independent review round 1: the generic whole-change review and Critical data-integrity
+  review identified run-relative time leakage, cross-company/unreviewed identifier admission,
+  disconnected source-v2 collection, run/cutoff event leakage, manifest-response gaps, a UKRI
+  identifier mismatch, quality-rule ordering, model abstention/grounding errors, unexecuted metric
+  claims, misleading external-cohort language, duplicate cross-cutoff events, snapshot publication
+  races, and duplicate-legacy-ID migration risk. Each finding received a code-level fix plus a
+  regression test; no item was waived.
+- 2026-08-26 exact-state validation before final review: formatting and lint passed for 69 files;
+  mypy passed for 38 source files; 110 tests passed with 85.55% coverage. A fresh temporary database
+  upgraded empty→`0005`, reported no Alembic drift, downgraded to `0001`, re-upgraded to `0005`,
+  and had zero foreign-key-check rows. The synthetic demo stopped at `pending_review`; the
+  three-repeat D0 evaluation preserved null outcomes for unexecuted layers. The restricted
+  counts-only smoke matched 14 companies, 518 observations, 78 narratives, 40 mixed holds, five
+  formula holds, and 14 identity holds with only the expected three issue codes. Candidate tracked
+  and untracked files had no forbidden supplied/runtime path or secret-pattern hit; runtime
+  databases, raw/sources, evaluations, and exports remained ignored. The regenerated 15-figure
+  manifest retained SHA-256 `ce8a6d851ce63a447b5008312dfe03b66ea16fd3364a8f7c7481336207e07fc5`.
+- 2026-08-26 independent review round 2: the whole-change review identified discarded programme
+  period semantics, acceptance of truncated/non-finite numeric grounding, incomplete connector-fact
+  provenance, silent expected/source-unavailable missing-state quality outcomes, and an
+  absolute-path visual-manifest leak. No finding was waived. Revision `0007` now persists programme
+  membership and metric period semantics, cumulative source facts must match programme start
+  through cutoff, connector facts carry structured locator/method/schema provenance under
+  `source-derivation-v2`, numeric/model/event paths reject non-finite or partial tokens, expected
+  missing states remain visible as not-defect warnings, and visual manifests are byte-stable after
+  checkout relocation. Focused regressions passed; final exact-state gates and independent
+  re-reviews remain pending.
+- 2026-08-26 post-remediation review candidate: 71 Python/migration files passed formatting, lint,
+  and 38-source-file mypy checks; 143 tests passed with 85.90% coverage and nine documented
+  third-party deprecation warnings. Empty→`0007`, `alembic check`, `0007`→`0001`→`0007`, direct
+  `0006`→`0007`, and foreign-key checks passed. The fictional demo stopped at `pending_review`;
+  D0 repeated three times with human/event layers still null. The restricted counts-only smoke
+  retained 14 companies, 518 observations, 78 narratives, 40 mixed holds, five formula holds,
+  14 identity holds, zero populated programme starts, and only the expected three issue codes. The
+  15-figure pathless manifest is SHA-256
+  `1e134851acc908d7f57c0de8db7ec00d40280e2a69adf84e319536c9e631e763`. Secret/path scans,
+  ignored-runtime checks, and `git diff --check` passed. Independent re-reviews remain pending.
+- 2026-08-26 independent review round 3: Critical and whole-change reviewers found seven additional
+  material gaps: self-independent fact keys could be cross-bound to a wrong metric; cumulative
+  change/context ignored programme origin; valid duplicate normalized names could partially fail a
+  legacy downgrade; incomplete/non-GBP UKRI coverage could become a supported zero; index-based
+  event locators broke later replay; the stated derivation-v1 serializer included a new field; and
+  no-record/unavailable/failed source states were conflated. No finding was waived. Exact
+  source-fact semantic contracts now reject cross-metric/method/schema/unit/currency output;
+  programme-origin and duration compatibility govern changes/cohorts; Alembic preflights the
+  lossful legacy boundary before mutation; UKRI emits a metric total only for complete finite GBP
+  coverage; stable identifier locators replay longitudinally; v1 bytes are reproduced exactly;
+  and quality v2 separates no-record warning, unavailable warning, and terminal-failure hold.
+  Fifty-six focused tests and the 153-test full suite pass; exact final gates and both independent
+  re-reviews remain pending.
+- 2026-08-26 round-3 remediation candidate: the migration gate exposed one additional command-
+  boundary regression before review: the loss-boundary preflight requested a destination revision
+  from `alembic check`, which has none. The preflight now returns only for such non-migration
+  commands, while the duplicate-identity downgrade test still proves pre-mutation rejection.
+  Seventy-two Python/migration files pass formatting and lint; mypy passes 38 source files; all 153
+  tests pass with 85.73% coverage and nine documented third-party deprecation warnings. Fresh
+  empty→`0007`, `alembic check`, `0007`→`0001`→`0007`, direct `0006`→`0007`, and foreign-key
+  checks pass. The fictional demo stops at `pending_review`; D0 repeats three times with human and
+  event outcomes still null. The restricted counts-only smoke retains 14 companies, 518
+  observations, 78 narratives, 40 mixed holds, five formula holds, 14 identity holds, zero
+  populated programme starts, and only the expected three issue codes. The 15-figure pathless
+  manifest remains SHA-256
+  `1e134851acc908d7f57c0de8db7ec00d40280e2a69adf84e319536c9e631e763`. Supplied-path,
+  secret-pattern, ignored-runtime, and diff-whitespace checks pass. Both independent final
+  re-reviews remain pending.
+- 2026-08-26 final review remediation: all thirteen reported findings were fixed without waiving a
+  contract. Lossy downgrade preflight now covers symbolic and relative targets; restricted
+  portfolio names are replaced by public-provenance aliases at the model boundary; currency
+  support, aggregation, model grounding, and public conflicts fail closed on absent/incompatible
+  currency or unit semantics; streamed HTTP transport failures use the bounded retry policy;
+  Companies House required JSON scalars exercise the production document extractor; duplicate
+  latest prior periods are reported as conflicted; deprecated `--cases` resolves only through its
+  sibling manifest; visual alternatives are data-derived; dataset/visual schema versions are
+  closed literals; and the ordered model pair is enforced before client creation. Formatting and
+  lint pass for 72 Python/migration files; strict mypy passes for the same 72-file scope; all 173
+  tests pass with 86.19% branch coverage and 19 documented third-party deprecation warnings. A
+  fresh database passed empty→`0007`, `alembic check`, `0007`→`0001`→`0007`, and foreign-key
+  checks; duplicate-identity tests rejected `0001`, `base`, and `-6` before mutation. Both the
+  manifest and deprecated-cases evaluation CLI paths completed with the same admitted D0 data.
+  The regenerated pathless 15-figure manifest is SHA-256
+  `17bc91ee1a20e580db879b917415b81434eac674268d150dbf182aeb72a83a4e`.
+  Secret-pattern, forbidden-path/runtime, and diff-whitespace scans passed. No network, live
+  source, real OpenAI, restricted-workbook, participant, or D2 action was performed; G2–G6 remain
+  open under their existing approval boundaries.

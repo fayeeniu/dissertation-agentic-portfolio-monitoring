@@ -1,0 +1,171 @@
+{
+  "schema_version": "ukri-synthetic-v1",
+  "classification": "synthetic",
+  "publisher": "Synthetic UKRI Gateway to Research replay",
+  "records": [
+    {
+      "organisation_id": "SYN-UKRI-ORG-001",
+      "organisation_name": "Source Synthetic Ltd",
+      "published_at": "2025-06-28T10:00:00Z",
+      "projects": [
+        {
+          "project_id": "SYN-PROJECT-001",
+          "record_version": 1,
+          "updated_at": "2025-01-10T09:00:00Z",
+          "application_id": "SYN-APPLICATION-001",
+          "decision_id": "SYN-DECISION-001",
+          "decision_date": "2024-09-15",
+          "award_id": "SYN-AWARD-001",
+          "award_date": "2024-10-01",
+          "title": "Superseded synthetic project title",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "lead organisation",
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31",
+          "amount": "100000",
+          "currency": "GBP",
+          "opportunity": {
+            "opportunity_id": "SYN-OPPORTUNITY-001",
+            "title": "Synthetic innovation opportunity",
+            "opened_at": "2024-04-01"
+          },
+          "outcomes": []
+        },
+        {
+          "project_id": "SYN-PROJECT-001",
+          "record_version": 2,
+          "updated_at": "2025-05-10T09:00:00Z",
+          "application_id": "SYN-APPLICATION-001",
+          "decision_id": "SYN-DECISION-001",
+          "decision_date": "2024-09-15",
+          "award_id": "SYN-AWARD-001",
+          "award_date": "2024-10-01",
+          "title": "Corrected synthetic project title",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "lead organisation",
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31",
+          "amount": "125000",
+          "currency": "GBP",
+          "opportunity": {
+            "opportunity_id": "SYN-OPPORTUNITY-001",
+            "title": "Synthetic innovation opportunity",
+            "opened_at": "2024-04-01"
+          },
+          "outcomes": [
+            {
+              "outcome_id": "SYN-OUTCOME-001",
+              "title": "Synthetic public outcome",
+              "published_at": "2025-06-20"
+            },
+            {
+              "outcome_id": "SYN-FUTURE-OUTCOME",
+              "title": "Synthetic outcome after cutoff",
+              "published_at": "2025-07-05"
+            }
+          ]
+        },
+        {
+          "project_id": "SYN-PROJECT-002",
+          "record_version": 1,
+          "updated_at": "2025-05-20T09:00:00Z",
+          "application_id": "SYN-APPLICATION-002",
+          "decision_id": "SYN-DECISION-002",
+          "decision_date": "2025-02-01",
+          "award_id": "SYN-AWARD-002",
+          "award_date": "2025-02-15",
+          "title": "Synthetic project with undisclosed amount",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "collaborating organisation",
+          "start_date": "2025-04-01",
+          "end_date": "2026-03-31",
+          "amount": null,
+          "currency": null,
+          "opportunity": null,
+          "outcomes": []
+        },
+        {
+          "project_id": "SYN-FUTURE-PROJECT",
+          "record_version": 1,
+          "updated_at": "2025-07-10T09:00:00Z",
+          "application_id": "SYN-FUTURE-APPLICATION",
+          "decision_id": "SYN-FUTURE-DECISION",
+          "decision_date": "2025-07-01",
+          "award_id": "SYN-FUTURE-AWARD",
+          "award_date": "2025-07-02",
+          "title": "Synthetic project unavailable at historical cutoff",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "lead organisation",
+          "start_date": "2025-08-01",
+          "end_date": "2026-07-31",
+          "amount": "50000",
+          "currency": "GBP",
+          "opportunity": null,
+          "outcomes": []
+        }
+      ]
+    },
+    {
+      "organisation_id": "SYN-UKRI-ORG-COMPLETE",
+      "organisation_name": "Source Synthetic Ltd",
+      "published_at": "2025-06-28T10:00:00Z",
+      "projects": [
+        {
+          "project_id": "SYN-COMPLETE-PROJECT-001",
+          "record_version": 1,
+          "updated_at": "2025-05-10T09:00:00Z",
+          "application_id": "SYN-COMPLETE-APPLICATION-001",
+          "decision_id": "SYN-COMPLETE-DECISION-001",
+          "decision_date": "2024-09-15",
+          "award_id": "SYN-COMPLETE-AWARD-001",
+          "award_date": "2024-10-01",
+          "title": "Complete synthetic project",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "lead organisation",
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31",
+          "amount": "125000",
+          "currency": "GBP",
+          "opportunity": {
+            "opportunity_id": "SYN-COMPLETE-OPPORTUNITY-001",
+            "title": "Synthetic innovation opportunity",
+            "opened_at": "2024-04-01"
+          },
+          "outcomes": [
+            {
+              "outcome_id": "SYN-COMPLETE-OUTCOME-001",
+              "title": "Synthetic public outcome",
+              "published_at": "2025-06-20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "organisation_id": "SYN-UKRI-ORG-NONGBP",
+      "organisation_name": "Non-GBP Synthetic Ltd",
+      "published_at": "2025-06-28T10:00:00Z",
+      "projects": [
+        {
+          "project_id": "SYN-NONGBP-PROJECT-001",
+          "record_version": 1,
+          "updated_at": "2025-05-10T09:00:00Z",
+          "application_id": "SYN-NONGBP-APPLICATION-001",
+          "decision_id": "SYN-NONGBP-DECISION-001",
+          "decision_date": "2024-12-15",
+          "award_id": "SYN-NONGBP-AWARD-001",
+          "award_date": "2025-01-15",
+          "title": "Synthetic non-GBP project",
+          "funder": "Synthetic Research Council",
+          "organisation_role": "lead organisation",
+          "start_date": "2025-02-01",
+          "end_date": "2026-01-31",
+          "amount": "100000",
+          "currency": "USD",
+          "opportunity": null,
+          "outcomes": []
+        }
+      ]
+    }
+  ]
+}

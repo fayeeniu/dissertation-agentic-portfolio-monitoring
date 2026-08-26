@@ -62,13 +62,16 @@ Credential rotation remains **unverified external work**. This project cannot cl
 |---|---|---|---|
 | Source or credential committed | User copies restricted file or `.env` into Git | Ignore rules; fixtures synthetic; final secret scan | Git hooks/central secret scanning for team use |
 | Prompt injection | Public page tells model/agent to ignore rules or exfiltrate | Content untrusted; detector; no extraction/model call; no agent tools | Broader classifier and connector sandbox before live sources |
-| Cross-company contamination | Fuzzy/ambiguous identity merge | Exact ID/name only; ambiguity hold | Authoritative company registry and reviewed alias table |
+| Cross-company contamination | Fuzzy/name-only identity merge | Exact source-scoped ID only; name candidate and named decision | Authoritative ID mapping and precision evaluation before G2 |
 | Hallucinated fact | Generator fills blank from priors | Deterministic-first; no claim without candidate; verifier; HITL | Empirical false-positive measurement on frozen gold data |
-| Temporal leakage | Future evidence supports past report | Explicit period match; stale state | Publication/availability timestamps and final OOS governance |
+| Temporal leakage | Future evidence supports past report | UK civil cutoff plus publication/effective-time eligibility | Source-specific availability rules and final OOS governance |
 | Formula/malicious workbook | Spreadsheet executes formula or payload | `data_only=False`; no formula execution/macros; `.xlsx` only | File-type scanning and isolated parser for production |
 | Stored XSS/HTML injection | Source/reviewer text rendered as markup | Jinja auto-escape; custom HTML export escapes input; CSP | Security test/fuzzing and CSP nonce if scripts later added |
 | Local unauthorised access | Other user/process reads runtime files | Snapshot/export mode `0600`; loopback bind | Encrypted disk/database and OS account controls |
-| CSRF/local malicious site | Browser posts to loopback UI | Same-origin forms/CSP but no CSRF token | Add CSRF and authentication before any wider/user deployment |
+| CSRF/local malicious site | Browser posts to loopback UI | Per-process CSRF token+HttpOnly Strict cookie, CSP, loopback client and Host allowlist | Production authentication/session rotation before wider use |
+| DNS rebinding/non-local request | Hostname resolves to loopback or forwarded client reaches app | Host-header and client-address loopback enforcement | Trusted reverse-proxy design only after explicit deployment review |
+| Stale reviewer write | Two pages mutate the same report version | Optimistic `lock_version`; stale action fails | Serializable production store and authenticated audit principal |
+| Partial export | Files exist while DB says exported, or reverse | Pending manifest, staging directory, atomic rename, final DB state | Recovery job/durable transaction coordinator for production |
 | Unapproved export | Pipeline or user bypasses review | Service state invariant; audited approval required | Role-based auth and signed approval in production |
 | Excessive logs | Exception captures raw evidence | Trace stores hashes/counts; no prompt/evidence logging | Structured redaction tests and secure log sink |
 | Dependency compromise | Pinned package malicious/vulnerable | Exact versions, minimal stack, offline core | Lock hashes, SBOM, vulnerability scanning/update policy |
@@ -81,10 +84,13 @@ specifically authorised public/synthetic experiment. Controls are cumulative:
 - `PORTFOLIO_ALLOW_EXTERNAL_LLM=true` is explicit, never inferred;
 - classification must be public/synthetic;
 - instruction-like/untrusted evidence is rejected;
-- only the minimum evidence item plus expected identity/metric/period is sent;
+- only the minimum public/synthetic evidence item plus a provenance-derived opaque
+  `public-evidence:*` reference, metric, and period is sent; restricted portfolio names are not
+  copied into public evidence or external requests;
 - Responses API `store=False` is set;
 - output is a strict schema and then independently normalized/verified;
-- attempts are bounded to default and one escalation model; and
+- attempts are bounded to the enforced `gpt-5.4-mini` then `gpt-5.4` allowlist; arbitrary or
+  reversed model pairs are rejected before client construction; and
 - no model result can approve/export.
 
 OpenAI's [official data controls documentation](https://platform.openai.com/docs/models/default-usage-policies-by-endpoint)
@@ -99,6 +105,8 @@ ADR-0004 and should be re-verified at execution time because service behaviour m
 - API keys must be process-environment secrets, not `.env.example`, code, CLI arguments,
   fixtures, trace metadata, screenshots, or dissertation appendices.
 - `.env` is ignored; `.env.example` contains only non-secret switches.
+- `PORTFOLIO_REVIEWER_NAME` supplies the local accountable actor. Reviewer names submitted in
+  browser form data are deliberately unsupported.
 - Filenames are reduced to safe basenames before local storage.
 - No dashboard URL/account/credential from the supplied PDF appears in code or fixtures.
 - Error messages expose error types and contract failures, not full raw input/prompts.
@@ -107,7 +115,9 @@ ADR-0004 and should be re-verified at execution time because service behaviour m
 
 - `var/` and `data/` content are ignored except explanatory placeholders.
 - Snapshots use a dataset-specific directory, exclusive-create write, `fsync`, and `0600`.
-- Exports use temporary files, `fsync`, `0600`, then atomic replace.
+- Exports create a pending database manifest, write `0600` files in a private staging directory,
+  atomically rename the complete bundle, then finalize the database record. Failed writes revert
+  the report to approved and retain a failed export audit record.
 - SQLite foreign keys are enabled on every connection.
 - Hashes detect content drift; they are integrity evidence, not encryption or anonymisation.
 - Backups/caches/cloud-sync locations must be checked before real restricted-data use.
@@ -141,6 +151,14 @@ Before sharing the repository or any artifact:
 
 ## Production prohibition
 
-Do not deploy or expose this P0 application. It lacks authentication, authorisation, CSRF
-tokens, tenant isolation, encrypted managed storage, secure operational logging, connector
-governance, rate limits, incident monitoring, backup/restore, and production threat review.
+Do not deploy or expose this application. Loopback/Host/CSRF controls reduce local-browser risk,
+but the prototype still lacks authenticated sessions, authorisation roles, tenant isolation,
+encrypted managed storage, secure operational logging, incident monitoring, backup/restore, and
+production threat review. The bounded connector policy is an engineering control, not source-law
+or licence approval; G2 remains open for every live retrieval.
+
+Atomic export protects normal write/finalization failures and re-verifies hashes on reuse. A hard
+process termination in the narrow interval after directory rename but before database finalization
+fails closed as a pending manifest plus `exporting` report. The prototype deliberately does not
+guess whether to finalize or delete that evidence; recovery requires explicit review of the
+persisted manifest and all artifact hashes.

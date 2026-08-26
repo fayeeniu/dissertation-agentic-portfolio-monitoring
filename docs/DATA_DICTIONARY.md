@@ -14,20 +14,33 @@
 
 | Entity | Purpose | Required identity / important fields | Key invariants |
 |---|---|---|---|
-| `Company` | Canonical portfolio-company identity | `id`, `canonical_name`, `normalized_name`, optional `external_id`, `resolution_status`, `classification` | Normalized name unique; conflicting identifier/name enters ambiguity hold; no fuzzy auto-merge |
+| `Company` | Canonical portfolio-company identity | `id`, `canonical_name`, non-unique `normalized_name`, transitional `external_id`, resolution/classification | Normalized name is a search key only; no fuzzy/name-only auto-merge |
+| `CompanyIdentifier` | Source-scoped exact identity | company, closed scheme, original/canonical value, source, validity, review flag | `(scheme, normalized_value)` globally unique; classifications cannot be crossed by a merge |
+| `IdentityCandidate` / `IdentityDecision` | Human identity hold and append-only decision | submission/imported/suggested company, submitted identity, reason, actor/rationale | Name-only or conflicting identity cannot reach collection until a named decision |
+| `CompanyProgrammeMembership` | Imported programme-entry boundary for one company/submission | submission, company, start date, submitted period label, source cell | One membership per submission/company; invalid or post-cutoff dates are held rather than guessed |
+| `CatalogueVersion` | Frozen metric/workbook contract | semantic version, SHA-256, definition count | A version/hash pair cannot be silently reused with changed semantics |
 | `ReportingPeriod` | Time boundary for inputs and claims | `id`, unique `label`, optional `start_date`, `end_date` | Start ≤ end; same label cannot acquire conflicting dates |
-| `MetricDefinition` | Canonical semantic contract for a metric | `key`, label, category, `data_type`, unit, `sourceability`, aliases, description | Key unique; aliases cannot map to multiple keys; changes should be versioned before empirical freeze |
-| `RawSubmission` | Immutable import snapshot | `id`, `dataset_id`, period, source format, safe filename, SHA-256, local snapshot path, classification | Same hash+period is idempotent; dataset ID unique; snapshot is create-once mode `0600` |
+| `MetricDefinition` | Canonical semantic contract for a metric | `key`, label, category, `data_type`, unit, `sourceability`, period semantics, aliases, description | Key unique; aliases cannot map to multiple keys; every catalogue metric has explicit period semantics; changes should be versioned before empirical freeze |
+| `RawSubmission` | Immutable import snapshot | dataset/period/cutoff, profile and catalogue version/hash, SHA-256, safe local path, classification | Same hash+period is idempotent; formula cells are held; import summary is provenance, not source truth |
 | `Observation` | A submitted value for company×metric×period | original value, normalized value, missing state, unit/currency, source cell, normalization issue | Unique within raw submission×company×metric; original retained; normalized value cannot erase state |
-| `EvidenceItem` | Source material used to test a claim | company/metric links, source type, connector, locator, publisher, times, content, checksum, connector version, classification, trust/stale flags | Immutable source checksum; content is data, never instruction; provenance required for support |
-| `Extraction` | Strictly parsed fact from an evidence item | run/evidence/company/metric, extracted and normalized values, period, provider/model, schema version | Unique per run×evidence; expected identity/metric must match; untrusted evidence has no extraction |
+| `ObservationNarrative` | Paired workbook explanation | parent metric key, body, exact source cell/label | Stored separately from numeric fact; cannot overwrite its parent observation |
+| `EvidenceItem` | Source material used to test a claim | company/metric links, source type, connector, locator, publisher, times, content, checksum, connector version, classification, trust fields | Immutable source checksum; content is data, never instruction; provenance required for support; eligibility is read from `RunEvidence`, not the legacy global temporal column |
+| `RunEvidence` | One evidence item's temporal decision for one run | run, evidence, frozen cutoff, status, rationale, evaluation time | Same evidence can be future for one cutoff and eligible for another; extraction and verification use only this association |
+| `SourceDefinition` / `SourceSnapshot` | Versioned source policy and immutable response | licence/terms state; dated admission; live-admitted flag; manifest hash; exact fact-key→metric/method/schema/unit/currency contracts; request fingerprint; exact reviewed ID; cutoff and programme start; status; locator/path/content hash; canonical derivation hash and contract version; times/classification | Unconfigured/unadmitted source fails closed; response facts/events/media and semantic bindings are manifest-validated; held public content is not persisted; same request/window cannot drift in either bytes or derived facts/events |
+| `RunSourceSnapshot` | Explicit source-collection provenance for one run | run, snapshot, frozen cutoff, link time | A report/event query may use only snapshots bound to its run and matching cutoff |
+| `EvidenceFact` / `CompanyEvent` | Typed fact and append-only lifecycle history derived from a snapshot/submission | value/unit/currency/period; source locator; structured locator; extraction method/schema; event type/date/amount/source | Submission and public facts remain separate; fact provenance is derivation-hashed; events never imply causal impact; repeated events are canonical and linked to each source snapshot through `SourceSnapshotEvent` |
+| `QualityContract` / `QualityViolation` | Executable rule version and source-linked disposition | rule/version/hash, severity, pass/warn/hold/exclude details | Expected missingness and no-record are explicit warnings; temporary unavailability is a coverage warning; terminal collection failure is a hold; no single opaque score |
+| `Extraction` | Strictly parsed fact from an evidence item | run/evidence/company/metric, extracted and normalized values, exact locator/span or abstention, period, provider/model, schema version | Unique per run×evidence; expected identity/metric and span-parsed value must match; untrusted evidence has no extraction |
+| `ExtractionAttempt` | Per-provider attempt telemetry | model/provider/prompt, input/output hashes, tokens, duration, terminal status/escalation | Public/synthetic only externally; maximum one 5.4 validation escalation |
 | `WorkflowRun` | Dataset-level state machine instance | `id`, dataset, period, stage, status, configuration, times/error | Fixed ordered stages; one dataset/period; failure stops downstream stages |
 | `AgentRun` | One functional role execution | run, stage, role, status, input/output hashes, model/attempts/tokens/cost, duration/error, bounded metadata | Trace metadata contains counts/IDs/hashes, not raw restricted values |
 | `Claim` | Reportable proposition | run, company, metric, period, text, normalized value, verification status, evidence links | Must be independently verified before report approval; status is not implied by fluency |
 | `Verification` | Independent decision on a claim | claim, status, rationale, verifier role, time | Separate role; exact evidence/period/sourceability rules; no averaging conflicts |
-| `Report` | Versioned reporting artifact | run, dataset, period, title, version, status, content hash, lifecycle times | One report per run; export requires approval of current version |
+| `ContextStatistic` | Descriptive within-import portfolio distribution | metric, period semantics/exposure window, distribution definition, N, cutoff, source versions, five-number value/status | Not an external UK benchmark; suppressed below minimum N; no ranking/recommendation; currency/unit or incompatible exposure windows do not mix |
+| `Report` | Versioned reporting artifact | run/dataset/period, content and optimistic lock versions, status/hash/times | One report per run; stale mutations fail; export requires current approval |
 | `ReportSection` | Reviewable report unit | report/company, stable key, heading, order, body, version, current flag | Edits create a new version and invalidate approval |
 | `ReviewDecision` | Human audit event | report/section, actor, decision, rationale, report version, time | Actor and rationale required; append-only audit intent |
+| `ReportExport` | Filesystem/database finalization record | report version, pending/finalized/failed status, artifact root, manifest/hash/error | Only a finalized manifest makes download eligible; re-export is idempotent |
 
 ## Missing-state contract
 
@@ -40,7 +53,11 @@
 | `not_applicable` | Metric explicitly does not apply | `null` | No | `N/A`, `not applicable` |
 | `not_reported` | Source explicitly says the value was not reported/provided | `null` | No | `not reported` |
 | `not_found_publicly` | A bounded public search explicitly returned no eligible evidence | `null` | No positive claim | `not found publicly` |
-| `invalid` | Present value violates type/range contract | `null` | No; requires correction/review | fractional headcount, non-ISO date |
+| `filing_not_due` | The filing obligation is not yet due at the cutoff | `null` | No defect and no positive filed-value claim | connector-derived state |
+| `dormant` | The authoritative record marks the company/accounts dormant | `null` | Context-specific; never coerced to zero | connector-derived state |
+| `not_required` | The source contract says the field is not required | `null` | No | connector-derived state |
+| `source_unavailable` | An admitted source could not be retrieved within the bounded attempt policy | `null` | No; quality warning and explicit coverage gap | timeout/retry exhaustion |
+| `invalid` | Present value violates type/range/finite-number contract | `null` | No; requires correction/review | fractional headcount, non-ISO date, `NaN`, `Infinity` |
 
 SQL null alone is never used to infer which semantic state applies; `missing_state` is
 mandatory on observations.
@@ -58,8 +75,34 @@ mandatory on observations.
 | Date | ISO `YYYY-MM-DD` string | No locale-dependent inference |
 | Duration | Canonical decimal string + `hours` | No conversion from days/minutes unless an explicit input contract is added |
 
+All numeric representations must be finite. IEEE/JSON non-finite tokens such as `NaN` and
+positive or negative infinity are retained only as invalid source observations; they cannot enter
+claims, event amounts, contextual statistics, or model-grounded extractions.
+
 The P0 catalogue does not aggregate currency metrics. Any future aggregation must specify
 currency, rate source, rate timestamp, rounding, and treatment of missing rates.
+
+## Period-semantics contract
+
+| Semantic type | Required interpretation | Representative metrics / treatment |
+|---|---|---|
+| `reporting_period` | Value occurred within the named reporting period | jobs created, R&D spend, products, revenue, partnerships |
+| `last_quarter` | Value refers to the immediately preceding quarter encoded by the input contract | CBIT quarter-specific input rows only; never relabelled as the current quarter |
+| `as_at_reporting_cutoff` | Point-in-time state on the frozen cutoff date | employees, TRL, valuation, AI adoption/coverage |
+| `since_programme_start` | Cumulative interval from persisted programme start through cutoff, inclusive | grant funding; exact interval required for public metric support |
+| `before_programme` | Historical value strictly before programme entry | comparison-only CBIT rows; label includes the programme boundary |
+| `lifetime_or_unspecified` | Source describes lifetime scope and no narrower compatible interval exists | visible as such; never silently treated as a reporting-period value |
+| `explanatory_only` | Narrative context, not a metric value | paired explanation rows |
+
+A missing or invalid programme start prevents a cumulative public claim. It does not cause a
+quarter label to be substituted. Source requests, snapshots, facts, and derivation hashes all retain
+the exact cumulative interval.
+
+For longitudinal change, reporting-period metrics require complete, non-overlapping bounds with
+equal duration; point-in-time metrics require ordered cutoffs; and cumulative metrics require the
+same programme origin with ordered cutoffs. Other or incomplete intervals are `not_comparable`.
+Within-portfolio context uses the same exposure dimensions, so different programme starts form
+separate cohorts and usually remain suppressed below the minimum sample size.
 
 ## Sourceability classes
 
@@ -127,7 +170,9 @@ stateDiagram-v2
     pending_review --> rejected: named decision
     pending_review --> pending_review: section edit / new version
     approved --> pending_review: section edit
-    approved --> exported: explicit export
+    approved --> exporting: explicit export / manifest pending
+    exporting --> exported: atomic bundle + DB finalization
+    exporting --> approved: write failure
     exported --> [*]
     rejected --> [*]
 ```

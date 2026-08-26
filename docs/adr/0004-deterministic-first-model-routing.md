@@ -21,14 +21,21 @@ function calling, and structured outputs:
 ## Decision
 
 1. Default to deterministic extraction and normalization; core tests/evaluation need no model.
-2. Keep external use disabled unless `PORTFOLIO_ALLOW_EXTERNAL_LLM=true` is explicitly set.
+2. Keep external use disabled; while G4 is open the default runtime refuses
+   `PORTFOLIO_ALLOW_EXTERNAL_LLM=true`. An approved experiment injects the guarded provider
+   explicitly.
 3. Reject restricted/internal or untrusted/injection-like evidence before provider invocation.
 4. Send one minimal public/synthetic evidence item with expected identity/metric/period.
 5. Use Responses API with `store=False` and strict JSON Schema output.
 6. Route first to `gpt-5.4-mini`; on parsing/schema validation failure only, make at most one
    escalation to `gpt-5.4`; then fail closed.
-7. Apply deterministic identity, normalization, provenance, period, and independent-verification
-   checks after every model output.
+7. Treat that ordered pair as an exact allowlist. Reject arbitrary, reversed, or duplicate model
+   configuration before constructing the external client.
+8. Use an opaque reference derived only from admitted public snapshot provenance as the expected
+   company field; never copy a restricted portfolio company name into the model request.
+7. Require an exact bounded evidence span for every non-null value and deterministically validate
+   its occurrence plus parsed value/currency/unit before identity, normalization, period, and
+   independent-verification checks.
 8. Record model/attempts/tokens; leave cost null unless calculated from a dated authoritative
    price during the run.
 
@@ -65,4 +72,3 @@ Negative/limits:
 Revisit only after Gate 1 authority, a frozen public/synthetic benchmark, budget, execution-date
 official documentation, and a reason deterministic extraction is insufficient. Do not route
 restricted data externally even if a model benchmark is favourable.
-

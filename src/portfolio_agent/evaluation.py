@@ -5,53 +5,20 @@ import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Literal
-
-from pydantic import BaseModel, ConfigDict
+from typing import Any
 
 from .catalogue import MetricCatalogue
-from .enums import EvaluationCondition, MissingState, Sourceability, VerificationStatus
-from .ids import sha256_bytes
+from .enums import (
+    EvaluationCondition,
+    MetricDataType,
+    MissingState,
+    TemporalEligibilityStatus,
+    VerificationStatus,
+)
+from .evaluation_datasets import EvaluationCase, load_evaluation_dataset
 from .normalization import normalize_value
 from .schemas import EvaluationCaseResult, EvaluationSummary
 from .verification import VerificationEvidence, verify_claim
-
-
-class _EvidenceCase(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    id: str
-    source_type: str
-    value: str | int | bool | None
-    currency: str | None
-    period_label: str | None
-    publisher: str | None
-    locator: str
-    checksum: str
-    is_untrusted: bool
-
-
-class _EvaluationCase(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    case_id: str
-    category: str
-    metric_key: str
-    candidate_value: str | int | bool | None
-    candidate_currency: str | None
-    sourceability: Sourceability
-    precondition: Literal["valid", "ambiguous_identity", "source_inaccessible"]
-    evidence: tuple[_EvidenceCase, ...]
-    expected_emit: bool
-    expected_status: str
-
-
-class _EvaluationDocument(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    schema_version: str
-    classification: Literal["synthetic"]
-    cases: tuple[_EvaluationCase, ...]
 
 
 @dataclass(frozen=True, slots=True)
@@ -62,14 +29,14 @@ class _Prediction:
     normalization_correct: bool
 
 
-def _candidate(case: _EvaluationCase, catalogue: MetricCatalogue) -> tuple[Any, str | None, bool]:
+def _candidate(case: EvaluationCase, catalogue: MetricCatalogue) -> tuple[Any, str | None, bool]:
     metric = catalogue.get(case.metric_key)
     normalized = normalize_value(case.candidate_value, metric)
     eligible = normalized.missing_state in {MissingState.OBSERVED, MissingState.ZERO}
     return normalized.value, normalized.currency or case.candidate_currency, eligible
 
 
-def _single_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) -> _Prediction:
+def _single_agent_prediction(case: EvaluationCase, catalogue: MetricCatalogue) -> _Prediction:
     normalized_value, _, eligible = _candidate(case, catalogue)
     if case.precondition == "ambiguous_identity":
         return _Prediction(False, "identity_hold", False, True)
@@ -81,7 +48,7 @@ def _single_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) 
     return _Prediction(True, "unverified", provenance_complete, True)
 
 
-def _multi_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) -> _Prediction:
+def _multi_agent_prediction(case: EvaluationCase, catalogue: MetricCatalogue) -> _Prediction:
     normalized_value, currency, eligible = _candidate(case, catalogue)
     if case.precondition == "ambiguous_identity":
         return _Prediction(False, "identity_hold", False, True)
@@ -99,6 +66,7 @@ def _multi_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) -
             locator=item.locator,
             checksum=item.checksum,
             is_untrusted=item.is_untrusted,
+            temporal_status=TemporalEligibilityStatus.ELIGIBLE.value,
         )
         for item in case.evidence
     )
@@ -107,6 +75,7 @@ def _multi_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) -
         candidate_currency=currency,
         sourceability=case.sourceability,
         evidence=evidence,
+        require_currency=catalogue.get(case.metric_key).data_type is MetricDataType.CURRENCY,
     )
     emit = outcome.status is VerificationStatus.SUPPORTED
     provenance_complete = emit and bool(outcome.supporting_evidence_ids)
@@ -114,7 +83,7 @@ def _multi_agent_prediction(case: _EvaluationCase, catalogue: MetricCatalogue) -
 
 
 def _case_result(
-    case: _EvaluationCase,
+    case: EvaluationCase,
     condition: EvaluationCondition,
     prediction: _Prediction,
     duration_ms: int,
@@ -140,6 +109,21 @@ def _case_result(
                 or prediction.status == case.expected_status
             )
         ),
+        identity_correct=None,
+        extraction_correct=None,
+        temporal_correct=None,
+        quality_correct=None,
+        contradiction_correct=(
+            (case.expected_status == VerificationStatus.CONTRADICTED.value)
+            == (prediction.status == VerificationStatus.CONTRADICTED.value)
+            if case.expected_status == VerificationStatus.CONTRADICTED.value
+            or prediction.status == VerificationStatus.CONTRADICTED.value
+            else None
+        ),
+        abstention_correct=prediction.emit == case.expected_emit,
+        event_correct=None,
+        report_correct=None,
+        reviewer_utility=None,
         duration_ms=duration_ms,
     )
 
@@ -164,6 +148,12 @@ def _summary(
         else None
     )
     total_claims = sum(result.total_claims for result in results)
+
+    def accuracy(field: str) -> float | None:
+        values = [getattr(result, field) for result in results]
+        observed = [value for value in values if value is not None]
+        return _safe_ratio(sum(bool(value) for value in observed), len(observed))
+
     return EvaluationSummary(
         condition=condition,
         case_count=len(results),
@@ -184,6 +174,15 @@ def _summary(
         verification_accuracy=_safe_ratio(
             sum(result.verification_correct for result in results), len(results)
         ),
+        identity_accuracy=accuracy("identity_correct"),
+        extraction_accuracy=accuracy("extraction_correct"),
+        temporal_accuracy=accuracy("temporal_correct"),
+        quality_accuracy=accuracy("quality_correct"),
+        contradiction_accuracy=accuracy("contradiction_correct"),
+        abstention_accuracy=accuracy("abstention_correct"),
+        event_accuracy=accuracy("event_correct"),
+        report_accuracy=accuracy("report_correct"),
+        reviewer_utility=None,
         repeat_consistency=repeat_consistency,
         mean_duration_ms=_safe_ratio(sum(result.duration_ms for result in results), len(results)),
         llm_cost_usd="0",
@@ -207,6 +206,15 @@ def _protocol_only_summary(condition: EvaluationCondition, note: str) -> Evaluat
         schema_validity_rate=None,
         normalization_accuracy=None,
         verification_accuracy=None,
+        identity_accuracy=None,
+        extraction_accuracy=None,
+        temporal_accuracy=None,
+        quality_accuracy=None,
+        contradiction_accuracy=None,
+        abstention_accuracy=None,
+        event_accuracy=None,
+        report_accuracy=None,
+        reviewer_utility=None,
         repeat_consistency=None,
         mean_duration_ms=None,
         llm_cost_usd=None,
@@ -214,11 +222,11 @@ def _protocol_only_summary(condition: EvaluationCondition, note: str) -> Evaluat
     )
 
 
-def run_evaluation(cases_path: Path, *, repeats: int = 3) -> dict[str, Any]:
+def run_evaluation(manifest_path: Path, *, repeats: int = 3) -> dict[str, Any]:
     if repeats < 2:
         raise ValueError("At least two repeats are required for consistency measurement.")
-    payload = cases_path.read_bytes()
-    document = _EvaluationDocument.model_validate_json(payload)
+    dataset = load_evaluation_dataset(manifest_path, tier="D0")
+    document = dataset.document
     catalogue = MetricCatalogue()
     condition_functions = {
         EvaluationCondition.DETERMINISTIC_SINGLE_AGENT: _single_agent_prediction,
@@ -260,13 +268,23 @@ def run_evaluation(cases_path: Path, *, repeats: int = 3) -> dict[str, Any]:
         )
     )
     return {
-        "schema_version": "evaluation-output-v1",
+        "schema_version": "evaluation-output-v2",
         "generated_at": datetime.now(UTC).isoformat(),
         "source": {
-            "path": str(cases_path),
-            "sha256": sha256_bytes(payload),
+            "manifest_path": str(dataset.manifest_path),
+            "manifest_sha256": dataset.manifest_sha256,
+            "dataset_sha256": dataset.dataset_sha256,
+            "tier": dataset.entry.tier,
+            "namespace": dataset.entry.namespace,
+            "source_version": dataset.entry.source_version,
+            "partition_policy": dataset.entry.partition_policy,
             "classification": document.classification,
             "case_count": len(document.cases),
+        },
+        "condition_parity": {
+            "shared_core": ["catalogue", "normalization", "input_cases"],
+            "deterministic_single_agent_ablation": ["independent_verification"],
+            "multi_agent_verification_addition": ["independent_verifier"],
         },
         "repeats": repeats,
         "summaries": [summary.model_dump(mode="json") for summary in summaries],

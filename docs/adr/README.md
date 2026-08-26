@@ -11,4 +11,4 @@ are known.
 | [0003](0003-local-sqlite-and-immutable-files.md) | SQLite metadata plus immutable ignored files | Accepted |
 | [0004](0004-deterministic-first-model-routing.md) | Deterministic-first, guarded `gpt-5.4-mini` → `gpt-5.4` route | Accepted |
 | [0005](0005-json-markdown-html-reports.md) | Canonical JSON plus Markdown and accessible HTML | Accepted |
-
+| [0006](0006-uk-public-evidence-boundaries.md) | Exact UK identity/source/time boundaries, descriptive context, and sealed evaluation | Accepted offline; live gates open |

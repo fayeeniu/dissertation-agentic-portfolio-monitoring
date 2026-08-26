@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from .enums import Sourceability, VerificationStatus
+from .enums import Sourceability, TemporalEligibilityStatus, VerificationStatus
 
 
 @dataclass(frozen=True, slots=True)
@@ -17,6 +17,7 @@ class VerificationEvidence:
     publisher: str | None
     locator: str
     checksum: str
+    temporal_status: str
     is_untrusted: bool = False
 
     @property
@@ -25,7 +26,10 @@ class VerificationEvidence:
 
     @property
     def is_current(self) -> bool:
-        return self.period_label == self.expected_period_label
+        return (
+            self.period_label == self.expected_period_label
+            and self.temporal_status == TemporalEligibilityStatus.ELIGIBLE.value
+        )
 
     @property
     def has_provenance(self) -> bool:
@@ -43,12 +47,14 @@ def _same_value(
     candidate_value: Any,
     candidate_currency: str | None,
     evidence: VerificationEvidence,
+    *,
+    require_currency: bool,
 ) -> bool:
     if candidate_value != evidence.value:
         return False
-    return not (
-        candidate_currency and evidence.currency and candidate_currency != evidence.currency
-    )
+    if candidate_currency != evidence.currency:
+        return False
+    return not require_currency or candidate_currency is not None
 
 
 def verify_claim(
@@ -57,7 +63,9 @@ def verify_claim(
     candidate_currency: str | None,
     sourceability: Sourceability,
     evidence: tuple[VerificationEvidence, ...],
+    require_currency: bool = False,
 ) -> VerificationOutcome:
+    evidence = tuple(sorted(evidence, key=lambda item: item.evidence_id))
     if not evidence:
         return VerificationOutcome(
             status=VerificationStatus.INSUFFICIENT_EVIDENCE,
@@ -92,12 +100,22 @@ def verify_claim(
         matching_public = tuple(
             item
             for item in current_public
-            if _same_value(candidate_value, candidate_currency, item)
+            if _same_value(
+                candidate_value,
+                candidate_currency,
+                item,
+                require_currency=require_currency,
+            )
         )
         conflicting_public = tuple(
             item
             for item in current_public
-            if not _same_value(candidate_value, candidate_currency, item)
+            if not _same_value(
+                candidate_value,
+                candidate_currency,
+                item,
+                require_currency=require_currency,
+            )
         )
         if conflicting_public:
             return VerificationOutcome(
@@ -111,7 +129,12 @@ def verify_claim(
                 for item in evidence
                 if item.is_internal
                 and item.is_current
-                and _same_value(candidate_value, candidate_currency, item)
+                and _same_value(
+                    candidate_value,
+                    candidate_currency,
+                    item,
+                    require_currency=require_currency,
+                )
             )
             return VerificationOutcome(
                 status=VerificationStatus.SUPPORTED,
@@ -143,10 +166,24 @@ def verify_claim(
         )
 
     matching = tuple(
-        item for item in current if _same_value(candidate_value, candidate_currency, item)
+        item
+        for item in current
+        if _same_value(
+            candidate_value,
+            candidate_currency,
+            item,
+            require_currency=require_currency,
+        )
     )
     conflicting = tuple(
-        item for item in current if not _same_value(candidate_value, candidate_currency, item)
+        item
+        for item in current
+        if not _same_value(
+            candidate_value,
+            candidate_currency,
+            item,
+            require_currency=require_currency,
+        )
     )
 
     internal_match = any(item.is_internal for item in matching)

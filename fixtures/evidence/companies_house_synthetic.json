@@ -1,0 +1,68 @@
+{
+  "schema_version": "companies-house-synthetic-v1",
+  "classification": "synthetic",
+  "publisher": "Synthetic Companies House replay",
+  "records": [
+    {
+      "company_number": "00000001",
+      "company_name": "Source Synthetic Ltd",
+      "company_status": "active",
+      "date_of_creation": "2020-01-15",
+      "date_of_cessation": null,
+      "sic_codes": ["62020"],
+      "registered_office_postcode": "ZZ1 1ZZ",
+      "published_at": "2025-06-29T09:00:00Z",
+      "accounts": {
+        "next_due": "2025-09-30",
+        "period_end": "2024-12-31",
+        "last_filed_at": "2025-03-20",
+        "overdue": false,
+        "dormant": false
+      },
+      "filings": [
+        {
+          "transaction_id": "SYN-FILING-001",
+          "category": "accounts",
+          "filed_at": "2025-03-20",
+          "period_start": "2024-01-01",
+          "period_end": "2024-12-31",
+          "description": "Synthetic annual accounts filed"
+        },
+        {
+          "transaction_id": "SYN-FUTURE-FILING",
+          "category": "accounts",
+          "filed_at": "2025-07-02",
+          "period_start": "2025-01-01",
+          "period_end": "2025-06-30",
+          "description": "Synthetic filing after historical cutoff"
+        }
+      ],
+      "charges": [
+        {
+          "charge_id": "SYN-CHARGE-001",
+          "created_at": "2024-11-01",
+          "status": "outstanding"
+        }
+      ]
+    },
+    {
+      "company_number": "SC000002",
+      "company_name": "Dormant Synthetic Ltd",
+      "company_status": "active",
+      "date_of_creation": "2019-04-03",
+      "date_of_cessation": null,
+      "sic_codes": [],
+      "registered_office_postcode": "ZZ2 2ZZ",
+      "published_at": "2025-06-28T09:00:00Z",
+      "accounts": {
+        "next_due": "2025-10-31",
+        "period_end": null,
+        "last_filed_at": null,
+        "overdue": false,
+        "dormant": true
+      },
+      "filings": [],
+      "charges": []
+    }
+  ]
+}

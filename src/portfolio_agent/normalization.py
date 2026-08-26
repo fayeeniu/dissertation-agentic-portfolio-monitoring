@@ -19,6 +19,11 @@ _MISSING_TOKENS: dict[str, MissingState] = {
     "unknown": MissingState.NOT_REPORTED,
     "not found": MissingState.NOT_FOUND_PUBLICLY,
     "not found publicly": MissingState.NOT_FOUND_PUBLICLY,
+    "filing not due": MissingState.FILING_NOT_DUE,
+    "not yet due": MissingState.FILING_NOT_DUE,
+    "dormant": MissingState.DORMANT,
+    "not required": MissingState.NOT_REQUIRED,
+    "source unavailable": MissingState.SOURCE_UNAVAILABLE,
 }
 
 _CURRENCY_SYMBOLS = {"£": "GBP", "$": "USD", "€": "EUR"}
@@ -35,9 +40,12 @@ def _parse_decimal(value: Any) -> tuple[Decimal | None, str | None]:
         return None, "boolean_is_not_numeric"
     if isinstance(value, (int, float, Decimal)):
         try:
-            return Decimal(str(value)), None
+            parsed = Decimal(str(value))
         except InvalidOperation:
             return None, "invalid_number"
+        if not parsed.is_finite():
+            return None, "non_finite_number"
+        return parsed, None
     if not isinstance(value, str):
         return None, "unsupported_numeric_type"
     compact = value.strip().replace(",", "").replace("_", "")
@@ -52,6 +60,8 @@ def _parse_decimal(value: Any) -> tuple[Decimal | None, str | None]:
         parsed = Decimal(compact)
     except InvalidOperation:
         return None, "invalid_number"
+    if not parsed.is_finite():
+        return None, "non_finite_number"
     return (-parsed if negative else parsed), None
 
 

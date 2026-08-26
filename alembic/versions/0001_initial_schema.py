@@ -5,6 +5,7 @@ Revises: None
 """
 
 from collections.abc import Sequence
+from datetime import datetime
 
 import sqlalchemy as sa
 
@@ -20,7 +21,7 @@ def _id() -> sa.Column[str]:
     return sa.Column("id", sa.String(length=48), nullable=False)
 
 
-def _created_at() -> sa.Column[object]:
+def _created_at() -> sa.Column[datetime]:
     return sa.Column("created_at", sa.DateTime(timezone=True), nullable=False)
 
 

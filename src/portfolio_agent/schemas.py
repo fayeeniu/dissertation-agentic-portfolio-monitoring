@@ -3,11 +3,15 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .cbit_contract import PeriodSemantics
 from .enums import (
     DataClassification,
     EvaluationCondition,
+    IdentifierScheme,
+    IdentityCandidateStatus,
+    IdentityDecisionType,
     MetricDataType,
     MissingState,
     ReportStatus,
@@ -48,6 +52,7 @@ class MetricDefinition(Contract):
     unit: str | None = None
     aliases: tuple[str, ...] = ()
     description: str
+    period_semantics: PeriodSemantics = PeriodSemantics.NONE
 
 
 class NormalizedValue(Contract):
@@ -68,6 +73,11 @@ class RawSubmission(Contract):
     original_filename: str
     snapshot_path: str
     classification: DataClassification
+    reporting_cutoff: date | None = None
+    profile_key: str | None = None
+    profile_version: str | None = None
+    catalogue_version: str | None = None
+    catalogue_sha256: str | None = None
 
 
 class Observation(Contract):
@@ -171,6 +181,7 @@ class ImportIssue(Contract):
     code: str
     message: str
     location: str | None = None
+    occurrences: int = 1
 
 
 class ImportResult(Contract):
@@ -181,6 +192,47 @@ class ImportResult(Contract):
     observation_count: int
     issues: tuple[ImportIssue, ...] = ()
     reused_existing: bool = False
+    profile_key: str | None = None
+    profile_version: str | None = None
+    reporting_cutoff: date | None = None
+    narrative_count: int = 0
+    held_field_count: int = 0
+    formula_cell_count: int = 0
+    identity_hold_count: int = 0
+    programme_start_count: int = 0
+
+
+class CompanyIdentifier(Contract):
+    id: str
+    company_id: str
+    scheme: IdentifierScheme
+    value: str
+    normalized_value: str
+    source_key: str | None = None
+    reviewed: bool
+
+
+class IdentityCandidate(Contract):
+    id: str
+    raw_submission_id: str
+    imported_company_id: str
+    candidate_company_id: str | None = None
+    submitted_name: str
+    normalized_name: str
+    identifier_scheme: IdentifierScheme | None = None
+    submitted_identifier: str | None = None
+    status: IdentityCandidateStatus
+    reason_code: str
+
+
+class IdentityDecision(Contract):
+    id: str
+    candidate_id: str
+    company_id: str | None = None
+    decision: IdentityDecisionType
+    actor: str
+    reason: str
+    created_at: datetime
 
 
 class PipelineResult(Contract):
@@ -192,6 +244,33 @@ class PipelineResult(Contract):
     claim_counts: dict[str, int]
 
 
+class ContextStatistic(Contract):
+    metric_key: str
+    metric_label: str
+    status: str
+    sample_size: int
+    minimum_sample_size: int
+    unit: str | None = None
+    currency: str | None = None
+    minimum: str | None = None
+    first_quartile: str | None = None
+    median: str | None = None
+    third_quartile: str | None = None
+    maximum: str | None = None
+
+
+class ChangeComparison(Contract):
+    company_id: str
+    metric_key: str
+    current_period: str
+    prior_period: str | None = None
+    status: str
+    current_value: str
+    prior_value: str | None = None
+    absolute_change: str | None = None
+    percentage_change: str | None = None
+
+
 class StrictExtraction(Contract):
     company_name: str
     metric_key: str
@@ -200,6 +279,34 @@ class StrictExtraction(Contract):
     currency: str | None = None
     period_label: str | None = None
     evidence_locator: str
+    evidence_span: str | None = Field(default=None, max_length=500)
+    abstain_reason: str | None = Field(default=None, max_length=255)
+    confidence: float = Field(ge=0, le=1)
+
+    @model_validator(mode="after")
+    def require_grounded_value_or_abstention(self) -> StrictExtraction:
+        if self.value is None:
+            if not self.abstain_reason or self.evidence_span is not None:
+                raise ValueError(
+                    "Null extraction requires an abstention reason and no evidence span."
+                )
+        elif not self.evidence_span or self.abstain_reason is not None:
+            raise ValueError(
+                "Non-null extraction requires an exact evidence span and no abstention reason."
+            )
+        return self
+
+
+class DocumentExtraction(Contract):
+    field_key: str
+    value: str | int | bool | None
+    raw_value: str | int | bool | None = None
+    unit: str | None = None
+    currency: str | None = None
+    period_label: str | None = None
+    evidence_locator: str | None = None
+    extraction_method: str
+    abstain_reason: str | None = None
     confidence: float = Field(ge=0, le=1)
 
 
@@ -217,6 +324,15 @@ class EvaluationCaseResult(Contract):
     schema_valid: bool
     normalization_correct: bool
     verification_correct: bool
+    identity_correct: bool | None = None
+    extraction_correct: bool | None = None
+    temporal_correct: bool | None = None
+    quality_correct: bool | None = None
+    contradiction_correct: bool | None = None
+    abstention_correct: bool
+    event_correct: bool | None = None
+    report_correct: bool | None = None
+    reviewer_utility: float | None = None
     duration_ms: int
 
 
@@ -232,6 +348,15 @@ class EvaluationSummary(Contract):
     schema_validity_rate: float | None
     normalization_accuracy: float | None
     verification_accuracy: float | None
+    identity_accuracy: float | None
+    extraction_accuracy: float | None
+    temporal_accuracy: float | None
+    quality_accuracy: float | None
+    contradiction_accuracy: float | None
+    abstention_accuracy: float | None
+    event_accuracy: float | None
+    report_accuracy: float | None
+    reviewer_utility: float | None
     repeat_consistency: float | None
     mean_duration_ms: float | None
     llm_cost_usd: str | None = None

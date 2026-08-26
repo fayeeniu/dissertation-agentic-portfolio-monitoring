@@ -1,0 +1,30 @@
+{
+  "schema_version": "dissertation-visual-pack-v1",
+  "classification": "synthetic-and-structural-counts-only",
+  "cutoff": "2025-06-30",
+  "workflow_fixture": "fixtures/synthetic_portfolio.json",
+  "workflow": {
+    "observations": 21,
+    "verification": {"supported": 13, "contradicted": 2, "stale": 1},
+    "evidence": {"portfolio_submission": 21, "synthetic_public_fixture": 10},
+    "missingness": {"observed": 13, "zero": 2, "blank": 2, "none_stated": 1, "not_applicable": 1, "not_found_publicly": 1, "not_reported": 1},
+    "quality": {"exclude": 1, "hold": 1, "warn": 0},
+    "extraction_attempts": {"succeeded": 9, "abstained": 0, "rejected": 0, "failed": 0}
+  },
+  "identity_structural_profile": {
+    "company_columns": 14,
+    "exact_registry_identifiers": 1,
+    "review_holds": 14
+  },
+  "illustrative_context": {
+    "label": "Illustrative synthetic within-portfolio employee distribution",
+    "values": [12, 17, 21, 24, 31, 42, 48, 55],
+    "unit": "people",
+    "minimum_sample_size": 3
+  },
+  "evaluation": {
+    "case_count": 14,
+    "deterministic_single_agent": {"precision": 0.4545454545, "recall": 1.0, "verification_accuracy": 0.5714285714},
+    "multi_agent_verification": {"precision": 1.0, "recall": 1.0, "verification_accuracy": 1.0}
+  }
+}

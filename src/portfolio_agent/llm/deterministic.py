@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from portfolio_agent.ids import stable_hash
 from portfolio_agent.schemas import StrictExtraction
 from portfolio_agent.security import contains_prompt_injection
 
-from .base import ExtractionRequest, ProviderOutcome
+from .base import ExtractionRequest, ProviderAttempt, ProviderOutcome
 
 
 class DeterministicExtractionProvider:
@@ -29,11 +30,30 @@ class DeterministicExtractionProvider:
             ),
             period_label=period_label,
             evidence_locator=evidence.locator,
+            evidence_span=(str(content.get("value")) if content.get("value") is not None else None),
+            abstain_reason=("source_value_is_null" if content.get("value") is None else None),
             confidence=1.0,
+        )
+        attempt = ProviderAttempt(
+            attempt_number=1,
+            provider=self.name,
+            model=None,
+            status="succeeded" if extraction.value is not None else "abstained",
+            duration_ms=0,
+            input_hash=stable_hash(
+                {
+                    "evidence_id": evidence.id,
+                    "company": request.expected_company_name,
+                    "metric": request.expected_metric_key,
+                    "period": request.expected_period_label,
+                }
+            ),
+            output_hash=stable_hash(extraction.model_dump(mode="json")),
         )
         return ProviderOutcome(
             extraction=extraction,
             provider=self.name,
             model=None,
             attempts=1,
+            attempt_records=(attempt,),
         )

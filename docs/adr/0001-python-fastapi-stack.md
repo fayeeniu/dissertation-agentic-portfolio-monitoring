@@ -50,7 +50,8 @@ Negative/limits:
 
 - synchronous stages are not suited to long live crawls;
 - SQLite is not a production concurrency/tenant solution;
-- authentication/CSRF/operations are deliberately absent; and
+- loopback/Host/CSRF controls exist, but authenticated sessions and production operations remain
+  deliberately absent; and
 - exact pins require an explicit update/security process.
 
 ## Validation and revisit trigger
@@ -58,4 +59,3 @@ Negative/limits:
 Validate via an empty-database migration, test suite, coverage, type/lint checks, and local e2e
 run. Revisit only if an authorised P1 connector needs durable async jobs, concurrent reviewers,
 or a production deployment—none is evidence needed for the current RQ.
-

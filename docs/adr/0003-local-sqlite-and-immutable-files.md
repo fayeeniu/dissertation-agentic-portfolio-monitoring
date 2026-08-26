@@ -18,8 +18,9 @@ less clear.
 - Manage schema with explicit Alembic migrations.
 - Store imported raw bytes in create-once dataset directories below ignored `var/raw` with mode
   `0600`; record SHA-256 and path in `RawSubmission`.
-- Store exports below ignored `var/exports/<report>/v<version>/`, using temporary write, `fsync`,
-  restrictive permissions, and atomic replace.
+- Store exports below ignored `var/exports/<report>/v<version>/`. Commit a pending manifest,
+  write/fsync restrictive files into a staging directory, atomically rename the complete bundle,
+  and finalize database state only afterwards.
 - Keep only fictional fixtures in Git.
 - Treat hashes as integrity/provenance—not encryption, anonymisation, or lawful authority.
 
@@ -39,15 +40,18 @@ Positive:
 
 - core workflow runs offline without accounts or infrastructure;
 - raw bytes remain hash-verifiable and are not silently rewritten;
+- parsed source facts/events are bound to terminal source metadata by a separate canonical
+  derivation hash, detecting same-byte parser drift and concurrent disagreement;
 - relational constraints support claim/evidence/version audit; and
 - runtime data stays outside source control.
 
 Negative/limits:
 
 - local disk/SQLite are not automatically encrypted, backed up, or multi-user safe;
-- filesystem and database can diverge after external/manual deletion;
-- `create_all` used by local bootstrap is convenient but migrations must remain the reproducible
-  setup authority; and
+- filesystem and database can diverge after external/manual deletion, which finalized-manifest
+  checks detect but do not automatically repair;
+- runtime startup always runs Alembic to head; an unstamped legacy schema is deliberately not
+  guessed or stamped silently; and
 - retention/secure deletion require an approved operational procedure before real data.
 
 ## Validation and revisit trigger
@@ -55,4 +59,3 @@ Negative/limits:
 Migration from an empty temporary database must produce the same table set as SQLAlchemy
 metadata. Import tests check idempotence and file mode. Revisit for authorised concurrent/team or
 production work only after security/operations requirements are defined.
-

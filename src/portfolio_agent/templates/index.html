@@ -17,6 +17,7 @@
   <p class="step">Step 1</p>
   <h2 id="import-title">Import a reporting-period snapshot</h2>
   <form action="/imports" method="post" enctype="multipart/form-data" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <div class="field wide">
       <label for="file">XLSX, CSV, or JSON file</label>
       <input id="file" name="file" type="file" accept=".xlsx,.csv,.json" required>
@@ -25,6 +26,11 @@
     <div class="field">
       <label for="period_label">Period label</label>
       <input id="period_label" name="period_label" type="text" placeholder="Required for XLSX/CSV">
+    </div>
+    <div class="field">
+      <label for="reporting_cutoff">Reporting cutoff</label>
+      <input id="reporting_cutoff" name="reporting_cutoff" type="date">
+      <p class="hint">Required for the CBIT profile; controls historical evidence eligibility.</p>
     </div>
     <div class="field">
       <label for="classification">Data classification</label>
@@ -54,6 +60,7 @@
           <td>{{ dataset.classification }}</td>
           <td>
             <form action="/runs" method="post">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
               <input type="hidden" name="dataset_id" value="{{ dataset.dataset_id }}">
               <button type="submit" class="secondary">Run to review</button>
             </form>
@@ -67,6 +74,43 @@
   <p class="empty">No datasets imported yet. Use the fictional fixture via the CLI for a safe demonstration.</p>
   {% endif %}
 </section>
+
+{% if identity_candidates %}
+<section class="panel" aria-labelledby="identity-title">
+  <p class="step">Identity hold</p>
+  <h2 id="identity-title">Resolve company identities before collection</h2>
+  <p>Names are search hints only. Accepting a candidate records the configured reviewer and may merge only within the same data-classification boundary.</p>
+  <div class="table-wrap"><table>
+    <caption>Pending, source-scoped identity decisions</caption>
+    <thead><tr><th scope="col">Submitted identity</th><th scope="col">Reason</th><th scope="col">Suggested company</th><th scope="col">Decision</th></tr></thead>
+    <tbody>
+    {% for candidate in identity_candidates %}
+      <tr>
+        <td>{{ candidate.submitted_name }}{% if candidate.submitted_identifier %}<br><code>{{ candidate.identifier_scheme }}:{{ candidate.submitted_identifier }}</code>{% endif %}</td>
+        <td><code>{{ candidate.reason_code }}</code></td>
+        <td><code>{{ candidate.candidate_company_id or 'new unresolved company' }}</code></td>
+        <td>
+          {% if reviewer_name %}
+          <form action="/identity-candidates/{{ candidate.id }}/decide" method="post" class="stacked-form compact-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label for="identity-decision-{{ loop.index }}">Decision</label>
+            <select id="identity-decision-{{ loop.index }}" name="decision"><option value="accept">Accept</option><option value="reject">Reject</option></select>
+            <label for="identity-company-{{ loop.index }}">Target company ID (optional)</label>
+            <input id="identity-company-{{ loop.index }}" name="company_id" value="{{ candidate.candidate_company_id or '' }}">
+            <label for="identity-reason-{{ loop.index }}">Rationale</label>
+            <textarea id="identity-reason-{{ loop.index }}" name="reason" required minlength="5" maxlength="2000"></textarea>
+            <button type="submit" class="secondary">Record decision</button>
+          </form>
+          {% else %}
+          <p class="empty">Configure <code>PORTFOLIO_REVIEWER_NAME</code> to enable decisions.</p>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+</section>
+{% endif %}
 
 <div class="two-column">
   <section class="panel" aria-labelledby="runs-title">
@@ -83,4 +127,3 @@
   </section>
 </div>
 {% endblock %}
-

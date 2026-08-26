@@ -68,7 +68,19 @@ td small { display: block; margin-top: .35rem; }
 .status-insufficient_evidence { color: #544c7f; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 .section-heading span { color: var(--muted); }
-.markdown-source { white-space: pre-wrap; border-left: .25rem solid #9bb9b2; padding-left: 1rem; margin: 1rem 0 1.5rem; }
+.markdown-source { border-left: .25rem solid #9bb9b2; padding-left: 1rem; margin: 1rem 0 1.5rem; }
+.rendered-markdown .table-wrap { margin: 1rem 0; }
+.rendered-markdown p { max-width: 75ch; }
+.compact-form textarea { min-height: 5rem; }
+button:disabled { cursor: not-allowed; opacity: .55; }
+.timeline { list-style: none; padding: 0; border-left: .2rem solid var(--line); }
+.timeline li { display: grid; gap: .2rem; margin: 0 0 1.2rem 1rem; position: relative; }
+.timeline li::before { content: ""; width: .7rem; height: .7rem; border-radius: 50%; background: var(--accent); position: absolute; left: -1.45rem; top: .4rem; }
+.timeline time, .timeline span { color: var(--muted); font-size: .85rem; }
+.visual-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.visual-card { border: 1px solid var(--line); border-radius: .3rem; padding: 1rem; background: #fff; }
+.visual-card label { display: grid; grid-template-columns: 1fr 2fr auto; gap: .5rem; align-items: center; margin: .55rem 0; font-size: .86rem; font-weight: 500; }
+.visual-card progress { width: 100%; accent-color: var(--accent); }
 details { border-top: 1px solid var(--line); padding-top: 1rem; }
 summary { cursor: pointer; font-weight: 700; }
 .stacked-form { margin-top: 1rem; }

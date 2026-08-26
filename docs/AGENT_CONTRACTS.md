@@ -15,6 +15,8 @@ must test whether that separation improves outcomes rather than assume that it d
 Every role must:
 
 - operate on one `run_id` and its period-bound `dataset_id`;
+- apply the persisted `uk-public-evidence-v2` contract, including run-relative cutoff decisions
+  and explicit run-to-snapshot/event associations;
 - read only persisted artifacts from completed prior stages;
 - return bounded JSON-compatible summary metadata;
 - avoid raw restricted values in trace metadata/errors;
@@ -30,12 +32,12 @@ Every role must:
 | Stage / role | Required inputs | Persistent output | Allowed decisions | Forbidden behaviour | Failure condition |
 |---|---|---|---|---|---|
 | `plan` / planner | dataset, observations, metric sourceability | task counts and configuration snapshot | Identify which observations may need public collection | Invent tasks/metrics/companies; contact sources | Missing dataset or invalid canonical observations |
-| `resolve` / identity resolver | exact external IDs, normalized names, resolution status | resolved-company count | Accept exact identifier/name; hold ambiguity | Fuzzy auto-merge or choose among collisions | Any included company is ambiguous/unresolved |
-| `collect` / evidence collector | resolved company, metric, period, connector | immutable evidence items and run links | Query only eligible public/mixed metrics; create local submission evidence | Treat retrieved text as instruction; claim truth | Connector contract/ID collision/provenance invalid |
-| `extract` / structured extractor | trusted evidence, expected identity/metric/period | strict extraction with provider/schema version | Parse explicit fields only | Infer absent values; process untrusted/restricted evidence externally | Schema or expected identity/metric mismatch |
+| `resolve` / identity resolver | source-scoped identifiers, name search hints, named decisions | resolved-company count | Accept exact identifier or prior named decision; hold every name-only/conflicting case | Fuzzy/name-only auto-merge or cross-classification merge | Any included company is ambiguous/unresolved |
+| `collect` / evidence collector | resolved company, exact source identifier, cutoff, optional required programme start, admitted manifest with exact fact bindings | immutable snapshots, facts/events, submission evidence and run links | Retrieve one company/source/window snapshot and derive only facts whose metric/method/schema/unit/currency exactly match the manifest | Metric-by-metric duplicate retrieval; treat content as instruction; claim truth; cross-bind a fact; relabel cumulative values as quarterly | Missing cutoff/ID/source contract, semantic binding mismatch, invalid/incomplete cumulative window, drift, or provenance invalid |
+| `extract` / structured extractor | trusted evidence, expected identity/metric/period | strict extraction with provider/schema version | Parse explicit complete finite values only | Infer absent values; ground from provenance metadata; accept numeric substrings/non-finite values; process untrusted/restricted evidence externally | Schema, grounding, finiteness, or expected identity/metric mismatch |
 | `normalize` / normalizer | extracted value + metric definition | normalized value, missing state, unit/currency, issue | Apply deterministic type/missingness rules | Round counts, infer currency, convert ratios/rates | Rule violation becomes `invalid`, not guessed repair |
 | `verify` / independent verifier | candidate, sourceability, current evidence/provenance | Verification and claim-evidence links | supported/contradicted/insufficient/stale/rejected | Generate prose to justify desired outcome; average conflicts | Every candidate must receive exactly interpretable outcome |
-| `compose` / report composer | verified claims, missingness counts, period | draft report and current section versions | Include supported narrative; show exceptions/limits | Promote held claim; hide missingness; approve/export | Missing verifier records or report contract failure |
+| `compose` / report composer | verified claims, missingness, quality, events, compatible semantic intervals, cutoff/source versions | draft sections, change/context tables with exposure windows, current versions | Include support plus exceptions/coverage/minimum-N five-number context | Promote held claim; mix currency, duration, or programme-origin cohorts; rank/recommend; approve/export | Missing verifier records or context/report contract failure |
 | `human_review` / review gate | current versioned report | `pending_review` state | Confirm system reached review boundary | Simulate human approval | Report not pending review |
 
 Approval/export is a user-controlled service action, not an autonomous role.
@@ -66,22 +68,27 @@ The orchestrator enumerates this sequence in code. There is no agent-selected ne
 
 | Field | Type | Rule |
 |---|---|---|
-| `company_name` | string | Must exactly match resolved expected name after case/space normalization |
+| `company_name` | string | Must exactly match the model-safe reference in the supplied evidence. Public-source requests use a provenance-derived `public-evidence:*` alias and never a restricted portfolio name. |
 | `metric_key` | string | Must equal the planned canonical key |
 | `value` | string, integer, boolean, or null | Must be explicit in evidence; normalization follows |
-| `unit` | optional string | Descriptive only until canonical normalizer applies |
-| `currency` | optional string | Never inferred by model confidence |
+| `unit` | optional string | Must be explicit in the structured sibling field or deterministically grounded by the complete span; an explicit currency grounds only `currency_units`. |
+| `currency` | optional string | Must be explicit in the structured sibling field or complete span; never inferred by model confidence. |
 | `period_label` | optional string | Must match target to support a current claim |
 | `evidence_locator` | string | Must identify the supplied evidence item |
+| `evidence_span` | optional string, max 500 characters | Required for non-null values; must be a complete finite numeric token in unstructured text or equal an exact structured value leaf, and deterministically agree with value/currency/unit |
+| `abstain_reason` | optional string | Required only when `value` is null; a null result cannot cite a supporting span |
 | `confidence` | number 0–1 | Diagnostic only; never a support threshold |
 
 Unknown fields are forbidden. A valid JSON shape is necessary but not sufficient: identity,
-period, value, provenance, and sourceability are checked deterministically afterwards.
+period, exact complete span/value leaf, finiteness, parsed value, provenance, and sourceability are
+checked deterministically afterwards. Source-locator/extraction metadata is excluded from the set
+of value-bearing leaves. A schema-valid but ungrounded value triggers the one allowed validation
+escalation and then fails closed.
 
 ## Model-provider boundary
 
 The provider abstraction has one method: `extract(ExtractionRequest) -> ProviderOutcome`.
-The request contains one evidence item and expected identity/metric/period. The outcome
+The request contains one evidence item and expected model-safe reference/metric/period. The outcome
 contains the validated extraction, provider, model, attempts, and available token usage.
 
 Routing is fixed, not agent-selected:
@@ -91,6 +98,9 @@ deterministic structured extractor (default)
     OR, after explicit external-model enablement and safety checks:
 gpt-5.4-mini → strict validation failure → gpt-5.4 → fail closed
 ```
+
+The adapter rejects any configured pair other than that exact ordered route before constructing
+the external client.
 
 No retry occurs for policy/classification/injection rejection. Transient network retry policy
 is intentionally absent from P0 because the external route is not part of offline evaluation.
@@ -139,7 +149,9 @@ credentials, or generated report text.
 
 ## Human contract
 
-The reviewer must inspect the current report version and claim table, then provide a named
-actor and rationale. Approval does not change verification states. Editing creates a new
-section version, increments report version, and revokes approval. Export is a separate
-explicit action after approval so a mistaken button does not immediately produce an artifact.
+The reviewer must inspect the current report version and claim table. Their identity is configured
+locally before the service starts; it is not accepted from each browser form. Every mutation carries
+a CSRF token and expected `lock_version`; stale pages fail. Approval does not change verification
+states. Editing creates a new section/report version and revokes approval. Export is a separate
+explicit action after approval and becomes final only after its manifest-backed artifact bundle is
+atomically installed.

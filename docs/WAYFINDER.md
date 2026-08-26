@@ -25,9 +25,9 @@ flowchart LR
 |---|---|---|---|---|
 | 1 | Establish lawful authority, source provenance, and security boundary | Source hashes/matrix; ethics/data-management scope checked; credential rotation confirmed | **in progress** | Source audit done. Obtain current ethics/DMP evidence and credential-owner rotation confirmation; do not access dashboard. |
 | 2 | Freeze RQ, conditions, primary outcome, exclusions, and analysis intent | Supervisor-approved protocol version; dated change log; D2 seal rule | **in progress** | Draft protocol exists. Review with supervisor/domain/statistical/ethics stakeholders; select primary metric without seeing D2. |
-| 3 | Freeze metric catalogue, identity rules, gold codebook, and D1/D2 manifests | Catalogue version; two-reviewer instructions; adjudication record; partition hashes | **in progress** | Initial catalogue implemented. Domain definitions, gold labels, reviewer availability, and manifests are pending. |
-| 4 | Demonstrate reproducible P0 engineering artifact | Migration proof, lint/type/tests/coverage/secret scan, synthetic pending-review run, approval/export proof | **in progress** | Core code and tests pass. Complete final type/coverage/secret/full-gate evidence on final repository state. |
-| 5 | Freeze synthetic/adversarial mechanism evaluation | Labelled fixture manifest/hash; repeated C1/C2 outputs; case-level review; no real-world claim | **in progress** | Harness runs. Review case labels independently, freeze version/hash, and archive final output. |
+| 3 | Freeze metric catalogue, identity rules, gold codebook, and D1/D2 manifests | Catalogue version; two-reviewer instructions; adjudication record; partition hashes | **in progress** | Catalogue/CBIT contract and D0/D1/D2 technical manifest exist; domain gold labels, D1 authority, and the final D2 external seal record remain pending. |
+| 4 | Demonstrate reproducible dissertation engineering artifact | Migration proof, lint/type/tests/coverage/secret scan, synthetic pending-review run, approval/export and figure-manifest proof | **in progress** | Review remediation now also binds source facts to exact semantics, rejects incomplete UKRI totals, stabilises event locators, proves legacy-v1 replay and fail-fast legacy downgrade, segments incompatible exposure windows, and distinguishes terminal source states. Exact-state gates and both independent re-reviews remain. |
+| 5 | Freeze synthetic/adversarial mechanism evaluation | Labelled fixture manifest/hash; repeated C1/C2 outputs; case-level review; no real-world claim | **in progress** | Hashed D0 manifest, namespacing, repeat harness, and sealed-D2 guard exist. Independent label review and archival of the final exact-state output remain. |
 | 6 | Execute authorised pilot/calibration only | Consent/access records; D1 reference/adjudication; timing variance; protocol amendments | **held** | Requires Gate 1 authority and Gate 2/3 freeze. Do not substitute synthetic “participants.” |
 | 7 | Execute final paired C0–C3 experiment | Sealed D2 opened once; immutable run/event/raw result manifests; deviations log | **pending** | Requires Gates 1–6. No tuning after access. |
 | 8 | Analyse quality, reliability, efficiency, cost, usability, and errors | Reproducible analysis dataset/scripts; CIs/effect sizes; failure flow; sensitivity checks | **pending** | Requires final experiment and adjudicated reference. |
@@ -86,11 +86,12 @@ Run on the final code/docs state:
 
 ```bash
 .venv/bin/alembic upgrade head
-.venv/bin/ruff format --check src tests
-.venv/bin/ruff check src tests
+.venv/bin/ruff format --check src tests alembic/versions
+.venv/bin/ruff check src tests alembic/versions
 .venv/bin/mypy src
 .venv/bin/pytest --cov=portfolio_agent --cov-report=term-missing
 .venv/bin/portfolio-agent demo
+.venv/bin/portfolio-agent visualize
 ```
 
 Then explicitly prove:
@@ -105,9 +106,15 @@ Then explicitly prove:
 
 Do not use a synthetic test approval as evidence about real human review quality.
 
+The `0001` rollback proof is conditional: if two valid canonical companies share a normalized
+name, the legacy schema cannot represent that state losslessly. The Alembic command must reject
+before any revision runs and leave the current version/data intact; it must never partially
+downgrade or invent a merge.
+
 ## Gate 5 — synthetic/adversarial freeze
 
-1. Have a second reader review labels/expected states in `fixtures/evaluation_cases.json`.
+1. Have a second reader review labels/expected states admitted by
+   `fixtures/evaluation_manifest.json` (the cases file is never loaded directly).
 2. Add any discovered source-shape edge case without using identifiable values.
 3. Freeze fixture and code hashes.
 4. Run ≥2 repeats (the default is 3) and retain case-level outputs.
