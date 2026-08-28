@@ -1,0 +1,174 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-T3",
+  "title": "Metric, denominator and interpretation contract",
+  "author": "Faye Niu",
+  "target_section": "3.5 Measures and denominators",
+  "latex_label": "tab:meth-metric-denominator-matrix",
+  "purpose": "Define the unit, numerator or observation, denominator or comparator, null/zero rule, and clustering/interpretation boundary for the core claim, field, provenance, report, resource, reliability and human-review measures.",
+  "generated_at_utc": "2026-08-27T20:01:23Z",
+  "hashes_recomputed_at_utc": "2026-08-27T20:01:23Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_sample_sizes": false,
+    "contains_acceptance_thresholds": false,
+    "contains_cost_or_time_saving_claim": false,
+    "contains_usability_or_reviewer_benefit_claim": false,
+    "gold_reference_frozen": false,
+    "held_denominators_visible": true,
+    "current_d0_event_outcomes": "null",
+    "current_d0_reviewer_outcomes": "null",
+    "interpretation": "Author synthesis of the current project measurement protocol and locally admitted methodological sources. The matrix specifies measurement contracts and evidence holds; it does not report or validate an empirical outcome."
+  },
+  "placement": {
+    "environment": "longtable",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "dedicated_portrait_pages": 2,
+    "table_counter_control": "The external caption creates the sole table number; the uncaptioned longtable counter reservation is reversed after the environment so later tables remain sequential.",
+    "purpose": "Place METH-T3 immediately after Section 3.5 on two dedicated A4 portrait pages, repeat the header on page two, and prevent Section 3.6 from preceding the completed metric contract."
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "role": "Binding project definitions for units, formulas, null/zero handling, measurement groups, current D0 null layers, human capture, repeatability, analysis dependence and cost evidence.",
+      "locator": "Headings 'Units of analysis', 'Primary and secondary measures', 'Claim quality', 'Extraction and normalization', 'Provenance and report quality', 'Efficiency and resource use', 'Reliability', 'Usability (C3 only)', 'Automated synthetic harness', 'Manual baseline capture', 'HITL capture', 'Analysis plan' and 'Error taxonomy'."
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "role": "Project semantics for canonical values, missing states, periods, sourceability, claims, verification and report lifecycle.",
+      "locator": "Headings 'Canonical principles', 'Missing-state contract', 'Canonical value representation', 'Period-semantics contract', 'Sourceability classes', 'Claim and verification semantics' and 'Report lifecycle'."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 3.5 measurement scope and explicit null/zero-denominator requirement.",
+      "locator": "Detailed chapter-plan entry '3.5 Measures and denominators', plus 'Current go/no-go state - 27 August 2026'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "626b40751085a01a7cbaeb10f8167cc2fec25b4a0843005cc5ac03243e0d28bc",
+      "role": "Local admission, citation-key, role and limitation binding for the six academic sources used by the exhibit.",
+      "locator": "Rows keyed gao2023alce, nikiforova2020quality, pineau2021reproducibility, artstein2008agreement, nist2023airmf and amershi2019guidelines."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "cdd565425d0b94da54e6cf47fff42a28513b6ce99a0925fd471358c9085f66fa",
+      "role": "Repository checksum binding for the six locally admitted academic PDF files.",
+      "locator": "Entries for papers/28_gao_alce_citations.pdf, papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf, papers/33_pineau_reproducibility.pdf, papers/35_artstein_poesio_intercoder_agreement.pdf, papers/11_nist_ai_rmf_1_0.pdf and papers/13_amershi_human_ai_guidelines.pdf."
+    },
+    {
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "role": "Supports separate evaluation of answer correctness, citation recall/completeness and citation precision; benchmark values and automatic NLI judgements are not transferred.",
+      "locator": "Local PDF pages 3-4 and 10."
+    },
+    {
+      "path": "Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf",
+      "sha256": "017d96ae1392fc22cb817b1aadc8ec407dac84f2a254a8391301c55bdd0b6d52",
+      "role": "Supports use-case-specific, multi-dimensional data-quality evaluation and a Companies House example; it does not define the project's missing-state taxonomy or scores.",
+      "locator": "Local PDF pages 1-3 and 15-17."
+    },
+    {
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "role": "Supports explicit data, code, metric, procedure and reporting records; reproducibility is not treated as validity or production utility.",
+      "locator": "Local PDF pages 1-5 and 9-13."
+    },
+    {
+      "path": "Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf",
+      "sha256": "1729af43712921de3857555972c6a3376d66bcba2474f81a32cddf4f98aef058",
+      "role": "Supports separating agreement/reliability from validity and selecting a coefficient according to annotation task and assumptions; no universal threshold is transferred.",
+      "locator": "Local PDF pages 2-8, 16-23 and 36-37."
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "role": "Supports documented measurement, uncertainty, rigorous testing, human oversight and independent review; it does not certify this artefact.",
+      "locator": "Local PDF pages 32-35."
+    },
+    {
+      "path": "Dissertation/sources/papers/13_amershi_human_ai_guidelines.pdf",
+      "sha256": "82fff584c6b986f573608361478e93447538c6ce707e4b9b04d45d584272ea03",
+      "role": "Supports correction, dismissal, feedback and control in human-AI interaction; it is design guidance, not evidence of this project's usability or reviewer benefit.",
+      "locator": "Local PDF pages 3-5 and 16-19."
+    }
+  ],
+  "fixed_formulas": [
+    {
+      "measure": "Claim precision",
+      "formula": "supported emitted claims / all emitted claims eligible for scoring"
+    },
+    {
+      "measure": "Claim recall",
+      "formula": "correctly emitted gold claims / all gold claims required by scope"
+    },
+    {
+      "measure": "F1",
+      "formula": "2 * precision * recall / (precision + recall), only when precision and recall are defined and their sum is positive"
+    },
+    {
+      "measure": "Unsupported-claim rate",
+      "formula": "emitted claims without gold/evidence support / emitted claims"
+    },
+    {
+      "measure": "Claim-support rate",
+      "formula": "emitted claims satisfying the frozen support rule / emitted claims"
+    },
+    {
+      "measure": "Contradiction-detection recall",
+      "formula": "correctly flagged gold conflicts / all gold conflicts"
+    },
+    {
+      "measure": "Provenance completeness",
+      "formula": "eligible emitted claims with source ID, locator, applicable publisher, retrieval time, checksum and period / eligible emitted claims"
+    }
+  ],
+  "held_denominators": [
+    "Identity, acquisition, temporal and source-quality layer eligibility.",
+    "Schema-validity and extraction attempted-versus-eligible and record-versus-field scope.",
+    "Normalisation and missing-state labelled field set by task/data type.",
+    "Locator-validity eligible locator/claim set and multiple-locator treatment.",
+    "Report-section required set and explicit held/empty treatment.",
+    "Factual-error severity aggregation.",
+    "Transparency-rate eligible missing/conflict/stale item set.",
+    "Human-time aggregation and authorised paired comparator.",
+    "Machine-stage summary aggregation and failure-inclusive comparator.",
+    "Repeat set, outcome-vector scope, denominator and stochastic agreement statistic.",
+    "C3 usability instrument, task protocol and reviewer/edit denominator."
+  ],
+  "universal_null_rule": "No eligible labelled cases or a zero rate denominator produces NULL or N/A with a recorded reason, never a measured zero. A genuine zero requires an executed eligible observation and a positive denominator. Missing telemetry is not zero.",
+  "limitations": [
+    "The exhibit is conceptual and non-empirical; it contains no result value, sample size, acceptance threshold, condition ranking, time saving, cost outcome, usability result or production claim.",
+    "TO FREEZE is an intentional evidence hold. The named denominators and aggregation choices require prospective supervisor, domain, ethics or statistical review before confirmatory execution.",
+    "Claim-support, answer correctness, provenance completeness and locator validity are distinct properties; a traceable or cited claim can still be unsupported or wrong.",
+    "Repeated fields and claims within a company/report, and repeated tasks by one reviewer, are clustered rather than independent observations.",
+    "Event-linkage and reviewer outcomes are null in current D0. Human time, C0/C3 utility and reviewer edit burden require authorised participant observations.",
+    "Cost requires execution-date official pricing, exact formula and currency. Absent telemetry or pricing remains null rather than estimated.",
+    "The complete plain-text companion supplies a linear reading order; no claim is made that a downstream dissertation PDF is tagged."
+  ],
+  "validation": {
+    "academic_source_verification": "Selected local PDF pages were text-extracted and checked for the stated source roles; all six source roles were supported within the cited local page ranges.",
+    "standalone_compile": "Passed with Tectonic using the dissertation style through a temporary, non-retained book harness.",
+    "scoped_tex_warnings": "After Tectonic's required rerun, no overfull boxes, underfull boxes, LaTeX warnings or exhibit-originated package warnings remained. The harness retained only the dissertation style's existing inputenc-with-Unicode-engine warning and temporary absolute-path notices.",
+    "layout": "Visually inspected at 180 dpi: exactly two dedicated A4 portrait exhibit pages; repeated six-column header, formulas, TO FREEZE holds, current-status note and source note are readable; no clipping or colour-dependent encoding; the continuation uses the original table number.",
+    "counter_integrity": "A temporary downstream-table check confirmed METH-T3 is numbered once and the next table receives the immediately following number.",
+    "integration_boundary": "The chapter was not edited. Full-dissertation placement must be rechecked after the approved Section 3.5 input is added."
+  },
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_t3_metric_denominator_matrix.tex",
+      "sha256": "ed4f865de4e4e3702e0f22e148386bd35609c352773684697ea14a08ac5fbe49",
+      "role": "Two-page portrait LaTeX longtable with repeated header, deterministic section boundaries and sequential table-counter preservation."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_t3_metric_denominator_matrix.txt",
+      "sha256": "3cd3b182b27fbc670719c7221a4105850807db9441dda64674de926db79ecdca",
+      "role": "Complete plain-text alternative with expanded formula, denominator, null, clustering, evidence-status and source limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

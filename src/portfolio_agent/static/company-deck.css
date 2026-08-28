@@ -1,0 +1,568 @@
+:root {
+  --ink: #17231f;
+  --muted: #5f6b65;
+  --paper: #f5f1e8;
+  --surface: #fffdf8;
+  --line: #d9d4c8;
+  --forest: #1f5b46;
+  --forest-soft: #e7f2ec;
+  --teal: #16636a;
+  --teal-soft: #e3f1f2;
+  --amber: #8a5a12;
+  --amber-soft: #fbefd8;
+  --red: #9a3f36;
+  --red-soft: #fae9e5;
+  --stone: #ece9e1;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+body {
+  margin: 0;
+  font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 1240px;
+  margin: auto;
+  padding: 48px 42px 80px;
+}
+
+a {
+  color: var(--teal);
+  font-weight: 650;
+  text-underline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.025em;
+}
+
+p { margin: 0.35rem 0 0; }
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--teal);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.report-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.7fr);
+  gap: 36px;
+  padding: 42px;
+  color: #fffdf8;
+  background: var(--ink);
+  border-radius: 2px 2px 18px 2px;
+  box-shadow: 0 18px 50px rgba(23, 35, 31, 0.14);
+}
+
+.report-hero h1 {
+  max-width: 13ch;
+  margin: 0.5rem 0 1.2rem;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.98;
+}
+
+.report-hero .lede {
+  max-width: 65ch;
+  color: #dbe3de;
+}
+
+.report-hero .eyebrow { color: #8fd2bd; }
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: space-between;
+  padding-left: 28px;
+  border-left: 1px solid #50625b;
+}
+
+.review-card strong {
+  font-family: Georgia, serif;
+  font-size: 1.35rem;
+}
+
+.review-card dl {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+}
+
+.review-card div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 9px;
+  border-top: 1px solid #3c4d46;
+}
+
+.review-card dt { color: #aebbb5; }
+
+.review-card dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.approval {
+  align-self: flex-start;
+  padding: 5px 10px;
+  color: #124936;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #d9f0e5;
+  border-radius: 99px;
+}
+
+.coverage-panel {
+  margin: 28px 0 56px;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.coverage-panel__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.coverage-panel h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.coverage-track {
+  height: 12px;
+  margin: 22px 0 8px;
+  overflow: hidden;
+  background: var(--stone);
+}
+
+.coverage-track span {
+  display: block;
+  height: 100%;
+  background: var(--forest);
+}
+
+.coverage-caption {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  margin-top: 24px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.stat {
+  padding: 18px;
+  background: var(--surface);
+}
+
+.stat strong {
+  display: block;
+  margin-bottom: 8px;
+  font: 700 1.8rem/1 Georgia, serif;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 9px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+  border-radius: 99px;
+}
+
+.status i {
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+.status--evidence {
+  color: var(--forest);
+  background: var(--forest-soft);
+}
+
+.status--document,
+.status--definition {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.status--missing {
+  color: #626862;
+  background: var(--stone);
+}
+
+.dossier-section {
+  padding: 34px 0 50px;
+  border-top: 1px solid var(--ink);
+}
+
+.dossier-section > header {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.section-number {
+  color: var(--teal);
+  font: 700 1.4rem Georgia, serif;
+}
+
+.dossier-section h2 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+
+.dossier-section header p {
+  max-width: 70ch;
+  color: var(--muted);
+}
+
+.section-count {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-left: 76px;
+}
+
+.evidence-card {
+  min-width: 0;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+}
+
+.evidence-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.evidence-card__meta span {
+  padding: 3px 7px;
+  color: var(--teal);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: var(--teal-soft);
+}
+
+.evidence-card blockquote {
+  margin: 0;
+  color: #25342e;
+  font: 1.02rem/1.55 Georgia, serif;
+}
+
+.evidence-card__source {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.evidence-card--compact { padding: 12px; }
+.evidence-card--compact blockquote { font-size: 0.87rem; }
+
+.empty-state {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 14px;
+  align-items: center;
+  padding: 22px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px dashed #b7b4ac;
+}
+
+.empty-state > span {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border: 2px solid #8a918c;
+  border-radius: 50%;
+}
+
+.empty-state strong { color: var(--ink); }
+
+.contradiction-wrap {
+  margin: 10px 0 50px;
+  padding: 28px;
+  background: var(--red-soft);
+  border-top: 4px solid var(--red);
+}
+
+.contradiction-wrap h2,
+.contradiction h3 { margin: 0; }
+
+.contradiction {
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid #d9aaa4;
+}
+
+.contradiction blockquote { font-family: Georgia, serif; }
+
+.signal-panel {
+  padding: 18px;
+  margin: 16px 0 20px;
+  background: var(--teal-soft);
+  border-left: 4px solid var(--teal);
+}
+
+.signal-panel > div:first-child { max-width: 72ch; }
+
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.signal-overflow {
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.metric-appendix {
+  padding-top: 36px;
+  margin-top: 30px;
+  border-top: 5px solid var(--ink);
+}
+
+.metric-appendix > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 28px;
+}
+
+.metric-appendix h2 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+
+.metric-appendix header p {
+  max-width: 68ch;
+  color: var(--muted);
+}
+
+.metric-group {
+  margin: 0 0 38px;
+  break-inside: avoid;
+}
+
+.metric-group > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.metric-group h3 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.metric-group > header > span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.table-shell { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 10px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+  background: var(--stone);
+}
+
+td {
+  padding: 14px 10px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+td:first-child { width: 29%; }
+td:nth-child(2) { width: 16%; }
+td:nth-child(3) { width: 18%; }
+td:last-child { width: 37%; }
+
+.metric-key,
+.source-boundary {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.empty-cell {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.sources {
+  padding-top: 30px;
+  margin-top: 44px;
+  border-top: 1px solid var(--ink);
+}
+
+.sources h2 { font-size: 2rem; }
+
+.limitations {
+  padding: 26px;
+  margin-top: 38px;
+  background: var(--stone);
+}
+
+.limitations li + li { margin-top: 8px; }
+
+@media (max-width: 850px) {
+  main { padding: 24px 18px 56px; }
+  .report-hero { grid-template-columns: 1fr; padding: 28px; }
+  .review-card {
+    padding: 22px 0 0;
+    border-top: 1px solid #50625b;
+    border-left: 0;
+  }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .evidence-grid { grid-template-columns: 1fr; margin-left: 0; }
+  .dossier-section > header { grid-template-columns: 42px 1fr; }
+  .section-count { grid-column: 2; }
+  .signal-grid { grid-template-columns: 1fr; }
+  .metric-appendix > header { display: block; }
+}
+
+@media (max-width: 680px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .coverage-panel__head { display: block; }
+  .dossier-section h2 { font-size: 1.55rem; }
+  .table-shell { overflow: visible; }
+  table,
+  thead,
+  tbody,
+  tr,
+  th,
+  td { display: block; }
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+  tr {
+    padding: 8px;
+    margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  td,
+  td:first-child,
+  td:nth-child(2),
+  td:nth-child(3),
+  td:last-child {
+    width: 100%;
+    padding: 8px;
+    border: 0;
+  }
+  td::before {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--muted);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    content: attr(data-label);
+  }
+}
+
+@media print {
+  @page { margin: 14mm; }
+  html { background: #fff; }
+  main { max-width: none; padding: 0; }
+  .report-hero {
+    box-shadow: none;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .dossier-section,
+  .metric-group,
+  .evidence-card { break-inside: avoid; }
+  .evidence-card a::after,
+  .sources a::after {
+    font-weight: 400;
+    content: " (" attr(href) ")";
+  }
+  .coverage-panel { break-inside: avoid; }
+}

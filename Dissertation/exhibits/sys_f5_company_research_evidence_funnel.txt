@@ -1,0 +1,39 @@
+Figure 4.x: Bounded public-web evidence funnel
+
+Stage 1 - Discover
+Input: reviewed Companies House number, public case, cutoff and category plan.
+Gate: Responses web search may propose URLs, but only canonical public HTTPS URLs present in the
+returned source inventory are retained. Search snippets, titles and model statements are not facts.
+Output: bounded URL candidates, source domains and model/tool usage; missing categories remain
+uncovered.
+
+Stage 2 - Capture
+Input: each candidate URL plus response, redirect, byte and elapsed budgets.
+Gate: robots, scheme, port, credentials, DNS, public-IP connection, hostname TLS, redirect, HTTP
+status, MIME and streaming-size checks.
+Output: owner-scoped redacted snapshot with URL, retrieval time, MIME and hashes, or a blocked,
+unsupported or failed state with an error code.
+
+Stage 3 - Extract
+Input: bounded visible text after personal-contact redaction; all page text remains untrusted data.
+Gate: exact captured URL; literal statement/span equality and containment; minimum-span, cutoff,
+personal-data, recommendation and prompt-injection checks.
+Output: admitted claim with exact span and source locator, or explicit abstention. Model prose alone
+is discarded.
+
+Stage 4 - Compose
+Input: hash-ordered admitted claims and captured-source records.
+Gate: group by claim category and subject, retain attribution, flag multi-source disagreement, and
+never infer a recommendation or valuation.
+Output: hash-bound pending-review profile with citations, contradictions, coverage counts,
+uncovered categories and limitations.
+
+Cross-cutting control: one serial persisted task at a time; bounded retries, cancellation, recovery,
+token/tool/model/byte/time telemetry, and named approval before export.
+
+Evidence state: IMPLEMENTED + SYNTHETICALLY TESTED; LIVE COMPANY RESEARCH UNRUN.
+
+Source boundary: this is Faye Niu's author synthesis of current repository code and local synthetic
+tests. The cited literature motivates search/source visibility, separate citation-quality checking,
+untrusted-content controls, provenance and human review. It does not certify the implementation or
+establish live performance.

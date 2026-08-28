@@ -1,0 +1,305 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "SYS-T2",
+  "title": "Deterministic adapter and capability-state matrix",
+  "author": "Faye Niu",
+  "target_section": "4.6 Deterministic source adapters, time, and quality",
+  "latex_label": "tab:sys-adapter-capability-state",
+  "purpose": "Separate deterministic offline source-adapter mechanics, capability admission, temporal and locator contracts, distinct terminal outcomes, held live registry modes and the separately conditioned public-web boundary without converting implementation evidence into live-source or empirical claims.",
+  "generated_at_utc": "2026-08-28T00:58:10Z",
+  "hashes_recomputed_at_utc": "2026-08-28T00:58:10Z",
+  "revision": "1.0.0",
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_result_values": false,
+    "offline_companies_house_replay": "implemented_and_locally_tested_on_synthetic_data",
+    "offline_ukri_replay": "implemented_and_locally_tested_on_synthetic_data",
+    "registry_capability_and_quality_contracts": "implemented_and_locally_tested",
+    "direct_live_companies_house": "held_and_unrun",
+    "direct_live_ukri": "not_implemented_or_admitted",
+    "public_web_boundary": "separately_conditioned_engineering_path_no_empirical_result_claimed",
+    "source_truth_or_complete_coverage": "not_established",
+    "production_availability": "not_established"
+  },
+  "placement": {
+    "source_type": "LaTeX table with complete TXT alternative",
+    "orientation": "A4 portrait",
+    "table_pages": 1,
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "integration": "Input immediately after Section 4.6 prose and before Section 4.7.",
+    "command": "\\input{exhibits/sys_t2_deterministic_adapter_capability_state_matrix.tex}"
+  },
+  "accessibility": {
+    "semantic_structure": "Native LaTeX table with caption, label, column headers and source note.",
+    "complete_text_alternative": "Dissertation/exhibits/sys_t2_deterministic_adapter_capability_state_matrix.txt",
+    "colour_dependency": false,
+    "reading_order": "Registry gate, Companies House offline replay, UKRI offline replay, held Companies House API mode, separate public-web discovery/capture boundary, state rule and source note.",
+    "pdf_tagging_claim": "none; the TXT companion is the accessible alternative"
+  },
+  "validation": {
+    "focused_tests": {
+      "status": "PASS",
+      "command": ".venv/bin/pytest -q tests/integration/test_connector_contracts.py tests/integration/test_companies_house_connector.py tests/integration/test_ukri_events.py tests/unit/test_temporal_quality.py tests/integration/test_quality_workflow.py",
+      "result": "51 passed",
+      "scope": "manifest and admission gates, immutable replay and derivation integrity, exact identities, live-mode refusal, Companies House and UKRI semantics, UK cutoff and period rules, distinct quality and terminal states; no live external request"
+    },
+    "strict_source_gate": {
+      "status": "PASS",
+      "command": ".venv/bin/python Dissertation/scripts/check_sources.py --strict-bibliography",
+      "result": "38 local PDFs and hashes verified; 2 immutable web captures; 99 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "standalone_a4": {
+      "status": "PASS",
+      "harness": "/private/tmp/sys_t2_a4_validation.tex",
+      "command": "/opt/homebrew/bin/tectonic --outdir /private/tmp /private/tmp/sys_t2_a4_validation.tex",
+      "result": "three-page A4 validation document: pre-exhibit marker, one dedicated portrait table page, post-exhibit marker",
+      "render_command": "pdftoppm -f 2 -singlefile -png -r 144 /private/tmp/sys_t2_a4_validation.pdf /private/tmp/sys_t2_page2_sealed",
+      "visual_inspection": "PASS: all five rows, headers, state rule and source note are legible; no clipping, overlap or column collision",
+      "overfull_boxes": 0,
+      "underfull_boxes": 0,
+      "scoped_warnings": "Only absolute-path reproducibility notices from the disposable validation harness; repository integration uses relative paths."
+    },
+    "hash_audit": "PASS: all 31 declared stable inputs and both declared outputs matched"
+  },
+  "state_semantics": [
+    {
+      "state": "record",
+      "meaning": "A successful collection containing an admitted record; not a source-truth label."
+    },
+    {
+      "state": "no_record",
+      "meaning": "A completed bounded exact-identifier lookup returned no matching record; not zero or universal absence."
+    },
+    {
+      "state": "source_unavailable",
+      "meaning": "The source or configured offline snapshot was unavailable at collection time; distinct from no_record."
+    },
+    {
+      "state": "blocked",
+      "meaning": "Policy, admission, kill-switch or transport control prevented the action, often before connector invocation."
+    },
+    {
+      "state": "invalid",
+      "meaning": "Identity, cutoff/window, manifest, media, fact, schema, locator or semantic contract failed validation."
+    },
+    {
+      "state": "failure",
+      "meaning": "A terminal collection or persistence failure retained for review rather than rewritten as pass or zero."
+    }
+  ],
+  "inputs": [
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locator": "Detailed chapter-plan entry '4.6 Deterministic source adapters, time, and quality' and claim-control rule.",
+      "role": "Approved section scope and prohibition on live, human, production or empirical overreach."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "840f1800e38072c55c62e53b0fb580033b6dafd83bf269d90c92b28b300860bb",
+      "locator": "FR-SRC-001--002; FR-TIME-001--002; FR-QUAL-001; FR-CH-001; FR-UKRI-001; NFR-CI-001; FR-RES-001--004.",
+      "role": "Binding capability, adapter, temporal, quality, held-live and conditioned public-web status requirements."
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "4cd5a14637c9fe1678ba9c5a518f53c05b331b35ec0e8b8af14a3a22e59bfeed",
+      "locator": "Component responsibilities; data flow and invariants; deterministic-first and model routing; failure and recovery behaviour; scalability and production gaps.",
+      "role": "Current source-registry ownership, fail-closed boundary and non-production architecture."
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "d6cee707f300910c43c638fb8600ded15e44790236bfbce881461b552e8d32c8",
+      "locator": "Opening permission boundary; companies_house, ukri_gtr, openai_web_search and public_web_capture rows; G2 admission checklist; registry enforcement and UKRI total paragraphs.",
+      "role": "Exact capability versions, held/conditioned live states, kill-switch boundary and prohibited source claims."
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "locator": "Source definitions, snapshots, evidence facts, temporal decisions, missing states and quality records.",
+      "role": "Persisted source, locator, time, provenance and state semantics."
+    },
+    {
+      "path": "docs/AGENT_CONTRACTS.md",
+      "sha256": "be0bf13c38539fcfd2b34347575b2c08a21524a1a7827f1a115d9190fb59e40c",
+      "locator": "uk-public-evidence-v2 collector, normalizer and composer role rows; source and time stops.",
+      "role": "Bounded collection authority and fail-closed handoff contract."
+    },
+    {
+      "path": "docs/IMPLEMENTATION_TRACEABILITY.md",
+      "sha256": "1c1b97f758043d472f16052505d9a25062fbe0c2941b2aabbd4578e1dffcd55a",
+      "locator": "P04--P07; P14; current G2 and G4 rows.",
+      "role": "Repository implementation-to-test map and explicit engineering/live evidence boundary."
+    },
+    {
+      "path": "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+      "sha256": "436222dbc7d57086b0fc9c8821d55a1fed7819e545abb28a9fbd095b47e89c57",
+      "locator": "Data classification; approved public-web boundary; external-model policy; source admission and production prohibition.",
+      "role": "Public-only, kill-switch, untrusted-content and held-production limits."
+    },
+    {
+      "path": "src/portfolio_agent/cbit_contract.py",
+      "sha256": "24b9de83c4898b1f48b430ead7f2bae092b8984aebc51c713c74c7d129c11c0f",
+      "locator": "PeriodSemantics; AdmittedSourceDefinition; ADMITTED_PUBLIC_SOURCES companies_house and ukri_gtr entries.",
+      "role": "Source-policy admission versions, permitted uses, retrieval modes and prohibited inferences."
+    },
+    {
+      "path": "src/portfolio_agent/connectors/base.py",
+      "sha256": "907aec38d2e855b300f7b202854302a721fdd5566d3a92de986cc72f195486bf",
+      "locator": "SourceFactContract; SourceCapabilityManifest; SourceRequest; SourceCollection.",
+      "role": "Typed capability, request, fact/event, locator and collection-state contracts."
+    },
+    {
+      "path": "src/portfolio_agent/connectors/registry.py",
+      "sha256": "c7a6e7537a5889ef7e618346ca77b09596e4d0e0d808ba4ecafebeb9591e6ae3",
+      "locator": "SourceRegistry construction/collect; request fingerprint; snapshot/derivation verification; request, collection and manifest validation; live-mode refusal.",
+      "role": "Capability admission, exact identity/cutoff/window enforcement, immutable replay and fail-closed drift evidence."
+    },
+    {
+      "path": "src/portfolio_agent/connectors/companies_house.py",
+      "sha256": "12fef4d78667c9897253f412eab7599379595d68786b765e7bb6b9fc7c9f7313",
+      "locator": "CompaniesHouseConnector manifest 1.4.0; offline and API collection; exact-number validation; fact and event locators.",
+      "role": "Offline replay semantics and declared-but-held read-only API capability."
+    },
+    {
+      "path": "src/portfolio_agent/connectors/ukri.py",
+      "sha256": "aa12dae788eed0359d7256f2c2b9537cf5c8dcc41202b1e7f4d7479da5f73c86",
+      "locator": "UkriConnector manifest 1.3.0; latest project versions; stable event locators; cumulative fact and missing-state rules.",
+      "role": "Offline UKRI lifecycle, window, locator and complete-GBP-only aggregation semantics."
+    },
+    {
+      "path": "src/portfolio_agent/temporal.py",
+      "sha256": "eca1396cdf31d43ace64b70277bff05f9e44535d120bd6a2bcf71fff217abbb8",
+      "locator": "TemporalWindow; reporting_cutoff_instant; temporal_eligibility.",
+      "role": "UK civil cutoff and publication/effective-time eligibility rules."
+    },
+    {
+      "path": "src/portfolio_agent/quality.py",
+      "sha256": "186749aa1b32f635a47b69ccff7c07ce64e5a2ef505f8c38280f34202299f0c8",
+      "locator": "QUALITY_CONTRACT_VERSION; DEFAULT_QUALITY_RULES; evaluate_quality.",
+      "role": "Distinct trust, provenance, time, conflict, missingness, no-record, unavailable and failure dispositions."
+    },
+    {
+      "path": "src/portfolio_agent/enums.py",
+      "sha256": "c7ee84b4f5ad4e84342879b69bf4b544ec1b38109b19aabb8a64707c3aeef380",
+      "locator": "MissingState; TemporalEligibilityStatus; QualityDisposition; CollectionStatus.",
+      "role": "Closed state vocabulary used in the table and text alternative."
+    },
+    {
+      "path": "src/portfolio_agent/identity.py",
+      "sha256": "389107eb6c3207a5458ff9843593d9ad1af12a214078903dc5ef3b1723e628e1",
+      "locator": "normalize_identifier; Companies House identifier validation and resolution helpers.",
+      "role": "Exact source-scoped identifier normalisation boundary."
+    },
+    {
+      "path": "tests/integration/test_connector_contracts.py",
+      "sha256": "2d0c7cd6b7f45a4f14e483e8791a90a85711846f26231c990e67c3112175168e",
+      "locator": "Manifest/admission, replay/drift, no-record/failure, live-block, identity/window/output, concurrency and bounded-client tests.",
+      "role": "Executable capability and registry contract evidence; no live request."
+    },
+    {
+      "path": "tests/integration/test_companies_house_connector.py",
+      "sha256": "013b2024d7cddaead7af71d3e34879772036a3fba4e845ae59f18d399a944f5f",
+      "locator": "Exact replay, no-record, invalid ID, live gate and public-offline persistence refusal tests.",
+      "role": "Executable synthetic Companies House adapter evidence."
+    },
+    {
+      "path": "tests/integration/test_ukri_events.py",
+      "sha256": "38fd2141702eb1e20dfbd1dda366f6ede49918f10a0872e8331a558bbbf434b7",
+      "locator": "Lifecycle correction/missing amount, exact window, GBP/non-GBP, stable locator/replay and exact-ID tests.",
+      "role": "Executable synthetic UKRI adapter evidence."
+    },
+    {
+      "path": "tests/unit/test_temporal_quality.py",
+      "sha256": "547400f9108c20008fa90269cd5ff5da3ece3581e6250dfe437b44e83c126bfa",
+      "locator": "UK cutoff, missing timestamp, missingness, temporal exclusion, conflicts and future-evidence tests.",
+      "role": "Executable time and quality-state evidence."
+    },
+    {
+      "path": "tests/integration/test_quality_workflow.py",
+      "sha256": "02ab46f6fa206ed09f25bd0d0f9e7e2834271ce7d9f9dbede26b3da2dd1da9e1",
+      "locator": "Versioned source-linked quality and terminal no-record/unavailable/failure outcome tests.",
+      "role": "Executable reporting consequence for distinct terminal states."
+    },
+    {
+      "path": "fixtures/evidence/companies_house_synthetic.json",
+      "sha256": "ae9c29e38a3f59360a370872e071cb744158a25854c10c090c8c1c0bd2f25a7d",
+      "locator": "Repository-owned Companies House synthetic replay document.",
+      "role": "Offline mechanism fixture; not a live or official registry snapshot."
+    },
+    {
+      "path": "fixtures/evidence/ukri_synthetic.json",
+      "sha256": "588e0206d4a59c7db1604212e15ea478c8432406f15c4a17e33bf36b8bca230e",
+      "locator": "Repository-owned UKRI synthetic replay document.",
+      "role": "Offline mechanism fixture; not a live or official UKRI snapshot."
+    },
+    {
+      "path": "Dissertation/sources/SECTION_2_3_EVIDENCE.md",
+      "sha256": "bcee5f88628cef146095e5fdca0f941bffaca826b45e52474197c13b358f16dc",
+      "locator": "Paragraph 1: quality as fitness for a defined use; Paragraph 5: synthesis into an evaluable contract; Prohibited overreach.",
+      "role": "Verified local page locators and safe synthesis for use-specific quality."
+    },
+    {
+      "path": "Dissertation/sources/SECTION_2_4_EVIDENCE.md",
+      "sha256": "c3dc5161ff51a75f7dc286787a3782e1400349924b280af1b8bec45c60f0594c",
+      "locator": "Paragraph 1: provenance as traceability, not truth; Paragraph 2: source admission and claim-fit; Paragraph 5: auditable synthesis; Prohibited overreach.",
+      "role": "Verified local page locators and safe traceability-versus-truth boundary."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "Rows keyed nikiforova2020quality, gao2023alce and nist2023airmf.",
+      "role": "Local academic-source identity, path, role and limitation binding."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "locator": "papers/05, papers/28 and papers/11 entries.",
+      "role": "Independent local checksum bindings for cited PDFs."
+    },
+    {
+      "citation_key": "nikiforova2020quality",
+      "path": "Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf",
+      "sha256": "017d96ae1392fc22cb817b1aadc8ec407dac84f2a254a8391301c55bdd0b6d52",
+      "locator": "PDF pp. 1--3 and 15--17.",
+      "role": "Use-case-specific data-quality dimensions and executable checks; not certification of this artefact."
+    },
+    {
+      "citation_key": "gao2023alce",
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "locator": "PDF pp. 3--4 and 10.",
+      "role": "Answer correctness, citation support/correctness and completeness are distinct; not source-truth evidence."
+    },
+    {
+      "citation_key": "nist2023airmf",
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 33--35.",
+      "role": "Documented test conditions, uncertainty, independent assessment and limits; not certification."
+    }
+  ],
+  "limitations": [
+    "The exhibit reports implementation and local synthetic test evidence only; it contains no live Companies House or UKRI retrieval and no official-adapter comparison.",
+    "A capability manifest, version, checksum, locator, request fingerprint or derivation hash supports deterministic traceability and contract checking, not source truth, correctness or completeness.",
+    "No-record is bounded to an exact identifier, source snapshot/response and request window; it is not a universal absence finding and is never zero.",
+    "Unavailable, blocked, invalid, failure, missing, held and conflict states remain distinct; none is promoted to supported evidence without its own contract-satisfying record.",
+    "The public-web path is a separate conditioned engineering boundary and does not silently admit or substitute for held direct registry adapters.",
+    "No coverage, latency, cost, user benefit, source quality, production availability, legal authority, causality, valuation or investment recommendation is claimed."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_t2_deterministic_adapter_capability_state_matrix.tex",
+      "sha256": "649f22dbf3ea77cbae10ce67d2a592ba9f35544292b5851cf169a1348469299b",
+      "role": "One-page portrait LaTeX matrix with deliberate section-placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_t2_deterministic_adapter_capability_state_matrix.txt",
+      "sha256": "553bbf997b4a90b1b0984ef1ba7519bf8c3551ff63dd04aeb3171d1e62e98162",
+      "role": "Complete accessible text alternative with expanded states, evidence contracts and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

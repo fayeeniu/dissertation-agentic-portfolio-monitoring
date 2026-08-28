@@ -1,0 +1,119 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-T1",
+  "title": "C0-C3 evaluation-condition matrix",
+  "author": "Faye Niu",
+  "target_section": "3.2 Evaluand and experimental conditions",
+  "latex_label": "tab:meth-condition-matrix",
+  "purpose": "Define the operational and authority boundaries of C0-C3, their common comparison controls, their distinct scoring points, and the evidence state that may presently be claimed for each condition.",
+  "generated_at_utc": "2026-08-27T18:47:53Z",
+  "hashes_recomputed_at_utc": "2026-08-27T18:47:53Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_invented_thresholds": false,
+    "demonstrates_condition_comparability": false,
+    "demonstrates_manual_or_hitl_benefit": false,
+    "demonstrates_live_company_research_performance": false,
+    "interpretation": "Author synthesis of frozen project contracts. The matrix specifies planned comparison conditions and current evidence states; it is not an experimental result."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place METH-T1 on one dedicated portrait page immediately after Section 3.2 and prevent Section 3.3 from preceding it when the exhibit is input at the approved chapter location."
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "role": "Binding evaluand, C0-C3 operational definitions, parity rule, executable-state wording and D0-D2 evidence boundary.",
+      "locator": "Headings 'Protocol status', 'Research question and evaluand', 'Experimental conditions', 'Research propositions', 'Dataset partitions and leakage control', 'D0 — synthetic development/evaluation fixtures', 'D1 — authorised pilot/calibration set', and 'D2 — final out-of-sample set'."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 3.2 scope, current C0/C3 go-no-go state and exclusion of live-unrun company research from the frozen experiment.",
+      "locator": "Headings 'Implemented case study and held future evaluation' and 'Current go/no-go state - 27 August 2026'; detailed chapter-plan entries '3.2 Evaluand and conditions' and '5.7 Manual and HITL comparison'."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "role": "Project evidence hierarchy and prohibition on presenting synthetic, test or design evidence as a real-world finding.",
+      "locator": "Opening evidence-category definitions for 'Source evidence', 'Implementation evidence', 'Protocol' and 'Finding'; statement that no synthetic observation, automated test, stakeholder assertion or design intention is represented as a real-world finding; headings 'Success definition' and 'Primary risks'."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "role": "Implemented-versus-protocol-only status convention, condition-relevant verifier/report controls and evidence-class separation requirement.",
+      "locator": "Status convention directly before the requirements tables; requirements FR-AGT-001--FR-AGT-005, FR-VER-001--FR-VER-007, FR-REP-001--FR-REP-009, NFR-REL-002, NFR-PERF-001 and NFR-RES-001--NFR-RES-003."
+    }
+  ],
+  "row_traceability": [
+    {
+      "condition": "C0 Manual",
+      "protocol_state": "Protocol-only",
+      "current_go_no_go": "NO-GO pending verified authority, gold construction and protocol freeze",
+      "scoring_boundary": "Completed authorised manual report; timing and corrections only where the frozen protocol permits",
+      "assistance_boundary": "Any established tool or model assistance must be recorded so the condition is not mislabelled as manual."
+    },
+    {
+      "condition": "C1 Deterministic/single-agent baseline",
+      "protocol_state": "Implemented on synthetic labelled cases",
+      "current_go_no_go": "Executable for D0 engineering and mechanism evidence",
+      "scoring_boundary": "Automated C1 report before any human review",
+      "assistance_boundary": "No independent verifier and no human edits before scoring."
+    },
+    {
+      "condition": "C2 Bounded multi-agent verification",
+      "protocol_state": "Implemented on synthetic labelled cases",
+      "current_go_no_go": "Executable for D0 engineering and mechanism evidence",
+      "scoring_boundary": "Verifier-gated C2 report before human review",
+      "assistance_boundary": "The independent verifier controls support eligibility and is separate from extraction and composition."
+    },
+    {
+      "condition": "C3 C2 plus HITL",
+      "protocol_state": "Workflow implemented; human results protocol-only",
+      "current_go_no_go": "Human execution NO-GO pending verified authority and protocol freeze",
+      "scoring_boundary": "Approved post-review version scored separately from its pre-review C2 version",
+      "assistance_boundary": "The named reviewer may edit, approve or reject under the authorised protocol but does not replace the independent gold reference."
+    }
+  ],
+  "shared_parity_contract": [
+    "Same canonical metric definitions for all comparable conditions.",
+    "Same reporting period for all comparable conditions.",
+    "Same eligible input and source-access window for all comparable conditions.",
+    "Same frozen gold reference for all comparable conditions.",
+    "Workflow configuration records applicable schemas, prompts, code, compute environment and stop criteria.",
+    "C0 records any tool or model assistance."
+  ],
+  "explicit_exclusion": "The implemented but live-unrun bounded public-web company-research path is not a C0-C3 experimental condition. Its controls may support engineering claims only and cannot substitute for C0/C3 or live operational findings.",
+  "limitations": [
+    "The exhibit is a conceptual, non-empirical author synthesis and does not report result values, sample sizes, thresholds, costs, time savings or participant outcomes.",
+    "The stated parity controls are protocol requirements; the exhibit does not prove that an unexecuted study achieved parity.",
+    "Implemented C1/C2 evidence is bounded to synthetic labelled D0 cases and cannot be generalised to real portfolio or practitioner performance.",
+    "C0 and human-result C3 execution remains protocol-only and currently NO-GO; null held outcomes are not replaced by synthetic measurements.",
+    "A C0 manual report is an evaluated output, not an independent gold reference.",
+    "The exhibit does not validate ethics/data authority, the gold-construction process, the frozen evaluation bundle or the live-unrun company-research path.",
+    "The complete plain-text companion provides reading-order access; no claim is made that the generated dissertation PDF is tagged."
+  ],
+  "validation": {
+    "standalone_compile": "Passed with Tectonic using the dissertation style through a temporary, non-retained book harness.",
+    "scoped_tex_warnings": "No overfull boxes, underfull boxes, LaTeX warnings or package warnings from the exhibit; the harness emitted only the existing inputenc-with-Unicode-engine package warning.",
+    "layout": "Visually inspected at 180 dpi: one dedicated A4 portrait table page, all seven columns readable, no clipping, no colour-dependent encoding, and the following section starts after the post-table clearpage.",
+    "integration_boundary": "The chapter was not edited. Full-dissertation placement must be rechecked after the approved Section 3.2 input is added."
+  },
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_t1_condition_matrix.tex",
+      "sha256": "253ef83a18dcb47bc1f10f9e16df6b5f4ed652a51376e58936437f987f68d5b2",
+      "role": "One-page portrait LaTeX condition matrix with deterministic placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_t1_condition_matrix.txt",
+      "sha256": "1cf60d7071ea04709f0073480f9f7cb88186b46cc218615ea24e4d1f12f100a5",
+      "role": "Complete plain-text alternative with expanded condition, parity, scoring and evidence-state boundaries."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

@@ -1,0 +1,68 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \caption{C0--C3 evaluation-condition matrix}
+  \label{tab:meth-condition-matrix}
+  \scriptsize
+  \setlength{\tabcolsep}{0.8pt}
+  \renewcommand{\arraystretch}{1.18}
+  \hyphenpenalty=5000
+  \exhyphenpenalty=5000
+  \begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.155\textwidth}P{0.125\textwidth}P{0.10\textwidth}P{0.115\textwidth}Y P{0.172\textwidth}@{}}
+    \toprule
+    \textbf{Condition} &
+    \textbf{Operational workflow} &
+    \textbf{Independent}\par\textbf{verifier} &
+    \textbf{Human involvement} &
+    \textbf{Scoring point} &
+    \textbf{Parity controls} &
+    \textbf{Current evidence state} \\
+    \midrule
+
+    \textbf{C0}\par Manual &
+    Authorised practitioner completes the existing workflow in the frozen information window; every tool or model aid is logged. &
+    No condition-level verifier. &
+    Practitioner produces the report; there is no later C3 review stage. &
+    Completed manual report; timing and corrections only if authorised. &
+    Same metric definitions, period, eligible input and source-access window, and frozen gold reference. &
+    \textbf{PROTOCOL-ONLY / NO-GO}\par Pending authority, gold construction and freeze. \\
+
+    \addlinespace[2pt]
+    \textbf{C1}\par Deterministic\par single-agent &
+    One extraction-and-composition path uses the common catalogue and normaliser; provenance is retained. &
+    No. &
+    No human edits before scoring. &
+    Automated C1 report before any review. &
+    Common controls at left, plus frozen schemas, prompts, code, environment and stop rules. &
+    \textbf{IMPLEMENTED}\par Synthetic labelled D0 cases; mechanism evidence only. \\
+
+    \addlinespace[2pt]
+    \textbf{C2}\par Bounded\par multi-agent &
+    Bounded roles collect, extract and normalise; the verifier gates support before deterministic composition. &
+    Yes: separate from extraction and composition. &
+    No human edits before scoring. &
+    Verifier-gated C2 report before human review. &
+    Same common and frozen technical controls as C1. &
+    \textbf{IMPLEMENTED}\par Synthetic labelled D0 cases; mechanism evidence only. \\
+
+    \addlinespace[2pt]
+    \textbf{C3}\par C2 + HITL &
+    C2 output enters the versioned named-review workflow. &
+    Yes: inherited from C2. &
+    Named reviewer may edit, approve or reject under the authorised protocol. &
+    Approved post-review version, scored separately from pre-review C2. &
+    Same common controls and C2 configuration, plus the frozen review protocol. &
+    \textbf{WORKFLOW IMPLEMENTED}\par Human results PROTOCOL-ONLY / NO-GO. \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{5pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Parity rule:} comparable conditions use the same canonical metric definitions,
+    reporting period, eligible input and source-access window, and frozen gold reference; C0 tool
+    or model assistance must be recorded. \textit{Exclusion:} the live-unrun bounded public-web
+    company-research path is not a C0--C3 condition and supplies engineering evidence only.
+    \textit{Status:} author synthesis of frozen project contracts; conceptual and non-empirical,
+    with no result values or decision thresholds.}
+\end{table}
+\clearpage

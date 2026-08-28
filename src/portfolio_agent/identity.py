@@ -14,13 +14,16 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from .enums import (
+    CompanyLifecycleStatus,
     DataClassification,
     IdentifierScheme,
     IdentityCandidateStatus,
     IdentityDecisionType,
+    ResearchCaseStatus,
     ResolutionStatus,
 )
 from .models import (
+    CompanyIdentifierDecisionModel,
     CompanyIdentifierModel,
     CompanyModel,
     CompanyProgrammeMembershipModel,
@@ -28,6 +31,8 @@ from .models import (
     IdentityDecisionModel,
     ObservationModel,
     ObservationNarrativeModel,
+    ResearchCaseModel,
+    utc_now,
 )
 
 _COMPANIES_HOUSE_NUMBER = re.compile(r"(?:[A-Z]{2}\d{6}|\d{8})")
@@ -63,6 +68,142 @@ def is_valid_companies_house_number(value: str) -> bool:
         )
         is not None
     )
+
+
+@dataclass(frozen=True, slots=True)
+class IdentifierReviewProjection:
+    """One derived authority view across legacy candidates and slice decisions."""
+
+    status: IdentityCandidateStatus
+    candidates: tuple[IdentityCandidateModel, ...]
+    decisions: tuple[IdentityDecisionModel | CompanyIdentifierDecisionModel, ...]
+
+
+def identity_candidates_for_identifier(
+    session: Session,
+    identifier: CompanyIdentifierModel,
+) -> tuple[IdentityCandidateModel, ...]:
+    """Return existing candidate records governed by an exact identifier claim."""
+
+    try:
+        scheme = IdentifierScheme(identifier.scheme)
+    except ValueError:
+        return ()
+    candidates = session.scalars(
+        select(IdentityCandidateModel).where(
+            IdentityCandidateModel.identifier_scheme == identifier.scheme,
+            IdentityCandidateModel.imported_company_id == identifier.company_id,
+        )
+    )
+    return tuple(
+        candidate
+        for candidate in candidates
+        if candidate.submitted_identifier is not None
+        and normalize_identifier(scheme, candidate.submitted_identifier)
+        == identifier.normalized_value
+    )
+
+
+def identifier_review_projection(
+    session: Session,
+    identifier: CompanyIdentifierModel,
+) -> IdentifierReviewProjection:
+    """Derive pending/accepted/rejected state without creating a second authority."""
+
+    candidates = identity_candidates_for_identifier(session, identifier)
+    candidate_ids = [candidate.id for candidate in candidates]
+    legacy_decisions = (
+        list(
+            session.scalars(
+                select(IdentityDecisionModel).where(
+                    IdentityDecisionModel.candidate_id.in_(candidate_ids)
+                )
+            )
+        )
+        if candidate_ids
+        else []
+    )
+    slice_decisions = list(
+        session.scalars(
+            select(CompanyIdentifierDecisionModel).where(
+                CompanyIdentifierDecisionModel.company_identifier_id == identifier.id
+            )
+        )
+    )
+    all_decisions: list[IdentityDecisionModel | CompanyIdentifierDecisionModel] = [
+        *legacy_decisions,
+        *slice_decisions,
+    ]
+    decisions = tuple(
+        sorted(
+            all_decisions,
+            key=lambda decision: decision.created_at,
+            reverse=True,
+        )
+    )
+    candidate_statuses = {candidate.status for candidate in candidates}
+    if IdentityCandidateStatus.PENDING.value in candidate_statuses:
+        status = IdentityCandidateStatus.PENDING
+    elif IdentityCandidateStatus.ACCEPTED.value in candidate_statuses:
+        status = IdentityCandidateStatus.ACCEPTED
+    elif candidates:
+        status = IdentityCandidateStatus.REJECTED
+    elif slice_decisions:
+        latest_slice_decision = max(
+            slice_decisions,
+            key=lambda decision: decision.created_at,
+        )
+        status = (
+            IdentityCandidateStatus.ACCEPTED
+            if latest_slice_decision.decision == IdentityDecisionType.ACCEPT.value
+            else IdentityCandidateStatus.REJECTED
+        )
+    else:
+        status = (
+            IdentityCandidateStatus.ACCEPTED
+            if identifier.reviewed
+            else IdentityCandidateStatus.PENDING
+        )
+    return IdentifierReviewProjection(status=status, candidates=candidates, decisions=decisions)
+
+
+def synchronize_company_identity_review_state(
+    session: Session,
+    company: CompanyModel,
+    *,
+    accepted: bool,
+) -> None:
+    """Keep company and first-slice cases aligned after an exact identity decision."""
+
+    company.resolution_status = (
+        ResolutionStatus.RESOLVED.value if accepted else ResolutionStatus.UNRESOLVED.value
+    )
+    company.lifecycle_status = (
+        CompanyLifecycleStatus.ACTIVE.value if accepted else CompanyLifecycleStatus.CANDIDATE.value
+    )
+    case_status = (
+        ResearchCaseStatus.READY.value if accepted else ResearchCaseStatus.IDENTITY_HOLD.value
+    )
+    for research_case in session.scalars(
+        select(ResearchCaseModel).where(ResearchCaseModel.company_id == company.id)
+    ):
+        research_case.status = case_status
+        research_case.updated_at = utc_now()
+
+
+def synchronize_identifier_review_projection(
+    session: Session,
+    identifier: CompanyIdentifierModel,
+) -> None:
+    """Project all candidate decisions into the persisted company/case hold state."""
+
+    projection = identifier_review_projection(session, identifier)
+    accepted = projection.status == IdentityCandidateStatus.ACCEPTED
+    identifier.reviewed = accepted
+    company = session.get(CompanyModel, identifier.company_id)
+    if company is None:
+        raise ValueError("Identifier company is unavailable.")
+    synchronize_company_identity_review_state(session, company, accepted=accepted)
 
 
 def parse_companies_house_identity(
@@ -379,6 +520,7 @@ def decide_identity_candidate(
         raise ValueError("Identity candidate already has a final decision.")
 
     target: CompanyModel | None = None
+    affected_identifier: CompanyIdentifierModel | None = None
     if decision is IdentityDecisionType.ACCEPT:
         target_id = company_id or candidate.candidate_company_id or candidate.imported_company_id
         target = session.get(CompanyModel, target_id)
@@ -426,23 +568,37 @@ def decide_identity_candidate(
             if existing is not None and existing.company_id != target.id:
                 raise ValueError("Identifier is already attached to a different company.")
             if existing is None:
-                session.add(
-                    CompanyIdentifierModel(
-                        company_id=target.id,
-                        scheme=scheme.value,
-                        value=candidate.submitted_identifier,
-                        normalized_value=normalized,
-                        source_key=identifier_source_key(scheme),
-                        reviewed=True,
-                    )
+                existing = CompanyIdentifierModel(
+                    company_id=target.id,
+                    scheme=scheme.value,
+                    value=candidate.submitted_identifier,
+                    normalized_value=normalized,
+                    source_key=identifier_source_key(scheme),
+                    reviewed=True,
                 )
+                session.add(existing)
             else:
                 existing.reviewed = True
                 existing.source_key = identifier_source_key(scheme)
+            affected_identifier = existing
             target.external_id = candidate.submitted_identifier
         candidate.status = IdentityCandidateStatus.ACCEPTED.value
     else:
         candidate.status = IdentityCandidateStatus.REJECTED.value
+        if candidate.identifier_scheme and candidate.submitted_identifier:
+            scheme = IdentifierScheme(candidate.identifier_scheme)
+            normalized = normalize_identifier(scheme, candidate.submitted_identifier)
+            existing = session.scalar(
+                select(CompanyIdentifierModel).where(
+                    CompanyIdentifierModel.scheme == scheme.value,
+                    CompanyIdentifierModel.normalized_value == normalized,
+                )
+            )
+            if existing is not None and existing.company_id == candidate.imported_company_id:
+                affected_identifier = existing
+
+    if affected_identifier is not None:
+        synchronize_identifier_review_projection(session, affected_identifier)
 
     record = IdentityDecisionModel(
         candidate_id=candidate.id,

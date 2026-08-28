@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Company intelligence{% endblock %}
+{% block content %}
+<section class="page-intro" aria-labelledby="page-title">
+  <div>
+    <p class="eyebrow">Company intelligence</p>
+    <h1 id="page-title">Which company identity or evidence claim needs review next?</h1>
+    <p class="lede">Create a local research case from an exact number, HTTPS domain, declared name and jurisdiction, authorised document, or bulk portfolio. Intake records claims; it does not run public research.</p>
+  </div>
+</section>
+
+<section class="boundary-strip" aria-labelledby="intelligence-boundary-title">
+  <h2 id="intelligence-boundary-title" class="visually-hidden">Company-intelligence boundary</h2>
+  <dl>
+    <div><dt>Companies</dt><dd>{{ company_count }} recorded</dd></div>
+    <div><dt>Need attention</dt><dd>{{ attention_count }} companies</dd></div>
+    <div><dt>Source access</dt><dd>{{ 'Explicit public opt-in' if company_research_enabled else 'Offline · G2 held' }}</dd></div>
+    <div><dt>Model path</dt><dd>{{ 'Bounded web research enabled' if company_research_enabled else 'Disabled by default' }}</dd></div>
+  </dl>
+  <p>Names, domains, filenames, and structurally valid registry numbers remain submitted claims until a named reviewer decides them.</p>
+</section>
+
+<section class="panel import-panel" aria-labelledby="company-intake-title">
+  <p class="step">Hybrid company intake</p>
+  <h2 id="company-intake-title">Start or extend a local research case</h2>
+  <p class="section-intro">Single mode accepts any safe combination below. Bulk mode accepts the frozen CSV/XLSX columns <code>companies_house_number</code>, <code>website</code>, <code>company_name</code>, and <code>jurisdiction</code>.</p>
+  {% if reviewer_name %}
+  <form action="/company-intakes" method="post" enctype="multipart/form-data" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="field">
+      <label for="intake_mode">Intake mode</label>
+      <select id="intake_mode" name="intake_mode">
+        <option value="single">Single or hybrid case</option>
+        <option value="bulk">Bulk CSV/XLSX portfolio</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="company_classification">Data classification</label>
+      <select id="company_classification" name="classification">
+        <option value="restricted">Restricted</option>
+        <option value="internal">Internal</option>
+        <option value="public">Public</option>
+        <option value="synthetic">Synthetic</option>
+      </select>
+    </div>
+    <div class="field wide">
+      <label for="intake_purpose">Declared research purpose</label>
+      <input id="intake_purpose" name="purpose" required minlength="5" maxlength="1000" value="Core company profile evidence organisation">
+    </div>
+    <div class="field">
+      <label for="companies_house_number">Companies House number</label>
+      <input id="companies_house_number" name="companies_house_number" autocomplete="off" placeholder="00000042 or SC123456">
+    </div>
+    <div class="field">
+      <label for="company_website">HTTPS company website</label>
+      <input id="company_website" name="website" type="url" inputmode="url" placeholder="https://company.example/">
+    </div>
+    <div class="field">
+      <label for="company_name">Declared company name</label>
+      <input id="company_name" name="company_name" autocomplete="organization">
+    </div>
+    <div class="field">
+      <label for="company_jurisdiction">Declared jurisdiction</label>
+      <input id="company_jurisdiction" name="jurisdiction" placeholder="GB, EW, SC">
+    </div>
+    <div class="field wide">
+      <label for="company_file">Authorised document or bulk file</label>
+      <input id="company_file" name="file" type="file" accept=".pdf,.docx,.xlsx,.csv,.json,.html,.htm,.xml,.txt,.png,.jpg,.jpeg">
+      <p class="hint">Maximum 20 MiB. Documents are stored locally as untrusted bytes; no extraction, model call, or network access occurs.</p>
+    </div>
+    <button type="submit">Record company intake</button>
+  </form>
+  {% else %}
+  <p class="empty">Configure <code>PORTFOLIO_REVIEWER_NAME</code> to record accountable intake and review decisions.</p>
+  {% endif %}
+</section>
+
+<section class="panel" aria-labelledby="companies-ledger-title">
+  <div class="section-heading">
+    <div><p class="step">Persisted workspace</p><h2 id="companies-ledger-title">Companies ledger</h2></div>
+    <span>{{ company_count }} companies</span>
+  </div>
+  {% if company_rows %}
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <caption>Company identity, case coverage, and next safe action</caption>
+      <thead><tr><th scope="col">Company claim</th><th scope="col">Primary identifier</th><th scope="col">Domain</th><th scope="col">Case and artifacts</th><th scope="col">Review state</th><th scope="col">Next action</th></tr></thead>
+      <tbody>
+      {% for row in company_rows %}
+        <tr>
+          <td data-label="Company claim"><strong>{{ row.company.canonical_name }}</strong><small>{{ row.company.entity_type or 'entity type not available' }} · {{ row.company.jurisdiction or 'jurisdiction not available' }}</small></td>
+          <td data-label="Primary identifier">{% if row.identifier %}<code>{{ row.identifier.normalized_value }}</code><small>{{ 'reviewed' if row.identifier.reviewed else 'pending named review' }}</small>{% else %}<span>Not available</span>{% endif %}</td>
+          <td data-label="Domain">{% if row.domain %}<span>{{ row.domain.normalized_domain }}</span><small>{{ humanize(row.domain.status) }}</small>{% else %}<span>Not available</span>{% endif %}</td>
+          <td data-label="Case and artifacts"><span>{{ row.case_count }} case{{ '' if row.case_count == 1 else 's' }}</span><small>{{ row.artifact_count }} intake artifact{{ '' if row.artifact_count == 1 else 's' }}</small></td>
+          <td data-label="Review state"><span class="status status-{{ row.company.resolution_status }}">{{ humanize(row.company.resolution_status) }}</span><small>{{ row.open_count }} open decision{{ '' if row.open_count == 1 else 's' }}</small></td>
+          <td data-label="Next action"><a class="text-action" href="/companies/{{ row.company.id }}">{{ row.next_action }} <span aria-hidden="true">&#8594;</span></a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No company research cases exist. Record one exact number or another authorised identity claim above.</p>
+  {% endif %}
+</section>
+{% endblock %}

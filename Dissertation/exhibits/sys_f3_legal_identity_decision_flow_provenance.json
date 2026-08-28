@@ -1,0 +1,292 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "SYS-F3",
+  "title": "Legal-identity intake and decision flow",
+  "author": "Faye Niu",
+  "target_section": "4.4 Intake and legal-identity control",
+  "suggested_latex_label": "fig:sys-legal-identity-decision-flow",
+  "purpose": "Explain the implemented local intake, checksum/idempotence, exact Companies House-number review and fail-closed research controls while preserving alternate names, domains and documents as supporting claims and separating the implemented but live-unrun public-web route from the held direct-registry route.",
+  "generated_at_utc": "2026-08-27T23:29:27Z",
+  "hashes_recomputed_at_utc": "2026-08-28T00:04:45Z",
+  "revision": "1.0.6",
+  "status": {
+    "evidence_class": "conceptual_non_empirical",
+    "result_status": "not_a_result",
+    "intake_and_identity_controls": "implemented_and_locally_tested",
+    "bounded_public_web_research": "implemented_mechanics_but_live_unrun",
+    "direct_companies_house_retrieval": "held_by_source_admission_g2",
+    "authoritative_live_identity_resolution": "not_claimed",
+    "perfect_deduplication": "not_claimed",
+    "production_concurrency_or_multi_user_authority": "not_claimed"
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.svg",
+    "renderer": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.py",
+    "command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/sys_f3_legal_identity_decision_flow.py",
+    "format": "restricted accessible SVG rendered with deterministic ReportLab vector operations",
+    "dimensions_points": {
+      "width": 900,
+      "height": 1180
+    },
+    "raster_content": false,
+    "deterministic": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_title": "Legal-identity intake and decision flow",
+    "svg_description_chars": 1092,
+    "complete_text_alternative": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.txt",
+    "status_encoding": "Colour is redundant with solid, dashed and dotted boundaries plus explicit status text.",
+    "greyscale": "Implemented, live-unrun and held states remain distinguishable by line pattern and label without colour.",
+    "reading_order": "intake and immutable reuse, supporting identity claims and named decision, outcomes, downstream research gate, explicit limits",
+    "pdf_tagging_claim": "none; the TXT companion is the accessible alternative"
+  },
+  "validation": {
+    "python_compile": "PASS",
+    "svg_xml_accessibility": "PASS: well-formed XML, role=img, aria-labelledby, title and 1092-character description retained",
+    "pdf_metadata": "PASS: one page, 900 x 1180 pt, author Faye Niu, invariant timestamp metadata",
+    "vector_check": "PASS: no PDF image XObjects; required semantic markers extract from the PDF",
+    "repeat_render": {
+      "status": "PASS",
+      "runs": 3,
+      "byte_identical": true,
+      "sha256": "95bda14a1832977fd847f5e698f3fbe47ab21dd1484102139fd9bd7c5a378ff4"
+    },
+    "standalone_a4": {
+      "status": "PASS",
+      "harness": "/private/tmp/sys_f3_a4_validation.tex",
+      "command": "/opt/homebrew/bin/tectonic --outdir /private/tmp /private/tmp/sys_f3_a4_validation.tex",
+      "result": "two-page A4 validation document: one dedicated portrait figure/caption page followed by the next-section marker",
+      "visual_result": "no clipping, overlap or overflow; caption and source note remain inside the page",
+      "note": "The temporary harness uses absolute style and asset paths solely for local validation; dissertation integration should use the repository-relative asset path. Tectonic emitted only its known C-special warning and absolute-path reproducibility notices."
+    },
+    "visual_inspection": "PASS: native 900 x 1180 pt and A4 page renders inspected for clipping, overlap, reading order, source-note presence, line-pattern status redundancy and portrait readability",
+    "targeted_tests": {
+      "status": "PASS",
+      "pytest_cases_passed": 15,
+      "selected_test_nodes": 13,
+      "command": ".venv/bin/pytest -q tests/integration/test_importers.py::test_json_import_is_immutable_idempotent_and_preserves_missing_states tests/integration/test_importers.py::test_conflicting_company_identity_is_held tests/integration/test_company_intelligence.py::test_number_only_intake_is_idempotent_and_requires_named_review tests/integration/test_company_intelligence.py::test_website_and_name_inputs_never_auto_merge_identity tests/integration/test_company_intelligence.py::test_document_intake_is_private_create_once_and_content_remains_untrusted tests/integration/test_identity_migration.py::test_same_normalized_name_can_coexist_but_registry_number_is_unique tests/integration/test_identity_migration.py::test_name_only_import_requires_named_review tests/integration/test_identity_migration.py::test_companies_house_number_parser_is_structural_and_conservative tests/integration/test_identity_migration.py::test_identifier_collision_preserves_observations_under_identity_hold tests/integration/test_connector_contracts.py::test_registry_rejects_cross_company_unreviewed_and_expired_identifiers_before_io tests/integration/test_connector_contracts.py::test_live_mode_is_blocked_before_connector_call_when_g2_is_open tests/integration/test_control_room_api.py::test_identity_hold_blocks_research_until_a_named_decision tests/integration/test_control_room_api.py::test_research_start_is_refused_while_gates_are_closed",
+      "scope": "local database, filesystem and fake/synthetic company-research checks only; no live Companies House, public-web or model call",
+      "warnings": "One pre-existing StarletteDeprecationWarning and fifteen Python 3.12 sqlite adapter deprecation warnings; all selected cases passed.",
+      "supplementary_unpinned_validation": "The two selected test_control_room_api.py identity/gate cases passed in this run. That actively changing file is not hash-bound and is not a declared stable input."
+    },
+    "current_workflow_check_outside_stable_seal": {
+      "status": "PASS",
+      "command": ".venv/bin/pytest -q tests/integration/test_company_research.py::test_company_number_runs_search_capture_exact_span_deck_and_named_review",
+      "verified_at_utc": "2026-08-28T00:04:45Z",
+      "pytest_cases_passed": 1,
+      "pre_and_post_test_hashes_identical": true,
+      "verified_snapshot": {
+        "src/portfolio_agent/company_research.py": "4988b8f03601d0432da6e1753677fbee299c5102a492511273839b243c5986b7",
+        "tests/integration/test_company_research.py": "5cc13f1c1168c496b516f42a6be309c545cc706b6c525bf112273842a1a9ff9c"
+      },
+      "reviewer_audit_snapshot_superseded_before_verification": {
+        "src/portfolio_agent/company_research.py": "7d9f6fb7076667366e3105573e4f4661d0560e614533ceb851ce2cb88abf6397",
+        "tests/integration/test_company_research.py": "1bd576a64e356a1dde3f2ff2e8f8de2b5d21c8ec7778ac4e885e7faf8d2cb357"
+      },
+      "stable_seal_membership": "These actively changing implementation/test files are supplementary current workflow evidence and are deliberately not members of the 27-input stable identity-control seal.",
+      "scope": "Fake/synthetic local workflow only; no live public-company, Companies House, public-web or external-model call."
+    },
+    "strict_source_gate": {
+      "status": "PASS",
+      "command": ".venv/bin/python Dissertation/scripts/check_sources.py --strict-bibliography",
+      "result": "38 local PDFs and hashes verified; 2 immutable web captures; 89 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "hash_audit": "PASS: all 27 declared stable inputs and all 4 declared outputs matched; the separately recorded workflow and control-room test validations are not part of the stable hash seal"
+  },
+  "interpretive_boundaries": [
+    "The figure is an author synthesis of repository contracts and local engineering evidence; it reports no identity accuracy, coverage, time saving, user outcome or production result.",
+    "Structural Companies House-number validation and a named local review do not establish that a live registry record exists, is current, is complete or proves economic activity.",
+    "Names only order candidates; domains and documents remain separately reviewable supporting claims. None authorises fuzzy, name-only, domain-only or document-only automatic legal-entity merging.",
+    "The public-web research route has fake, synthetic and adversarial engineering evidence but no completed live company or external-model run is claimed.",
+    "Direct Companies House retrieval remains G2 held. Synthetic replay validates mechanisms but is not live-source admission.",
+    "The concurrently changing company_research.py, its full-workflow test and test_control_room_api.py are not hash-bound inputs to the 27-input stable identity-control seal. Their selected fake/synthetic checks pass as separately recorded supplementary engineering evidence, not live-source, empirical or production evidence.",
+    "Local database uniqueness, create-once files and stale-decision rejection reduce duplicate or conflicting writes; they do not provide distributed transactions, production concurrency, multi-user tenancy or authoritative deduplication."
+  ],
+  "inputs": [
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "locator": "Canonical principles; Core entities; Company-intelligence first-slice records; Claim and verification semantics",
+      "role": "Canonical company, identifier, candidate, decision, research-case and intake-artifact semantics."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9ed985e0506bbcbe4c8f74b329ec4baf4bea79b36231c09b613d6f1dd8403744",
+      "locator": "FR-ID-001--003; FR-CH-001; FR-INT-001--002 and FR-INT-005--006; FR-RES-001; P1-CON-001",
+      "role": "Binding implemented, live-unrun and held requirement statuses shown by the figure."
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "4383245a195d8e9e94efb90904c4a64d3a23ccd5aac6df1acffb532647f604a4",
+      "locator": "System context and trust boundaries; Component responsibilities; End-to-end state machine; Data flow and invariants; Persistence model; Failure and recovery behaviour; Scalability and production gaps",
+      "role": "Trust boundary, intake/identity component ownership, fail-closed flow and non-production constraints."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locator": "Status and evidence boundary; P0 scope; Explicit non-goals; Stakeholders and authority; Constraints; Primary risks",
+      "role": "Single-user, local-only, named-review and claim-boundary constraints."
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "d6cee707f300910c43c638fb8600ded15e44790236bfbce881461b552e8d32c8",
+      "locator": "companies_house row; openai_web_search row; G2 admission checklist",
+      "role": "Current held direct-registry state and conditionally admitted URL-discovery boundary."
+    },
+    {
+      "path": "docs/adr/0008-bounded-live-company-research.md",
+      "sha256": "1b90b27672451e1b26513d67d11992a44388eaa54266c4f48f8a488cae1cf38f",
+      "locator": "Context; Decision items 1--7; Consequences",
+      "role": "Exact-number, public-only, captured-evidence, exact-span and named-review company-research boundary."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locator": "Chapter 4; Section 4.4 Intake and legal-identity control",
+      "role": "Approved target section and visual purpose."
+    },
+    {
+      "path": "Dissertation/sources/SECTION_2_3_EVIDENCE.md",
+      "sha256": "bcee5f88628cef146095e5fdca0f941bffaca826b45e52474197c13b358f16dc",
+      "locator": "Paragraph 1: quality as fitness for a defined use; Paragraph 2: source-scoped legal identity; Paragraph 5: synthesis into an evaluable contract; Prohibited overreach",
+      "role": "Verified local academic locators and limits for identity and use-case data-quality context."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "galanakis2026chrt; nikiforova2020quality; thorne2026funding rows",
+      "role": "Local academic-source identity, path and admitted role binding."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "locator": "papers/03, papers/05 and papers/09 entries",
+      "role": "Frozen local PDF checksum binding."
+    },
+    {
+      "path": "Dissertation/sources/papers/03_savagar_galanakis_2026_tracking_firm_creation.pdf",
+      "sha256": "1ed8f006e0121594a7adad178592668c7cd47f272aa2bb3c2231872257d21e94",
+      "locator": "PDF pp. 1--3 and 6",
+      "role": "Companies House registered-company context and incorporation-versus-economic-activity limitation."
+    },
+    {
+      "path": "Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf",
+      "sha256": "017d96ae1392fc22cb817b1aadc8ec407dac84f2a254a8391301c55bdd0b6d52",
+      "locator": "PDF pp. 15--17",
+      "role": "Use-case and object-specific data-quality context; not implementation certification."
+    },
+    {
+      "path": "Dissertation/sources/papers/09_thorne_et_al_2026_uk_funding_lifecycle.pdf",
+      "sha256": "90000d1f68bb6d82bcfe83271afd9b5433f671a22d9b74864a1833af028efaef",
+      "locator": "PDF pp. 5--6",
+      "role": "Conservative treatment of incomplete or ambiguous company/funding links; not identity-accuracy evidence."
+    },
+    {
+      "path": "src/portfolio_agent/identity.py",
+      "sha256": "389107eb6c3207a5458ff9843593d9ad1af12a214078903dc5ef3b1723e628e1",
+      "locator": "normalize_identifier; identity_candidates_for_identifier; parse_companies_house_identity; resolve_company_identity; decide_identity_candidate; synchronize_company_identity_review_state",
+      "role": "Exact normalization, structural parsing, candidate/hold logic, accepted decisions and no fuzzy/name-only merge."
+    },
+    {
+      "path": "src/portfolio_agent/importers.py",
+      "sha256": "5edbbf2945754ea2adea4196d6ca4706a222e08567cddb0514c78551da6d9233",
+      "locator": "PortfolioImporter import_file and canonical/raw-submission paths",
+      "role": "Portfolio byte hashing, period-bound dataset identity, local raw snapshot and idempotent reuse."
+    },
+    {
+      "path": "src/portfolio_agent/company_intelligence.py",
+      "sha256": "19f5d9372c4e9ce5ef07b1e4f6de3fe88f0dd72aba4fc3e473a207c5fe7c1728",
+      "locator": "CompanyIntakeRequest; CompanyIntakeService.create/create_bulk/decide_identifier/decide_domain/_prepare/_create_prepared",
+      "role": "Number-only and alternate-claim intake, fingerprint reuse, document SHA/create-once storage and named identifier/domain decisions."
+    },
+    {
+      "path": "src/portfolio_agent/models.py",
+      "sha256": "5ebca0b65f5556a4d0fa37e3f5d60f7c191754398ca0d54c6ffafde4fb487652",
+      "locator": "CompanyModel; CompanyIdentifierModel; IdentityCandidateModel; IdentityDecisionModel; ResearchCaseModel; IntakeArtifactModel; CompanyDomainModel; decision models; RawSubmissionModel",
+      "role": "Relational state, uniqueness, fingerprints, hashes, classification and append-only review records."
+    },
+    {
+      "path": "src/portfolio_agent/enums.py",
+      "sha256": "c7ee84b4f5ad4e84342879b69bf4b544ec1b38109b19aabb8a64707c3aeef380",
+      "locator": "IdentifierScheme; ResolutionStatus; ResearchCaseStatus; DataClassification; decision statuses",
+      "role": "Closed legal-identity, case, classification and review state sets."
+    },
+    {
+      "path": "src/portfolio_agent/ids.py",
+      "sha256": "632446d543dee666063649db1cc6fff596b0677e34087b9897ee3de321dbd5e7",
+      "locator": "stable_hash; sha256_bytes",
+      "role": "Canonical-object and byte hashing used for idempotent intake and local integrity."
+    },
+    {
+      "path": "alembic/versions/0001_initial_schema.py",
+      "sha256": "946f1eba0e2056cefe6930a09373c0e17f15b7355b89001cbb2569a784f6ca89",
+      "locator": "companies, raw_submissions and initial identity fields",
+      "role": "Initial persisted company and raw-input boundary."
+    },
+    {
+      "path": "alembic/versions/0002_uk_evidence_foundation.py",
+      "sha256": "b863459f48407f4aa00d33e32de4c7c1bd5c835bf9000c85ad7b43ccc9cb13cb",
+      "locator": "company_identifiers, identity_candidates, identity_decisions and uniqueness migration",
+      "role": "Source-scoped identifier, ambiguity and review-history schema boundary."
+    },
+    {
+      "path": "alembic/versions/0008_company_intelligence_foundation.py",
+      "sha256": "932a5cec0db5e1ff0cb8db2694df043db57e65ce8aa5dcf891fe4c0452857181",
+      "locator": "research_cases, intake_artifacts, company_domains, identifier/domain decisions and uniqueness constraints",
+      "role": "First-class company-intake, domain-claim and named-decision schema boundary."
+    },
+    {
+      "path": "alembic/versions/0009_company_research_runs.py",
+      "sha256": "2a0c19d839d0b17c032cdd513b2fcf3ba22f932571455c90bdc711b187460f91",
+      "locator": "company_research_runs/tasks/attempts/sources/claims and research-case link",
+      "role": "Idempotent research-run persistence after the legal-identity eligibility gate."
+    },
+    {
+      "path": "tests/integration/test_importers.py",
+      "sha256": "7e5eae350094d3260a6f4f15e64c56ea46512586dd7eeee7e448ef6d71033089",
+      "locator": "test_json_import_is_immutable_idempotent_and_preserves_missing_states; test_conflicting_company_identity_is_held",
+      "role": "Executable portfolio import reuse and identity-conflict hold evidence."
+    },
+    {
+      "path": "tests/integration/test_company_intelligence.py",
+      "sha256": "767a57ddfdbeefd1f088208a80875a85f0af6093a444e238e61323a927a27cc4",
+      "locator": "test_number_only_intake_is_idempotent_and_requires_named_review; test_website_and_name_inputs_never_auto_merge_identity; test_document_intake_is_private_create_once_and_content_remains_untrusted",
+      "role": "Executable number-only, alternate-claim, idempotence, no-auto-merge and document-boundary evidence."
+    },
+    {
+      "path": "tests/integration/test_identity_migration.py",
+      "sha256": "3792d88a96fab0f0bb7d5f87c5efc561d625d23994906b0765ca9796eea459b3",
+      "locator": "test_same_normalized_name_can_coexist_but_registry_number_is_unique; test_name_only_import_requires_named_review; test_companies_house_number_parser_is_structural_and_conservative; test_identifier_collision_preserves_observations_under_identity_hold",
+      "role": "Executable exact-number uniqueness, conservative parsing, name-only review and collision-preservation evidence."
+    },
+    {
+      "path": "tests/integration/test_connector_contracts.py",
+      "sha256": "2d0c7cd6b7f45a4f14e483e8791a90a85711846f26231c990e67c3112175168e",
+      "locator": "test_registry_rejects_cross_company_unreviewed_and_expired_identifiers_before_io",
+      "role": "Executable fail-before-I/O source-scoped identifier evidence for the held direct-registry path."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.py",
+      "sha256": "ed1cf107c12cca113849caef0e815d374db53379657f14f26b48a0101b3ac923",
+      "role": "Deterministic SVG-to-vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.svg",
+      "sha256": "d1b8021e25339361f691f16e4e7953d8658fb75451cafb17cbd747d9aee5bcca",
+      "role": "Accessible vector source of visual truth."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.pdf",
+      "sha256": "95bda14a1832977fd847f5e698f3fbe47ab21dd1484102139fd9bd7c5a378ff4",
+      "role": "LaTeX-ready deterministic vector figure."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f3_legal_identity_decision_flow.txt",
+      "sha256": "3a9f0d9e0a3e1905f1abf1b0958672fa4f50ba4bd3168c9364ca1ff28c066cb4",
+      "role": "Complete accessible text alternative and detailed claim boundary."
+    }
+  ]
+}

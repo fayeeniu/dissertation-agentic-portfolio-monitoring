@@ -1,0 +1,56 @@
+SYS-F1 — Local architecture and deployment boundaries
+Author: Faye Niu
+Target section: 4.2 Architecture and deployment design
+Suggested LaTeX label: fig:sys-architecture-deployment-boundary
+Status: author synthesis; conceptual, non-empirical, and not a result.
+
+Purpose
+This figure separates what the local prototype implements and checks from what is implemented but has no completed live public-company execution, what remains held, and what is explicitly outside scope. It does not claim production security, multi-user operation, cloud deployment, completed live research, user benefit, or empirical effectiveness.
+
+Status key
+1. Solid blue boundary — IMPLEMENTED + LOCAL CHECKS. The repository contains implementation and local test or static-validation evidence for the named boundary. This does not imply production readiness.
+2. Dashed amber boundary — IMPLEMENTED / LIVE UNRUN. Guarded mechanics and fake, synthetic, or adversarial tests exist, but a live public-company execution is not claimed.
+3. Dotted red boundary — HELD / GATE CLOSED. Direct live use is not admitted under the current source policy.
+4. Grey compound-dashed boundary — EXPLICIT NON-GOAL. The capability is deliberately absent from the bounded dissertation prototype.
+
+Reading order and architecture
+
+1. Local entry and container profile — loopback/single-user boundary.
+   - Loopback browser: the implemented local browser path provides review and approval pages. Local web tests exercise the page, Host/client, CSRF, approval, export, and integrity boundaries.
+   - CLI: import, run, review, export, evaluation, visualisation, and local serving use the same Runtime/service construction rather than a separate business-logic path.
+   - Docker Compose local profile: the implemented configuration publishes only `127.0.0.1:${PORTFOLIO_PORT:-8000}:8000`, uses a read-only root filesystem, drops Linux capabilities, and injects a private-container-client mode because Docker NAT replaces the browser's loopback address inside the container. At the recorded validation point, the Compose application hash matched the running container configuration, the container was healthy with read-only rootfs enabled, the named state volume was mounted read/write only at `/app/var`, the port was bound to `127.0.0.1:8000`, and the loopback health endpoint returned `status=ok`. The health response reported `external_llm=enabled`; this is configuration state only and is not evidence that any model, research stage, or public-source call ran. These checks verify the local profile, not a production deployment.
+
+2. FastAPI application and shared use-case boundary — implemented and locally tested.
+   - The loopback browser enters `web.create_app`.
+   - FastAPI serves server-rendered Jinja/static pages and a local JSON API projection. Host/client and CSRF controls reduce local-browser risk; the application has no production authentication claim.
+   - Browser routes and CLI commands call shared Runtime services: `PortfolioImporter`, `PortfolioWorkflow`, `ReportService`, `SourceRegistry`, `CompanyIntakeService`, and, only when cumulative gates pass, `CompanyResearchService`.
+   - The service boundary owns typed ingestion/identity, bounded workflow, independent verification, versioned reports, named approval, and export decisions. The optional company-research service is implemented, but a live public-company run is not claimed.
+
+3. Local persistence and immutable artifact boundary — implemented and locally tested.
+   - SQLAlchemy sessions persist metadata, provenance, audit, task, verification, report, review, and export state in local SQLite.
+   - Application startup runs Alembic to head; the migration schema is checked against the SQLAlchemy metadata model.
+   - Create-once or manifest-bound local files live in ignored `var/raw`, `var/sources`, and `var/exports` directories. Hashes support integrity and provenance; they do not establish truth, authority, encryption, anonymisation, or lawful processing.
+   - Docker Compose mounts the named `portfolio-state` volume at `/app/var`, providing persistent local state across container recreation. No managed cloud storage is implied.
+
+4. Optional untrusted public/external-provider boundary — implemented controls; live public-company execution unclaimed.
+   - The external path is constructed only for a public case with a reviewed Companies House number, both explicit runtime flags, an API key, and a named reviewer.
+   - OpenAI Responses web search may propose bounded HTTPS URL candidates. Search snippets and free-form model prose are not evidence.
+   - Guarded capture checks HTTPS, public addresses, redirects, robots, MIME, time, and byte limits. An optional model route receives only admitted public content with `store=False`; exact-span/schema checks remain mandatory.
+   - Only admitted captured bytes and validated exact spans may return towards typed claims. Missing, blocked, failed, conflicting, or unsupported states remain visible.
+   - The repository has fake, synthetic, and adversarial test evidence for this path. It does not provide a completed live public-company run, live-result quality evidence, or production SSRF assurance.
+   - Direct Companies House and UKRI live registry adapters remain held under G2. Their synthetic replay and connector mechanics do not grant live permission.
+
+5. Explicit non-goals / stop conditions.
+   - Remote exposure; multi-user authentication, authorisation, tenancy, or concurrent production use; cloud deployment or managed storage; autonomous publication; production-security assurance; unrestricted crawling; person profiling; investment advice; and any statement that live public-company calls were completed are outside the demonstrated system boundary.
+   - Named approval remains required before controlled report/export access; the verifier and composer cannot publish autonomously.
+
+Visual source note
+Author synthesis of repository architecture, accepted ADRs, configuration, application/service/persistence code, Docker Compose, and local tests. The figure contains no mutable counts, performance values, live-source outcomes, costs, production claims, or empirical findings.
+
+Academic design context
+- National Institute of Standards and Technology (2023), AI RMF 1.0, local PDF pp. 20-23 and 33-35: risk context, roles, oversight and managed controls. This framework does not certify the artefact.
+- Greshake et al. (2023), local PDF pp. 1 and 3-5: untrusted retrieved content and indirect-prompt-injection threat context. This does not establish effectiveness of the project's controls.
+- Pineau et al. (2021), local PDF pp. 1-4: reproducibility, versioned artefacts and transparent experimental reporting context. This is not a reproduction of the present system.
+
+Accessibility note
+The SVG carries a title, full description, explicit reading order, and text status labels. Colour is redundant: solid, dashed, dotted, and compound-dashed outlines encode the four status states. The PDF is vector and print-legible, but no claim of tagged-PDF accessibility is made; this complete text alternative is the accessible companion.

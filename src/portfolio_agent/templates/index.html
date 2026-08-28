@@ -1,95 +1,42 @@
 {% extends "base.html" %}
+{% block title %}Evidence work queue{% endblock %}
 {% block content %}
-<section class="hero" aria-labelledby="page-title">
+<section class="page-intro" aria-labelledby="page-title">
   <div>
-    <p class="eyebrow">Ingestion → evidence → review</p>
-    <h1 id="page-title">A bounded wayfinder for portfolio reporting</h1>
-    <p class="lede">Import one reporting period, inspect the agent trace, and review every supported or held claim before export.</p>
+    <p class="eyebrow">Evidence control room</p>
+    <h1 id="page-title">What needs attention before this report can be approved?</h1>
+    <p class="lede">Move one authorised reporting snapshot from import to a reviewable report without losing provenance or human control.</p>
   </div>
-  <dl class="assurance-list">
-    <div><dt>Default model path</dt><dd>Deterministic and local</dd></div>
-    <div><dt>External publication</dt><dd>Disabled</dd></div>
-    <div><dt>Approval boundary</dt><dd>Named reviewer + rationale</dd></div>
+</section>
+
+<section class="boundary-strip" aria-labelledby="boundary-title">
+  <h2 id="boundary-title" class="visually-hidden">Runtime and approval boundary</h2>
+  <dl>
+    <div><dt>Runtime</dt><dd>Loopback only · synchronous</dd></div>
+    <div><dt>Model path</dt><dd>{{ external_model_state }}</dd></div>
+    <div><dt>Configured reviewer</dt><dd>{{ reviewer_name or 'Not configured' }}</dd></div>
+    <div><dt>Export</dt><dd>Current named-review approval required</dd></div>
   </dl>
-</section>
-
-<section class="panel" aria-labelledby="import-title">
-  <p class="step">Step 1</p>
-  <h2 id="import-title">Import a reporting-period snapshot</h2>
-  <form action="/imports" method="post" enctype="multipart/form-data" class="form-grid">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-    <div class="field wide">
-      <label for="file">XLSX, CSV, or JSON file</label>
-      <input id="file" name="file" type="file" accept=".xlsx,.csv,.json" required>
-      <p class="hint">Maximum 20 MiB. The immutable snapshot is kept under ignored local runtime storage.</p>
-    </div>
-    <div class="field">
-      <label for="period_label">Period label</label>
-      <input id="period_label" name="period_label" type="text" placeholder="Required for XLSX/CSV">
-    </div>
-    <div class="field">
-      <label for="reporting_cutoff">Reporting cutoff</label>
-      <input id="reporting_cutoff" name="reporting_cutoff" type="date">
-      <p class="hint">Required for the CBIT profile; controls historical evidence eligibility.</p>
-    </div>
-    <div class="field">
-      <label for="classification">Data classification</label>
-      <select id="classification" name="classification">
-        <option value="restricted">Restricted</option>
-        <option value="internal">Internal</option>
-        <option value="synthetic">Synthetic</option>
-      </select>
-    </div>
-    <button type="submit">Import snapshot</button>
-  </form>
-</section>
-
-<section class="panel" aria-labelledby="datasets-title">
-  <p class="step">Step 2</p>
-  <h2 id="datasets-title">Run a verified workflow</h2>
-  {% if datasets %}
-  <div class="table-wrap">
-    <table>
-      <caption>Available immutable datasets</caption>
-      <thead><tr><th scope="col">Dataset</th><th scope="col">Period</th><th scope="col">Class</th><th scope="col">Action</th></tr></thead>
-      <tbody>
-      {% for dataset in datasets %}
-        <tr>
-          <td><code>{{ dataset.dataset_id }}</code></td>
-          <td>{{ dataset.reporting_period.label }}</td>
-          <td>{{ dataset.classification }}</td>
-          <td>
-            <form action="/runs" method="post">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-              <input type="hidden" name="dataset_id" value="{{ dataset.dataset_id }}">
-              <button type="submit" class="secondary">Run to review</button>
-            </form>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  {% else %}
-  <p class="empty">No datasets imported yet. Use the fictional fixture via the CLI for a safe demonstration.</p>
-  {% endif %}
+  <p>Approval records review of one report version. It does not convert held or contradicted evidence into supported evidence.</p>
 </section>
 
 {% if identity_candidates %}
-<section class="panel" aria-labelledby="identity-title">
-  <p class="step">Identity hold</p>
-  <h2 id="identity-title">Resolve company identities before collection</h2>
-  <p>Names are search hints only. Accepting a candidate records the configured reviewer and may merge only within the same data-classification boundary.</p>
-  <div class="table-wrap"><table>
-    <caption>Pending, source-scoped identity decisions</caption>
-    <thead><tr><th scope="col">Submitted identity</th><th scope="col">Reason</th><th scope="col">Suggested company</th><th scope="col">Decision</th></tr></thead>
+<section id="identity-holds" class="panel exception-panel" aria-labelledby="identity-title">
+  <div class="section-heading">
+    <div><p class="step">Earliest blocker</p><h2 id="identity-title">Resolve {{ identity_candidates | length }} company identities</h2></div>
+    <span class="status status-held">Held</span>
+  </div>
+  <p class="section-intro">Collection cannot continue while exact identity is unresolved. Names are search hints only; every decision requires the configured reviewer and a rationale.</p>
+  <div class="table-wrap"><table class="responsive-table">
+    <caption>Pending source-scoped identity decisions</caption>
+    <thead><tr><th scope="col">Submitted identity</th><th scope="col">Reason</th><th scope="col">Suggested company</th><th scope="col">Named decision</th></tr></thead>
     <tbody>
     {% for candidate in identity_candidates %}
       <tr>
-        <td>{{ candidate.submitted_name }}{% if candidate.submitted_identifier %}<br><code>{{ candidate.identifier_scheme }}:{{ candidate.submitted_identifier }}</code>{% endif %}</td>
-        <td><code>{{ candidate.reason_code }}</code></td>
-        <td><code>{{ candidate.candidate_company_id or 'new unresolved company' }}</code></td>
-        <td>
+        <td data-label="Submitted identity"><strong>{{ candidate.submitted_name }}</strong>{% if candidate.submitted_identifier %}<small><code>{{ candidate.identifier_scheme }}:{{ candidate.submitted_identifier }}</code></small>{% endif %}</td>
+        <td data-label="Reason">{{ humanize(candidate.reason_code) }}</td>
+        <td data-label="Suggested company"><code>{{ candidate.candidate_company_id or 'new unresolved company' }}</code></td>
+        <td data-label="Named decision">
           {% if reviewer_name %}
           <form action="/identity-candidates/{{ candidate.id }}/decide" method="post" class="stacked-form compact-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -112,18 +59,87 @@
 </section>
 {% endif %}
 
-<div class="two-column">
-  <section class="panel" aria-labelledby="runs-title">
-    <h2 id="runs-title">Recent agent traces</h2>
-    {% if runs %}<ul class="record-list">
-      {% for run in runs %}<li><a href="/runs/{{ run.id }}"><code>{{ run.id }}</code></a><span class="status status-{{ run.status }}">{{ run.status }}</span><small>{{ run.stage }}</small></li>{% endfor %}
-    </ul>{% else %}<p class="empty">No workflow runs.</p>{% endif %}
-  </section>
-  <section class="panel" aria-labelledby="reports-title">
-    <h2 id="reports-title">Reports awaiting decisions</h2>
-    {% if reports %}<ul class="record-list">
-      {% for report in reports %}<li><a href="/reports/{{ report.id }}">{{ report.title }}</a><span class="status status-{{ report.status }}">{{ report.status }}</span><small>Version {{ report.version }}</small></li>{% endfor %}
-    </ul>{% else %}<p class="empty">No reports composed.</p>{% endif %}
-  </section>
-</div>
+<section class="panel import-panel" aria-labelledby="import-title">
+  <p class="step">Import</p>
+  <h2 id="import-title">Import reporting snapshot</h2>
+  <p class="section-intro">Authorise one local file, reporting period, cutoff, and classification as a coherent immutable snapshot.</p>
+  <form action="/imports" method="post" enctype="multipart/form-data" class="form-grid">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="field wide">
+      <label for="file">XLSX, CSV, or JSON file</label>
+      <input id="file" name="file" type="file" accept=".xlsx,.csv,.json" required>
+      <p class="hint">Maximum 20 MiB. The immutable snapshot remains in ignored local runtime storage.</p>
+    </div>
+    <div class="field">
+      <label for="period_label">Period label</label>
+      <input id="period_label" name="period_label" type="text" placeholder="Required for XLSX and CSV">
+    </div>
+    <div class="field">
+      <label for="reporting_cutoff">Reporting cutoff</label>
+      <input id="reporting_cutoff" name="reporting_cutoff" type="date">
+      <p class="hint">Controls which evidence was available for this report.</p>
+    </div>
+    <div class="field">
+      <label for="classification">Data classification</label>
+      <select id="classification" name="classification">
+        <option value="restricted">Restricted</option>
+        <option value="internal">Internal</option>
+        <option value="synthetic">Synthetic</option>
+      </select>
+    </div>
+    <button type="submit">Import reporting snapshot</button>
+  </form>
+</section>
+
+<section class="panel" aria-labelledby="datasets-title">
+  <div class="section-heading">
+    <div><p class="step">Eligible inputs</p><h2 id="datasets-title">Imported datasets</h2></div>
+    <span>{{ datasets | length }} recorded</span>
+  </div>
+  {% if datasets %}
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <caption>Immutable snapshots available to the bounded workflow</caption>
+      <thead><tr><th scope="col">Period</th><th scope="col">Classification</th><th scope="col">Dataset hash</th><th scope="col">Imported</th><th scope="col">Next action</th></tr></thead>
+      <tbody>
+      {% for dataset in datasets %}
+        <tr>
+          <td data-label="Period"><strong>{{ dataset.reporting_period.label }}</strong><small>Cutoff {{ dataset.reporting_cutoff or 'not recorded' }}</small></td>
+          <td data-label="Classification"><span class="status status-{{ dataset.classification }}">{{ dataset.classification }}</span></td>
+          <td data-label="Dataset hash"><code class="truncate-id">{{ dataset.dataset_id }}</code></td>
+          <td data-label="Imported"><time datetime="{{ dataset.created_at }}">{{ dataset.created_at }}</time></td>
+          <td data-label="Next action">
+            <form action="/runs" method="post">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="dataset_id" value="{{ dataset.dataset_id }}">
+              <button type="submit" class="secondary">Run evidence workflow</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No datasets are available. Import an authorised snapshot or use the fictional CLI fixture for a safe demonstration.</p>
+  {% endif %}
+</section>
+
+<section class="panel" aria-labelledby="recent-title">
+  <div class="section-heading">
+    <div><p class="step">Chronological ledger</p><h2 id="recent-title">Recent work</h2></div>
+    <span>Runs and reports</span>
+  </div>
+  {% if recent_work %}
+  <ol class="work-ledger">
+    {% for item in recent_work %}
+    <li>
+      <div><p class="work-kind">{{ item.kind }}</p><h3>{{ item.title }}</h3><p>{{ item.context }}</p></div>
+      <div class="work-state"><span class="status status-{{ item.status }}">{{ humanize(item.status) }}</span><time datetime="{{ item.occurred_at }}">{{ item.occurred_at }}</time></div>
+      <a class="text-action" href="{{ item.href }}">{{ item.action_label }} <span aria-hidden="true">&#8594;</span></a>
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}<p class="empty">No workflow runs or reports are recorded.</p>{% endif %}
+</section>
 {% endblock %}

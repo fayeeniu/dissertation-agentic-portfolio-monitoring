@@ -142,6 +142,20 @@ institutional taxonomy. Domain review and version freeze are required before rea
 | `ai_tools_adopted` | AI tools adopted | integer / tools | internal-only | Tool and adoption criteria required |
 | `material_news_items` | Material news items | integer / items | publicly sourceable | Requires bounded source/search protocol; zero only after completed search |
 
+## Company-intelligence first-slice records
+
+| Record | Required semantics |
+|---|---|
+| `ResearchTemplateVersion` | Immutable objective, capability/claim selection, budgets, version, and SHA-256. The first slice seeds only `core_company_profile` v1 with no live capability. |
+| `ResearchCase` | One company, declared purpose, classification, template version, status, actor, and timestamps. Separate purposes create separate cases. |
+| `IntakeArtifact` | Immutable normalized request fingerprint plus submitted fields; documents also retain safe filename, content checksum, private snapshot path, classification, purpose, and actor. |
+| `CompanyDomain` | HTTPS hostname claim bound to one company candidate. `pending`, `verified`, and `rejected` are review states, not source-health states. |
+| `CompanyIdentifierDecision` / `CompanyDomainDecision` | Append-only named accept/reject decision and rationale. Current reviewed/link status is mutable; history is not overwritten. |
+| `ProfileVersion` | Case-scoped version, status, content hash, actor/reviewer, rationale, and optimistic lock. The first slice creates the contract but does not generate research prose. |
+
+No field in these records authorises live retrieval. Placeholder company labels, filenames,
+submitted names, and domains are claims rather than official identity evidence.
+
 ## Claim and verification semantics
 
 | Verification state | Necessary interpretation | Report treatment |

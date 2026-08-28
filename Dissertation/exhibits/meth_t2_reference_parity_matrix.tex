@@ -1,0 +1,77 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \caption{Gold-reference construction and source-access parity controls}
+  \label{tab:meth-reference-parity-matrix}
+  \footnotesize
+  \setlength{\tabcolsep}{2.1pt}
+  \renewcommand{\arraystretch}{1.14}
+  \hyphenpenalty=4500
+  \exhyphenpenalty=4500
+  \begin{tabularx}{\textwidth}{@{}P{0.15\textwidth}P{0.38\textwidth}P{0.19\textwidth}Y@{}}
+    \toprule
+    \textbf{Stage / gate} &
+    \textbf{Controlled action} &
+    \textbf{Required record or output} &
+    \textbf{Hold / validity boundary} \\
+    \midrule
+
+    \textbf{1. Define}\par Codebook + source policy &
+    Version a codebook from the data dictionary with metric, claim, source and period examples. Define eligible-source rules and an availability cutoff. &
+    Codebook version/hash; label schema; source-policy and eligible-source-manifest template. &
+    Hold labelling and scoring until scope, examples, source eligibility and cutoff are explicit. \\
+
+    \addlinespace[1.5pt]
+    \textbf{2. Label}\par Independent pass &
+    Two authorised domain reviewers independently label the same frozen source bundle. Preserve separate records until agreement is measured. &
+    Reviewer IDs; bundle/version; independent typed labels and timestamps. &
+    Unauthorised reviewer, unequal bundle or consensus during the independent pass: \textbf{HOLD}. \\
+
+    \addlinespace[1.5pt]
+    \textbf{3. Capture}\par Complete label &
+    Record canonical value or missing state, evidence eligibility, sourceability, period, claim support and report-section requirement. &
+    Typed label with source/locator plus explicit missing, ambiguous or conflict state. &
+    Do not infer support from fluency or citation presence; unsupported or ambiguous items remain held. \\
+
+    \addlinespace[1.5pt]
+    \textbf{4. Measure}\par Before adjudication &
+    Report raw agreement. Add a statistic corrected for chance only where the sample, label scale and task design support its use. &
+    Denominator; raw agreement; task-appropriate coefficient, assumptions and uncertainty; otherwise \textbf{NULL}. &
+    No imported acceptance threshold. High raw agreement can conceal prevalence, bias or unitising effects. \\
+
+    \addlinespace[1.5pt]
+    \textbf{5. Adjudicate}\par Reasoned resolution &
+    Compare each disagreement with the frozen passage. Record the resolution reason and any codebook revision/version. &
+    Adjudicated label; reason; disagreement category; revised codebook where needed. &
+    No silent overwrite, majority-as-truth rule or unversioned definition change. \\
+
+    \addlinespace[1.5pt]
+    \textbf{6. Freeze}\par Reference + manifest &
+    Freeze the adjudicated reference, codebook, source bundle and manifest hash before condition scoring. &
+    Immutable reference ID/version/hash and scorer input manifest. &
+    Manual or system output is never adopted as truth. Post-freeze change requires a new version and deviation record. \\
+
+    \addlinespace[1.5pt]
+    \textbf{7. Score}\par Blind where practicable &
+    Score conditions against the same frozen reference, blind to condition where practicable; record any unavoidable unblinding. &
+    Condition-specific score records linked to the reference; blinding/deviation log. &
+    C0 manual and C1--C3 system outputs are evaluated conditions, not the gold reference. \\
+
+    \addlinespace[1.5pt]
+    \textbf{8. Enforce}\par Parity + time &
+    Give comparable conditions the same definitions, period, eligible source window and gold reference. Record inaccessible, deleted, paywalled, login-only and later-published states. Separate publication/availability from retrieval time. &
+    Company-period access manifest; source state; publication/availability, retrieval and cutoff times; parity deviations. &
+    Unequal access or after-cutoff support: hold/abstain and report the deviation; never convert missing evidence to zero. \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{5pt}
+  \parbox{\textwidth}{\RaggedRight\scriptsize
+    \textbf{CURRENT STATUS: GOLD/REFERENCE NOT YET CONSTRUCTED OR FROZEN; NO EMPIRICAL SCORE IS ASSERTED.}
+    \textit{Source note:} Author synthesis of the current evaluation protocol and data dictionary,
+    with locally admitted Artstein and Poesio (2008, PDF pp. 2--8, 16--23, 36--37), Gao et al.
+    (2023a, ALCE, pp. 3--5, 8--10), Pineau et al. (2021, pp. 1--5, 9--13), Gebru et al.
+    (2021, pp. 2, 4--10) and NIST (2023, pp. 32--35). Conceptual and non-empirical; no result
+    value, sample size or decision threshold is supplied.}
+\end{table}
+\clearpage

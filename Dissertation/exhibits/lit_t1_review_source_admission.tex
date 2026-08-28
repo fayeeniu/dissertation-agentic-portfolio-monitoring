@@ -1,0 +1,60 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \caption{Review and local source-admission protocol}
+  \label{tab:review-source-admission}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.18}
+  \hyphenpenalty=4000
+  \exhyphenpenalty=4000
+  \begin{tabularx}{\textwidth}{@{}P{0.17\textwidth}Y P{0.25\textwidth}P{0.24\textwidth}@{}}
+    \toprule
+    \rowcolor{WMGBlue!10}
+    \textbf{Stage} &
+    \textbf{Decision and action} &
+    \textbf{Required local record} &
+    \textbf{Reject or hold} \\
+    \midrule
+    \textbf{1. Problem-led discovery} &
+    Search from the reporting problem, research questions and explicit evidence gaps; classify each candidate by intended source role. &
+    Candidate title, origin and proposed use. Discovery alone does not admit a source. &
+    Off-scope, duplicate or snippet-only candidates remain unadmitted. \\
+    \addlinespace
+    \rowcolor{DraftPale}
+    \textbf{2. Stable local full text} &
+    Obtain a complete, readable local PDF or an immutable permitted capture before claim use. &
+    Stable local path plus origin and capture details where applicable. &
+    Inaccessible, partial, snippet-only or no-stable-capture sources are held or rejected. \\
+    \addlinespace
+    \textbf{3. Manifest, checksum and bibliography binding} &
+    Bind one citation key to bibliographic metadata, origin, local path, page count and SHA-256. &
+    Manifest, checksum and bibliography agree; web-capture records agree when used. &
+    Missing or duplicate key, absent row/hash, path reuse or any metadata/hash mismatch blocks admission. \\
+    \addlinespace
+    \rowcolor{DraftPale}
+    \textbf{4. Page-level claim verification} &
+    Inspect the local full text for the exact claim scope and record the supporting page locator. &
+    Claim-ledger or section-evidence entry with source role, pages and verification state. &
+    Unsupported, mis-scoped or unlocatable claims are rejected; citation presence does not prove truth. \\
+    \addlinespace
+    \textbf{5. Contradiction and limitation retention} &
+    Preserve conflicts, unknowns, source hierarchy, reconstruction limits and non-applicable fields in synthesis. &
+    Limitation and contradiction notes remain attached to the claim and source role. &
+    Suppressed conflict, omitted caveat, source-tier equivalence or overclaim is held for repair. \\
+    \addlinespace
+    \rowcolor{DraftPale}
+    \textbf{6. Strict freeze validation} &
+    Run the strict local validator, then freeze the cited files and their bindings for the section. &
+    Readable files; matching manifest, checksums, bibliography and capture records; resolvable claim locators. &
+    Missing/unreadable file, unresolved citation, mutable-only reference or any binding mismatch blocks freeze. \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{3pt}
+
+  \parbox{\textwidth}{\scriptsize
+    \textit{Method status:} Purposive, problem-led, non-systematic and non-exhaustive; not PRISMA.\\
+    \textit{Source note:} Author synthesis of frozen local source-admission contracts, not results. Local storage, hashing and citation presence establish traceability controls, not source truth.
+  }
+\end{table}
+\clearpage

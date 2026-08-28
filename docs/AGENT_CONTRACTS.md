@@ -96,11 +96,12 @@ Routing is fixed, not agent-selected:
 ```text
 deterministic structured extractor (default)
     OR, after explicit external-model enablement and safety checks:
-gpt-5.4-mini → strict validation failure → gpt-5.4 → fail closed
+gpt-5.6-luna → strict validation failure → one gpt-5.6-luna repair → fail closed
 ```
 
-The adapter rejects any configured pair other than that exact ordered route before constructing
-the external client.
+The adapter rejects any configured model outside that exact route before constructing the external
+client. Keeping the second bounded attempt preserves repair behaviour even though both attempts use
+the same model.
 
 No retry occurs for policy/classification/injection rejection. Transient network retry policy
 is intentionally absent from P0 because the external route is not part of offline evaluation.

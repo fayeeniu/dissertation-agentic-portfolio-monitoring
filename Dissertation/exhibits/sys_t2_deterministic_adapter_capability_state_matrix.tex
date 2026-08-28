@@ -1,0 +1,74 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \caption{Deterministic adapter and capability-state matrix}
+  \label{tab:sys-adapter-capability-state}
+  \scriptsize
+  \setlength{\tabcolsep}{2.0pt}
+  \renewcommand{\arraystretch}{1.06}
+  \hyphenpenalty=4000
+  \exhyphenpenalty=4000
+  \begin{tabularx}{\textwidth}{@{}P{0.105\textwidth}P{0.135\textwidth}P{0.17\textwidth}P{0.17\textwidth}P{0.175\textwidth}Y@{}}
+    \toprule
+    \textbf{Adapter / source} &
+    \textbf{Admitted capability / version} &
+    \textbf{Identity, cutoff and period rule} &
+    \textbf{Locator and capture evidence} &
+    \textbf{Outcome states} &
+    \textbf{Current status / limit} \\
+    \midrule
+
+    \textbf{Registry capability gate} &
+    Source manifest plus policy admission version; exact identifier, fact, event, media and retrieval-mode contracts. Derivation contract \emph{v2}. &
+    Reviewed source-scoped identifier must belong to the company and be valid at cutoff. Cumulative facts require programme start through cutoff. &
+    Fingerprint binds source and version, identifier, cutoff, programme window, requested facts and mode. Snapshot SHA-256 and semantic derivation SHA-256 are checked on replay. &
+    Pre-call \textbf{blocked} or \textbf{invalid} is distinct from persisted \textbf{record}, \textbf{no-record}, \textbf{unavailable} or \textbf{failure}. Contract drift fails closed. &
+    \textbf{IMPLEMENTED}\par\textbf{TESTED OFFLINE}. Traceability and contract consistency do not establish source truth. \\
+
+    \addlinespace[1.5pt]
+    \textbf{Companies House replay} &
+    Companies House source; manifest \emph{1.4.0}; admission \emph{2026-08-26.1}; offline replay. &
+    Exact reviewed Companies House number. Filing, charge, incorporation and dissolution events must occur by cutoff; account state remains typed. &
+    Immutable fixture bytes, checksum and source version; JSON-pointer fact locators and stable filing and charge identifiers; versioned derivation hash. &
+    Record; exact-ID no-record; unconfigured snapshot unavailable; invalid ID, duplicate or contract; terminal failure retained separately. No blank-to-zero repair. &
+    \textbf{IMPLEMENTED}\par\textbf{SYNTHETIC REPLAY}. No live registry retrieval, current legal truth, complete coverage, valuation or production claim. \\
+
+    \addlinespace[1.5pt]
+    \textbf{UKRI replay} &
+    UKRI source; manifest \emph{1.3.0}; admission \emph{2026-08-26.1}; offline replay. &
+    Exact UKRI organisation ID. Latest version available by cutoff is used. Cumulative totals require the exact programme-start--cutoff window. &
+    Immutable fixture checksum; stable project and outcome-ID locators; derived-fact locator records window, included projects, method and schema version. &
+    Record or exact-ID no-record; invalid scheme, window or contract; failure remains separate. Missing or non-GBP amounts create typed incomplete states, never a zero or complete total. &
+    \textbf{IMPLEMENTED}\par\textbf{SYNTHETIC REPLAY}. No live UKRI access, exhaustive coverage, causal association or source-truth claim. \\
+
+    \addlinespace[1.5pt]
+    \textbf{Companies House API mode} &
+    Read-only API mode is declared in manifest \emph{1.4.0}, but its live-admission flag is false; licence and terms evidence is held. &
+    Exact reviewed number, company binding and cutoff would remain mandatory; a credential or valid syntax would not supply admission. &
+    No admitted live capture is asserted. Future execution would require immutable response bytes, metadata, exact locators and reviewed source and version evidence. &
+    \textbf{Blocked before connector invocation}. Invalid configuration or identity remains invalid; no live record, no-record, unavailable or failure evidence exists. &
+    \textbf{HELD}\par\textbf{LIVE-UNRUN}. Code presence is not permission, official retrieval evidence, availability or production readiness. \\
+
+    \addlinespace[1.5pt]
+    \textbf{Public-web discovery / capture} &
+    Separate conditioned public-web research v1: URL discovery plus guarded capture; not a registry adapter or substitute for official-source admission. &
+    Public case, reviewed Companies House number, pinned cutoff and canonical claim or metric scope. Retrieved text stays outside the instruction boundary. &
+    Search output is candidate inventory only. Evidence requires accessible captured bytes, checksum, publisher and URL, exact span and source-specific admission decision. &
+    Candidate or fetched, blocked, unsupported or failed gaps remain explicit; missing, held or conflict cannot become support. No candidate is not an official no-record finding. &
+    \textbf{CONDITIONED BOUNDARY}\par\textbf{EMPIRICAL USE UNRUN}. Kill switches and local checks do not prove coverage, source truth, quality or live availability. \\
+    \bottomrule
+  \end{tabularx}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{State rule:} ``record'' abbreviates a successful collection containing an admitted
+    record; it is not a truth label. No-record, unavailable, blocked, invalid and failure retain
+    different meanings and reporting consequences. \textit{Source note:} Faye Niu's author
+    synthesis of versioned repository contracts and local synthetic tests. Nikiforova et al.
+    (2020, PDF pp.~1--3, 15--17) supports use-case-specific quality checks; Gao et al. (2023a,
+    ALCE, PDF pp.~3--4, 10) separates traceability/citation support from answer correctness; NIST
+    (2023, PDF pp.~33--35) supports documented test conditions, uncertainty and limits. These
+    sources do not certify an adapter, publisher record or live-source result. The matrix is
+    conceptual, non-empirical and not a coverage, quality, availability or production result.}
+\end{table}
+\clearpage

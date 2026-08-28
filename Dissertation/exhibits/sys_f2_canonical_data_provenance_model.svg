@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1180" viewBox="0 0 900 1180"
+     role="img" aria-labelledby="sys-f2-title sys-f2-desc">
+  <title id="sys-f2-title">Canonical data and provenance model</title>
+  <desc id="sys-f2-desc">A status-coded data-lineage diagram begins with canonical Company, Metric Definition and Reporting Period records, which converge on an Observation that keeps original and normalized values, an explicit missing state, unit, currency and source cell. The locally tested evidence lane links admitted source definitions to checksum-addressed snapshots, exact facts, evidence items, extractions, claims and independent verification. A separate dashed lane shows the implemented but live-unrun company-research source, exact-span claim and versioned profile path. Versioned reports require named approval before a manifest-bound export; edits create a new version and clear approval. A dotted sidecar marks domain-approved catalogue freeze, D1 and D2 gold reference, and human C0 and C3 observations as protocol-only and unpopulated. Hashes establish integrity and lineage, not source truth, completeness, lawful authority or production assurance. The figure is author synthesis, conceptual, non-empirical and not a result.</desc>
+  <defs>
+    <style><![CDATA[
+      .page { fill:#FFFFFF; }
+      .divider { stroke:#9FB2BD; stroke-width:1.5; }
+      .title { font:700 29px Helvetica,Arial,sans-serif; fill:#173444; }
+      .subtitle { font:16.5px Helvetica,Arial,sans-serif; fill:#526875; }
+      .concept { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
+      .concept-text { font:700 11px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
+      .legend-label { font:700 11.5px Helvetica,Arial,sans-serif; fill:#314E5D; text-anchor:middle; }
+      .legend-tested { fill:#E8F3F8; stroke:#0072B2; stroke-width:2.2; }
+      .legend-live { fill:#FFF5DD; stroke:#A86700; stroke-width:2.2; stroke-dasharray:9 6; }
+      .legend-plan { fill:#F3EFF7; stroke:#75558C; stroke-width:2.2; stroke-dasharray:2 5; }
+      .zone-tested { fill:#F7FBFC; stroke:#0072B2; stroke-width:2.1; }
+      .zone-title { font:700 14px Helvetica,Arial,sans-serif; fill:#284A5A; }
+      .zone-status { font:700 11.5px Helvetica,Arial,sans-serif; fill:#536975; text-anchor:end; }
+      .box-tested { fill:#EAF4F8; stroke:#0072B2; stroke-width:1.9; }
+      .box-live { fill:#FFF7E5; stroke:#A86700; stroke-width:2; stroke-dasharray:8 5; }
+      .box-plan { fill:#F6F2F8; stroke:#75558C; stroke-width:2; stroke-dasharray:2 5; }
+      .box-neutral { fill:#FFFFFF; stroke:#718894; stroke-width:1.4; }
+      .box-title { font:700 14.5px Helvetica,Arial,sans-serif; fill:#173F51; }
+      .box-body { font:12.2px Helvetica,Arial,sans-serif; fill:#405965; }
+      .box-small { font:11.4px Helvetica,Arial,sans-serif; fill:#465E69; }
+      .status-tested { font:700 10.5px Helvetica,Arial,sans-serif; fill:#00629A; }
+      .status-live { font:700 10.5px Helvetica,Arial,sans-serif; fill:#8C5700; }
+      .status-plan { font:700 10.5px Helvetica,Arial,sans-serif; fill:#654477; }
+      .arrow { fill:none; stroke:#617684; stroke-width:2.1; marker-end:url(#arrowhead); }
+      .arrow-live { fill:none; stroke:#A86700; stroke-width:2.1; stroke-dasharray:8 5; marker-end:url(#arrowhead-live); }
+      .return { fill:none; stroke:#75558C; stroke-width:1.8; stroke-dasharray:2 5; marker-end:url(#arrowhead-plan); }
+      .rail { fill:#EEF3F5; stroke:#8399A4; stroke-width:1.2; }
+      .rail-text { font:700 11.2px Helvetica,Arial,sans-serif; fill:#455F6C; text-anchor:middle; }
+      .warning { fill:#FFF1CE; stroke:#A86700; stroke-width:1.4; }
+      .warning-text { font:700 9.1px Helvetica,Arial,sans-serif; fill:#76500E; text-anchor:middle; }
+      .source { font:10.8px Helvetica,Arial,sans-serif; fill:#5A6C76; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#617684"/>
+    </marker>
+    <marker id="arrowhead-live" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#A86700"/>
+    </marker>
+    <marker id="arrowhead-plan" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#75558C"/>
+    </marker>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="900" height="1180"/>
+  <text class="title" x="38" y="52">Canonical data and provenance model</text>
+  <text class="subtitle" x="40" y="82">Typed semantics, immutable evidence and approval-bound export remain distinct controls.</text>
+  <rect class="concept" x="697" y="26" width="168" height="34" rx="17"/>
+  <text class="concept-text" x="781" y="48">CONCEPTUAL / NO RESULTS</text>
+  <line class="divider" x1="38" y1="105" x2="864" y2="105"/>
+
+  <rect class="legend-tested" x="40" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="166" y="145">IMPLEMENTED + LOCAL TESTS</text>
+  <rect class="legend-live" x="324" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="450" y="145">IMPLEMENTED / LIVE UNRUN</text>
+  <rect class="legend-plan" x="608" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="734" y="145">PROTOCOL-ONLY / UNPOPULATED</text>
+
+  <rect class="zone-tested" x="40" y="178" width="820" height="250" rx="14"/>
+  <text class="zone-title" x="58" y="204">1  CANONICAL SEMANTICS AND TYPED MISSINGNESS</text>
+  <text class="zone-status" x="840" y="204">RELATIONAL + ADDITIVE MIGRATIONS / TESTED</text>
+  <path class="arrow" d="M 179 297 L 179 319"/>
+  <path class="arrow" d="M 449 297 L 449 319"/>
+  <path class="arrow" d="M 719 297 L 719 319"/>
+  <rect class="box-tested" x="62" y="222" width="235" height="75" rx="9"/>
+  <text class="box-title" x="79" y="245">Company</text>
+  <text class="box-body" x="79" y="265">canonical name + exact reviewed ID</text>
+  <text class="box-small" x="79" y="282">resolution / entity / jurisdiction state</text>
+  <rect class="box-tested" x="332" y="222" width="235" height="75" rx="9"/>
+  <text class="box-title" x="349" y="245">Metric + catalogue version</text>
+  <text class="box-body" x="349" y="265">key / type / sourceability / unit</text>
+  <text class="box-small" x="349" y="282">period semantics + versioned definition</text>
+  <rect class="box-tested" x="602" y="222" width="235" height="75" rx="9"/>
+  <text class="box-title" x="619" y="245">Reporting period</text>
+  <text class="box-body" x="619" y="265">start / end / reporting cutoff</text>
+  <text class="box-small" x="619" y="282">programme start tracked separately</text>
+
+  <rect class="box-tested" x="110" y="319" width="680" height="65" rx="10"/>
+  <text class="box-title" x="130" y="343">Observation = Company × Metric × Period</text>
+  <text class="box-body" x="130" y="364">original value + normalized value + mandatory missing_state + unit/currency + source cell</text>
+  <text class="status-tested" x="650" y="343">FOREIGN-KEYED / VERSION-AWARE</text>
+  <rect class="warning" x="126" y="388" width="648" height="32" rx="7"/>
+  <text class="warning-text" x="450" y="400">OBSERVED | ZERO | BLANK | NONE_STATED | NOT_APPLICABLE | NOT_REPORTED</text>
+  <text class="warning-text" x="450" y="414">NOT_FOUND_PUBLICLY | FILING_NOT_DUE | DORMANT | NOT_REQUIRED | SOURCE_UNAVAILABLE | INVALID</text>
+
+  <rect class="zone-tested" x="40" y="449" width="820" height="344" rx="14"/>
+  <text class="zone-title" x="58" y="475">2  IMMUTABLE EVIDENCE, EXACT LOCATORS AND VERSIONED CLAIMS</text>
+  <text class="zone-status" x="840" y="475">HASHED LINEAGE ≠ SOURCE TRUTH</text>
+  <path class="arrow" d="M 253 537 L 275 537"/>
+  <path class="arrow" d="M 535 537 L 557 537"/>
+  <path class="arrow" d="M 699 583 L 699 604 L 183 604 L 183 624"/>
+  <path class="arrow" d="M 308 665 L 330 665"/>
+  <path class="arrow" d="M 575 665 L 597 665"/>
+  <rect class="box-tested" x="58" y="493" width="195" height="90" rx="9"/>
+  <text class="box-title" x="74" y="516">Source definition</text>
+  <text class="box-small" x="74" y="536">key / version / publisher</text>
+  <text class="box-small" x="74" y="553">admission + manifest SHA-256</text>
+  <text class="status-tested" x="74" y="573">VERSIONED POLICY</text>
+  <rect class="box-tested" x="275" y="493" width="260" height="90" rx="9"/>
+  <text class="box-title" x="291" y="516">Source snapshot</text>
+  <text class="box-small" x="291" y="536">reviewed ID + cutoff + locator</text>
+  <text class="box-small" x="291" y="553">published/retrieved + bytes SHA/path</text>
+  <text class="box-small" x="291" y="570">request fingerprint + derivation SHA/version</text>
+  <rect class="box-tested" x="557" y="493" width="285" height="90" rx="9"/>
+  <text class="box-title" x="573" y="516">Evidence fact</text>
+  <text class="box-small" x="573" y="536">exact + structured locator; method/schema</text>
+  <text class="box-small" x="573" y="553">typed value / unit / currency / period</text>
+  <text class="status-tested" x="573" y="573">DERIVATION-BOUND</text>
+
+  <rect class="box-tested" x="58" y="624" width="250" height="82" rx="9"/>
+  <text class="box-title" x="74" y="648">Evidence item + extraction</text>
+  <text class="box-small" x="74" y="668">publisher / locator / times / checksum</text>
+  <text class="box-small" x="74" y="685">original + normalized + span + schema</text>
+  <text class="status-tested" x="74" y="700">RUN + CUTOFF BOUND</text>
+  <rect class="box-tested" x="330" y="624" width="245" height="82" rx="9"/>
+  <text class="box-title" x="346" y="648">Claim ↔ evidence links</text>
+  <text class="box-small" x="346" y="668">text / normalized value / metric / period</text>
+  <text class="box-small" x="346" y="685">many-to-many evidence; provenance retained</text>
+  <text class="status-tested" x="346" y="700">NO UNLINKED SUPPORT</text>
+  <rect class="box-tested" x="597" y="624" width="245" height="82" rx="9"/>
+  <text class="box-title" x="613" y="648">Independent verification</text>
+  <text class="box-small" x="613" y="668">supported / contradicted / insufficient</text>
+  <text class="box-small" x="613" y="685">stale / rejected untrusted + rationale</text>
+  <text class="status-tested" x="613" y="700">APPROVAL PRECONDITION</text>
+
+  <path class="arrow-live" d="M 300 754 L 327 754"/>
+  <path class="arrow-live" d="M 565 754 L 592 754"/>
+  <rect class="box-live" x="58" y="721" width="242" height="61" rx="9"/>
+  <text class="box-title" x="74" y="742">CompanyResearchSource</text>
+  <text class="box-small" x="74" y="759">URL / publisher / retrieval / snapshot</text>
+  <text class="status-live" x="74" y="776">GUARDED CAPTURE / LIVE UNRUN</text>
+  <rect class="box-live" x="327" y="721" width="238" height="61" rx="9"/>
+  <text class="box-title" x="343" y="742">Exact-span research claim</text>
+  <text class="box-small" x="343" y="759">claim hash + span + locator + conflict state</text>
+  <text class="status-live" x="343" y="776">FAKE / ADVERSARIAL TESTS</text>
+  <rect class="box-live" x="592" y="721" width="250" height="61" rx="9"/>
+  <text class="box-title" x="608" y="742">ProfileVersion</text>
+  <text class="box-small" x="608" y="759">content SHA + named review + lock/version</text>
+  <text class="status-live" x="608" y="776">SEPARATE FROM REPORT CLAIM PATH</text>
+
+  <rect class="zone-tested" x="40" y="813" width="820" height="216" rx="14"/>
+  <text class="zone-title" x="58" y="839">3  VERSIONED REPORT, NAMED APPROVAL AND MANIFEST-BOUND EXPORT</text>
+  <text class="zone-status" x="840" y="839">IMPLEMENTED + LOCAL TESTS</text>
+  <path class="arrow" d="M 270 908 L 337 908"/>
+  <path class="arrow" d="M 562 908 L 629 908"/>
+  <path class="return" d="M 450 960 L 450 990 L 168 990 L 168 960"/>
+  <rect class="box-tested" x="65" y="858" width="205" height="102" rx="10"/>
+  <text class="box-title" x="82" y="882">Report vN + sections</text>
+  <text class="box-small" x="82" y="902">current section version(s)</text>
+  <text class="box-small" x="82" y="919">content_hash + status + lock token</text>
+  <text class="box-small" x="82" y="936">claims retain evidence/verification state</text>
+  <text class="status-tested" x="82" y="953">VERSIONED CONTENT</text>
+  <rect class="box-tested" x="337" y="858" width="225" height="102" rx="10"/>
+  <text class="box-title" x="354" y="882">Named review decision</text>
+  <text class="box-small" x="354" y="902">actor + rationale + report version + time</text>
+  <text class="box-small" x="354" y="919">approve / reject / return for edit</text>
+  <text class="box-small" x="354" y="936">all claims require verification records</text>
+  <text class="status-tested" x="354" y="953">APPROVAL GATE</text>
+  <rect class="box-tested" x="629" y="858" width="206" height="102" rx="10"/>
+  <text class="box-title" x="646" y="882">ReportExport vN</text>
+  <text class="box-small" x="646" y="902">approved current version only</text>
+  <text class="box-small" x="646" y="919">pending / finalized / failed</text>
+  <text class="box-small" x="646" y="936">manifest + content/file SHA-256</text>
+  <text class="status-tested" x="646" y="953">ATOMIC LOCAL BUNDLE</text>
+  <text class="status-plan" x="473" y="1012">EDIT / RETURN → NEW VERSION; PRIOR APPROVAL CLEARED</text>
+
+  <rect class="box-plan" x="40" y="1046" width="820" height="63" rx="11"/>
+  <text class="box-title" x="58" y="1070">Protocol-only / unpopulated evaluation extensions</text>
+  <text class="box-body" x="58" y="1090">domain-approved catalogue freeze; D1/D2 gold/reference labels; authorised C0/C3 timing, edits, usability and participant observations</text>
+  <text class="status-plan" x="840" y="1070" text-anchor="end">NO EMPIRICAL RECORD OR RESULT CLAIMED</text>
+
+  <rect class="rail" x="40" y="1119" width="820" height="24" rx="7"/>
+  <text class="rail-text" x="450" y="1136">CREATE-ONCE BYTES  →  HASHED DERIVATIONS  →  APPEND-ONLY DECISIONS  →  VERSIONED CONTENT  →  APPROVED EXPORT</text>
+  <text class="source" x="40" y="1156">Source note: author synthesis of local schema, migrations, services and tests; conceptual/non-empirical. Hashes support integrity and lineage, not source truth.</text>
+  <text class="source" x="40" y="1173">Design context: Gebru et al. (2021), pp. 1-7; Gao et al. (2023a, ALCE), pp. 1-4; Pineau et al. (2021), pp. 1-4; NIST (2023), pp. 20-23, 33-35.</text>
+</svg>

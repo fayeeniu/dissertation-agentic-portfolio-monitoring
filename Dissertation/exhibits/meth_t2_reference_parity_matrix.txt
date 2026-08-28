@@ -1,0 +1,114 @@
+METH-T2 - Gold-reference construction and source-access parity controls
+Target section: 3.4 Gold/reference construction and source parity
+LaTeX label: tab:meth-reference-parity-matrix
+
+Purpose and current status
+This is Faye Niu's conceptual, non-empirical synthesis of the current project evaluation contract.
+It defines how a reference should be constructed and how comparable workflow conditions should
+receive equivalent eligible information. The gold/reference has not yet been constructed or
+frozen. Therefore no empirical score, sample size, agreement value, acceptance threshold,
+condition winner or human/system performance claim is asserted.
+
+Reading-order alternative
+
+Stage 1 - Define a versioned codebook and source policy
+Create a codebook from the project data dictionary with worked metric, claim, source and reporting-
+period examples. Define the label schema, eligible-source rules and source availability cutoff.
+Record the codebook version and hash, source-policy version and eligible-source-manifest template.
+Do not begin labelling or scoring while scope, definitions, examples, source eligibility or cutoff
+remain ambiguous.
+
+Stage 2 - Obtain two independent authorised label records
+Give two authorised domain reviewers exactly the same frozen source bundle and instructions. Each
+reviewer labels independently, with separate typed records retained until agreement is calculated.
+Record pseudonymous reviewer identifiers, bundle and instruction versions, label timestamps and
+authority state. Hold the process if a reviewer is unauthorised, bundles differ or reviewers reach
+consensus during the independent pass. Where two reviewers are not ethically or operationally
+available, preserve that limitation rather than fabricating independence.
+
+Stage 3 - Capture the complete reference fields
+For every in-scope company-period field or claim, record:
+- canonical value or explicit missing state;
+- evidence eligibility;
+- sourceability class;
+- reporting/value period;
+- claim-support decision; and
+- required report section.
+
+Link each non-missing decision to the frozen source and exact locator. Retain missing, ambiguous,
+inaccessible and conflicting states. A fluent statement, visible citation or prior report does not
+establish support by itself.
+
+Stage 4 - Measure agreement before adjudication
+Report raw observed agreement with its exact denominator and label task. Add a task-appropriate
+chance-corrected statistic only when the sample, item structure, number of reviewers, label scale,
+missingness and design assumptions support that statistic. Record the chosen coefficient,
+assumptions and uncertainty. If those conditions are not met, record the chance-corrected result as
+null and explain why. Do not import a conventional acceptance threshold. High raw agreement can
+coexist with prevalence, bias or unitising problems and is not proof of reference validity.
+
+Stage 5 - Adjudicate with a recorded reason
+After agreement has been measured, review each disagreement against the frozen source passage.
+Record the adjudicated label, reason, disagreement category and any change to the codebook. A
+definition change creates a new version. Do not silently overwrite a reviewer, treat majority vote
+as truth or change definitions without versioning.
+
+Stage 6 - Freeze the adjudicated reference and manifest
+Before condition scoring, freeze the adjudicated labels, codebook, source bundle and manifest hash.
+Create an immutable reference identifier, version and checksum plus the exact scorer input manifest.
+A prior manual report or system output must never be silently adopted as truth: C0 through C3 are
+evaluated conditions. Any post-freeze correction must create a new reference version and a visible
+deviation record; it must not silently alter an already scored comparison.
+
+Stage 7 - Score blind to condition where practicable
+Score each condition against the same frozen reference. Hide the condition identity from scorers
+where the report form and protocol make this practicable, and record unavoidable unblinding. Retain
+condition-specific score records linked to the exact reference version and a blinding/deviation log.
+Manual C0 and system C1, C2 and C3 outputs remain comparison outputs, not the gold reference.
+
+Stage 8 - Enforce source-access parity and temporal eligibility
+For every comparable company-period unit, use the same canonical definitions, reporting period,
+eligible source window and frozen gold reference. Record inaccessible, deleted, paywalled,
+login-only and later-published sources rather than pretending all evidence was available. Store
+publication or availability time separately from retrieval time and the reporting cutoff. Evidence
+available only after the cutoff cannot support a historical current claim. Unequal access,
+inaccessible evidence or an after-cutoff passage causes a hold/abstention and a reported parity
+deviation; it never becomes zero or inferred support.
+
+Local academic basis
+- artstein2008agreement: Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf,
+  PDF pages 2-8, 16-23 and 36-37. Supports the distinction between observed agreement,
+  chance-corrected reliability, validity, coder/sample design, prevalence/bias effects and careful
+  coefficient interpretation. It does not supply a universal acceptance threshold or replace
+  adjudication.
+- gao2023alce: Dissertation/sources/papers/28_gao_alce_citations.pdf, PDF pages 3-5 and 8-10.
+  Supports separate annotation/evaluation of citation completeness and whether cited passages
+  support statements. Its benchmark metrics and findings do not transfer to this project.
+- pineau2021reproducibility: Dissertation/sources/papers/33_pineau_reproducibility.pdf,
+  PDF pages 1-5 and 9-13. Supports complete code, data, procedure, metric and reporting records for
+  reproducible empirical work; reproducibility does not itself establish validity or truth.
+- gebru2021datasheets: Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf,
+  PDF pages 2 and 4-10. Supports versioned documentation of purpose, composition, sampling, splits,
+  external resources, sensitive-data constraints, intended use and maintenance.
+- nist2023airmf: Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf, PDF pages 32-35.
+  Supports documented test sets, metrics, measurement assumptions, human-subject safeguards and
+  internal-independent or external assessment. It does not certify this reference procedure.
+
+Exact repository inputs
+- docs/EVALUATION_PROTOCOL.md: "Gold/reference standard", "Source-access parity", "Manual baseline
+  capture", "Reproducibility record", "Ethics and stop conditions" and "Validity threats to
+  discuss"; also the current draft status and held gold-construction dependency.
+- docs/DATA_DICTIONARY.md: canonical metric, identity, period, missing-state, sourceability, claim
+  and verification semantics used to seed the codebook.
+- Dissertation/REPORT_STRUCTURE.md: approved Section 3.4 scope and current gold/C0/C3 evidence hold.
+- Dissertation/sources/MANIFEST.csv and SHA256SUMS: admitted citation-key, local-file, role,
+  limitation and checksum bindings for the five academic sources above.
+
+Accessibility and limitations
+The LaTeX table reads top-to-bottom as an eight-stage flow. Each stage includes an action, required
+record and explicit hold/validity boundary; meaning does not rely on colour. This file is the full
+linear text alternative. The table specifies a protocol and current evidence hold, not successful
+execution. Two reviewers and a coefficient do not make labels true. Adjudication can preserve
+domain conventions or bias, equal source access may be imperfect, later corrections may require a
+new freeze, and blinding may not always be practicable. These limitations must remain visible in
+the dissertation analysis.

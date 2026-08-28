@@ -1,0 +1,213 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-T2",
+  "title": "Signal-to-inference boundary for early-stage company intelligence",
+  "author": "Faye Niu",
+  "target_section": "2.2 Early-stage finance, portfolio reporting, and public company intelligence",
+  "latex_label": "tab:signal-inference-boundary",
+  "purpose": "Separate source-bound observations about funding, public support, Companies House records and reconstructed funding links from stronger company-quality, causal, valuation, ranking or investment conclusions that the admitted evidence does not support.",
+  "generated_at_utc": "2026-08-27T16:12:00Z",
+  "hashes_recomputed_at_utc": "2026-08-27T16:12:00Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_mutable_corpus_counts": false,
+    "is_scoring_model": false,
+    "is_ranking_model": false,
+    "is_recommendation_model": false,
+    "interpretation": "Author synthesis of locally admitted literature and frozen project contracts; a reporting boundary rather than an empirical finding or decision model."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place LIT-T2 on one dedicated portrait page immediately after Section 2.2 and prevent Section 2.3 from preceding it when the exhibit is input at the approved chapter location."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/sources/SECTION_2_2_EVIDENCE.md",
+      "sha256": "52b00946e82f83613682c1a0c43cf4eacbef6403de7654f286953552f897bec6",
+      "role": "Section-specific verified claim synthesis, row contract and prohibited overreach.",
+      "locator": "Headings 'Paragraph 1: information asymmetry and observable finance signals', 'Paragraph 2: rounds, grants and public support as dated events', 'Paragraph 3: legal identity and register intelligence', 'Paragraph 4: reporting and inference boundary', 'Proposed exhibit LIT-T2', and 'Prohibited overreach'."
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "a88f010abd6f2c9c53923ead9a5ea737fa8e58401508430b31eaaabe31106d1c",
+      "role": "Frozen paragraph-level citation, page-locator and verification bindings for Section 2.2.",
+      "locator": "Rows '2.2-P1'--'2.2-P4' and ledger header fields 'Paragraph ID', 'Claim purpose', 'Citation keys', 'Verified local pages', and 'Verification status'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "role": "Citation-key, bibliographic, origin, local-path, page-count, checksum and admission-role bindings.",
+      "locator": "Rows keyed 'estrin2024digital', 'wasti2024successive', 'mondal2025state', 'thorne2026funding', 'galanakis2026chrt', 'hardman2023small', 'krasikov2020ready', and 'fca2024promotions'."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "45262c6955d0f5803db564673af5ff689f21249f24a94002b17dbd2859947c0b",
+      "role": "Independent local checksum bindings for the admitted literature files.",
+      "locator": "Entries for papers 01, 02, 03, 04, 07, 09, 10 and 27."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 2.2 purpose, literature-review exhibit plan and claim-control boundary.",
+      "locator": "Detailed chapter plan entry '2.2 Early-stage finance, portfolio reporting, and public company intelligence' and heading 'Claim-control rule'."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "role": "Research-prototype status, intended contribution, scope and non-goal boundaries.",
+      "locator": "Headings 'Status and evidence boundary', 'Intended contribution', 'P0 scope', 'Explicit non-goals', and 'Constraints'."
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "role": "Source-bound event, legal identity, sourceability, period, grant-funding and no-ranking semantics.",
+      "locator": "Headings 'Core entities', 'Period-semantics contract', 'Sourceability classes', 'P0 metric catalogue', and 'Claim and verification semantics'; rows 'EvidenceFact / CompanyEvent', 'ContextStatistic', 'external_investment', 'grant_funding', and 'valuation'."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "role": "Implemented offline public-evidence boundaries and explicit scoring/recommendation exclusions.",
+      "locator": "Requirements FR-CH-001, FR-UKRI-001 and FR-CTX-001; heading 'P2 exclusions'."
+    },
+    {
+      "path": "docs/SOURCE_EVIDENCE_MATRIX.md",
+      "sha256": "8bf5737f6cced820d123a5d1ef9810de30c36d26345718a70b27f06179ec691c",
+      "role": "Project-evidence boundary for exact identity, public funding provenance and the distinction between availability and truth.",
+      "locator": "Evidence-to-decision rows TR-03 and TR-08; heading 'Evidence conflicts and resolution rules'."
+    },
+    {
+      "path": "Dissertation/sources/papers/01_estrin_et_al_2024_access_to_digital_finance.pdf",
+      "sha256": "b8c95b0f38975cb9bfe693b5fe44a7ea32e7576030cf02bf9cc428ed982125fb",
+      "citation_key": "estrin2024digital",
+      "role": "Information asymmetry, cross-platform heterogeneity and successful-pitch sample boundary.",
+      "locator": "PDF pp. 1--5 and 12--13."
+    },
+    {
+      "path": "Dissertation/sources/papers/02_wasti_et_al_2024_successive_round_signal.pdf",
+      "sha256": "4827a4a5c31d59e7d0e296f0984952781007b08ea7e3930221ff2d2f95c63e20",
+      "citation_key": "wasti2024successive",
+      "role": "Successive-round signal evidence bounded to the studied Crowdcube setting and sample.",
+      "locator": "PDF pp. 1--3 and 6--12."
+    },
+    {
+      "path": "Dissertation/sources/papers/07_mondal_mellor_2025_state_support_innovation_pathways.pdf",
+      "sha256": "0bf3e6212414932ebc0f9249b9a8d112ec1ad73f7dd08f35b43c497747162eba",
+      "citation_key": "mondal2025state",
+      "role": "Linked state-support observations with explicit causal and selection limitations.",
+      "locator": "PDF pp. 1--2 and 7."
+    },
+    {
+      "path": "Dissertation/sources/papers/09_thorne_et_al_2026_uk_funding_lifecycle.pdf",
+      "sha256": "90000d1f68bb6d82bcfe83271afd9b5433f671a22d9b74864a1833af028efaef",
+      "citation_key": "thorne2026funding",
+      "role": "Heterogeneous-source funding-lifecycle reconstruction and incomplete-linkage boundary.",
+      "locator": "PDF pp. 1--6."
+    },
+    {
+      "path": "Dissertation/sources/papers/03_savagar_galanakis_2026_tracking_firm_creation.pdf",
+      "sha256": "1ed8f006e0121594a7adad178592668c7cd47f272aa2bb3c2231872257d21e94",
+      "citation_key": "galanakis2026chrt",
+      "role": "Companies House incorporation coverage and the distinction between legal creation and economic activity.",
+      "locator": "PDF pp. 1--3 and 6."
+    },
+    {
+      "path": "Dissertation/sources/papers/04_hardman_ramirez_santos_2023_think_small_first.pdf",
+      "sha256": "fb4f6db0aba6cf9d8b09bfd4f936be8980155915dc7b432556b883311935e2ba",
+      "citation_key": "hardman2023small",
+      "role": "Dated Companies House snapshot, corporate-form and filing-definition limitations.",
+      "locator": "PDF pp. 3, 5--6 and 21--25."
+    },
+    {
+      "path": "Dissertation/sources/papers/10_krasikov_et_al_2020_open_data_ready_enterprises.pdf",
+      "sha256": "c4529fc7cb4e22c93cb8a561705246a87b85bdef1ef77499f8ad79171f27a5bb",
+      "citation_key": "krasikov2020ready",
+      "role": "Use-case-specific corporate-register quality, accessibility and interpretability boundary.",
+      "locator": "PDF pp. 5--9."
+    },
+    {
+      "path": "Dissertation/sources/papers/27_fca_financial_promotions_guidance.pdf",
+      "sha256": "0fd2b6e971d613e0df1af24866626b777d91956f802023bb2d92481e88523d69",
+      "citation_key": "fca2024promotions",
+      "role": "Conservative fair, clear and balanced financial-communication boundary; not a legal opinion about the artefact.",
+      "locator": "PDF pp. 5, 9 and 13."
+    }
+  ],
+  "row_traceability": [
+    {
+      "evidence_class": "Crowdfunding or funding round",
+      "claim_ledger_rows": [
+        "2.2-P1",
+        "2.2-P2",
+        "2.2-P4"
+      ],
+      "citation_keys": [
+        "estrin2024digital",
+        "wasti2024successive"
+      ],
+      "boundary": "Report only attributed event details and their source scope; do not convert a context-specific signal into firm quality, causality, forecast or investment merit."
+    },
+    {
+      "evidence_class": "Public grant or state-support record",
+      "claim_ledger_rows": [
+        "2.2-P2",
+        "2.2-P4"
+      ],
+      "citation_keys": [
+        "mondal2025state",
+        "thorne2026funding",
+        "fca2024promotions"
+      ],
+      "boundary": "Report the attributed award or support event and explicit coverage limits; do not infer causality, superiority, complete support history or realised impact."
+    },
+    {
+      "evidence_class": "Companies House identity or filing event",
+      "claim_ledger_rows": [
+        "2.2-P3"
+      ],
+      "citation_keys": [
+        "galanakis2026chrt",
+        "hardman2023small",
+        "krasikov2020ready"
+      ],
+      "boundary": "Use the exact company number and dated register fact without treating legal incorporation or filing presence as a complete operational, ownership or financial profile."
+    },
+    {
+      "evidence_class": "Reconstructed funding-lifecycle link",
+      "claim_ledger_rows": [
+        "2.2-P2",
+        "2.2-P4"
+      ],
+      "citation_keys": [
+        "thorne2026funding",
+        "mondal2025state"
+      ],
+      "boundary": "Describe a partial reconstruction under an explicit linkage rule while retaining unmatched gaps; do not claim an exhaustive history, causal pathway or forecast."
+    }
+  ],
+  "limitations": [
+    "The exhibit synthesises literature and project contracts; it is not an empirical result from this artefact.",
+    "A source-bound event can be reported only to the extent supported by its admitted record, date, legal identity, locator and observation cutoff.",
+    "Crowdfunding findings remain platform-, country- and sample-dependent and do not define a universal company-quality signal.",
+    "Public grant and state-support associations can reflect selection or confounding and do not prove causal innovation, growth or performance effects.",
+    "Companies House records describe legal and filing facts at a dated register state, not a complete operational, ownership, private-funding or financial profile.",
+    "Cross-source funding reconstruction remains incomplete where identifiers, historical coverage or definitions differ; absence is not evidence of no event.",
+    "FCA guidance supports a conservative communication boundary but this exhibit is not legal advice.",
+    "The exhibit contains no mutable corpus count, evaluation result, company score, ranking, valuation, recommendation or investment-outcome claim."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_t2_signal_inference_boundary.tex",
+      "sha256": "f81895c8ab5e933895bc579779db2dab3cd5b2485ed618f47dcb20840b63fb75",
+      "role": "One-page portrait LaTeX table with deterministic placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/lit_t2_signal_inference_boundary.txt",
+      "sha256": "52eb3525d75a2a432145c2f95d19b0e3c6431d9c7ebad7a4778b5941b47c58bc",
+      "role": "Complete plain-text alternative with expanded claim and interpretation boundaries."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

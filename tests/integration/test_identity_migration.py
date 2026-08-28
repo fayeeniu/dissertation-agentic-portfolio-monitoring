@@ -148,7 +148,7 @@ def test_legacy_duplicate_external_ids_upgrade_as_unresolved_without_false_bindi
     engine.dispose()
 
 
-@pytest.mark.parametrize("downgrade_target", ("0001", "base", "-6"))
+@pytest.mark.parametrize("downgrade_target", ("0001", "base", "-8"))
 def test_same_normalized_name_can_coexist_but_registry_number_is_unique(
     tmp_path: Path, downgrade_target: str
 ) -> None:
@@ -200,7 +200,7 @@ def test_same_normalized_name_can_coexist_but_registry_number_is_unique(
         command.downgrade(config, downgrade_target)
     with engine.connect() as connection:
         assert connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one() == (
-            "0007"
+            "0009"
         )
         assert connection.execute(text("SELECT count(*) FROM companies")).scalar_one() == 2
     assert inspect(engine).has_table("company_programme_memberships")

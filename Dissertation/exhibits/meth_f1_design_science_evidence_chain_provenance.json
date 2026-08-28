@@ -1,0 +1,238 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-F1",
+  "title": "Design-science evidence chain",
+  "author": "Faye Niu",
+  "target_section": "3.1 Applied design-science strategy",
+  "suggested_latex_label": "fig:meth-design-science-evidence-chain",
+  "purpose": "Show the valid design-science route from a relevant problem and frozen research contract through artefact construction, bounded implementation evidence, authorised frozen C0-C3 evaluation, empirical findings and proportionate research-question communication, while preventing implementation evidence from being relabelled as an empirical result.",
+  "generated_at_utc": "2026-08-27T18:22:23Z",
+  "hashes_recomputed_at_utc": "2026-08-27T18:25:09Z",
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_sample_or_effect_values": false,
+    "claims_protocol_execution": false,
+    "claims_human_benefit": false,
+    "claims_production_readiness": false,
+    "interpretation": "A methodology and evidence-class boundary, not implementation proof, comparative performance evidence or an RQ answer."
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.svg",
+    "renderer": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.py",
+    "command": "python3 Dissertation/exhibits/meth_f1_design_science_evidence_chain.py",
+    "pdf_backend": "ReportLab deterministic vector operations with invariant=1 and PDF core Helvetica fonts",
+    "svg_width": 900,
+    "svg_height": 1280,
+    "pdf_page_width_points": 900,
+    "pdf_page_height_points": 1280,
+    "raster_content": false,
+    "deterministic": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_has_title": true,
+    "svg_has_description": true,
+    "plain_text_alternative": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.txt",
+    "pdf_tagging_claimed": false,
+    "greyscale_redundancy": "Stages are numbered and text-tagged; the non-leap boundary, researcher rail and mitigation rail are explicitly named and do not rely on colour alone."
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "locators": [
+        "Protocol status",
+        "Research question and evaluand",
+        "Units of analysis",
+        "Experimental conditions",
+        "Dataset partitions and leakage control",
+        "Gold/reference standard",
+        "Source-access parity",
+        "Analysis plan",
+        "Reproducibility record",
+        "Ethics and stop conditions",
+        "Validity threats to discuss"
+      ],
+      "role": "Frozen evaluand and C0-C3 contract, D0-D2 boundaries, comparable source window, independently labelled/adjudicated reference, analysis, reproducibility, ethics stops and student-as-builder/evaluator bias mitigation."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locators": [
+        "Status and evidence boundary",
+        "Goal",
+        "Research question",
+        "Problem definition",
+        "Intended contribution",
+        "Stakeholders and authority",
+        "Research success",
+        "Primary risks",
+        "Change control"
+      ],
+      "role": "Separates source, implementation, protocol and empirical evidence; defines the design-and-evaluation contribution, researcher authority and the prohibition on engineering checks becoming overstated findings."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "locators": [
+        "Requirement conventions",
+        "FR-AGT-001--FR-AGT-005",
+        "FR-VER-001--FR-VER-007",
+        "FR-REP-001--FR-REP-009",
+        "FR-OBS-001--FR-OBS-004",
+        "NFR-REL-002",
+        "NFR-RES-001--NFR-RES-003",
+        "FR-EVAL-001",
+        "Definition of done for P0"
+      ],
+      "role": "Traceable implementation and engineering-evidence contracts plus explicit separation of implemented, synthetic, protocol-only, restricted and human empirical states."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locators": [
+        "Research contract",
+        "Current go/no-go state - 27 August 2026",
+        "Detailed chapter plan: 3.1 Applied design-science strategy",
+        "Claim-control rule"
+      ],
+      "role": "Approved target-section scope and evidence-calibrated dissertation argument."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "626b40751085a01a7cbaeb10f8167cc2fec25b4a0843005cc5ac03243e0d28bc",
+      "locators": [
+        "hevner2004design",
+        "peffers2007dsrm",
+        "kapoor2023leakage",
+        "pineau2021reproducibility"
+      ],
+      "role": "Local academic-source admission, bibliographic binding, local path, page count, checksum, role and limitation records."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "cdd565425d0b94da54e6cf47fff42a28513b6ce99a0925fd471358c9085f66fa",
+      "role": "Independent local checksum bindings for the academic source files."
+    },
+    {
+      "citation_key": "hevner2004design",
+      "path": "Dissertation/sources/papers/14_hevner_design_science.pdf",
+      "sha256": "ea06fb3e18ccf0f7cf57bfdce49dd2e3d10e863f77a3fbc6e46a799f23258686",
+      "locator": "PDF pp. 4, 9 and 11",
+      "role": "Relevant-problem, purposeful-artefact, build-and-evaluate and evidence-proportionate utility/quality/efficacy requirements."
+    },
+    {
+      "citation_key": "peffers2007dsrm",
+      "path": "Dissertation/sources/papers/15_peffers_design_science_methodology.pdf",
+      "sha256": "6fc461bab413c49f213adc346457dad2182963c58db8351e292d4991d7c40e4b",
+      "locator": "PDF pp. 4 and 16--18",
+      "role": "Problem identification, objectives, design/development, demonstration, evaluation and communication sequence; evaluation measures results against objectives."
+    },
+    {
+      "citation_key": "kapoor2023leakage",
+      "path": "Dissertation/sources/papers/32_kapoor_data_leakage.pdf",
+      "sha256": "c433bceda841ca09fe2fd7ddf857fc0818fdf98553e62e54a37cc394c6f70c42",
+      "locator": "PDF pp. 1--7",
+      "role": "Leakage, unavailable artefact and under-specified reporting risks supporting frozen data/method boundaries and narrow conclusions."
+    },
+    {
+      "citation_key": "pineau2021reproducibility",
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1--4",
+      "role": "Code, data, procedure, metric and reporting information required for repeatable and evidence-proportionate empirical conclusions."
+    }
+  ],
+  "traceability": [
+    {
+      "figure_claim": "Applied design science connects a relevant problem and explicit objectives to artefact construction, evaluation and communication.",
+      "evidence": [
+        "hevner2004design PDF pp. 4, 9 and 11",
+        "peffers2007dsrm PDF pp. 4 and 16--18",
+        "PROJECT_CHARTER Goal, Problem definition and Intended contribution"
+      ],
+      "visible_control": "Central numbered chain stages 1-3 and 7"
+    },
+    {
+      "figure_claim": "Implementation and engineering evidence establishes bounded mechanisms under tested conditions but cannot become an empirical finding without protocol execution.",
+      "evidence": [
+        "hevner2004design PDF pp. 4, 9 and 11",
+        "peffers2007dsrm PDF pp. 4 and 16--18",
+        "PROJECT_CHARTER Status and evidence boundary and Intended contribution",
+        "REQUIREMENTS Requirement conventions and NFR-RES-001--NFR-RES-003"
+      ],
+      "visible_control": "Red NON-LEAP BOUNDARY between stages 4 and 5"
+    },
+    {
+      "figure_claim": "C0-C3 are frozen workflow conditions that yield findings only when authorised and executed against comparable units, source access and a frozen reference.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Protocol status, Experimental conditions, Gold/reference standard and Source-access parity",
+        "PROJECT_CHARTER Research success",
+        "REQUIREMENTS NFR-RES-001--NFR-RES-003 and FR-EVAL-001"
+      ],
+      "visible_control": "Stage 5 condition tags and authorised-conditions-only statement"
+    },
+    {
+      "figure_claim": "The student-as-builder/evaluator role creates confirmation-bias risk that must be made visible rather than assumed neutral.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Validity threats to discuss",
+        "PROJECT_CHARTER Stakeholders and authority and Primary risks"
+      ],
+      "visible_control": "Left RESEARCHER INVOLVEMENT rail across framing, build, evaluation and interpretation"
+    },
+    {
+      "figure_claim": "Freezing, versioned evidence, independent or adjudicated labels/review and narrow claim limits mitigate leakage and confirmation bias without guaranteeing truth or validity.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Dataset partitions and leakage control, Gold/reference standard, Reproducibility record and Validity threats to discuss",
+        "kapoor2023leakage PDF pp. 1--7",
+        "pineau2021reproducibility PDF pp. 1--4"
+      ],
+      "visible_control": "Right MITIGATION CONTROLS rail F1-F4"
+    },
+    {
+      "figure_claim": "Only executed evidence may support proportionate RQ1-RQ3 answers; unrun conditions remain held or null.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Protocol status, Analysis plan and Ethics and stop conditions",
+        "REPORT_STRUCTURE Research contract, current go/no-go state and Claim-control rule",
+        "pineau2021reproducibility PDF pp. 1--4"
+      ],
+      "visible_control": "Stages 6-7 and F4 claim-limit box"
+    }
+  ],
+  "limitations": [
+    "The figure is conceptual author synthesis and does not report implementation or evaluation results.",
+    "It contains no sample size, prevalence, accuracy, effect size, confidence interval, time, cost, token, coverage, usability or human-benefit value.",
+    "It does not imply that all C0-C3 or D0-D2 conditions have been executed.",
+    "D0 synthetic mechanism evidence must not be generalised to restricted, real-world, participant, production or investment outcomes.",
+    "Freezing and versioning improve traceability but do not establish source, reference or researcher truth.",
+    "Independent or adjudicated labels and review may reduce one source of bias but do not guarantee validity or benefit.",
+    "The student-as-builder/evaluator role remains a validity threat requiring narrow conclusions and visible deviations.",
+    "The vector PDF is not claimed to be tagged; the complete TXT alternative provides a linear accessible companion."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.py",
+      "sha256": "9a65fbac1c58a19ac0c71d93ae4fa2294d24cd8fd6263f9b8f46a7d2852e95e4",
+      "role": "Deterministic accessible-SVG to vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.svg",
+      "sha256": "7119fc4d94343a3cdee4259f0763f7db2a53632f95d02a7211c131e3a6e704e0",
+      "role": "Accessible vector source and visual source of truth."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.pdf",
+      "sha256": "f49595c4907a44252a376fc8eb65738404a79e85d45effc907bddc5a462b4fba",
+      "role": "Deterministic one-page vector PDF for LaTeX inclusion."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f1_design_science_evidence_chain.txt",
+      "sha256": "9f67b2df3457ec835cfa6f1dbce3076617e1a5b24c18bea89c48ba04296face5",
+      "role": "Complete plain-text alternative with expanded reading order, evidence basis and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

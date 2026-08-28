@@ -38,7 +38,7 @@ prose only when the associated evidence is genuinely present—not to make a cha
 | DC-06 | Automation reduces cycle time relative to manual reporting. | Comparable C0/C1/C2/C3 timing, active/elapsed definitions, paired units | PROTOCOL-ONLY | “The protocol will estimate…” |
 | DC-07 | HITL improves final quality/usability. | Pre/post C2/C3 scores, event logs, approved participant study | HELD | Do not claim until ethics-approved data exist. |
 | DC-08 | The architecture is cheaper/more expensive than one agent. | Tokens, calls, official dated prices, human time, failures across conditions | EVIDENCE-REQUIRED | Discuss expected trade-off only; stakeholder preference is not cost evidence. |
-| DC-09 | `gpt-5.4-mini`/`gpt-5.4` are appropriate routes. | Dated official capability docs plus public/synthetic benchmark under frozen schema | IMPLEMENTED route, performance untested | “The adapter is configured for these routes”; not “they perform best.” |
+| DC-09 | `gpt-5.6-luna` is an appropriate route. | Dated official capability docs plus public/synthetic benchmark under frozen schema | IMPLEMENTED route, post-migration performance untested | “The adapter is configured for this route”; not “it performs best.” |
 | DC-10 | The system is secure/production-ready. | Full product controls, threat tests, auth, DPIA, deployment review | HELD / explicitly false for P0 | “The prototype is loopback-only and not production-ready.” |
 
 ## Research artifact map

@@ -1,0 +1,257 @@
+METH-T4 - Ethics, leakage and reproducibility evidence-control matrix
+Target section: 3.7 Ethics, leakage prevention, and reproducibility
+LaTeX label: tab:meth-evidence-control-matrix
+
+Purpose and evidence boundary
+This is Faye Niu's conceptual, non-empirical synthesis of the current draft evaluation protocol,
+governance rules and implemented repository controls. It maps each material risk or authority
+boundary to a preventive control, the record that must be retained, a stop or escalation condition,
+and the current evidence state. It does not assert ethics approval, participant recruitment or
+consent, restricted-data authority, D1 or D2 access, final protocol execution, live evaluation,
+production security, legal compliance, model quality, human benefit or an empirical result.
+
+Status key
+- IMPLEMENTED / TESTED: repository code exists and the selected local checks listed below exercise
+  the stated mechanism. This does not prove control effectiveness in every deployment or dataset.
+- DOCUMENTED PLAN: the protocol defines a future control or record, but the relevant execution is
+  not available and no outcome may be inferred.
+- APPROVAL EVIDENCE NOT VERIFIED: the repository does not contain sufficient local evidence to
+  claim that approval was granted or refused. This is a no-go state, not a claim about an external
+  ethics decision.
+- UNAVAILABLE / SEALED: the condition or data cannot supply a result. Null and unavailable states
+  must not be replaced with synthetic measurements or zero.
+
+Linear reading order
+
+1. Restricted, personal or secret data leaves its authority boundary
+
+Risk or boundary
+Restricted or internal portfolio data, unexpected personal data, a credential, or another secret
+could enter Git, raw logs, an export or an external processor without appropriate authority.
+
+Preventive control
+Classify material at intake and again at the external-provider boundary. Keep restricted and
+internal material local, purpose-limited and ignored by version control. Snapshot and export files
+use mode 0600. Agent traces retain IDs, counts, timings and hashes rather than raw restricted
+values. Restricted and internal content is forbidden from external-model processing.
+
+Retained evidence
+Retain classification, purpose and actor; snapshot and export checksums and manifests; the named
+review decision; content-free trace records; and the security-gate record. Hashes provide integrity
+evidence, not encryption or anonymisation.
+
+Stop or escalation
+If authority is unclear, unexpected personal data appears, a credential remains exposed or content
+would cross an unapproved processor, stop collection. Isolate and record the event without copying
+the sensitive value, then seek supervisor, ethics or security direction.
+
+Current status
+CONTROL IMPLEMENTED / TESTED for the local classification, file-mode, trace and external-provider
+mechanisms. Real-data authority, the retention and deletion schedule, and confirmation that the
+known credential was rotated are NOT VERIFIED. No restricted external execution is claimed.
+
+2. Unauthorised C0 or C3 observation or reviewer feedback
+
+Risk or boundary
+Manual-baseline observation, usability work or qualitative reviewer feedback could be collected
+without a recorded ethics/data basis, consent, withdrawal arrangements or an approved instrument.
+
+Preventive control
+Require recorded ethics and data authority, participant information, consent and withdrawal,
+pseudonymised participant identifiers with a separately stored linkage, data minimisation, an
+approved task/instrument, and a predeclared rule for any direct quotation.
+
+Retained evidence
+Retain the approval or waiver record; dated participant-information and consent versions; the
+separately controlled ID linkage; task, review and withdrawal records; and pre- and post-review
+report-version hashes.
+
+Stop or escalation
+If approval, consent or withdrawal handling is missing or unclear, do not recruit, observe or
+collect. Preserve the outcome as null or unavailable and seek supervisor/ethics direction.
+
+Current status
+APPROVAL EVIDENCE NOT VERIFIED / NO-GO. Human C0 and C3 execution and consented qualitative
+feedback are unavailable. No participant, timing, usability, edit-burden or thematic result is
+claimed.
+
+3. D0, D1 or D2 leakage and holdout contamination
+
+Risk or boundary
+Visible synthetic data, pilot evidence or the final out-of-sample holdout could shape a purportedly
+confirmatory method or cross entity/period partitions.
+
+Preventive control
+Admit D0 through its versioned manifest, checksum and benchmark namespace. Admit D1 only after
+licence, provenance and authority gates are approved. Keep D2 pathless and sealed until the full
+evaluation bundle is frozen. Preserve group- and period-aware separation. Treat any D2-informed
+post-access change as exploratory rather than silently confirmatory.
+
+Retained evidence
+Retain dataset manifest, checksum, source version and namespace; group/period split; code, rule,
+prompt, schema, model and analysis versions; loader outcome; and access/deviation log.
+
+Stop or escalation
+A broken D2 seal, manifest checksum or grouping failure, D2 inspection, or post-access tuning stops
+confirmatory work. Record the deviation and seek supervisor review. Any authorised resumed run is
+exploratory unless a transparent protocol amendment establishes a valid new design.
+
+Current status
+D0 admission, checksum, namespace and loader mechanisms are IMPLEMENTED / TESTED. D1 remains
+protocol-only with no admitted path or checksum. D2 remains pathless, sealed and loader-blocked.
+No D1 or D2 run or result is claimed.
+
+4. Unlawful, unavailable or after-cutoff public-source use
+
+Risk or boundary
+An implemented connector could be mistaken for permission to retrieve, store or redistribute a
+source, or later-published evidence could support an earlier reporting cutoff.
+
+Preventive control
+Require versioned source admission, reviewed identity and cutoff, bounded GET-only access,
+robots/access checks, no form, authentication, paywall or CAPTCHA bypass, and source-specific
+licence, terms, retention, attribution and redistribution review.
+
+Retained evidence
+Retain capability and terms state with dated review, exact request fingerprint, source availability,
+retrieval and cutoff times, immutable capture checksum and locator, and inaccessible or held state.
+
+Stop or escalation
+Unknown or changed terms, forbidden access, after-cutoff support or redistribution uncertainty
+holds the source and associated claim. Do not fetch or export; require a named admission review.
+
+Current status
+Bounded local source-admission and public-web controls are implemented. Public-web use is
+conditional and source-specific; implementation is not a general publisher licence. Direct
+registry evaluation and public redistribution remain held or unavailable. No live evaluation
+result or exhaustive-web claim is made.
+
+5. Prompt injection or unauthorised model use
+
+Risk or boundary
+Retrieved content could be mistaken for an instruction, restricted or personal content could cross
+the external-provider boundary, or a model output could gain approval/export authority.
+
+Preventive control
+Treat retrieved content as untrusted data and reject instruction-like text before extraction or
+model processing. External processing is opt-in and restricted to eligible public or synthetic
+evidence. Set store=False, require a strict schema and literal exact span, enforce the model
+allowlist and bounded attempts, independently normalise/verify output, and deny the model any
+approval or export authority.
+
+Retained evidence
+Retain classification; provider, model and schema versions; attempt, token and error telemetry;
+exact span and verification record; rejection or abstention reason; and content-free execution
+manifest. Unknown cost or unavailable provider-control evidence remains null rather than estimated.
+
+Stop or escalation
+Injection, personal or restricted content, arbitrary model routing, unclear processor authority or
+failed span validation causes rejection or abstention before claim support. Stop model use and
+prevent export.
+
+Current status
+The classification, injection, provider-policy and report-authority mechanisms are IMPLEMENTED /
+TESTED. No D1, D2 or participant processing is claimed. No model-quality, provider-retention,
+completeness, cost or superiority result is asserted.
+
+6. Version or configuration drift; incomplete audit
+
+Risk or boundary
+An evaluation could be impossible to reproduce or interpret because code, dependencies, data,
+prompts, schemas, models, cutoffs, analysis or deviations are missing or have changed.
+
+Preventive control
+Pin the Git revision and diff, exact dependencies, migration revision, dataset and source manifests,
+availability cutoff, catalogue, codebook, prompts, schemas, connectors and models. Remove secrets
+from retained configuration. Retain stable run and agent IDs and analysis/table/figure hashes.
+
+Retained evidence
+Retain a reproducibility manifest; immutable input and result hashes; environment and migration
+record; attempts, timings, failures and authorised human decisions; a deviation log; scoring and
+analysis code; and generated-artifact hashes.
+
+Stop or escalation
+A missing or mismatched hash or version, secret in the bundle, unexplained deviation or failed
+repeat holds the comparison. Preserve the failure and resolve it before making a comparative claim.
+
+Current status
+Repository observability, dependency/migration controls and D0 repeat mechanisms are IMPLEMENTED /
+TESTED. A final empirical run bundle is unavailable because held D1, D2, C0 and human C3 execution
+has not occurred.
+
+7. Reference bias, builder/evaluator bias and selective reporting
+
+Risk or boundary
+Gold labels may reflect judgement, the student builds and evaluates the artefact, and favourable
+outcomes could be selected while failures, nulls or negative cases are hidden.
+
+Preventive control
+Plan a versioned codebook, two authorised independent labels and reasoned adjudication. Blind
+condition scoring where practicable. Predefine outcomes, denominators and deviation handling.
+Retain exclusions, failures, null/negative results and unexpected regressions, and keep conclusions
+within the executed population and protocol.
+
+Retained evidence
+Retain separate labels, agreement and adjudication records, codebook versions, frozen reference and
+scorer hashes, eligibility/exclusion/failure flow, analysis and deviation logs, negative cases and
+explicit limitations.
+
+Stop or escalation
+Without an authorised frozen reference, with an outcome-driven rule change, unavailable denominator
+or unresolved disagreement, do not report a confirmatory score. Label the work exploratory or held
+and seek supervisor and statistical review.
+
+Current status
+DOCUMENTED PLAN. The gold reference and final protocol are not constructed/frozen. C0, C3, D1 and
+D2 empirical or inferential execution remains unavailable. No comparative or human result is
+asserted.
+
+Local literature basis
+- nist2023airmf: Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf, PDF pages 32-35.
+  Supports documented scope, human oversight, human-subject protections, rigorous testing,
+  uncertainty, privacy and independent assessment. This voluntary framework does not certify the
+  artefact or prove that these controls are effective.
+- gebru2021datasheets: Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf, PDF pages
+  2 and 4-10. Supports lifecycle documentation covering purpose, composition, collection,
+  consent/privacy, external-resource restrictions, licence/terms, distribution and maintenance.
+  It does not establish this project's authority or source rights.
+- greshake2023indirect: Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf, PDF
+  pages 1 and 3-5. Supports treating retrieved content as an indirect prompt-injection boundary.
+  Demonstrated attacks do not establish completeness of this project's detector or security.
+- kapoor2023leakage: Dissertation/sources/papers/32_kapoor_data_leakage.pdf, PDF pages 1-7 and
+  17-21. Supports explicit leakage controls, dependence-aware partitioning and reproducibility
+  reporting. It does not prove that this study has executed a leakage-free final evaluation.
+- pineau2021reproducibility: Dissertation/sources/papers/33_pineau_reproducibility.pdf, PDF pages
+  1-5 and 9-13. Supports recording code, data, procedures, metrics, statistics and reporting detail
+  needed to assess reproducibility. Reproducibility is not equivalent to validity or generalisation.
+
+Exact repository inputs
+- docs/EVALUATION_PROTOCOL.md: headings "Protocol status", "Dataset partitions and leakage
+  control", "D0", "D1", "D2", "Gold/reference standard", "Analysis plan", "Reproducibility
+  record", "Ethics and stop conditions" and "Validity threats to discuss".
+- docs/PROJECT_CHARTER.md: headings "Stakeholders and authority", "Constraints", "Research
+  success", "Primary risks" and "Change control".
+- docs/REQUIREMENTS.md: requirement conventions; external-model, approval/export, observability,
+  security and research-control requirement rows.
+- docs/SECURITY_AND_DATA_GOVERNANCE.md: classification and permitted flow, lifecycle, public-web
+  boundary, credential incident, threat model, external-model policy, local storage, human/ethics
+  hold, validation gate and production prohibition.
+- docs/SOURCE_ADMISSION_REGISTER.md: implemented-versus-live-permission boundary, source rows,
+  G2 admission checklist and local redistribution boundary.
+- fixtures/evaluation_manifest.json and tests/unit/test_evaluation.py: exact D0 executable, D1
+  protocol-only and D2 sealed states plus checksum, grouping and sealed-loader checks.
+- tests/unit/test_security.py, tests/integration/test_llm_boundary.py and
+  tests/integration/test_reporting.py: selected local checks for injection/classification,
+  provider-policy and approval/export boundaries.
+- Dissertation/REPORT_STRUCTURE.md: Section 3.7 scope and the current go/no-go evidence state.
+- Dissertation/sources/MANIFEST.csv and SHA256SUMS: citation-key, local-file, limitation and
+  checksum bindings for all five academic sources.
+
+Validation and limitations
+The LaTeX source is designed as a two-page portrait longtable with repeated text headers and an
+explicit page break after the fourth control family. Meaning does not rely on colour. This file is
+the complete linear reading-order alternative. The exhibit is a control/status map, not evidence
+that ethics approval, legal permission, consent, security, privacy, reproducibility, absence of
+leakage, human utility or empirical effectiveness has been achieved. Implemented controls remain
+prototype mechanisms; documented plans, unavailable conditions and unverified approvals retain
+their separate evidence states.

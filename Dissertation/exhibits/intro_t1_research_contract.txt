@@ -1,0 +1,56 @@
+INTRO-T1 - Research contract and current evidence boundary
+Author: Faye Niu
+Target section: 1.3 Aim and research questions
+LaTeX label: tab:research-contract
+
+Columns
+
+Question; evaluand or comparison; observable measures; current evidence status; exclusion or interpretive boundary.
+
+Primary question
+
+Evaluand/comparison: The workflow comparison contains four explicit conditions under the same frozen input and source-access window. C0 is the authorised manual workflow. C1 is the deterministic/single-agent baseline without an independent verifier. C2 is the bounded multi-agent condition with independent verification. C3 is C2 followed by named human review.
+
+Observable measures: Extent of ingestion, validation and report-generation automation; claim and report quality; provenance; reliability; failures; and active and elapsed time.
+
+Current evidence status: D0 provides C1/C2 mechanism evidence only. Human C0/C3 evidence and D1/D2 execution are EVIDENCE HELD / NO-GO.
+
+Boundary: No manual or human comparative conclusion is permitted before authorised C0/C3 and D1/D2 evidence exist. Live public-web company-research evaluation is outside RQ1--RQ3. Investment outcomes, production claims and exhaustive-web claims are excluded.
+
+RQ1 - data and evidence fidelity
+
+Evaluand/comparison: Accurate and reliable bounded transformation of heterogeneous portfolio inputs against a frozen field and claim reference.
+
+Observable measures: Type and schema validity; field extraction and normalisation accuracy; missing-state classification, including blank versus zero; identity and time eligibility; provenance completeness; locator validity; transparent uncertainty; deterministic outcome-vector consistency; and repeat consistency across runs.
+
+Current evidence status: Synthetic labelled D0 mechanism and regression evidence is executable. The D1 pilot and sealed D2 evaluation are held.
+
+Boundary: D0 does not estimate real-portfolio performance. Unlabelled layers remain null. It provides no live-source or production inference.
+
+RQ2 - independent verification
+
+Evaluand/comparison: C1 deterministic/single-agent baseline versus C2 multi-agent verification under the same information boundary.
+
+Observable measures: Supported-claim precision and recall; unsupported-claim rate; contradiction handling; abstention; provenance completeness; and repeat consistency.
+
+Current evidence status: C1 and C2 are executable on labelled D0 cases. D1 and D2 are held.
+
+Boundary: The evaluation estimates the verifier effect and must not presume a benefit. Precision/recall trade-offs, failures, negative findings and null outcomes remain reportable.
+
+RQ3 - efficiency and human review
+
+Evaluand/comparison: Compare automated C1/C2 and named-review C3 with manual C0. C1 is deterministic and has no independent verifier; C2 adds bounded independent verification; C3 is C2 plus named review. The C2 pre-review versus C3 post-review comparison is a subordinate within-workflow comparison, not the complete RQ3 comparison.
+
+Observable measures: Report correctness and completeness; active and elapsed time; edit burden; approval time; and reviewer utility.
+
+Current evidence status: The C3 review workflow is implemented, but D0 deliberately records null C0/C3 human measures. Human C0/C3 evidence and D1/D2 execution remain EVIDENCE HELD / NO-GO.
+
+Boundary: Execute only with ethics and data authority, a frozen reference and authorised reviewers. Do not reconstruct timing retrospectively or invent participant evidence.
+
+Contract-wide interpretive boundary
+
+Live public-web company-research evaluation is outside RQ1--RQ3 and outside the frozen research contract. The table does not evaluate investment outcomes and does not establish production readiness or exhaustive-web coverage. It contains no result values.
+
+Source note
+
+Author synthesis of frozen project contracts, not results. Evidence-status labels distinguish executable D0 mechanism evidence from held D1/D2, manual and human evidence.

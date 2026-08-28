@@ -1,0 +1,147 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "INTRO-F1",
+  "title": "From heterogeneous evidence to the research contract",
+  "author": "Faye Niu",
+  "target_section": "1.2 Problem definition and motivation",
+  "figure_type": "conceptual design-traceability map",
+  "hash_algorithm": "SHA-256",
+  "evidence_boundary": {
+    "allowed_claim": "The figure maps repository-defined evidence risks to implemented or specified controls and then to the approved RQ1-RQ3 research contract.",
+    "excluded_claims": [
+      "prevalence",
+      "effect size",
+      "achieved time savings",
+      "live source coverage",
+      "cost",
+      "user benefit",
+      "production readiness"
+    ],
+    "rq3_status": "EVIDENCE HELD: empirical comparison requires separately authorised data or participant work."
+  },
+  "generation": {
+    "single_visual_source": "Dissertation/exhibits/intro_f1_problem_to_research_contract.svg",
+    "pdf_renderer": "Dissertation/exhibits/intro_f1_problem_to_research_contract.py",
+    "renderer_runtime": "Bundled Python with ReportLab 4.4.9",
+    "command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/intro_f1_problem_to_research_contract.py",
+    "determinism_control": "ReportLab invariant mode, fixed PDF metadata, fixed geometry and fonts, no timestamps, randomness or absolute paths embedded in the PDF.",
+    "repeat_render_byte_identical": true,
+    "repeat_render_sha256": "11655f1f0d2cf6766a1aa576bf83833a52a1010bc8ac9e9a35a3d47c67c982d3"
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/exhibits/intro_f1_problem_to_research_contract.py",
+      "sha256": "7d23561f642b99629df1d31d5eb0bdbe8e34f2b9893ab6432579a3b1a6ec8c06",
+      "role": "deterministic SVG-to-vector-PDF renderer"
+    },
+    {
+      "path": "docs/SOURCE_EVIDENCE_MATRIX.md",
+      "sha256": "8bf5737f6cced820d123a5d1ef9810de30c36d26345718a70b27f06179ec691c",
+      "locators": ["TR-03", "TR-07", "WB-02", "WB-03", "WB-04", "WB-05"],
+      "role": "identity, heterogeneous-input, missingness and ambiguity problem evidence"
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locators": ["Problem definition", "Intended contribution", "Risk register"],
+      "role": "problem definition, independent verification, provenance and named approval controls"
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "locators": ["Missing-state taxonomy", "Period semantics", "Claim and verification semantics", "Report lifecycle"],
+      "role": "explicit blank-versus-zero, time, claim and approval semantics"
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "locators": ["FR-MET-003", "FR-ID-001--FR-ID-004", "FR-TIME-001--FR-TIME-002", "FR-VER-001--FR-VER-007", "FR-REP-001--FR-REP-009"],
+      "role": "testable control and export-gate contract"
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "role": "local literature admission and checksum ledger"
+    },
+    {
+      "citation_key": "hardman2023small",
+      "path": "Dissertation/sources/papers/04_hardman_ramirez_santos_2023_think_small_first.pdf",
+      "sha256": "fb4f6db0aba6cf9d8b09bfd4f936be8980155915dc7b432556b883311935e2ba",
+      "locator": "PDF pp. 21-25",
+      "role": "unavailable or empty company-account fields and filing-lag limitations"
+    },
+    {
+      "citation_key": "nikiforova2020quality",
+      "path": "Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf",
+      "sha256": "017d96ae1392fc22cb817b1aadc8ec407dac84f2a254a8391301c55bdd0b6d52",
+      "locator": "PDF pp. 15-17",
+      "role": "Companies House quality defects and use-case-specific quality controls"
+    },
+    {
+      "citation_key": "thorne2026funding",
+      "path": "Dissertation/sources/papers/09_thorne_et_al_2026_uk_funding_lifecycle.pdf",
+      "sha256": "90000d1f68bb6d82bcfe83271afd9b5433f671a22d9b74864a1833af028efaef",
+      "locator": "PDF pp. 1-6",
+      "role": "variant organisation identity, incomplete linkage and temporal snapshot limitations"
+    },
+    {
+      "citation_key": "gao2023alce",
+      "display_citation": "Gao et al. (2023a, ALCE)",
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "locator": "PDF pp. 1--4",
+      "role": "answer correctness and citation-support quality as distinct requirements from fluent synthesis"
+    },
+    {
+      "citation_key": "greshake2023indirect",
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81",
+      "locator": "PDF pp. 1-4",
+      "role": "indirect prompt-injection risk in retrieved public content"
+    }
+  ],
+  "traceability": [
+    {
+      "claim": "Identity collision can select the wrong legal company.",
+      "evidence": ["SOURCE_EVIDENCE_MATRIX TR-03", "thorne2026funding PDF pp. 1-6"],
+      "control": "C1 exact Companies House number plus named legal-identity hold",
+      "research_question": "RQ1"
+    },
+    {
+      "claim": "Blank, zero, absent and unavailable are not interchangeable states.",
+      "evidence": ["SOURCE_EVIDENCE_MATRIX WB-03", "DATA_DICTIONARY Missing-state taxonomy", "hardman2023small PDF pp. 21-25", "nikiforova2020quality PDF pp. 15-17"],
+      "control": "C2 explicit missing states",
+      "research_question": "RQ1"
+    },
+    {
+      "claim": "Filing or publication lag can make evidence ineligible for a reporting cutoff.",
+      "evidence": ["REQUIREMENTS FR-TIME-001--FR-TIME-002", "hardman2023small PDF pp. 21-25", "thorne2026funding PDF pp. 1-6"],
+      "control": "C3 frozen cutoff plus publication or availability time",
+      "research_question": "RQ1"
+    },
+    {
+      "claim": "Generated synthesis may lose support or attribution, while retrieved text may contain hostile instructions.",
+      "evidence": ["PROJECT_CHARTER Problem definition", "Gao et al. (2023a, ALCE, PDF pp. 1--4)", "greshake2023indirect PDF pp. 1-4"],
+      "control": "C4 immutable located evidence, C5 independent verification and C6 named approval/export gate",
+      "research_question": "RQ1, RQ2 and RQ3"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/intro_f1_problem_to_research_contract.svg",
+      "media_type": "image/svg+xml",
+      "sha256": "38c972b77ea6054c09b2676f28e591acd5f61f15843eed0e8287bdb5dc91789e"
+    },
+    {
+      "path": "Dissertation/exhibits/intro_f1_problem_to_research_contract.pdf",
+      "media_type": "application/pdf",
+      "sha256": "11655f1f0d2cf6766a1aa576bf83833a52a1010bc8ac9e9a35a3d47c67c982d3"
+    },
+    {
+      "path": "Dissertation/exhibits/intro_f1_problem_to_research_contract.txt",
+      "media_type": "text/plain",
+      "sha256": "343a5e39231a9f1a0e10f8d282185adaf77b1d1d8156051317a733156d182ccb"
+    }
+  ],
+  "manifest_self_hash": "Intentionally omitted because embedding a file's own digest is self-referential; hash this JSON externally when packaging."
+}

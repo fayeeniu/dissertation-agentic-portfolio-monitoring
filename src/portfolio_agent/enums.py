@@ -47,6 +47,85 @@ class ResolutionStatus(StrEnum):
     UNRESOLVED = "unresolved"
 
 
+class CompanyEntityType(StrEnum):
+    REGISTERED = "registered"
+    UNINCORPORATED = "unincorporated"
+    UNKNOWN = "unknown"
+
+
+class CompanyLifecycleStatus(StrEnum):
+    CANDIDATE = "candidate"
+    ACTIVE = "active"
+    ARCHIVED = "archived"
+
+
+class ResearchCaseStatus(StrEnum):
+    IDENTITY_HOLD = "identity_hold"
+    READY = "ready"
+    ARCHIVED = "archived"
+
+
+class IntakeArtifactKind(StrEnum):
+    COMPANIES_HOUSE_NUMBER = "companies_house_number"
+    WEBSITE = "website"
+    DOCUMENT = "document"
+    NAME_JURISDICTION = "name_jurisdiction"
+    BULK_ROW = "bulk_row"
+
+
+class LinkReviewStatus(StrEnum):
+    PENDING = "pending"
+    VERIFIED = "verified"
+    REJECTED = "rejected"
+
+
+class ProfileVersionStatus(StrEnum):
+    DRAFT = "draft"
+    PENDING_REVIEW = "pending_review"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class CompanyResearchRunStatus(StrEnum):
+    PENDING = "pending"
+    RUNNING = "running"
+    PENDING_REVIEW = "pending_review"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class CompanyResearchTaskStatus(StrEnum):
+    PENDING = "pending"
+    RUNNING = "running"
+    SUCCEEDED = "succeeded"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class ResearchSourceStatus(StrEnum):
+    DISCOVERED = "discovered"
+    FETCHED = "fetched"
+    BLOCKED = "blocked"
+    UNSUPPORTED = "unsupported"
+    FAILED = "failed"
+
+
+class ResearchClaimCategory(StrEnum):
+    IDENTITY = "identity"
+    FUNDING = "funding"
+    AWARDS = "awards"
+    CORPORATE_ACTIONS = "corporate_actions"
+    PERFORMANCE = "performance"
+    CHALLENGES = "challenges"
+    PRODUCTS_MARKET = "products_market"
+    PUBLIC_DISCOURSE = "public_discourse"
+    REGULATION = "regulation"
+    TECHNOLOGY = "technology"
+    OTHER = "other"
+
+
 class IdentifierScheme(StrEnum):
     COMPANIES_HOUSE_NUMBER = "companies_house_number"
     UKRI_ORGANISATION_ID = "ukri_organisation_id"

@@ -1,0 +1,260 @@
+SYS-T1 TEXT ALTERNATIVE
+
+Title
+Requirements and trust-boundary matrix for the research prototype
+
+Author and status
+Faye Niu. Author synthesis. Conceptual and non-empirical; this is not a result.
+
+Purpose
+This matrix separates the actor, data and action permitted inside each boundary from the
+implemented control, approved outstanding work, explicit non-goal or stop condition, and the
+local evidence that supports the status. "Implemented" means that named repository code exists
+and selected local checks exercise the stated mechanism. It does not mean that live company
+research, restricted-data processing, a participant study, security effectiveness or a production
+deployment has been completed or authorised.
+
+Linear reading order
+
+1. Local runtime and accountable actor
+
+Boundary or requirement
+NFR-SEC-001 and FR-UI-003--004 define a local, single-user runtime and accountable review actor.
+
+In-scope actor, data and action
+One locally configured researcher or reviewer uses the FastAPI/Jinja interface. SQLite and
+ignored local snapshot/export directories hold the permitted local state.
+
+Current implemented control
+The CLI refuses a non-loopback host outside the documented Docker-local mode. HTTP middleware
+checks client and Host values, applies security headers, and requires a double-submit CSRF value
+for mutations. Reviewer identity comes from local configuration rather than a form field. Docker
+mode accepts private container-network clients only when the published host port remains bound to
+loopback.
+
+Approved outstanding work
+A formal accessibility/security review and any wider deployment design require separate evidence
+and authority.
+
+Explicit non-goal or stop condition
+Anonymous, remote and multi-user access are outside this prototype. Reject a non-loopback client,
+unexpected Host, missing CSRF value or missing configured reviewer. Loopback and CSRF are not a
+substitute for production authentication, authorisation or tenant isolation.
+
+Evidence locator and status
+src/portfolio_agent/cli.py, function main, serve branch; src/portfolio_agent/web.py, create_app
+security middleware, require_csrf and reviewer_identity; tests/integration/test_web.py,
+test_web_rejects_csrf_host_forgery_and_form_actor and
+test_container_local_mode_accepts_only_private_container_clients. Status: IMPLEMENTED LOCAL-ONLY;
+not production authentication.
+
+2. Legal identity first
+
+Boundary or requirement
+FR-ID-001--004 and FR-INT-001/006 require exact, source-scoped identity and a named decision.
+
+In-scope actor, data and action
+A submitted Companies House number is an identity claim. A configured reviewer can accept or
+reject the identifier with a substantive rationale.
+
+Current implemented control
+A structurally valid number can be submitted without a name or website, but it creates an
+unresolved company and an unreviewed Companies House identifier. Company names and domains do not
+auto-merge legal identity. A classification mismatch, conflicting identifier or unresolved state
+fails closed. Decisions and their actor/rationale remain auditable.
+
+Approved outstanding work
+Before direct live registry use, Gate G2 still requires current authoritative interface and terms
+evidence, credential and storage approval, exact identifier mapping, time/cutoff semantics,
+retention and attribution review.
+
+Explicit non-goal or stop condition
+Structural validity is not legal-identity authority. Do not collect, link or report company facts
+while identity is unresolved, conflicting, rejected or belongs to another classification boundary.
+Do not use a name, website or filename as an automatic legal-identity merge.
+
+Evidence locator and status
+src/portfolio_agent/company_intelligence.py, CompanyIntakeService.create,
+CompanyIntakeService.decide_identifier and _select_or_create_company; docs/adr/0007-offline-
+company-intelligence-foundation.md, Decision items 4--6 and 10;
+tests/integration/test_company_intelligence.py,
+test_number_only_intake_is_idempotent_and_requires_named_review. Status: IMPLEMENTED OFFLINE;
+live Companies House access is held.
+
+3. Classification and data authority
+
+Boundary or requirement
+NFR-SEC-002--005 and NFR-RES-001 separate restricted/internal, public and synthetic data and their
+permitted flows.
+
+In-scope actor, data and action
+Restricted or internal portfolio material remains purpose-limited inside local ignored storage.
+Admitted public evidence and fictional synthetic cases use their separate permitted routes.
+
+Current implemented control
+DataClassification is a closed enum containing public, internal, restricted and synthetic.
+Purpose, actor and classification are retained with intake records. Create-once local files use
+mode 0600 and are ignored by Git. Traces retain bounded identifiers, counts and hashes rather than
+raw restricted content. The external-provider boundary rechecks classification and untrusted
+content.
+
+Approved outstanding work
+Before real restricted-data or participant work, verify lawful authority, controller, purpose,
+access list, retention/deletion plan and any required ethics, information or consent material.
+
+Explicit non-goal or stop condition
+Never place restricted or internal content in Git, synthetic fixtures, raw traces or an external
+model. Unclear authority, an unexpected personal field or an unapproved processor stops
+processing. The repository does not establish ethics approval or restricted-data authority.
+
+Evidence locator and status
+src/portfolio_agent/enums.py, DataClassification; src/portfolio_agent/security.py,
+assert_external_model_safe; docs/SECURITY_AND_DATA_GOVERNANCE.md, Data classification and
+permitted flow, Local storage controls and Human/participant and ethics hold;
+tests/unit/test_security.py and tests/integration/test_llm_boundary.py. Status: CONTROL
+IMPLEMENTED; authority and ethics evidence NOT VERIFIED.
+
+4. Public discovery and optional external model
+
+Boundary or requirement
+FR-EXT-004--008 and FR-RES-001--004 bound discovery, public capture and optional extraction.
+
+In-scope actor, data and action
+Only a public research case with a named-reviewed Companies House number and cutoff may enter the
+bounded company-research workflow. Web search proposes HTTPS URL candidates. Captured public text
+or synthetic evidence may enter optional extraction; synthetic fixtures rehearse the path without
+an outbound call.
+
+Current implemented control
+External-model and live-retrieval flags default closed and must open together with a configured
+reviewer and key. Search snippets and free-form model prose are not evidence. Public capture is
+bounded by HTTPS/network, redirects, robots, MIME, timeout and byte controls. Instruction-like
+content is rejected. External extraction uses store=False, an enforced model route, bounded
+attempts and strict schema/exact-span grounding; deterministic normalisation and independent
+verification remain mandatory.
+
+Approved outstanding work
+The live public-company path still requires separate authorisation and empirical evaluation.
+Source-specific G2 review and execution-time provider-control verification remain outstanding.
+Direct live Companies House or other registry connectors remain a P1 item.
+
+Explicit non-goal or stop condition
+No restricted/internal model input, public-person profiling, arbitrary browsing, snippet-supported
+claim, unrestricted crawling, investment recommendation, or model approval/export. Missing, held,
+post-cutoff, untrusted or conflicting evidence cannot become a supported claim.
+
+Evidence locator and status
+src/portfolio_agent/config.py, Settings defaults; src/portfolio_agent/bootstrap.py,
+create_runtime gate checks; src/portfolio_agent/security.py; docs/adr/0008-bounded-live-company-
+research.md, Decision and Consequences; tests/integration/test_llm_boundary.py,
+test_restricted_content_is_rejected_before_client_invocation and
+test_default_runtime_refuses_open_external_gates_before_database_creation;
+tests/integration/test_company_research.py,
+test_live_research_rejects_non_public_case_and_mismatched_runtime_flags. Status: CODE AND LOCAL/FAKE
+BOUNDARY TEST EVIDENCE. No live public-company research execution or result is claimed, and this
+matrix does not represent web-search integration as complete.
+
+5. Named review and export
+
+Boundary or requirement
+FR-VER-002 and FR-REP-004--009 require independent verification, named review and a version-bound
+export gate.
+
+In-scope actor, data and action
+The configured reviewer assesses a versioned report or profile whose candidate claims have
+verification records, and then approves, rejects or requests changes.
+
+Current implemented control
+Approval records actor, reason, version and time. An optimistic lock rejects a stale action.
+Editing creates a new version, revokes approval and requires review again. Export is forbidden
+before approval, uses a pending manifest plus staging/atomic finalisation, and rechecks content and
+file hashes before reuse.
+
+Approved outstanding work
+Authorised C0/C3 observation and reviewer-utility evidence remain pending. Production identities,
+roles or signed approval would need a separately scoped architecture and authority.
+
+Explicit non-goal or stop condition
+No model or workflow stage can approve or publish. Missing verification, stale versions, rejected
+reports, absent approval, tampered bundles or incomplete writes stop export. Test approval on a
+synthetic report is mechanism evidence, not participant or user-benefit evidence.
+
+Evidence locator and status
+src/portfolio_agent/reporting.py, ReportService.approve, edit_section, export,
+_assert_approval_ready and _verified_export_bundle; tests/integration/test_reporting.py,
+test_export_is_blocked_until_audited_human_approval,
+test_section_edit_creates_version_and_requires_reapproval and
+test_finalized_export_is_reverified_before_reuse. Status: IMPLEMENTED ON SYNTHETIC/OFFLINE FLOWS;
+authorised human-study result unavailable.
+
+6. Prototype scope and explicit non-goals
+
+Boundary or requirement
+The Project Charter P0/P1/P2 boundaries define what this engineering artefact may demonstrate.
+
+In-scope actor, data and action
+The prototype supports bounded ingestion, typed evidence, independent verification and local named
+review as engineering mechanisms for RQ1--RQ3.
+
+Current implemented control
+Fixed stage contracts, explicit missing/failed/held states, provenance and local audit records make
+unsupported actions visible rather than silently expanding scope.
+
+Approved outstanding work
+Live connectors, participant work, restricted-data evaluation or deployment may proceed only
+through their named future gates and separate authority. They are not completion criteria for the
+current slice.
+
+Explicit non-goal or stop condition
+Do not use the supplied dashboard credential. The current scope excludes production
+authentication/tenancy, social scraping, unrestricted crawling, autonomous publication,
+investment advice or scoring, fine-tuning, cloud deployment and native PPTX/PDF generation.
+
+Evidence locator and status
+docs/PROJECT_CHARTER.md, P0 scope, Explicit non-goals, Constraints and Change control;
+docs/REQUIREMENTS.md, P1 backlog and P2 exclusions; docs/ARCHITECTURE.md, Scalability and production
+gaps. Status: CONTRACT BOUNDARY, not an empirical result.
+
+Academic-source note
+- nist2023airmf: Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf, PDF pages 32--35.
+  Supports documenting intended scope, human oversight, third-party risk, testing, uncertainty and
+  independent assessment. This voluntary framework does not certify the project.
+- greshake2023indirect: Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf, PDF
+  pages 1 and 3--5. Supports treating retrieved content as an untrusted instruction boundary. It
+  does not prove this repository's detector or fetch path complete or secure.
+- amershi2019guidelines: Dissertation/sources/papers/13_amershi_human_ai_guidelines.pdf, PDF page 3.
+  Supports clear capability limits, dismissal/correction and scoping service under uncertainty.
+  It is not a usability evaluation of this artefact.
+
+Repository inputs
+- docs/PROJECT_CHARTER.md: Status and evidence boundary; P0 scope; Explicit non-goals;
+  Stakeholders and authority; Constraints; Primary risks; Change control.
+- docs/ARCHITECTURE.md: System context and trust boundaries; Runtime deployment; Component
+  responsibilities; Data flow and invariants; Deterministic-first and model routing; Scalability
+  and production gaps.
+- docs/REQUIREMENTS.md: requirement conventions; FR-ID-001--004; FR-EXT-004--008;
+  FR-VER-002; FR-REP-004--009; FR-UI-003--004; NFR-SEC-001--005; NFR-RES-001;
+  FR-INT-001/006; NFR-CI-001; FR-RES-001--004; P1 backlog; P2 exclusions.
+- docs/SECURITY_AND_DATA_GOVERNANCE.md: Security posture; Data classification and permitted flow;
+  Offline company-intelligence intake boundary; Approved public-web company-research boundary;
+  External model policy; Human/participant and ethics hold; Production prohibition.
+- docs/SOURCE_ADMISSION_REGISTER.md: opening permission boundary, source rows, G2 checklist and
+  redistribution boundary.
+- docs/adr/0007-offline-company-intelligence-foundation.md and
+  docs/adr/0008-bounded-live-company-research.md: accepted first-slice and bounded research
+  decisions, consequences and exclusions.
+- The code and test locators named in each row above.
+
+Limitations
+- This table contains no empirical value, participant observation, coverage result, cost, timing,
+  source-quality score or production claim.
+- Local tests establish only the exercised contracts. They do not establish legal compliance,
+  ethics approval, data authority, live source availability, model quality, security effectiveness
+  or external validity.
+- Offline Companies House syntax/intake does not prove current legal identity or registry truth.
+- The existence of bounded research code and fake/local tests does not establish completed or
+  authorised live web-search integration.
+- store=False is not described as zero data retention and does not replace data-processing
+  authority or minimisation.
+- The named reviewer in local configuration is an accountable prototype actor, not a production
+  authenticated principal or evidence of an authorised participant study.

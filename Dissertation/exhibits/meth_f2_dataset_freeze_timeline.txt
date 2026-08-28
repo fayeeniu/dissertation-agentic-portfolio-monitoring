@@ -1,0 +1,122 @@
+METH-F2 - Dataset tiers and freeze timeline
+Target section: 3.3 Dataset tiers and freeze protocol
+Suggested LaTeX label: fig:meth-dataset-freeze-timeline
+
+Purpose and evidence boundary
+This is Faye Niu's conceptual, non-empirical synthesis of the frozen evaluation contracts. It
+shows when each dataset tier may influence the method and where access must stop. It contains no
+sample size, participant count, acceptance threshold, effect size, result, time saving, cost or
+production claim. A labelled workflow state does not mean that its empirical study has run.
+
+Reading order
+
+1. D0 - synthetic, visible and adversarial engineering set
+D0 consists of fictional, labelled, test-only fixtures admitted through the local evaluation
+manifest. Its cases may be inspected during development and may inform catalogue, rule, schema,
+prompt, code and test changes before the evaluation freeze. D0 supports regression testing and
+mechanism evaluation under the labelled synthetic cases. It must not be used as evidence of real
+portfolio performance, practitioner behaviour, participant benefit or production operation.
+
+Current repository state: D0 is executable, classified as synthetic, namespaced as benchmark:d0,
+and restricted to automated functional and repeatability evaluation. Entity groups must not cross
+partitions. These are declarations in the current evaluation manifest. The exhibit does not by
+itself demonstrate loader enforcement, namespace rewriting or group-partition isolation.
+
+2. D1 - separately authorised pilot or calibration set
+D1 is the smallest separately authorised historical subset needed to clarify the codebook and gold
+instructions, estimate annotation workload or disagreement and timing variance, test capture forms,
+and plan the final study. D1 may inform the single freeze only when its licences, provenance,
+authority and gates have been approved. D1 output must retain its pilot label and remain outside
+confirmatory estimates unless the analysis plan pre-declares the entire study as exploratory.
+
+Current repository state: D1 is protocol-only, with no admitted path or checksum. The diagram does
+not assert that a D1 pilot has been executed.
+
+3. One versioned freeze
+D0 and any separately authorised D1 work may feed one recorded freeze. The frozen bundle includes:
+- metric catalogue and aliases;
+- transformation, identity, source and verification rules;
+- schemas and codebook;
+- prompts and model-routing configuration where applicable;
+- application and evaluation code, dependency and environment versions;
+- condition definitions, source-access window, stop criteria and gold-construction procedure; and
+- analysis plan, outcomes, denominators, grouping, uncertainty and deviation handling.
+
+D2 may not inform this freeze. The holdout must not shape the method that will be evaluated on it.
+
+4. D2 - sealed final company-period out-of-sample holdout
+D2 contains final company-period units selected and sealed before final system runs. Before an
+approved opening, researchers and systems must not inspect D2, tune catalogue aliases, change
+prompts or rules, select a model, repair a connector or otherwise adapt the method using D2. The
+versioned manifest may state that the tier is sealed without exposing restricted data.
+
+Current repository state: D2 is sealed and classified as a sealed holdout. Its manifest contains no
+data path or checksum, and the application exposes no unlock token or bypass. Opening requires a
+separately approved manifest transition after the evaluation bundle has been frozen.
+
+5. Comparable C0-C3 execution after authorised opening
+Only after the freeze and approved D2 opening may the final protocol apply comparable C0 manual,
+C1 deterministic baseline, C2 bounded independent-verifier and C3 named-review workflows to the
+same eligible company-period units and information boundary. This stage is a protocol, not a result.
+
+Current state: D2 remains sealed. C0 manual and participant-based C3 execution remain held pending
+ethics/data authority, gold construction and protocol freeze. The figure therefore asserts no final
+C0-C3 execution or comparative outcome.
+
+6. Adjudication
+Condition outputs are scored against the independently constructed, frozen reference rather than
+treating a system output or prior manual report as truth. Disagreements, reasons and codebook
+versions are recorded.
+
+7. Analysis and limitations
+The pre-specified analysis retains entity/report and company-period grouping, uncertainty,
+failures, contradictions, abstentions, missing and zero-denominator states, null results and protocol
+deviations. Conclusions remain limited to the executed population, information window, workflow
+versions and authorised evidence.
+
+Two explicit stop boundaries
+
+Participant observations are not D3
+Participant observations belong only to separately authorised C0 or C3 execution. They do not form
+a fourth dataset tier and may not be invented or substituted with D0 measurements.
+
+Any D2-informed post-access change starts an exploratory run
+If D2 access leads to a change in the catalogue, aliases, rules, schemas, prompts, model selection,
+code, connector, outcome or analysis, that run loses its confirmatory label and becomes exploratory.
+The deviation and any transparent protocol amendment must be recorded; D2 must not be silently
+reused for another confirmatory claim.
+
+Local literature basis
+- bradley2024synfintabs: Dissertation/sources/papers/06_bradley_et_al_2024_synfintabs.pdf,
+  PDF pages 1-5. Supports the bounded use of labelled synthetic financial-table data for extraction
+  evaluation; it does not establish this project's real-world performance.
+- gebru2021datasheets: Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf,
+  PDF pages 2 and 4-7. Supports documented purpose, composition, sampling, recommended splits,
+  sensitive-data controls and explicit intended use; it does not prove this project's freeze.
+- kapoor2023leakage: Dissertation/sources/papers/32_kapoor_data_leakage.pdf,
+  PDF pages 1-7 and 17-21. Supports the leakage risk created when test information affects data
+  processing, model selection or scientific claims, and the need to document the analysis path.
+- pineau2021reproducibility: Dissertation/sources/papers/33_pineau_reproducibility.pdf,
+  PDF pages 1-4 and 9-13. Supports versioned code, data, procedure, metric and reporting information
+  for reproducible evaluation; reproducibility alone does not establish external validity.
+
+Exact repository inputs
+- docs/EVALUATION_PROTOCOL.md: "Protocol status", "Experimental conditions", "Dataset partitions
+  and leakage control", D0-D2 definitions, "Gold/reference standard", "Source-access parity",
+  "Analysis plan", "Reproducibility record", "Ethics and stop conditions" and validity threats.
+- fixtures/evaluation_manifest.json: current D0 executable, D1 protocol-only and D2 sealed states,
+  namespaces, classifications, partition policies and permitted uses.
+- Dissertation/REPORT_STRUCTURE.md: Section 3.3 scope and current C0/C3 go-no-go boundary.
+- docs/PROJECT_CHARTER.md: evidence-state separation, no final-OOS access before freeze and narrow
+  research-success criteria.
+- docs/REQUIREMENTS.md: synthetic/restricted/participant evidence separation and repeatability
+  requirements.
+- Dissertation/sources/MANIFEST.csv and SHA256SUMS: local citation-key, file and checksum bindings.
+
+Accessibility and limitations
+The SVG includes a title and complete description. Stages, states, arrows and stop conditions are
+identified in text, so the meaning does not rely on colour. The PDF is vector-only but is not
+claimed to be tagged; this file is the complete linear reading-order alternative. Freezing,
+versioning and sealing reduce leakage risk but do not guarantee reference truth, protocol validity,
+authorisation, representativeness, reproducibility or generalisation. No D1, D2, C0 or human C3
+result is claimed.

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100"
+     role="img" aria-labelledby="lit-f1-title lit-f1-desc">
+  <title id="lit-f1-title">Evidence-to-claim admission and audit chain</title>
+  <desc id="lit-f1-desc">A conceptual, non-empirical author synthesis for dissertation Section 2.4. Eight vertically connected stages run from candidate discovery through source-policy admission, immutable capture, exact passage or span, typed claim, independent verification, contradiction state, and approved report or export. Side branches show rejected or held states, including sources that are not admitted, captures or passages that cannot be used, claims that are insufficient, stale, untrusted, or contradicted, and reports that cannot be exported without current named approval. Two panels distinguish traceability, which can record origin, bytes, locator, decisions, and versions, from source truth, which provenance and citations cannot establish.</desc>
+  <defs>
+    <style>
+      .background { fill:#FFFFFF; }
+      .title { font:700 28px Helvetica, Arial, sans-serif; fill:#172B3A; }
+      .subtitle { font:14px Helvetica, Arial, sans-serif; fill:#4B5F6D; }
+      .rule { stroke:#B7C5CF; stroke-width:1.5; }
+      .stage-box { fill:#F4F9FC; stroke:#0072B2; stroke-width:2; }
+      .stage-box-alt { fill:#ECF7F7; stroke:#0F7C80; stroke-width:2; }
+      .stage-number { font:700 12px Helvetica, Arial, sans-serif; fill:#0072B2; }
+      .stage-number-alt { font:700 12px Helvetica, Arial, sans-serif; fill:#0F6D70; }
+      .stage-title { font:700 16px Helvetica, Arial, sans-serif; fill:#15384D; }
+      .stage-body { font:13px Helvetica, Arial, sans-serif; fill:#354A58; }
+      .flow-arrow { fill:none; stroke:#667784; stroke-width:2.25; marker-end:url(#arrow); }
+      .branch-arrow { fill:none; stroke:#8A5B31; stroke-width:2; marker-end:url(#branch-arrow); }
+      .reject-box { fill:#FCEDEF; stroke:#B83A4B; stroke-width:2; }
+      .hold-box { fill:#FFF4D8; stroke:#B87520; stroke-width:2; }
+      .branch-title-red { font:700 13px Helvetica, Arial, sans-serif; fill:#9C2738; }
+      .branch-title-amber { font:700 13px Helvetica, Arial, sans-serif; fill:#8A5416; }
+      .branch-body { font:12px Helvetica, Arial, sans-serif; fill:#4A3D35; }
+      .trace-box { fill:#E8F4FA; stroke:#0072B2; stroke-width:2; }
+      .truth-box { fill:#FFF3D6; stroke:#9A671F; stroke-width:2; }
+      .boundary-title-blue { font:700 14px Helvetica, Arial, sans-serif; fill:#005D91; }
+      .boundary-title-amber { font:700 14px Helvetica, Arial, sans-serif; fill:#7A4C11; }
+      .boundary-body { font:12.5px Helvetica, Arial, sans-serif; fill:#344854; }
+      .source-note { font:11px Helvetica, Arial, sans-serif; fill:#526471; }
+      .status-pill { fill:#E6EEF3; stroke:#9EB0BC; stroke-width:1; }
+      .status-text { font:700 11px Helvetica, Arial, sans-serif; fill:#405563; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#667784"/>
+    </marker>
+    <marker id="branch-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#8A5B31"/>
+    </marker>
+  </defs>
+
+  <rect class="background" x="0" y="0" width="900" height="1100"/>
+  <text class="title" x="40" y="43">Evidence-to-claim admission and audit chain</text>
+  <text class="subtitle" x="40" y="69">Section 2.4 design rationale: evidence must pass distinct admission, support, verification, contradiction and approval gates.</text>
+  <rect class="status-pill" x="675" y="27" width="185" height="31" rx="15"/>
+  <text class="status-text" x="767.5" y="47" text-anchor="middle">CONCEPTUAL · NON-EMPIRICAL</text>
+  <line class="rule" x1="40" y1="88" x2="860" y2="88"/>
+
+  <rect class="stage-box" x="40" y="110" width="500" height="65" rx="9"/>
+  <text class="stage-number" x="58" y="133">01</text>
+  <text class="stage-title" x="88" y="139">Candidate discovery</text>
+  <text class="stage-body" x="300" y="132">Search URLs and leads only</text>
+  <text class="stage-body" x="300" y="153">Snippets or model prose are not evidence</text>
+
+  <path class="flow-arrow" d="M 290 175 L 290 195"/>
+  <rect class="stage-box-alt" x="40" y="195" width="500" height="65" rx="9"/>
+  <text class="stage-number-alt" x="58" y="218">02</text>
+  <text class="stage-title" x="88" y="224">Source-policy admission</text>
+  <text class="stage-body" x="300" y="217">Role, scope, access and identity reviewed</text>
+  <text class="stage-body" x="300" y="238">Unadmitted sources fail closed</text>
+
+  <path class="flow-arrow" d="M 290 260 L 290 280"/>
+  <rect class="stage-box" x="40" y="280" width="500" height="65" rx="9"/>
+  <text class="stage-number" x="58" y="303">03</text>
+  <text class="stage-title" x="88" y="309">Immutable capture</text>
+  <text class="stage-body" x="300" y="302">Publisher URL, times and captured bytes</text>
+  <text class="stage-body" x="300" y="323">SHA-256 and versioned local snapshot</text>
+
+  <path class="flow-arrow" d="M 290 345 L 290 365"/>
+  <rect class="stage-box-alt" x="40" y="365" width="500" height="65" rx="9"/>
+  <text class="stage-number-alt" x="58" y="388">04</text>
+  <text class="stage-title" x="88" y="394">Exact passage or span</text>
+  <text class="stage-body" x="300" y="387">Page, section or verbatim claim support</text>
+  <text class="stage-body" x="300" y="408">Instruction-like text remains untrusted</text>
+
+  <path class="flow-arrow" d="M 290 430 L 290 450"/>
+  <rect class="stage-box" x="40" y="450" width="500" height="65" rx="9"/>
+  <text class="stage-number" x="58" y="473">05</text>
+  <text class="stage-title" x="88" y="479">Typed claim</text>
+  <text class="stage-body" x="300" y="472">Entity, metric, value/state and period</text>
+  <text class="stage-body" x="300" y="493">Evidence link and exact locator required</text>
+
+  <path class="flow-arrow" d="M 290 515 L 290 535"/>
+  <rect class="stage-box-alt" x="40" y="535" width="500" height="65" rx="9"/>
+  <text class="stage-number-alt" x="58" y="558">06</text>
+  <text class="stage-title" x="88" y="564">Independent verification</text>
+  <text class="stage-body" x="300" y="557">Exact support, eligibility, time and trust</text>
+  <text class="stage-body" x="300" y="578">Separate verifier outcome is recorded</text>
+
+  <path class="flow-arrow" d="M 290 600 L 290 620"/>
+  <rect class="stage-box" x="40" y="620" width="500" height="65" rx="9"/>
+  <text class="stage-number" x="58" y="643">07</text>
+  <text class="stage-title" x="88" y="649">Contradiction state</text>
+  <text class="stage-body" x="300" y="642">Competing evidence remains visible</text>
+  <text class="stage-body" x="300" y="663">No silent averaging: exception or hold</text>
+
+  <path class="flow-arrow" d="M 290 685 L 290 705"/>
+  <rect class="stage-box-alt" x="40" y="705" width="500" height="65" rx="9"/>
+  <text class="stage-number-alt" x="58" y="728">08</text>
+  <text class="stage-title" x="88" y="734">Approved report/export</text>
+  <text class="stage-body" x="300" y="727">Named decision and current version hash</text>
+  <text class="stage-body" x="300" y="748">Manifest gate; an edit revokes approval</text>
+
+  <path class="branch-arrow" d="M 540 227.5 L 583 227.5"/>
+  <rect class="reject-box" x="590" y="181" width="270" height="94" rx="9"/>
+  <text class="branch-title-red" x="607" y="204">REJECTED · NOT ADMITTED</text>
+  <text class="branch-body" x="607" y="225">Wrong entity or scope; policy unresolved</text>
+  <text class="branch-body" x="607" y="244">Snippet-only or source not permitted</text>
+  <text class="branch-body" x="607" y="263">No downstream claim is created</text>
+
+  <path class="branch-arrow" d="M 540 397.5 L 583 397.5"/>
+  <rect class="hold-box" x="590" y="304" width="270" height="126" rx="9"/>
+  <text class="branch-title-amber" x="607" y="327">HELD · CAPTURE OR SPAN</text>
+  <text class="branch-body" x="607" y="349">Access, licence, media or size blocks capture</text>
+  <text class="branch-body" x="607" y="368">Restricted or instruction-like content is rejected</text>
+  <text class="branch-body" x="607" y="387">Exact support is absent or post-cutoff</text>
+  <text class="branch-body" x="607" y="406">Gap remains explicit; no inferred replacement</text>
+
+  <path class="branch-arrow" d="M 540 652.5 L 583 652.5"/>
+  <rect class="hold-box" x="590" y="514" width="270" height="151" rx="9"/>
+  <text class="branch-title-amber" x="607" y="537">HELD · CLAIM OUTCOME</text>
+  <text class="branch-body" x="607" y="559">Insufficient · stale · rejected-untrusted</text>
+  <text class="branch-body" x="607" y="578">Contradicted claims form an explicit conflict set</text>
+  <text class="branch-body" x="607" y="597">Held items stay out of supported narrative</text>
+  <text class="branch-body" x="607" y="616">They remain visible as exceptions or gaps</text>
+  <text class="branch-body" x="607" y="635">Resolution needs stated policy or named review</text>
+
+  <path class="branch-arrow" d="M 540 737.5 L 583 737.5"/>
+  <rect class="reject-box" x="590" y="690" width="270" height="100" rx="9"/>
+  <text class="branch-title-red" x="607" y="713">NO APPROVED EXPORT</text>
+  <text class="branch-body" x="607" y="735">Approval is absent, stale or rejected</text>
+  <text class="branch-body" x="607" y="754">Review edits or version/hash mismatch</text>
+  <text class="branch-body" x="607" y="773">Current version must return to the gate</text>
+
+  <rect class="trace-box" x="40" y="835" width="400" height="155" rx="10"/>
+  <text class="boundary-title-blue" x="60" y="861">TRACEABILITY CAN ESTABLISH</text>
+  <text class="boundary-body" x="60" y="886">• Origin URL, publisher and immutable captured bytes</text>
+  <text class="boundary-body" x="60" y="909">• Capture, retrieval and cutoff times; SHA-256 and version</text>
+  <text class="boundary-body" x="60" y="932">• Exact span, typed claim and verifier decision</text>
+  <text class="boundary-body" x="60" y="955">• Named approval and the report/export version it binds</text>
+  <text class="boundary-body" x="60" y="978">This supports auditability and repeatability.</text>
+
+  <rect class="truth-box" x="460" y="835" width="400" height="155" rx="10"/>
+  <text class="boundary-title-amber" x="480" y="861">TRACEABILITY CANNOT ESTABLISH SOURCE TRUTH</text>
+  <text class="boundary-body" x="480" y="886">• An admitted or cited source may still be wrong</text>
+  <text class="boundary-body" x="480" y="909">• Incompleteness, bias, filing lag and conflicts remain possible</text>
+  <text class="boundary-body" x="480" y="932">• Attribution and passage support are not factual proof</text>
+  <text class="boundary-body" x="480" y="955">• Verification records a bounded decision, not certainty</text>
+  <text class="boundary-body" x="480" y="978">Uncertainty and limitations remain part of the report.</text>
+
+  <line class="rule" x1="40" y1="1017" x2="860" y2="1017"/>
+  <text class="source-note" x="40" y="1040">Source basis: local Section 2.4 evidence packet and frozen project contracts; exact PDF pages, files and SHA-256 hashes are recorded</text>
+  <text class="source-note" x="40" y="1057">in the text alternative and provenance manifest. Author synthesis; no prevalence, effect size, live coverage, user benefit or production claim.</text>
+  <text class="source-note" x="40" y="1081">Author: Faye Niu · Target: Section 2.4 · Figure ID: LIT-F1</text>
+</svg>

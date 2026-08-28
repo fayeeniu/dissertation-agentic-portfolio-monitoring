@@ -1,0 +1,130 @@
+SYS-F4 - Fixed workflow and verification state machine
+Author: Faye Niu
+Target section: 4.5 Fixed portfolio workflow and independent verification
+Suggested LaTeX label: fig:sys-fixed-workflow-verification-state-machine
+Status: author synthesis; conceptual, non-empirical, and not a result.
+
+Purpose
+This figure explains the locally implemented fixed portfolio workflow, the separate verification decision, and the named review and export boundary. It shows which records and stop conditions make the flow auditable. It does not claim that more agents are better, that traceability guarantees source truth, that a reviewer improves outcomes, that a report is published autonomously, or that local engineering tests establish empirical or production performance.
+
+Status key
+1. Solid blue boundary - IMPLEMENTED + LOCAL TESTS. The service, schema or state transition exists and is exercised by local unit or integration tests using synthetic or replay evidence. This is engineering evidence only.
+2. Dashed amber boundary - EVALUATION / HUMAN OUTCOMES UNRUN. The named-review workflow exists, but manual-review quality, usability, time, edit burden and user benefit remain protocol-only or unavailable until authorised execution.
+3. Dotted or solid red boundary - FAIL CLOSED / RETAIN STATE. A failed precondition, ineligible source, unsupported claim or stale mutation stops promotion. The state and reason remain available for review; the system does not silently repair or publish it.
+
+Reading order
+
+1. Fixed, typed execution path - implemented and locally tested.
+
+   Plan and intake:
+   - The workflow begins from an admitted RawSubmission and reporting period, not from a free-form autonomous prompt.
+   - It checks dataset identity, reporting period, reporting cutoff, classification and legal-identity/source preconditions before downstream work.
+   - An unknown dataset, unresolved identity, missing required cutoff or unadmitted source fails before collection or claim promotion.
+
+   Extract:
+   - Deterministic structured extraction is the default path.
+   - Every non-null extraction must satisfy the strict schema and bind to the expected company, metric, period, value leaf or exact cited span as applicable.
+   - Untrusted instruction-like content is rejected before extraction or optional model processing. A null result requires an abstention reason.
+   - Optional model assistance remains separately opt-in, public/synthetic only and bounded. It does not control the workflow or export.
+
+   Normalise:
+   - Extracted and normalized values are retained separately.
+   - Missing state, unit, currency, period, provider and schema version remain explicit.
+   - Schema, period, unit and currency conflicts are not silently repaired, averaged or converted.
+
+   Source and evidence review:
+   - Admitted source identity, immutable or checksum-bound capture, exact locator, reporting cutoff, temporal state, trust state and provenance completeness are checked before evidence may support a claim.
+   - Search snippets, bare URLs, generated summaries and untrusted content are not evidence.
+   - Ineligible, stale, conflicting or incomplete evidence remains visible as a state or hold.
+
+   Claim build:
+   - A Claim is a typed candidate proposition with company, metric, reporting period, text, normalized value, verification status and evidence links.
+   - Building a fluent sentence does not establish support or truth.
+   - Every claim must receive at least one independent Verification record before approval can pass.
+
+2. Persisted stage and run records - implemented and locally tested.
+
+   WorkflowRun records retain:
+   - stable run and dataset identifiers;
+   - reporting-period and cutoff bindings;
+   - current stage and run status;
+   - evidence-contract and quality-contract versions;
+   - configuration, completed-stage list, start/end times and failure text.
+
+   AgentRun records retain:
+   - stable action identifier, run, stage and bounded role;
+   - running/succeeded/failed state;
+   - canonical input and output hashes;
+   - attempt count, provider/model and prompt/schema metadata where applicable;
+   - duration, token/cost fields where available, timestamps and errors.
+
+   These records are typed execution telemetry. They do not expose hidden reasoning and they do not prove that an agent was independent merely because it had a separate role name.
+
+3. Fail-closed, retry and idempotency boundary.
+
+   - The fixed PortfolioWorkflow contains an explicit serial stage tuple and a terminal human-review stage. It has no open-ended planning or agent conversation loop.
+   - A stage exception writes the AgentRun failure, marks the WorkflowRun failed and stops the bounded pipeline.
+   - Retries are path-specific and bounded. The optional extraction provider has a fixed attempt policy; company-research recovery is a separate persisted workflow and is not represented as part of this base portfolio pipeline.
+   - Import, source snapshot, extraction and export paths use stable identifiers, uniqueness or checksum/manifest verification where their contracts define reuse. This does not imply that every operation is globally idempotent or safe under distributed production concurrency.
+   - A rerun or retry cannot silently overwrite an approved report, a finalized manifest or a conflicting source snapshot.
+
+4. Independent verifier and explicit outcomes - implemented and locally tested.
+
+   The verifier is a separate bounded role from extraction and composition. It compares the typed candidate against eligible evidence and checks exact value, required currency, expected period, sourceability, temporal eligibility, trust and provenance fields. It writes a Verification status and rationale. It does not rewrite the candidate claim or its evidence.
+
+   The five closed outcomes are:
+   - SUPPORTED: the bounded support rule passes.
+   - CONTRADICTED: current eligible evidence conflicts with the candidate, including exact value or currency disagreement where required.
+   - INSUFFICIENT_EVIDENCE: support is absent or incomplete for the sourceability rule.
+   - STALE: the candidate lacks current eligible evidence for the required period/cutoff.
+   - REJECTED_UNTRUSTED: only untrusted or otherwise ineligible material would support it.
+
+   Only SUPPORTED claims enter the supported narrative. Contradicted, insufficient, stale and rejected-untrusted claims remain visible in verification exceptions or holds. A locator, checksum, citation or source prestige establishes traceability to a record; it does not establish that the source is true, complete or fit for every use.
+
+5. Deterministic report assembly - implemented and locally tested.
+
+   - The composer reads persisted claims, verification states, source coverage, temporal outcomes, missingness and other deterministic context.
+   - Supported claims form the supported narrative. Other statuses appear as explicit verification exceptions rather than being hidden.
+   - The composer creates versioned report sections and a Report in pending_review state with a persisted content hash.
+   - The composer cannot add an unsupported fact or publish/export the report.
+
+6. Named human review and current-version approval.
+
+   - The fixed workflow stops at pending_review with automatic_export=false.
+   - A configured named actor may approve, reject or request an edit, and must supply a substantive rationale. The ReviewDecision records actor, reason, decision, report version and time.
+   - Approval checks that every current section contains reviewable content and every claim has an independent verification record.
+   - Optimistic lock_version comparison rejects a stale browser or service mutation.
+   - Approval applies to the current report version and its persisted content hash. This is an authority gate; it is not new factual evidence.
+   - Human-review quality, time, usability, edit burden and benefit are not measured by this figure. Those outcomes remain held until authorised evaluation.
+
+7. Edit invalidation and controlled export - implemented and locally tested.
+
+   Edit invalidation:
+   - Editing a pending-review or approved section makes the old section non-current and writes a new section version.
+   - The report version increases, its current content hash is recomputed, approved_at is cleared and status returns to pending_review.
+   - A named request-edit decision is recorded. A new approval is required; stale lock versions fail.
+
+   Controlled export:
+   - Export refuses any report that is not currently approved.
+   - The service builds deterministic JSON, Markdown and accessible HTML documents for the current report version.
+   - It computes file hashes, a bundle content hash and a version-bound manifest. A pending ReportExport record precedes filesystem finalization.
+   - Files are written into a private staging directory and atomically renamed. Only after manifest/database finalization does the report become exported and the workflow complete.
+   - A write failure returns the report to approved, records a failed export and removes only the unfinalized target. A finalized export is checksum- and manifest-reverified before reuse.
+   - Controlled export is a local artifact transition. It is not autonomous publication, hosted distribution or a production release process.
+
+Explicit limitations and non-goals
+- No guaranteed truth, source completeness, citation correctness, hallucination elimination or error-free report is asserted.
+- No unconstrained planning, arbitrary tool use, autonomous source admission, silent claim rewriting, approval by an agent or autonomous publication is represented.
+- No measured reviewer benefit, human accuracy, usability, review time, trust calibration or edit reduction is claimed.
+- No live-company, external-model, production-security, hosted tenancy, scale or reliability result is reported.
+- The figure does not claim that role separation or additional agents are universally superior to a deterministic or manual baseline.
+
+Visual source note
+Author synthesis of stable repository workflow, verifier, report, approval/export and local-test contracts. The figure contains no mutable company count, effect size, accuracy value, user outcome or production claim.
+
+Academic design context, all locally admitted and checksum-verified:
+- Gao et al. (2023a, ALCE), local PDF pp. 3-4 and 10: answer correctness, citation entailment/correctness and citation completeness are distinct; this does not validate this implementation.
+- NIST AI RMF (2023), local PDF pp. 33-35: rigorous measurement, independent review, documentation, uncertainty and limits beyond evaluated conditions support the design rationale; NIST does not certify the artefact.
+- Amershi et al. (2019), local PDF pp. 3-5: human-AI interfaces should expose uncertainty and support correction and dismissal; the guidance does not establish user benefit here.
+
+Repository locators and exact SHA-256 values are recorded in `sys_f4_fixed_workflow_verification_state_machine_provenance.json`.

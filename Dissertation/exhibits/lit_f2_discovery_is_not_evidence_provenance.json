@@ -1,0 +1,331 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-F2",
+  "title": "Discovery is not evidence",
+  "author": "Faye Niu",
+  "target_section": "2.5 LLM-assisted discovery and grounded extraction",
+  "suggested_latex_label": "fig:lit-discovery-evidence-boundary",
+  "figure_type": "conceptual two-lane discovery and evidence-boundary diagram",
+  "status": "author synthesis; non-empirical; not a result",
+  "hash_algorithm": "SHA-256",
+  "generated_at": "2026-08-27T18:28:00+01:00",
+  "purpose": "Separate LLM-assisted candidate discovery from bounded evidence processing, show source admission before capture, and expose deterministic-first structured extraction plus the bounded optional OpenAI model-assisted route before mandatory deterministic validation, normalisation and independent verification.",
+  "evidence_boundary": {
+    "allowed_claim": "The figure represents repository-specified controls and literature-based rationale for candidate discovery, source admission, controlled capture, explicit extraction routing, deterministic exact-span/schema validation and normalisation, independent verification and supported or non-claim outcomes.",
+    "lane_boundary": "The discovery lane may emit only candidate URLs or identifiers and origin metadata. It has no direct path to a report claim. Candidate-queue membership is not evidence status. After admission and capture, the evidence path explicitly distinguishes deterministic structured extraction from bounded optional model-assisted extraction.",
+    "untrusted_content_boundary": "Retrieved public content remains data, cannot change instructions or permissions, and cannot authorise tools or actions.",
+    "excluded_claims": [
+      "web-search citations, annotations, snippets or source lists as admitted evidence",
+      "retrieval or RAG as a guarantee against hallucination",
+      "grounding, source truth or certainty",
+      "live search execution",
+      "live or exhaustive web coverage",
+      "open-web recall",
+      "latency, cost or token-use results",
+      "comparative performance",
+      "the whole post-queue path as deterministic",
+      "concealment of the optional external-model extraction route",
+      "implemented control effectiveness",
+      "user benefit",
+      "investment outcome",
+      "deployment safety or production readiness"
+    ]
+  },
+  "generation": {
+    "single_visual_source": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.svg",
+    "pdf_renderer": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.py",
+    "renderer_runtime": "Bundled Python 3 with ReportLab 4.4.9",
+    "command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/lit_f2_discovery_is_not_evidence.py",
+    "determinism_control": "ReportLab invariant mode, fixed PDF metadata, core Helvetica fonts, fixed 900-by-1340-point geometry, and no timestamp, randomness or absolute input path embedded in the PDF.",
+    "repeat_render_byte_identical": true,
+    "repeat_render_sha256": "7f073d8caedb2f5c8e32cf1855e8cdd512a25402e05c3c918fcad1a66ebb3863",
+    "vector_outputs": [
+      "SVG",
+      "PDF"
+    ],
+    "accessibility": "The SVG contains a programmatic title and full description. The TXT file supplies the complete linear text alternative. The vector PDF is not claimed to be tagged."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.py",
+      "sha256": "9e62292a78c98ca8c1bc431c79cef9063e08ee61c2587b3fcb59d7aeed0abc4f",
+      "role": "deterministic accessible-SVG-to-vector-PDF renderer"
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locators": [
+        "Detailed chapter plan > 2. Literature Review > 2.5",
+        "Implemented case study and held future evaluation",
+        "Claim-control rule"
+      ],
+      "role": "approved Section 2.5 scope and separation of literature-based design, implemented-but-live-unrun engineering evidence, and held future evaluation"
+    },
+    {
+      "path": "Dissertation/sources/SECTION_2_5_EVIDENCE.md",
+      "sha256": "e309619474c7d43f56934cbf038baa12b4c56dac0f0fc570cd9b5afab3cd37a8",
+      "locators": [
+        "Paragraph 1: retrieval assistance and its boundary",
+        "Paragraph 2: Responses API web-search capability",
+        "Paragraph 3: grounded extraction at claim and passage level",
+        "Paragraph 4: retrieved content is untrusted data",
+        "Paragraph 5: bounded coverage and evaluable discovery",
+        "Proposed exhibit LIT-F2",
+        "Prohibited overreach"
+      ],
+      "role": "binding local literature packet, exact PDF locators, safe synthesis, exhibit specification and prohibited-overreach boundary"
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "d570ad1b979ceb76d3e60c12c4d3aead9fcc36f5dbdd045a3d6685f0d5dca5ef",
+      "locators": [
+        "2.5-P1",
+        "2.5-P2",
+        "2.5-P3",
+        "2.5-P4",
+        "2.5-P5"
+      ],
+      "role": "Section 2.5 claim, citation-key, exact-page and verification traceability"
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locators": [
+        "Status and evidence boundary",
+        "Problem definition",
+        "P0 scope",
+        "Primary risks"
+      ],
+      "role": "source-linked candidate claims, bounded external processing, independent verification, provenance and named report gate"
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "locators": [
+        "Canonical principles",
+        "Company-intelligence first-slice records",
+        "Claim and verification semantics",
+        "Report lifecycle"
+      ],
+      "role": "immutable source records, exact spans, typed claims, verification states, contradiction and report lifecycle semantics"
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "locators": [
+        "FR-EXT-001--FR-EXT-008",
+        "FR-VER-001--FR-VER-007",
+        "FR-REP-001--FR-REP-009",
+        "FR-SRC-001--FR-SRC-002",
+        "FR-RES-001--FR-RES-007"
+      ],
+      "role": "testable candidate-only search, source admission, guarded capture, deterministic-first extraction, bounded optional external-model processing with store=False, strict schema/span validation, prompt-injection rejection, verification-state and report-gate contract"
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "9c865bf53d28b1bbd1fb1a31da6add528b1c1f956df76af29cca966f99781a4b",
+      "locators": [
+        "Source admission register table rows openai_web_search and public_web_capture",
+        "G2 admission checklist",
+        "Local research-corpus redistribution boundary"
+      ],
+      "role": "conditioned URL-discovery and local-capture roles, fail-closed source admission and explicit rule that implementation or a public website does not itself grant admission"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "2e163af455d017e7118272a02c1ad09ee1bb8b6eae4542b5c5aa26487387792d",
+      "locators": [
+        "Component responsibilities",
+        "End-to-end state machine",
+        "Data flow and invariants",
+        "Deterministic-first and model routing",
+        "Failure and recovery behaviour"
+      ],
+      "role": "separate discovery, source admission, capture, deterministic-first and optional-model extraction routes, deterministic validation/normalisation, verification, exception, review and export state transitions"
+    },
+    {
+      "path": "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+      "sha256": "b776926f7fb0d3901bf4f2390636f5613f80241d2e4439a524991899270ce385",
+      "locators": [
+        "Security posture",
+        "Approved public-web company-research boundary",
+        "Threat model",
+        "External model policy",
+        "Production prohibition"
+      ],
+      "role": "public-content-as-untrusted-data, fixed-permission, prompt-injection, restricted-content and production-prohibition boundaries"
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "locators": [
+        "nist2023airmf",
+        "gao2023rarr",
+        "gao2023ragsurvey",
+        "huang2023hallucination",
+        "gao2023alce",
+        "greshake2023indirect",
+        "pineau2021reproducibility",
+        "openai2026websearch"
+      ],
+      "role": "local literature and authoritative-documentation admission, bibliographic binding, source roles and limitations"
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "45262c6955d0f5803db564673af5ff689f21249f24a94002b17dbd2859947c0b",
+      "role": "frozen local-corpus checksum ledger"
+    },
+    {
+      "path": "Dissertation/sources/WEB_CAPTURES.csv",
+      "sha256": "b1bbc483f73fdb6b6cd758374a51032d3edb025b45958cd93c127d84fa05f070",
+      "locator": "openai2026websearch",
+      "role": "capture date, canonical URL, local HTML/PDF paths and hashes for the authoritative web-search documentation"
+    },
+    {
+      "citation_key": "gao2023ragsurvey",
+      "path": "Dissertation/sources/papers/17_gao_rag_survey.pdf",
+      "sha256": "396a0fadeb4cd40f5c8ccc36b73a0815f6cb4d7f6bfa53b6c48c1f9aba7c7e02",
+      "locator": "PDF pp. 1, 3--4, 8 and 14--17",
+      "role": "separation of retrieval and generation plus relevance, faithfulness, rejection, integration, robustness and adversarial-context limitations"
+    },
+    {
+      "citation_key": "huang2023hallucination",
+      "path": "Dissertation/sources/papers/18_huang_llm_hallucination_survey.pdf",
+      "sha256": "c0505f6ebb341232c5d1824ba50f520121a4095c38ab2c2877286d5007479502",
+      "locator": "PDF pp. 20--22 and 26",
+      "role": "retrieval may reduce a knowledge gap yet can introduce noise and still produce inaccurate or misleading output"
+    },
+    {
+      "citation_key": "gao2023rarr",
+      "display_citation": "Lewis et al. (2023, RARR)",
+      "path": "Dissertation/sources/papers/16_lewis_rarr_attribution.pdf",
+      "sha256": "012e1231dc847c4cee6c7cb0e6ffee43f5799f70754930c815db1674ceffeab9",
+      "locator": "PDF pp. 1--2",
+      "role": "research, attribution and revision while preserving the distinction between retrieved evidence, generated text and correctness"
+    },
+    {
+      "citation_key": "openai2026websearch",
+      "path": "Dissertation/sources/html/openai_web_search.pdf",
+      "sha256": "46840b66aa2d1de8b8295686d4fd754614f5ff7afb45bbf55b9333adae777fe8",
+      "locator": "PDF pp. 1--3, 5--7 and 10--12",
+      "role": "documented Responses API web_search, citation annotation, domain filtering and consulted-source-list capabilities; not artefact execution evidence"
+    },
+    {
+      "citation_key": "gao2023alce",
+      "display_citation": "Gao et al. (2023a, ALCE)",
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "locator": "PDF pp. 1, 3--4 and 10",
+      "role": "answer correctness, citation entailment/correctness and citation completeness as distinct evaluation dimensions"
+    },
+    {
+      "citation_key": "greshake2023indirect",
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81",
+      "locator": "PDF pp. 1 and 3--5",
+      "role": "indirect prompt-injection risk when retrieved material blurs data and instructions or influences queries, summaries, sources and downstream actions"
+    },
+    {
+      "citation_key": "nist2023airmf",
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 32--35",
+      "role": "third-party-data risk, testing, uncertainty, independent review, safe failure and documented limits"
+    },
+    {
+      "citation_key": "pineau2021reproducibility",
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1--4",
+      "role": "recorded procedures, data, metrics, code and reporting limits for repeatable and evidence-proportionate conclusions"
+    }
+  ],
+  "traceability": [
+    {
+      "figure_claim": "LLM-assisted retrieval is candidate discovery and remains separate from admission, extraction and verification.",
+      "evidence": [
+        "SECTION_2_5_EVIDENCE Paragraph 1",
+        "CLAIM_LEDGER 2.5-P1",
+        "gao2023ragsurvey PDF pp. 1 and 3",
+        "huang2023hallucination PDF pp. 20--22 and 26",
+        "gao2023rarr PDF pp. 1--2"
+      ],
+      "visible_control": "Purple discovery lane terminates at the neutral candidate queue"
+    },
+    {
+      "figure_claim": "Documented Responses API web-search capabilities fit discovery but do not make returned material admitted evidence or prove execution.",
+      "evidence": [
+        "SECTION_2_5_EVIDENCE Paragraph 2",
+        "CLAIM_LEDGER 2.5-P2",
+        "openai2026websearch PDF pp. 1--3 and 5--7",
+        "REQUIREMENTS FR-RES-002"
+      ],
+      "visible_control": "Responses API candidate node and source inventory both carry candidate-only status"
+    },
+    {
+      "figure_claim": "Grounded extraction is deterministic-first for structured evidence, exposes a bounded optional OpenAI route for admitted unstructured public or synthetic evidence, and requires both routes to pass deterministic exact-span/schema validation, normalisation and independent verification.",
+      "evidence": [
+        "SECTION_2_5_EVIDENCE Paragraph 3",
+        "CLAIM_LEDGER 2.5-P3",
+        "gao2023alce PDF pp. 3--4 and 10",
+        "gao2023rarr PDF pp. 1--2",
+        "REQUIREMENTS FR-EXT-001--FR-EXT-008 and FR-VER-001--FR-VER-004",
+        "ARCHITECTURE Deterministic-first and model routing"
+      ],
+      "visible_control": "Source admission -> controlled capture -> deterministic structured extraction first OR bounded optional OpenAI extraction with store=False -> deterministic exact-span/schema validation and normalisation -> independent verification"
+    },
+    {
+      "figure_claim": "Retrieved public content remains untrusted data under fixed permissions and fail-closed validation.",
+      "evidence": [
+        "SECTION_2_5_EVIDENCE Paragraph 4",
+        "CLAIM_LEDGER 2.5-P4",
+        "greshake2023indirect PDF pp. 1 and 3--5",
+        "nist2023airmf PDF pp. 32--35",
+        "SECURITY_AND_DATA_GOVERNANCE Approved public-web company-research boundary"
+      ],
+      "visible_control": "Retrieved-content box remains outside the instruction boundary and has no tool/action authority, including on the optional model-assisted route"
+    },
+    {
+      "figure_claim": "Comprehensive discovery is bounded and reports missing, held and conflict states rather than claiming exhaustive coverage or open-web recall.",
+      "evidence": [
+        "SECTION_2_5_EVIDENCE Paragraph 5",
+        "CLAIM_LEDGER 2.5-P5",
+        "openai2026websearch PDF pp. 5--7 and 10--12",
+        "gao2023ragsurvey PDF pp. 14--17",
+        "pineau2021reproducibility PDF pp. 1--4"
+      ],
+      "visible_control": "Explicit missing, held and conflict outputs plus bottom discovery-is-not-evidence boundary"
+    }
+  ],
+  "limitations": [
+    "The diagram is a conceptual design rationale, not an observed workflow-frequency, coverage or outcome model.",
+    "The exact lane, state, record-field and gate structure is a project design choice; the cited literature does not establish it as a universal standard.",
+    "The captured OpenAI documentation establishes documented features on the access date, not live execution or performance of this artefact.",
+    "The post-queue evidence path is not wholly deterministic: the diagram explicitly shows bounded optional OpenAI model-assisted extraction for admitted unstructured public or synthetic evidence.",
+    "The optional model route uses store=False and produces only a typed proposal; strict deterministic schema/span validation, normalisation and independent verification remain mandatory.",
+    "Retrieval, attribution, citations and source lists do not establish truth or complete grounding.",
+    "Prompt-injection containment and independent verification are controls, not evidence of automatic effectiveness or user benefit.",
+    "The figure is grounded in frozen local sources and repository contracts; it does not evaluate live public-web operation, comparative performance, human utility or production safety.",
+    "The PDF is vector but untagged; use the SVG title/description or complete TXT alternative for accessible reading order."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.svg",
+      "media_type": "image/svg+xml",
+      "dimensions": "900 x 1340",
+      "sha256": "27775efec2efa269afc1c2910986fa44ea0e64e85c3c48d742f5038f45a4176d"
+    },
+    {
+      "path": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.pdf",
+      "media_type": "application/pdf",
+      "dimensions": "900 x 1340 points; one page; portrait",
+      "sha256": "7f073d8caedb2f5c8e32cf1855e8cdd512a25402e05c3c918fcad1a66ebb3863"
+    },
+    {
+      "path": "Dissertation/exhibits/lit_f2_discovery_is_not_evidence.txt",
+      "media_type": "text/plain",
+      "sha256": "ff647bef9ebfcc8171bd9fce93faf6f14c9fbecb81c7a76cf2063d300c8b42d4"
+    }
+  ],
+  "manifest_self_hash": "Intentionally omitted because embedding a file's own digest is self-referential; hash this JSON externally when packaging."
+}

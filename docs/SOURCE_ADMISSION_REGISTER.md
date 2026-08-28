@@ -2,7 +2,8 @@
 
 This register separates implemented connector mechanics from permission to perform live retrieval.
 It does not assert current licence/terms text that has not been independently captured and approved.
-Gate G2 is the hard stop for every live public-source action.
+Gate G2 is the hard stop for every live public-source action except the two explicitly approved,
+conditioned capabilities below. Direct registry connectors and all other source packs remain held.
 
 | Source key | Publisher/interface | Implemented mode | Identity key | Capability/version | Licence/terms evidence | Live status | Permitted dissertation use now |
 |---|---|---|---|---|---|---|---|
@@ -12,6 +13,8 @@ Gate G2 is the hard stop for every live public-source action.
 | `fixture_connector` | Repository fictional evidence | Local JSON fixture | fictional legacy ID | `1.0.0` | Repository-owned fictional test asset | Enabled only by explicit fixture flag | Offline workflow and D0 engineering proof |
 | `ons_context` | Office for National Statistics | Not implemented | aggregate cohort dimensions | no manifest | **EVIDENCE_REQUIRED** before admission | **NOT ADMITTED** | Method discussion only; no numeric context claim |
 | `ukipo` | UK Intellectual Property Office | Not implemented | exact official identifier/linkage | no manifest | **EVIDENCE_REQUIRED** before feasibility/design | **NOT ADMITTED** | Conditional future-work discussion only |
+| `openai_web_search` | OpenAI Responses API web-search tool | Implemented, explicit opt-in, URL discovery only | reviewed Companies House number plus pinned company/cutoff query | `public-web-research-v1`; prompt `company-research-web-v9` | Official tool/data-control documentation reviewed 2026-08-27; provider retention setting must be checked per project | **CONDITIONALLY ADMITTED** for public company-level local research | Discover bounded HTTPS source candidates across official, first-party, regional, trade, public-notice, customer, partnership, financing, technical, and adverse-evidence lanes; snippets/model prose are not evidence; public/mixed CBIT metrics require a canonical metric key and exact captured span |
+| `public_web_capture` | Publisher pages discovered by the admitted search task | Implemented guarded HTTPS GET, local immutable bytes and deterministic text | exact discovered URL; company association remains claim-level | `public-web-research-v1` | Robots/access checks are executable; each publisher's redistribution/licence remains source-specific and is not inferred | **CONDITIONALLY ADMITTED** for local review only | Capture accessible company-level pages; no forms/login/paywall/CAPTCHA/commercial-platform scraping or public redistribution claim |
 
 ## G2 admission checklist
 
@@ -30,13 +33,15 @@ A source/version may transition to live only when a named reviewer records:
 Changing a source interface, licence, schema, or manifest semantics requires a new reviewed version.
 An implementation or public website does not by itself grant admission.
 
-The persisted capability manifest records the licence and terms evidence state, dated admission
-review (when one exists), and `live_retrieval_admitted`. With G2 open, both implemented public
-connectors persist as inactive for live use: non-offline requests are rejected before connector
-invocation, and public-classified snapshot content is rejected before database or file persistence.
-Only repository-owned synthetic replays are executable in the current state. Even those replays
-require an exact reviewed identifier bound to the requested company, source, validity interval,
-and cutoff before connector invocation. A cumulative metric also requires the persisted programme
+The persisted connector capability manifest records the licence and terms evidence state, dated
+admission review (when one exists), and `live_retrieval_admitted`. Both implemented registry
+connectors remain inactive for live use: non-offline requests are rejected before connector
+invocation, and public-classified connector snapshot content is rejected before database or file
+persistence. Within the connector registry, only repository-owned synthetic replays are executable.
+The separately conditioned web-research path uses revision-`0009` research records rather than
+silently opening those registry connectors. Synthetic replays require an exact reviewed identifier
+bound to the requested company, source, validity interval, and cutoff before connector invocation.
+A cumulative metric also requires the persisted programme
 start, and every returned cumulative fact must exactly cover programme start through cutoff.
 Returned media and event types are checked, and every fact key must match its manifest's exact
 metric binding(s), unit, currency, extraction method/schema, timestamps, and structured locator

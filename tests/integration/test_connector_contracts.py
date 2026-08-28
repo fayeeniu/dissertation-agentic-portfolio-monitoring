@@ -366,7 +366,7 @@ def test_registry_backfills_legacy_derivation_and_detects_persisted_fact_tamperi
         registry.collect(request)
 
 
-def test_non_null_0006_derivation_hash_survives_0007_upgrade_and_detects_tampering(
+def test_non_null_0006_derivation_hash_survives_later_upgrades_and_detects_tampering(
     runtime: Runtime,
 ) -> None:
     connector = _StaticConnector()
@@ -398,7 +398,7 @@ def test_non_null_0006_derivation_hash_survives_0007_upgrade_and_detects_tamperi
     config = Config(str(project_root() / "alembic.ini"))
     config.set_main_option("sqlalchemy.url", runtime.settings.database_url)
     command.downgrade(config, "0006")
-    command.upgrade(config, "0007")
+    command.upgrade(config, "head")
 
     replay = registry.collect(request)
     assert replay.replayed

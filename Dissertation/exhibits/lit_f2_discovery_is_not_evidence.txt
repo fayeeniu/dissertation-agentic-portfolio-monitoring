@@ -1,0 +1,160 @@
+LIT-F2 TEXT ALTERNATIVE
+=======================
+
+Title: Discovery is not evidence
+Author: Faye Niu
+Target section: 2.5 LLM-assisted discovery and grounded extraction
+Suggested LaTeX label: fig:lit-discovery-evidence-boundary
+Status: Conceptual, non-empirical author synthesis; this is not a result.
+
+Purpose and reading order
+-------------------------
+The diagram separates LLM-assisted discovery from bounded evidence processing. The discovery lane may widen a list of candidate sources, but it cannot create evidence or report claims. The two lanes exchange only URLs or identifiers and origin metadata at one neutral candidate queue. After source admission and controlled capture, extraction follows one of two explicit routes: deterministic structured extraction first, or bounded optional OpenAI model-assisted extraction for admitted unstructured public or synthetic evidence. Both routes must pass deterministic exact-span/schema validation, normalisation and independent verification before an outcome is eligible to become a supported claim. Report approval and export remain separate gates.
+
+Lane A - LLM-assisted discovery
+--------------------------------
+
+1. Topic plan
+   - Define bounded research topics, reporting cutoff and search, token and cost budgets.
+   - This is a discovery plan, not a source or claim decision.
+
+2. Adaptive queries
+   - An LLM may reformulate queries to widen or refine candidate discovery.
+   - Tool permissions, allowed actions and budgets remain fixed; retrieved content cannot change them.
+
+3. Responses API web-search candidates
+   - The locally captured OpenAI documentation describes web_search, inline URL citations, citation annotations, domain filtering and a consulted-source list.
+   - URLs, snippets, citation annotations, source lists and model prose remain candidates only.
+   - The documented capability is not evidence that this artefact executed a live search or achieved any coverage, quality, latency, token or cost outcome.
+
+4. Source inventory
+   - Record candidate URL, domain and origin metadata.
+   - The inventory has no support, admission or truth status.
+
+Lane B - bounded evidence control
+---------------------------------
+
+Entry: official adapters
+   - Reviewed capability identifiers and deterministic or local replay paths may also supply source candidates.
+   - A capability or implementation does not by itself admit a specific source fact or prove a claim.
+
+Fixed guardrails
+   - Model output remains a typed proposal and cannot enter report claims directly.
+   - Optional model-assisted extraction is visible, source-admitted and bounded.
+   - Tool, domain, redirect and action permissions remain bounded.
+   - Missing and unsupported fields remain explicit.
+   - Retrieval does not establish grounding or source truth.
+   - The diagram represents the design contract; it does not claim that the controls have been effective in live operation.
+
+Sole meeting point - candidate queue
+------------------------------------
+The discovery inventory and official-adapter inputs meet only at the candidate queue. The queue contains URLs or identifiers and origin metadata. It is deliberately neutral: queue membership does not mean admitted evidence, exact support, source truth or a report claim. There is no edge from the discovery lane directly to extraction, verification or a supported claim.
+
+Evidence-processing chain after the queue
+-----------------------------------------
+
+1. Source admission
+   - The candidate source must be eligible under the reviewed policy before capture or extraction.
+   - Search citations, snippets, annotations, bare URLs and fluent prose do not establish admission.
+   - Unadmitted sources produce an explicit non-claim output.
+
+2. Controlled fetch and capture
+   - A candidate is fetched only through fixed request, domain, DNS/IP, TLS, redirect, robots, media-type, time, attempt and byte boundaries.
+   - Where access and capture are permitted, the resulting bytes and metadata are stored immutably.
+   - Blocked, inaccessible and unsupported responses remain explicit gaps.
+
+3. Extraction route 1 - deterministic structured extraction first
+   - The default route runs first for structured evidence.
+   - It accepts a complete structured value leaf or finite source token that can be linked to the expected entity, metric, period and value/state schema.
+   - Failure produces an explicit abstention; it does not trigger a guessed value.
+
+4. Extraction route 2 - bounded optional OpenAI model-assisted extraction
+   - This route is optional and applies only to admitted unstructured public or synthetic evidence.
+   - External processing uses store=False, fixed model/tool permissions, a strict typed schema, an exact-passage requirement and bounded attempts.
+   - The model output remains a typed proposal. It is not evidence, a verified claim or generated narrative ready for the report.
+   - Restricted evidence and unsupported fields do not enter this route and are not repaired from model memory.
+
+5. Deterministic exact-span/schema validation and normalisation
+   - Both extraction routes converge at the same deterministic gate.
+   - The proposed entity, metric, value/state, period and exact span or structured leaf must satisfy the strict schema and agree with the admitted captured evidence.
+   - Normalisation remains deterministic. A schema, identity, value, period or span failure is held.
+
+6. Independent verification
+   - A separate verifier checks exact support, temporal eligibility, provenance completeness, trust state and contradiction state.
+   - The verifier records a bounded decision without silently rewriting the extraction.
+
+7. Supported, held or conflict outcomes
+   - SUPPORTED: the claim is report-eligible but is not automatically approved or exported.
+   - HELD: evidence is unsupported, stale, rejected-untrusted or failed deterministic schema/span validation.
+   - CONFLICT: the contradicted evidence set remains visible and does not become a supported narrative claim.
+   - Named report approval and the export gate remain separate.
+
+Untrusted-content containment
+-----------------------------
+Retrieved public content remains outside the instruction boundary. It is data, never a system instruction, and cannot grant a new tool, permission or action. This rule also applies when the bounded optional OpenAI extraction route is used. Validation and isolation remain fixed around the content. Prompt-injection or restricted content is rejected or held. The cited literature establishes the threat and control rationale; it does not measure the effectiveness of this artefact's safeguards.
+
+Explicit non-claim outputs
+--------------------------
+
+- MISSING: inaccessible, blocked or no record.
+- NOT ADMITTED: the source is outside the reviewed policy.
+- HELD: unsupported, stale or rejected-untrusted.
+- CONFLICT: an explicit set of contradicted evidence.
+
+These states remain visible as gaps or exceptions. None may be silently omitted, filled, averaged or converted into a report claim.
+
+Critical boundary
+-----------------
+Discovery is not evidence. The discovery lane stops at the candidate queue. Bounded search is not exhaustive and has no known recall against the open-web universe. Only a source that is admitted before capture, processed through one explicit extraction route, passed through deterministic exact-span/schema validation and normalisation, and independently verified may produce a supported, report-eligible claim.
+
+Local evidence basis and exact locators
+---------------------------------------
+
+- SECTION_2_5_EVIDENCE.md, "Paragraph 1: retrieval assistance and its boundary" and claim-ledger row 2.5-P1:
+  - gao2023ragsurvey, local PDF pp. 1 and 3.
+  - huang2023hallucination, local PDF pp. 20-22 and 26.
+  - gao2023rarr, local PDF pp. 1-2.
+
+- SECTION_2_5_EVIDENCE.md, "Paragraph 2: Responses API web-search capability" and claim-ledger row 2.5-P2:
+  - openai2026websearch, local PDF pp. 1-3 and 5-7.
+  - gao2023alce, local PDF pp. 1 and 3-4.
+  - gao2023ragsurvey, local PDF pp. 3-4.
+
+- SECTION_2_5_EVIDENCE.md, "Paragraph 3: grounded extraction at claim and passage level" and claim-ledger row 2.5-P3:
+  - gao2023alce, local PDF pp. 3-4 and 10.
+  - gao2023rarr, local PDF pp. 1-2.
+  - gao2023ragsurvey, local PDF pp. 3, 8 and 14.
+  - The deterministic-first ordering, optional bounded OpenAI route, store=False control, strict schema/span validation and deterministic normalisation are repository-aligned project design choices; the cited papers provide the grounding and evaluation rationale rather than prescribing this exact routing.
+
+- SECTION_2_5_EVIDENCE.md, "Paragraph 4: retrieved content is untrusted data" and claim-ledger row 2.5-P4:
+  - greshake2023indirect, local PDF pp. 1 and 3-5.
+  - gao2023ragsurvey, local PDF pp. 3 and 14-15.
+  - nist2023airmf, local PDF pp. 32-35.
+
+- SECTION_2_5_EVIDENCE.md, "Paragraph 5: bounded coverage and evaluable discovery" and claim-ledger row 2.5-P5:
+  - openai2026websearch, local PDF pp. 5-7 and 10-12.
+  - gao2023alce, local PDF pp. 1, 3-4 and 10.
+  - gao2023ragsurvey, local PDF pp. 14-17.
+  - pineau2021reproducibility, local PDF pp. 1-4.
+
+Project-contract basis
+----------------------
+The project-specific lane boundary, source-admission order, guarded-capture rules, deterministic-first routing, bounded optional OpenAI extraction route, store=False control, strict schema/span gate, deterministic normalisation, verifier states and report gates are grounded in docs/PROJECT_CHARTER.md, docs/DATA_DICTIONARY.md, docs/REQUIREMENTS.md, docs/SOURCE_ADMISSION_REGISTER.md, docs/ARCHITECTURE.md and docs/SECURITY_AND_DATA_GOVERNANCE.md. Those files define the current design and implementation contract; they are not live-performance or user-benefit evidence.
+
+Limitations and excluded claims
+-------------------------------
+
+- The figure does not equate web-search citations, annotations, snippets or a source list with admitted evidence.
+- It does not claim that RAG or retrieval eliminates hallucination, guarantees grounding or establishes source truth.
+- Retrieved page text cannot act as a system instruction or authorise new tools or actions.
+- The post-queue evidence path is not described as wholly deterministic: the bounded optional OpenAI extraction route is shown explicitly.
+- Optional model-assisted extraction is restricted to admitted unstructured public or synthetic evidence and remains subject to store=False, a strict schema, exact-span validation, deterministic normalisation and independent verification.
+- The figure reports no live search coverage, open-web recall, latency, cost, token use or comparative performance.
+- A bounded search is not called exhaustive.
+- Documented API features are not presented as executed behaviour in this artefact.
+- The figure does not report current evaluation results, user benefit, investment outcomes, deployment safety or production readiness.
+- The PDF is vector but is not claimed to be tagged. This complete text alternative supplies the accessible linear reading order.
+
+Short caption source note
+-------------------------
+Source: author synthesis of the locally frozen Section 2.5 evidence packet and project contracts. Exact source files, PDF pages and SHA-256 hashes are recorded in the exhibit provenance manifest. Conceptual and non-empirical; not a result.

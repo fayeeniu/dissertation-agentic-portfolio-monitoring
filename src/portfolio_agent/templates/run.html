@@ -1,19 +1,224 @@
 {% extends "base.html" %}
-{% block title %}Agent trace {{ run.id }}{% endblock %}
+{% block title %}Evidence control room {{ short_id(run.id) }}{% endblock %}
 {% block content %}
-<nav aria-label="Breadcrumb"><a href="/">Work queue</a> / Agent trace</nav>
-<section class="hero compact">
-  <div><p class="eyebrow">Reproducible run</p><h1>Agent trace</h1><p><code>{{ run.id }}</code></p></div>
-  <dl class="assurance-list"><div><dt>Status</dt><dd>{{ run.status }}</dd></div><div><dt>Current gate</dt><dd>{{ run.stage }}</dd></div><div><dt>Dataset</dt><dd><code>{{ run.dataset_id }}</code></dd></div></dl>
+{%- macro lane(offset, width, klass='lane') -%}
+<svg class="{{ klass }}" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <rect class="lane-track" x="0" y="4" width="100" height="2" rx="1"></rect>
+  <rect class="lane-span" x="{{ offset }}" y="0" width="{{ width }}" height="10" rx="2"></rect>
+</svg>
+{%- endmacro -%}
+
+<nav aria-label="Breadcrumb"><a href="/">Work queue</a><span aria-hidden="true">/</span><span>Recorded trace {{ short_id(run.id, width=10) }}</span></nav>
+
+<header class="run-header">
+  <div>
+    <p class="eyebrow">Recorded trace · deterministic orchestration</p>
+    <h1>{{ period.label }} evidence control room</h1>
+    <p class="lede">A persisted account of eight bounded roles, the tools and sources they called, every proof-carrying handoff, and the named human gate that ends the run.</p>
+  </div>
+  <span class="status status-{{ run.status }}">{{ humanize(run.status) }}</span>
+</header>
+
+<section class="next-action next-action-{{ next_action.state }}" aria-labelledby="next-action-title">
+  <div><p class="step">Next safe action</p><h2 id="next-action-title">{{ next_action.heading }}</h2><p>{{ next_action.detail }}</p></div>
+  {% if next_action.href %}<a class="button" href="{{ next_action.href }}">{{ next_action.label }}</a>{% endif %}
 </section>
-<section class="panel" aria-labelledby="trace-title">
-  <h2 id="trace-title">Bounded stage ledger</h2>
-  <div class="table-wrap"><table>
-    <caption>Each role has a hashed input and output; values are not copied into the trace.</caption>
-    <thead><tr><th scope="col">Stage</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Duration</th><th scope="col">Input hash</th><th scope="col">Output hash</th></tr></thead>
-    <tbody>{% for agent in agent_runs %}<tr><td>{{ agent.stage }}</td><td>{{ agent.role }}</td><td>{{ agent.status }}</td><td>{{ agent.duration_ms if agent.duration_ms is not none else '—' }} ms</td><td><code>{{ agent.input_hash[:12] }}…</code></td><td>{% if agent.output_hash %}<code>{{ agent.output_hash[:12] }}…</code>{% else %}—{% endif %}</td></tr>{% endfor %}</tbody>
-  </table></div>
-  {% if report %}<p class="next-action"><a class="button" href="/reports/{{ report.id }}">Review report</a></p>{% endif %}
+
+<section class="context-bar" aria-labelledby="context-title">
+  <h2 id="context-title" class="visually-hidden">Run context</h2>
+  <dl>
+    <div><dt>Period and cutoff</dt><dd>{{ period.label }} · {{ run.reporting_cutoff or 'Not recorded' }}</dd></div>
+    <div><dt>Classification</dt><dd>{{ humanize(raw.classification) }}</dd></div>
+    <div><dt>Current stage</dt><dd>{{ humanize(run.stage) }}</dd></div>
+    <div><dt>Measured duration</dt><dd class="tabular">{{ duration_ms ~ ' ms' if duration_ms is not none else 'Not recorded' }}</dd></div>
+    <div><dt>Run ID</dt><dd><code class="copy-value">{{ run.id }}</code></dd></div>
+    <div><dt>Dataset ID</dt><dd><code class="copy-value">{{ run.dataset_id }}</code></dd></div>
+    <div><dt>Evidence contract</dt><dd>{{ run.evidence_contract_version or 'Not recorded' }}</dd></div>
+    <div><dt>Quality contract</dt><dd>{{ run.quality_contract_version or 'Not recorded' }}</dd></div>
+    <div><dt>Provider</dt><dd><span class="copy-value">{{ provider or 'Not recorded' }}</span></dd></div>
+    <div><dt>Recorded model</dt><dd><span class="copy-value">{{ recorded_models | join(', ') if recorded_models else 'Not recorded' }}</span></dd></div>
+  </dl>
+</section>
+
+<section class="circuit" aria-labelledby="rail-title">
+  <div class="circuit-head">
+    <div>
+      <p class="step">Proof-carrying handoff</p>
+      <h2 id="rail-title">Eight bounded roles</h2>
+      <p class="section-intro">The orchestrator dispatches each role, records its output, then starts the next. Complete means a stage contract passed. Supported describes a verified claim. Approved belongs only to the named human decision.</p>
+    </div>
+    <div class="circuit-aside">
+      <p class="circuit-meters">
+        <span class="meter meter-complete"><b>{{ lifecycle.complete }}</b> complete</span>
+        {% if lifecycle.working %}<span class="meter meter-working"><b>{{ lifecycle.working }}</b> in flight</span>{% endif %}
+        {% if lifecycle.attention %}<span class="meter meter-attention"><b>{{ lifecycle.attention }}</b> need attention</span>{% endif %}
+        {% if lifecycle.waiting %}<span class="meter"><b>{{ lifecycle.waiting }}</b> not run</span>{% endif %}
+      </p>
+      <div class="circuit-controls" data-circuit-controls><span class="replay-state">Recorded state, not live activity</span></div>
+    </div>
+  </div>
+
+  <ol class="agent-rail" data-agent-rail>
+    {% for stage in stages %}
+    <li class="rail-step rail-step-{{ stage.status_key }}{% if stage.is_human %} rail-step-human{% endif %}" data-stage="{{ stage.key }}" data-duration="{{ stage.duration_ms if stage.duration_ms is not none else '' }}">
+      <a class="agent-node" href="#inspector-{{ stage.key }}" data-inspector-target="{{ stage.key }}" aria-controls="inspector-{{ stage.key }}"{% if stage.is_current %} aria-current="step"{% endif %}>
+        <span class="node-index">
+          <span>{{ '%02d' % loop.index }}</span>
+          {% if stage.services %}<span class="node-fanout">{{ stage.services | length }} call{{ '' if stage.services | length == 1 else 's' }}</span>{% endif %}
+        </span>
+        <span class="node-title">{{ stage.label }}</span>
+        <span class="node-purpose">{{ stage.purpose }}</span>
+        <span class="node-state"><span class="node-dot" aria-hidden="true"></span>{{ stage.display_status }}</span>
+        <span class="node-seal">{% if stage.duration_ms is not none %}{{ stage.duration_ms }} ms{% if stage.output_hash %} · {{ short_id(stage.output_hash, width=8) }}{% else %} · no output hash{% endif %}{% else %}No trace recorded{% endif %}</span>
+      </a>
+      {% if not loop.last %}
+      <span class="handoff-edge" aria-hidden="true">
+        <span class="edge-line"></span><span class="edge-head"></span>
+        <span class="proof-packet">{{ short_id(stage.output_hash, width=6) }}</span>
+      </span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% set fanned = stages | selectattr('services') | list %}
+  {% if fanned %}
+  <section class="service-bus" aria-labelledby="service-bus-title">
+    <h3 id="service-bus-title" class="visually-hidden">Recorded tool, source, and model calls</h3>
+    {% for stage in fanned %}
+    <div class="service-group" data-parent="{{ stage.key }}">
+      <p class="service-origin"><span>{{ stage.label }} &middot; tools and sources</span><span>{{ stage.services | length }} listed</span></p>
+      <ul class="service-list">
+        {% for call in stage.services %}
+        <li class="service service-{{ call.status_key }}">
+          <span class="service-kind">{{ call.kind }}</span>
+          <span class="service-name"><span>{{ call.name }}</span><span class="service-count">{{ call.invocations }}&#215;</span></span>
+          <span class="service-meta">{{ call.status_label }}{% if call.note %} · {{ call.note }}{% endif %}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+</section>
+
+<div class="run-grid">
+  <div>
+    <section class="panel exceptions-priority" aria-labelledby="exceptions-summary-title">
+      <div class="section-heading"><div><p class="step">Attention first</p><h2 id="exceptions-summary-title">Recorded exceptions</h2></div><span>{{ exceptions | length }} total</span></div>
+      {% if exceptions %}<p class="section-intro">Exceptions are shown before aggregate success so a material hold cannot hide behind a high supported count.</p><p><a class="text-action" href="#exceptions">Open exceptions ledger <span aria-hidden="true">&#8595;</span></a></p>{% else %}<p class="empty">No recorded exceptions for this run.</p>{% endif %}
+    </section>
+
+    <section class="panel trace-panel" aria-labelledby="activity-title">
+      <div class="section-heading"><div><p class="step">Execution trace</p><h2 id="activity-title">Activity log</h2></div><span>{{ activity_log | length }} persisted stages</span></div>
+      <p class="section-intro">Each row is one persisted stage transition. The bar shows when the stage ran and how long it took, measured against the recorded run window.</p>
+      {% if activity_log %}
+      <ol class="activity-log" role="log" aria-live="off">
+        {% for entry in activity_log %}
+        {% set width = (entry.duration_share * 92.0) | round(2) %}
+        {% set offset = (entry.offset_share * (100.0 - [width, 3.0] | max)) | round(2) %}
+        <li class="activity-{{ entry.status_key }}">
+          <div class="trace-copy">
+            <h3 class="trace-role"><span class="trace-index">{{ '%02d' % loop.index }}</span>{{ entry.role }} <span class="trace-state">{{ entry.display_status }}</span></h3>
+            <p class="trace-detail">{{ entry.transition }} {{ entry.safe_output }}.</p>
+            <p class="trace-handoff">{{ entry.next_step }}</p>
+          </div>
+          <div class="trace-lane">
+            {{ lane(offset, [width, 1.4] | max) }}
+            <span class="lane-figure"><time datetime="{{ entry.occurred_at or '' }}">{{ entry.occurred_at.strftime('%H:%M:%S.') ~ '%03d' % (entry.occurred_at.microsecond // 1000) if entry.occurred_at else 'Time not recorded' }}</time><strong>{{ entry.duration_ms ~ ' ms' if entry.duration_ms is not none else '— ms' }}</strong></span>
+          </div>
+          {% if entry.services %}
+          <ul class="trace-services">
+            {% for call in entry.services %}<li class="trace-service trace-service-{{ call.status_key }}">{{ call.name }} <b>{{ call.invocations }}&#215;</b></li>{% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% else %}<p class="empty">No persisted stage transitions are recorded.</p>{% endif %}
+    </section>
+
+    <section class="panel" aria-labelledby="health-title">
+      <div class="section-heading"><div><p class="step">Evidence health</p><h2 id="health-title">Recorded distributions</h2></div><span>Cutoff {{ run.reporting_cutoff or 'not recorded' }}</span></div>
+      <div class="health-grid">
+      {% for group in health_groups %}
+        <article class="health-group" id="health-{{ group.key }}">
+          <h3>{{ group.label }}<span>{{ group.denominator }} recorded</span></h3>
+          {% if group.rows %}
+          <ul>
+            {% for row in group.rows %}
+            <li class="health-row health-row-{{ row.key if row.count else 'zero' }}">
+              <span class="health-label">{{ row.label }}</span>
+              {{ lane(0, ((row.count / row.denominator * 100) | round(2)) if row.denominator else 0, 'health-bar') }}
+              <strong>{{ row.count }} / {{ row.denominator }}</strong>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}<p class="empty">No recorded items.</p>{% endif %}
+        </article>
+      {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <aside class="inspector-column" aria-labelledby="inspector-title">
+    <div class="inspector-head">
+      <p class="step">Stage inspector</p>
+      <h2 id="inspector-title">Stage contracts and trace</h2>
+      <p class="inspector-hint">Select a role above to inspect its contract, persisted timings, hashes, and recorded calls.</p>
+    </div>
+    {% for stage in stages %}
+    <details id="inspector-{{ stage.key }}" class="stage-inspector" data-stage-order="{{ loop.index0 }}" data-initial-open="{{ 'true' if stage.is_current or stage.status_key == 'failed' or (run.status == 'succeeded' and loop.last) else 'false' }}" open>
+      <summary><span>{{ '%02d' % loop.index }} &middot; {{ stage.label }}</span><span class="status status-{{ stage.status_key }}">{{ stage.display_status }}</span></summary>
+      <div class="inspector-body">
+        <p>{{ stage.purpose }}.</p><p class="boundary-copy">{{ stage.boundary }}</p>
+        {% if stage.error_summary %}<p class="error-summary"><strong>Recorded error:</strong> {{ stage.error_summary }}</p>{% endif %}
+        <dl class="inspector-facts">
+          <div><dt>Role</dt><dd>{{ stage.role }}</dd></div>
+          <div><dt>Persisted stage status</dt><dd>{{ humanize(stage.persisted_status) if stage.persisted_status else 'Not recorded' }}</dd></div>
+          <div><dt>Started</dt><dd>{{ stage.started_at or 'Not recorded' }}</dd></div>
+          <div><dt>Finished</dt><dd>{{ stage.finished_at or 'Not recorded' }}</dd></div>
+          <div><dt>Duration</dt><dd class="tabular">{{ stage.duration_ms ~ ' ms' if stage.duration_ms is not none else 'Not recorded' }}</dd></div>
+          <div><dt>Attempts</dt><dd>{{ stage.attempts if stage.attempts is not none else 'Not recorded' }}</dd></div>
+          <div><dt>Model</dt><dd>{{ stage.model or 'Not recorded' }}</dd></div>
+          {% if stage.input_tokens is not none %}<div><dt>Input tokens</dt><dd>{{ stage.input_tokens }}</dd></div>{% endif %}
+          {% if stage.output_tokens is not none %}<div><dt>Output tokens</dt><dd>{{ stage.output_tokens }}</dd></div>{% endif %}
+          {% if stage.cost_usd is not none %}<div><dt>Recorded cost</dt><dd>USD {{ stage.cost_usd }}</dd></div>{% endif %}
+          <div><dt>Input hash</dt><dd><code class="copy-value">{{ stage.input_hash or 'Not recorded' }}</code></dd></div>
+          <div><dt>Output hash</dt><dd><code class="copy-value">{{ stage.output_hash or 'Not recorded' }}</code></dd></div>
+          <div><dt>Prior stage</dt><dd>{{ stage.prior_label or 'Workflow start' }}</dd></div>
+          <div><dt>Next stage</dt><dd>{{ stage.next_label or 'Named human decision boundary' }}</dd></div>
+        </dl>
+        {% if stage.services %}
+        <h3>Recorded outward calls</h3>
+        <ul class="inspector-services">
+          {% for call in stage.services %}
+          <li class="service service-{{ call.status_key }}">
+            <span class="service-kind">{{ call.kind }}</span>
+            <span class="service-name"><span>{{ call.name }}</span><span class="service-count">{{ call.invocations }}&#215;</span></span>
+            <span class="service-meta">{{ call.detail }}</span>
+            <span class="service-meta">{{ call.status_label }}{% if call.duration_ms %} · {{ call.duration_ms }} ms recorded{% endif %}</span>
+            {% if call.outcomes %}<ul class="inspector-outcomes">{% for item in call.outcomes %}<li>{{ item.label }} {{ item.value }}</li>{% endfor %}</ul>{% endif %}
+            {% if call.note %}<span class="service-meta">{{ call.note }}</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if stage.safe_summary %}<h3>Safe output summary</h3><ul class="summary-list">{% for item in stage.safe_summary %}<li><span>{{ item.label }}</span><strong>{{ item.value }}</strong></li>{% endfor %}</ul>{% else %}<h3>Safe output summary</h3><p class="empty">No safe output counts recorded.</p>{% endif %}
+      </div>
+    </details>
+    {% endfor %}
+  </aside>
+</div>
+
+<section id="exceptions" class="panel" aria-labelledby="exceptions-title">
+  <div class="section-heading"><div><p class="step">Decision ledger</p><h2 id="exceptions-title">Exceptions ledger</h2></div><span>{{ exceptions | length }} actionable records</span></div>
+  {% if exceptions %}<div class="table-wrap"><table class="responsive-table exception-ledger">
+    <caption>Identity, quality, verification, source, and stage exceptions for this run</caption>
+    <thead><tr><th scope="col">Severity</th><th scope="col">Stage</th><th scope="col">Company or metric</th><th scope="col">Reason</th><th scope="col">Evidence state</th><th scope="col">Next action</th></tr></thead>
+    <tbody>{% for item in exceptions %}<tr><td data-label="Severity"><span class="status status-{{ item.severity }}">{{ item.severity }}</span></td><td data-label="Stage">{{ item.stage }}</td><td data-label="Company or metric">{{ item.subject }}</td><td data-label="Reason">{{ item.reason }}</td><td data-label="Evidence state">{{ item.evidence_state }}</td><td data-label="Next action">{{ item.next_action }}</td></tr>{% endfor %}</tbody>
+  </table></div>{% else %}<p class="empty">No recorded exceptions for this run.</p>{% endif %}
 </section>
 {% endblock %}
-
+{% block scripts %}<script type="module" src="{{ url_for('static', path='/control-room.js') }}"></script>{% endblock %}

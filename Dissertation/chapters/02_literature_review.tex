@@ -1,0 +1,304 @@
+\chapter{Literature Review}
+\section{Review method and evidence boundary}
+
+This review is purposive and problem-led, selecting literature needed to justify artefact design,
+evaluation and governance decisions. The local corpus documents source motivation, composition,
+collection and processing, because useful documentation requires reflective context rather than
+automated form completion \citep{gebru2021datasheets}. Reproducible reporting similarly depends on
+explicit hypotheses, data, code, metrics and procedures \citep{pineau2021reproducibility}. The admitted
+local corpus was checked and frozen on 27 August 2026; this dated state is not a systematic or PRISMA
+review, meta-analysis, formal risk-of-bias assessment or exhaustive search.
+
+Admission requires a stable local full-text file bound to a manifest row, checksum and bibliography
+key. Each substantive claim is then checked against an exact page or passage. Visible references and
+automatic citation metrics cannot establish correct or complete support by themselves
+\citep{gao2023alce}; attribution also differs from answer correctness because a cited source may
+itself be wrong \citep{gao2023rarr}. Search snippets, inaccessible pages and unsupported model
+statements are excluded. Retained files, metadata and reporting details make the admission decision
+reproducible \citep{pineau2021reproducibility}, while demonstrating internal traceability rather than
+source truth.
+
+Sources are tiered: peer-reviewed empirical studies, preprints, official guidance and official
+technical documentation are not treated as interchangeable. Their stated unknowns, errors, risks and
+non-applicable fields remain visible \citep{gebru2021datasheets}. Reproducibility means rerunning the
+same analysis; it differs from independent replication, robustness and external validity
+\citep{pineau2021reproducibility}. Methodological leakage, unavailable artefacts, incomplete reporting
+and metric choices can still undermine machine-learning claims \citep{kapoor2023leakage}.
+Accordingly, the synthesis supports this artefact's design rationale without estimating a pooled
+effect, proving deployment performance across other organisations or operating contexts, or
+introducing results from later chapters.
+
+\input{exhibits/lit_t1_review_source_admission.tex}
+
+\section{Early-stage finance, portfolio reporting, and public company intelligence}
+
+Early-stage finance involves information asymmetry: founders know more about ventures than dispersed
+investors, while platforms shape what is disclosed and observed. Cross-country crowdfunding evidence
+shows that amounts raised and investor participation vary with pitch, sector, region, country and
+platform; its analysed sample covers successful pitches rather than all attempts
+\citep{estrin2024digital}. A Crowdcube study likewise associates successive rounds with investor
+responses and funding outcomes within one platform-specific campaign sample
+\citep{wasti2024successive}. Such observations can organise portfolio context, but neither investor
+count nor a completed round is a universal or causal label of firm quality or future performance.
+
+Portfolio intelligence should represent finance and state support as attributed events with dates and
+sources. In the Crowdcube setting, a prior successful round may be interpreted as a signal, but the
+relationship remains conditional on campaign and platform characteristics
+\citep{wasti2024successive}. Linked UK public-support research observes later differences among
+participating firms, while retaining selection explanations and declining to claim causality
+\citep{mondal2025state}. Reconstructing the UK funding lifecycle also requires joining opportunities,
+applications, decisions, projects, organisations and outcomes without common identifiers; coverage
+and conservative links remain incomplete \citep{thorne2026funding}. A round, grant or award can
+support a dated statement, not proof of future success or a complete funding history.
+
+Public company intelligence needs a legal anchor before these events can be joined. A Companies House
+number identifies a registered entity, and incorporation data provide timely, broad visibility of
+company creation; however, incorporation is not economic activity, and the register includes dormant
+firms while excluding some unincorporated activity \citep{galanakis2026chrt}. Whole-register analysis
+is tied to a dated snapshot, corporate forms and filing definitions, with recent records affected by
+filing lag \citep{hardman2023small}. Register usefulness depends on intended use and on content quality,
+accessibility and interpretation, not openness alone \citep{krasikov2020ready}. Registry status and
+filings are therefore evidence about a legal record, not a complete operational or financial profile.
+
+The synthesis sets a reporting boundary, not an investment model. Each admissible statement should
+identify the event, legal entity, source, observation or availability date, exact locator and supported
+content; gaps, linkage uncertainty and conflicts should remain visible. This matters because
+crowdfunding evidence is sample- and platform-dependent \citep{estrin2024digital}, while differences
+associated with public support can reflect selection rather than causal impact
+\citep{mondal2025state}. Financial communications can influence investment decisions and should
+present relevant benefits and risks clearly and fairly \citep{fca2024promotions}. Portfolio reporting
+should therefore not generate buy/sell advice, speculative valuation, causal performance attribution
+or a universal company-quality score. These limits define evidence-calibrated synthesis, not artefact
+results.
+
+\input{exhibits/lit_t2_signal_inference_boundary.tex}
+
+\section{Data quality, entity identity, missingness, and time}
+
+Data quality is fitness for a stated task, not one context-free dataset property. Dimensions such as
+accuracy, reliability, timeliness, completeness and consistency need validation rules attached to the
+relevant data object \citep{nikiforova2020quality}. Corporate-register evidence reinforces this
+use-case view: accessibility and open availability do not ensure that content is complete,
+interpretable or suitable for a particular enterprise purpose \citep{krasikov2020ready}. Portfolio
+reporting should therefore state each field's intended use and test the dimensions material to it. A
+generic aggregate score could hide a failure important to one reporting purpose but immaterial to
+another. It cannot establish fitness across purposes.
+
+Entity resolution is similarly source-scoped. An exact company number from the authoritative register
+is the legal-identity anchor; a name is only a candidate-generating label. Funding sources without
+shared identifiers require conservative exact or fuzzy linkage, yet coverage and matching errors
+remain \citep{thorne2026funding}. Cross-register work also required normalisation, fuzzy comparison and
+manual matching when entity and country labels conflicted \citep{surak2026gateways}. Companies House
+identifies incorporated legal entities, not economic activity itself \citep{galanakis2026chrt}.
+Consequently, uncertain matches must remain unresolved or enter a conflict/review state pending named
+review rather than silently merging records with similar names.
+
+Missingness must preserve meaning rather than become a default number. Documentation should record
+what is absent, why and what remains unknown \citep{gebru2021datasheets}. Financial-table structure
+distinguishes populated cells, empty cells, positions and semantic roles; an empty cell is not
+automatically zero \citep{bradley2024synfintabs}. Completeness and validity are separate dimensions
+requiring task-specific checks \citep{nikiforova2020quality}. This project therefore distinguishes
+blank, zero, explicit none, not applicable, not reported, not found publicly, invalid and observed.
+Not found publicly does not mean absent. This exact taxonomy is the artefact's design choice, not a
+universal standard derived from the literature.
+
+Time also requires separate fields. The value period records when an event occurred; publication or
+effective time records when it became available; retrieval time records collection; and the reporting
+cutoff limits eligible evidence. Dated register snapshots and filing lag show why recent facts may be
+unavailable earlier at that cutoff \citep{hardman2023small}, while incorporation and later economic
+activity follow different clocks \citep{galanakis2026chrt}. Using information published after a
+historical cutoff creates temporal leakage and can inflate evaluation \citep{kapoor2023leakage}. A
+correction must create a new version with its own timestamp, never retrospectively support an earlier
+report.
+
+Together, these distinctions form an evaluable evidence contract. Identity, missing state, value
+period, availability time, source, locator and version must be typed; invalid, conflicting and held
+states remain visible; and each rule is testable before synthesis or comparison. Checks should be tied
+to the user task and data object \citep{nikiforova2020quality}. Documentation should expose unknowns,
+errors, dependencies and correction practices \citep{gebru2021datasheets}, while evaluation must guard
+against leakage and under-specified comparisons \citep{kapoor2023leakage}. This contract gives a
+literature-based rationale for later methodology; it neither claims completed implementation nor
+reports empirical results.
+
+\input{exhibits/lit_t3_data_semantics_matrix.tex}
+
+\section{Provenance, source admission, contradiction, and auditable synthesis}
+
+Provenance is a chain of custody for a statement, not a certificate of truth. Documentation should
+record data motivation, composition, processing, known gaps and errors, external dependencies,
+distribution, maintenance and corrections \citep{gebru2021datasheets}. Reproducible reporting
+requires data, code, procedures and metrics sufficient to repeat an analytical path
+without extending claims beyond its evidence \citep{pineau2021reproducibility}. For portfolio
+synthesis, provenance should bind each statement to its source record, captured artefact, exact
+locator, transformations and admission, verification and approval decisions. This supports internal
+traceability and repeatability while leaving source authority, factual truth and completeness for
+separate assessment.
+
+Source admission and claim fit are separate gates. Admission tests a source against policy
+on accessibility, type, use rights, date and stable capture. Claim fit asks whether an exact passage
+supports the bounded statement. Citation entailment and completeness differ from answer
+correctness; visible references may still be irrelevant or partial \citep{gao2023alce}. Retrieved
+material may be ignored, contradicted or faithfully attributed even when its source is wrong
+\citep{gao2023rarr}. Reproducibility depends on reporting these decisions and artefacts
+\citep{pineau2021reproducibility}. Search snippets, bare URLs and fluent summaries therefore pass
+neither gate alone.
+
+An admitted artefact should be captured immutably where permitted and technically possible.
+Its record should retain checksum, retrieval time, exact page or passage locator and source version; a
+correction creates a new version rather than overwriting the earlier state. Dataset documentation
+supports recording external resources, distribution, updates, errata and older versions
+\citep{gebru2021datasheets}, while reproducibility requires sufficient artefacts and procedures
+\citep{pineau2021reproducibility}. Model-card work similarly separates version, intended use,
+evaluation procedure, limitations and caveats \citep{mitchell2019modelcards}. These record fields are
+project design choices; immutable capture is not universally permitted.
+
+Contradiction is an evidence state, not noise to remove. Hallucination research distinguishes factual
+contradiction, unverifiable content and overclaiming, and links reliable output to uncertainty and
+verification against trusted knowledge \citep{huang2023hallucination}. Attribution does not resolve
+disagreement when evidence conflicts with generated text or its source is wrong
+\citep{gao2023rarr}; a citation marker also cannot collapse correctness, entailment and completeness
+into one judgement \citep{gao2023alce}. Inconsistent but supported claims should remain a conflict
+set, while unverifiable material is held. Resolution requires a declared rule or named review, not
+automatic preference for the majority, newest or most fluent version. The exact conflict taxonomy is
+not claimed as universal.
+
+Auditable synthesis records candidate discovery, admission, capture, typed claim, support check,
+contradiction state, approval and export decisions. Rigorous measurement should document uncertainty,
+benchmarks, evaluated conditions and independent-review limits \citep{nist2023airmf}. Independent
+verification should assess support without rewriting the primary statement, because answer
+correctness, citation correctness, citation completeness and attribution are distinct
+\citep{gao2023alce,gao2023rarr}. Human-facing systems should communicate uncertainty and permit
+correction or dismissal before consequential action \citep{amershi2019guidelines}. Only supported and
+approved claims should proceed to export. This literature-based rationale does not
+show that independent or human review improves outcomes, user benefit or deployment safety.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth,height=0.78\textheight,keepaspectratio]{exhibits/lit_f1_evidence_claim_admission_audit_chain.pdf}
+  \caption{Evidence-to-claim admission and audit chain. Author synthesis of the cited literature and
+  frozen project contracts; conceptual and non-empirical.}
+  \label{fig:lit-evidence-claim-chain}
+\end{figure}
+
+\section{LLM-assisted discovery and grounded extraction}
+
+Retrieval-augmented generation (RAG) separates indexing, retrieval and generation, but does not
+guarantee evidence-grounded output. Nor does retrieved context establish source quality, completeness
+or factual truth. Retrieval may omit relevant material, select irrelevant chunks or shape unsupported
+answers \citep{gao2023ragsurvey}. External retrieval can reduce knowledge gaps while inaccurate
+material still creates misleading output \citep{huang2023hallucination}; attribution also remains
+separate from correctness \citep{gao2023rarr}. LLM assistance may therefore widen candidate
+discovery, but retrieval, source admission, extraction and verification must remain separate gates.
+
+The captured Responses API documentation describes model-managed \texttt{web\_search}, inline
+citations and annotations, domain filters and a consulted-source list
+\citep{openai2026websearch}. These features suit query planning and candidate inventory within
+modular retrieval designs \citep{gao2023ragsurvey}. However, settings do not guarantee source or
+citation counts, and visible citations can remain incomplete or unsupported \citep{gao2023alce}. The
+documentation establishes capability on its capture date, not executed behaviour or performance;
+returned URLs, snippets, annotations and model prose remain candidates pending admission.
+
+Grounded extraction should be deterministic first for structured evidence. Admitted unstructured
+public or synthetic evidence may instead use bounded, optional model-assisted extraction, but only to
+propose a typed claim linked to an exact passage. Answer correctness, citation entailment and citation
+completeness remain distinct \citep{gao2023alce}, while attribution does not establish correctness
+when evidence disagrees \citep{gao2023rarr}. Both routes must converge on deterministic exact-span and
+schema validation, normalisation and independent verification, reflecting separate relevance,
+faithfulness, rejection and robustness checks \citep{gao2023ragsurvey}. Unsupported content is
+rejected or held, never repaired from model memory; this ordering is the artefact's design choice.
+
+Retrieved public content must remain untrusted data, not instruction authority. Indirect prompt
+injection can embed adversarial instructions in searched material and manipulate summaries, queries,
+sources or downstream actions \citep{greshake2023indirect}. RAG is also exposed to noisy,
+contradictory and adversarial context \citep{gao2023ragsurvey}. Research controls should therefore fix
+tool permissions, validate destinations, isolate extraction, bound redirects and requests, and fail
+closed. Testing, uncertainty, independent review and safe failure are risk-management principles
+\citep{nist2023airmf}; the literature justifies these controls but does not prove their effectiveness
+here.
+
+Coverage should be a recorded research budget, not a claim to have searched the web comprehensively.
+Search context, token budgets, live-access controls, domain filters and source lists are configurable,
+while search may be optional and source counts are not guaranteed \citep{openai2026websearch}.
+Evaluation should separate correctness, citation support and completeness \citep{gao2023alce} from
+relevance, faithfulness, rejection, integration and robustness \citep{gao2023ragsurvey}. A repeatable
+protocol records queries, sources, cutoff time, token and cost bounds, then reports inaccessible,
+missing, conflicting and unverified areas \citep{pineau2021reproducibility}; it cannot estimate
+open-web recall.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth,height=0.78\textheight,keepaspectratio]{exhibits/lit_f2_discovery_is_not_evidence.pdf}
+  \caption{Discovery is not evidence. Author synthesis of the cited literature and frozen project
+  contracts; conceptual and non-empirical.}
+  \label{fig:lit-discovery-evidence-boundary}
+\end{figure}
+\clearpage
+
+\section{Bounded multi-agent systems and human review}
+
+A multi-agent workflow is a programmed decomposition, not evidence of collective intelligence.
+Surveyed systems vary in environment interfaces, profiles, communication structures and message
+content \citep{guo2024multiagent}, while AutoGen shows that developers configure roles,
+capabilities, tools, human-input modes, control flow and termination \citep{wu2024autogen}.
+Table~\ref{tab:lit-role-authority-matrix} makes explicit that each role needs a distinct
+responsibility, typed input/output contract and observable failure boundary. A role label or conversation does not establish
+competence, independence or benefit; design-science evaluation must test whether the resulting
+artefact meets its stated objectives \citep{peffers2007dsrm}.
+
+Orchestration should therefore be serial, budgeted and explicit. Communication topology determines
+information flow, while hallucinated content can propagate and additional roles add coordination,
+communication and resource costs \citep{guo2024multiagent}. Programmed control flow, tool rules,
+human-input conditions and termination criteria are necessary to bound execution
+\citep{wu2024autogen}. Typed handoffs, retry limits and stop reasons should remain visible. An
+independent verifier records whether evidence supports a claim and may reject or hold it, but must
+not rewrite the producer record. This separation permits evaluated conditions and uncertainty to be
+documented \citep{nist2023airmf}; it does not imply that more roles are better.
+
+Human review supplies decision authority, not additional evidence. Interfaces should expose the
+claim, exact support, conflicts, uncertainty, limitations and content hash, then allow a named
+reviewer to approve, reject or return the record for correction. Human--AI guidance supports
+invocation, dismissal, correction and global controls \citep{amershi2019guidelines}, but it is not
+outcome evidence. Explanations alone may not prevent overreliance; one controlled task found
+trade-offs in performance, usability and participant effects \citep{bucinca2021forcing}. Oversight
+must therefore be defined for the context and risk tolerance \citep{nist2023airmf}, without claiming
+improved accuracy, trust or utility before an authorised study.
+
+Evaluation must treat failures and limits as first-class records. Multi-agent systems face
+hallucination propagation, coordination, scalability and incomplete-benchmark problems
+\citep{guo2024multiagent}; AutoGen's configurable roles and application-specific pilots do not
+establish universal superiority \citep{wu2024autogen}. Logs should retain role, task and attempt
+identifiers, inputs, outputs, hashes, duration, tokens, errors, stop reasons, cancellation and recovery
+state. Frozen cases should test each role and the full workflow, including disagreement and safe
+failure, with procedures and metrics reported for repeatability
+\citep{nist2023airmf,pineau2021reproducibility}. Agent count, message count and conversation
+completion are not measures of task success.
+
+\input{exhibits/lit_t4_role_authority_matrix.tex}
+
+\section{Critical synthesis and research gap}
+
+Within this purposive admitted corpus, early-stage finance and linked public records are studied with
+platform, coverage and linkage limits \citep{estrin2024digital,thorne2026funding}, while citation
+support and attribution require separate checks \citep{gao2023alce,gao2023rarr}. Multi-agent
+coordination and human review add further task-dependent trade-offs
+\citep{guo2024multiagent,bucinca2021forcing}. Figure~\ref{fig:lit-evidence-claim-chain} integrates
+these strands as an evidence-to-claim gate sequence. The claimed gap is therefore the bounded
+integration of these concerns, not universal or exhaustive literature novelty.
+
+Artefact construction and empirical answers must remain separate. Design science requires purposeful
+construction plus evaluation against stated objectives \citep{hevner2004design,peffers2007dsrm},
+with reproducible procedures and claim limits \citep{pineau2021reproducibility}. Accordingly, RQ1
+tests transformation fidelity, RQ2 tests independent-verification outcomes, and RQ3 requires
+separately authorised human-workflow evidence; implementation alone answers none of them.
+Table~\ref{tab:lit-role-authority-matrix} defines authority boundaries, but cannot demonstrate
+effectiveness, efficiency or human benefit \citep{bucinca2021forcing}.
+
+Bounded public-web research remains a separate engineering case. The captured web-search
+documentation describes candidate-search controls without guaranteeing executed performance
+\citep{openai2026websearch}, while retrieved content creates prompt-injection and support risks
+\citep{greshake2023indirect,gao2023alce}. Figure~\ref{fig:lit-discovery-evidence-boundary} therefore
+separates discovery from admitted evidence. The live official-adapter-only versus LLM-assisted
+comparison remains held pending separate authority, protocol amendment and benchmark freeze; it is
+neither an additional research question nor a result, consistent with evidence-proportionate
+reporting \citep{pineau2021reproducibility}. Chapter 3 translates these gaps into the frozen
+evaluation method.

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1280" viewBox="0 0 900 1280"
+     role="img" aria-labelledby="meth-f1-title meth-f1-desc">
+  <title id="meth-f1-title">Design-science evidence chain with a non-leap boundary</title>
+  <desc id="meth-f1-desc">A vertical seven-stage chain runs from problem and objectives through a frozen research contract, artefact build, implementation and engineering evidence, frozen C0 to C3 protocol execution, empirical findings, and proportionate research-question communication. A prominent non-leap gate states that implementation evidence cannot become an empirical finding without protocol execution. A left rail makes researcher involvement visible across framing, building, evaluation and interpretation. A right rail shows mitigation controls: freezing, versioned evidence, independent or adjudicated labels or review, and narrow claim limits. The figure is conceptual and contains no empirical result values.</desc>
+  <defs>
+    <style><![CDATA[
+      .page { fill:#FFFFFF; }
+      .divider { stroke:#9FB2BD; stroke-width:1.5; }
+      .title { font:700 34px Helvetica,Arial,sans-serif; fill:#173444; }
+      .subtitle { font:18px Helvetica,Arial,sans-serif; fill:#526875; }
+      .badgebox { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
+      .badge { font:700 13px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
+      .rail { fill:#F4F6F7; stroke:#8DA2AE; stroke-width:1.8; }
+      .rail-head { font:700 13px Helvetica,Arial,sans-serif; fill:#314E5D; text-anchor:middle; }
+      .rail-sub { font:11.5px Helvetica,Arial,sans-serif; fill:#647782; text-anchor:middle; }
+      .research-box { fill:#FFFFFF; stroke:#617A88; stroke-width:1.4; }
+      .control-box { fill:#FFFFFF; stroke:#486B79; stroke-width:1.4; }
+      .side-title { font:700 12.5px Helvetica,Arial,sans-serif; fill:#274757; }
+      .side-text { font:11.5px Helvetica,Arial,sans-serif; fill:#415965; }
+      .side-note { font:11px Helvetica,Arial,sans-serif; fill:#5A6C75; text-anchor:middle; }
+      .stage-design { fill:#EAF3F8; stroke:#0072B2; stroke-width:2.2; }
+      .stage-eval { fill:#E8F4F2; stroke:#007F73; stroke-width:2.2; }
+      .stage-report { fill:#EEF5F1; stroke:#2D7D5F; stroke-width:2.2; }
+      .number-design { fill:#0072B2; stroke:#005C90; stroke-width:1.2; }
+      .number-eval { fill:#007F73; stroke:#00665C; stroke-width:1.2; }
+      .number-report { fill:#2D7D5F; stroke:#236348; stroke-width:1.2; }
+      .number { font:700 20px Helvetica,Arial,sans-serif; fill:#FFFFFF; text-anchor:middle; }
+      .stage-kicker { font:700 12px Helvetica,Arial,sans-serif; fill:#536B78; }
+      .stage-title { font:700 19px Helvetica,Arial,sans-serif; fill:#173F51; }
+      .stage-body { font:13px Helvetica,Arial,sans-serif; fill:#405965; }
+      .arrow { fill:none; stroke:#617684; stroke-width:2.3; marker-end:url(#arrowhead); }
+      .connector { stroke:#8AA0AB; stroke-width:1.4; }
+      .gate { fill:#FBEAEC; stroke:#B23A48; stroke-width:3; }
+      .gate-label { font:700 15px Helvetica,Arial,sans-serif; fill:#8E2736; text-anchor:middle; }
+      .gate-title { font:700 18px Helvetica,Arial,sans-serif; fill:#6E2030; text-anchor:middle; }
+      .gate-body { font:13.5px Helvetica,Arial,sans-serif; fill:#4C3940; text-anchor:middle; }
+      .condition { fill:#FFFFFF; stroke:#65988E; stroke-width:1.1; }
+      .condition-text { font:700 11px Helvetica,Arial,sans-serif; fill:#285B53; text-anchor:middle; }
+      .legend { fill:#F3F7F9; stroke:#75909F; stroke-width:1.5; }
+      .legend-title { font:700 13px Helvetica,Arial,sans-serif; fill:#355668; }
+      .legend-text { font:12px Helvetica,Arial,sans-serif; fill:#536A76; }
+      .source { font:11.5px Helvetica,Arial,sans-serif; fill:#5A6C76; }
+      .status { font:700 12px Helvetica,Arial,sans-serif; fill:#455D69; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#617684"/>
+    </marker>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="900" height="1280"/>
+  <text class="title" x="38" y="58">Design-science evidence chain</text>
+  <text class="subtitle" x="40" y="96">Construction becomes a finding only through authorised, frozen protocol execution.</text>
+  <rect class="badgebox" x="690" y="34" width="174" height="38" rx="19"/>
+  <text class="badge" x="777" y="58">CONCEPTUAL / NO RESULTS</text>
+  <line class="divider" x1="38" y1="126" x2="864" y2="126"/>
+
+  <rect class="rail" x="34" y="158" width="174" height="1000" rx="14"/>
+  <text class="rail-head" x="121" y="184">RESEARCHER</text>
+  <text class="rail-head" x="121" y="201">INVOLVEMENT</text>
+  <text class="rail-sub" x="121" y="220">visible across the method</text>
+
+  <rect class="research-box" x="50" y="232" width="142" height="144" rx="10"/>
+  <text class="side-title" x="64" y="257">FRAMING</text>
+  <text class="side-text" x="64" y="282">Defines problem,</text>
+  <text class="side-text" x="64" y="301">objectives, scope</text>
+  <text class="side-text" x="64" y="320">and exclusions.</text>
+  <text class="side-text" x="64" y="347">Choices are recorded.</text>
+
+  <rect class="research-box" x="50" y="405" width="142" height="142" rx="10"/>
+  <text class="side-title" x="64" y="430">BUILD</text>
+  <text class="side-text" x="64" y="455">Makes artefact and</text>
+  <text class="side-text" x="64" y="474">implementation</text>
+  <text class="side-text" x="64" y="493">decisions.</text>
+  <text class="side-text" x="64" y="520">Assumptions persist.</text>
+
+  <rect class="research-box" x="50" y="714" width="142" height="170" rx="10"/>
+  <text class="side-title" x="64" y="739">EVALUATION</text>
+  <text class="side-text" x="64" y="764">Freezes the contract</text>
+  <text class="side-text" x="64" y="783">before scoring.</text>
+  <text class="side-text" x="64" y="810">No post-freeze</text>
+  <text class="side-text" x="64" y="829">tuning on held data.</text>
+  <text class="side-text" x="64" y="856">Deviations remain</text>
+  <text class="side-text" x="64" y="875">visible.</text>
+
+  <rect class="research-box" x="50" y="920" width="142" height="164" rx="10"/>
+  <text class="side-title" x="64" y="945">INTERPRETATION</text>
+  <text class="side-text" x="64" y="970">Analyses executed</text>
+  <text class="side-text" x="64" y="989">conditions only.</text>
+  <text class="side-text" x="64" y="1016">Reports uncertainty,</text>
+  <text class="side-text" x="64" y="1035">failure, nulls and</text>
+  <text class="side-text" x="64" y="1054">limitations.</text>
+  <text class="side-note" x="121" y="1121">Builder/evaluator role creates</text>
+  <text class="side-note" x="121" y="1138">confirmation-bias risk.</text>
+
+  <rect class="rail" x="692" y="158" width="174" height="1000" rx="14"/>
+  <text class="rail-head" x="779" y="184">MITIGATION</text>
+  <text class="rail-head" x="779" y="201">CONTROLS</text>
+  <text class="rail-sub" x="779" y="220">reduce, not erase, bias</text>
+
+  <rect class="control-box" x="708" y="232" width="142" height="160" rx="10"/>
+  <text class="side-title" x="722" y="257">F1. FREEZE</text>
+  <text class="side-text" x="722" y="282">RQs, conditions,</text>
+  <text class="side-text" x="722" y="301">units, metrics, data,</text>
+  <text class="side-text" x="722" y="320">source window, code</text>
+  <text class="side-text" x="722" y="339">and prompt versions.</text>
+  <text class="side-text" x="722" y="366">Stop rules included.</text>
+
+  <rect class="control-box" x="708" y="420" width="142" height="180" rx="10"/>
+  <text class="side-title" x="722" y="443">F2. VERSIONED</text>
+  <text class="side-title" x="722" y="460">EVIDENCE</text>
+  <text class="side-text" x="722" y="486">Manifests, IDs, hashes,</text>
+  <text class="side-text" x="722" y="505">environment, evidence</text>
+  <text class="side-text" x="722" y="524">and decisions.</text>
+  <text class="side-text" x="722" y="551">Retain deviations,</text>
+  <text class="side-text" x="722" y="570">errors, negative and</text>
+  <text class="side-text" x="722" y="589">null outcomes.</text>
+
+  <rect class="control-box" x="708" y="724" width="142" height="180" rx="10"/>
+  <text class="side-title" x="722" y="747">F3. INDEPENDENT</text>
+  <text class="side-title" x="722" y="764">LABEL / REVIEW</text>
+  <text class="side-text" x="722" y="790">Independent labels</text>
+  <text class="side-text" x="722" y="809">or review where</text>
+  <text class="side-text" x="722" y="828">authorised.</text>
+  <text class="side-text" x="722" y="855">Measure agreement;</text>
+  <text class="side-text" x="722" y="874">adjudicate with reason.</text>
+  <text class="side-text" x="722" y="893">Output is not truth.</text>
+
+  <rect class="control-box" x="708" y="936" width="142" height="178" rx="10"/>
+  <text class="side-title" x="722" y="961">F4. CLAIM LIMITS</text>
+  <text class="side-text" x="722" y="986">Separate D0</text>
+  <text class="side-text" x="722" y="1005">mechanism evidence</text>
+  <text class="side-text" x="722" y="1024">from D1/D2 or</text>
+  <text class="side-text" x="722" y="1043">human findings.</text>
+  <text class="side-text" x="722" y="1064">Unrun conditions</text>
+  <text class="side-text" x="722" y="1083">stay held or null.</text>
+  <text class="side-text" x="722" y="1102">Conclusions are narrow.</text>
+
+  <line class="connector" x1="208" y1="304" x2="234" y2="304"/>
+  <line class="connector" x1="208" y1="472" x2="234" y2="472"/>
+  <line class="connector" x1="208" y1="799" x2="224" y2="799"/>
+  <line class="connector" x1="208" y1="1002" x2="234" y2="1002"/>
+  <line class="connector" x1="666" y1="304" x2="692" y2="304"/>
+  <line class="connector" x1="666" y1="505" x2="692" y2="505"/>
+  <line class="connector" x1="676" y1="814" x2="692" y2="814"/>
+  <line class="connector" x1="666" y1="1025" x2="692" y2="1025"/>
+
+  <rect class="stage-design" x="234" y="158" width="432" height="88" rx="12"/>
+  <rect class="number-design" x="250" y="180" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="208">1</text>
+  <text class="stage-kicker" x="310" y="181">[FRAME]</text>
+  <text class="stage-title" x="310" y="205">Problem and objectives</text>
+  <text class="stage-body" x="310" y="229">Problem, observable aims, scope and exclusions.</text>
+
+  <path class="arrow" d="M 450 246 L 450 276"/>
+
+  <rect class="stage-design" x="234" y="276" width="432" height="92" rx="12"/>
+  <rect class="number-design" x="250" y="301" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="329">2</text>
+  <text class="stage-kicker" x="310" y="299">[FREEZE]</text>
+  <text class="stage-title" x="310" y="323">Frozen research contract</text>
+  <text class="stage-body" x="310" y="346">RQ1-RQ3, C0-C3, units, metrics and stop rules.</text>
+
+  <path class="arrow" d="M 450 368 L 450 398"/>
+
+  <rect class="stage-design" x="234" y="398" width="432" height="88" rx="12"/>
+  <rect class="number-design" x="250" y="420" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="448">3</text>
+  <text class="stage-kicker" x="310" y="421">[BUILD]</text>
+  <text class="stage-title" x="310" y="445">Artefact build</text>
+  <text class="stage-body" x="310" y="469">Bounded workflow, verifier, report and review gate.</text>
+
+  <path class="arrow" d="M 450 486 L 450 516"/>
+
+  <rect class="stage-design" x="234" y="516" width="432" height="102" rx="12"/>
+  <rect class="number-design" x="250" y="546" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="574">4</text>
+  <text class="stage-kicker" x="310" y="541">[ENGINEER]</text>
+  <text class="stage-title" x="310" y="565">Implementation / engineering evidence</text>
+  <text class="stage-body" x="310" y="589">Code, tests, replay and adversarial cases.</text>
+  <text class="stage-body" x="310" y="608">Mechanism evidence under tested conditions only.</text>
+
+  <path class="arrow" d="M 450 618 L 450 644"/>
+
+  <rect class="gate" x="224" y="644" width="452" height="124" rx="14"/>
+  <text class="gate-label" x="450" y="670">NON-LEAP BOUNDARY</text>
+  <text class="gate-title" x="450" y="697">Implementation evidence cannot become a finding</text>
+  <text class="gate-body" x="450" y="724">No effectiveness, efficiency or human-benefit inference.</text>
+  <text class="gate-body" x="450" y="747">Cross only through authorised frozen protocol execution.</text>
+
+  <path class="arrow" d="M 450 768 L 450 800"/>
+
+  <rect class="stage-eval" x="224" y="800" width="452" height="120" rx="12"/>
+  <rect class="number-eval" x="240" y="839" width="42" height="42" rx="8"/>
+  <text class="number" x="261" y="867">5</text>
+  <text class="stage-kicker" x="300" y="824">[EXECUTE]</text>
+  <text class="stage-title" x="300" y="848">Frozen C0-C3 evaluation</text>
+  <rect class="condition" x="300" y="862" width="82" height="24" rx="6"/>
+  <rect class="condition" x="388" y="862" width="82" height="24" rx="6"/>
+  <rect class="condition" x="476" y="862" width="82" height="24" rx="6"/>
+  <rect class="condition" x="564" y="862" width="94" height="24" rx="6"/>
+  <text class="condition-text" x="341" y="878">C0 MANUAL</text>
+  <text class="condition-text" x="429" y="878">C1 BASELINE</text>
+  <text class="condition-text" x="517" y="878">C2 VERIFIER</text>
+  <text class="condition-text" x="611" y="878">C3 + REVIEW</text>
+  <text class="stage-body" x="300" y="907">Comparable units; execute authorised conditions only.</text>
+
+  <path class="arrow" d="M 450 920 L 450 952"/>
+
+  <rect class="stage-eval" x="234" y="952" width="432" height="90" rx="12"/>
+  <rect class="number-eval" x="250" y="976" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="1004">6</text>
+  <text class="stage-kicker" x="310" y="976">[ANALYSE]</text>
+  <text class="stage-title" x="310" y="1000">Empirical findings</text>
+  <text class="stage-body" x="310" y="1024">Outcomes, uncertainty, failures and nulls.</text>
+
+  <path class="arrow" d="M 450 1042 L 450 1072"/>
+
+  <rect class="stage-report" x="234" y="1072" width="432" height="88" rx="12"/>
+  <rect class="number-report" x="250" y="1094" width="42" height="42" rx="8"/>
+  <text class="number" x="271" y="1122">7</text>
+  <text class="stage-kicker" x="310" y="1095">[COMMUNICATE]</text>
+  <text class="stage-title" x="310" y="1119">RQ answer and communication</text>
+  <text class="stage-body" x="310" y="1143">Proportionate RQ1-RQ3 answer with explicit limits.</text>
+
+  <line class="divider" x1="38" y1="1184" x2="864" y2="1184"/>
+  <text class="source" x="40" y="1205">Source: Hevner et al. (2004, PDF pp. 4, 9, 11) and Peffers et al. (2007, pp. 4, 16-18);</text>
+  <text class="source" x="40" y="1224">Pineau et al. (2021, pp. 1-4), Kapoor and Narayanan (2023, pp. 1-7), and frozen local project/evaluation contracts.</text>
+  <text class="source" x="40" y="1243">Exact local files and SHA-256 hashes are recorded in the TXT alternative and provenance manifest.</text>
+  <text class="status" x="40" y="1265">Faye Niu | METH-F1 | conceptual and non-empirical; no implementation, evaluation or human-benefit result is asserted.</text>
+</svg>

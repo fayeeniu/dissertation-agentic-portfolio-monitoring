@@ -1,0 +1,268 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "SYS-T1",
+  "title": "Requirements and trust-boundary matrix for the research prototype",
+  "author": "Faye Niu",
+  "target_section": "4.1 Requirements and trust boundaries",
+  "latex_label": "tab:sys-requirements-trust-boundary",
+  "purpose": "Separate each approved actor, data and action boundary from the implemented mechanism, outstanding authorised work, explicit stop/non-goal and exact local evidence state.",
+  "generated_at_utc": "2026-08-27T21:43:57Z",
+  "hashes_recomputed_at_utc": "2026-08-27T21:59:15Z",
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_results": false,
+    "claims_live_company_research_execution": false,
+    "claims_completed_web_search_integration": false,
+    "claims_production_readiness": false,
+    "claims_multi_user_security": false,
+    "claims_ethics_approval": false,
+    "claims_restricted_data_authority": false,
+    "interpretation": "Implemented or in-place status applies only to named repository mechanisms and selected local, fake-provider or synthetic checks. It does not establish live company-research completion, source truth, legal authority, security effectiveness, human benefit or empirical performance."
+  },
+  "placement": {
+    "source_type": "LaTeX longtable",
+    "orientation": "A4 portrait",
+    "table_pages": 2,
+    "repeated_header": true,
+    "deliberate_break": "After the public/model boundary, producing a four-row first page and two-row plus source-note second page.",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "integration": "Input immediately after Section 4.1 prose and before Section 4.2."
+  },
+  "validation": {
+    "selected_boundary_tests": {
+      "command": ".venv/bin/pytest -q tests/integration/test_web.py::test_web_rejects_csrf_host_forgery_and_form_actor tests/integration/test_web.py::test_container_local_mode_accepts_only_private_container_clients tests/integration/test_company_intelligence.py::test_number_only_intake_is_idempotent_and_requires_named_review tests/unit/test_security.py::test_non_public_data_cannot_cross_external_model_boundary tests/integration/test_llm_boundary.py::test_restricted_content_is_rejected_before_client_invocation tests/integration/test_llm_boundary.py::test_default_runtime_refuses_open_external_gates_before_database_creation tests/integration/test_company_research.py::test_live_research_rejects_non_public_case_and_mismatched_runtime_flags tests/integration/test_reporting.py::test_export_is_blocked_until_audited_human_approval tests/integration/test_reporting.py::test_section_edit_creates_version_and_requires_reapproval tests/integration/test_reporting.py::test_finalized_export_is_reverified_before_reuse",
+      "result": "11 passed; one pre-existing Starlette TestClient deprecation warning"
+    },
+    "strict_source_gate": {
+      "command": "python3 Dissertation/scripts/check_sources.py --strict-bibliography",
+      "result": "PASS: 38 local PDFs and hashes verified; 2 immutable web captures; 76 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "standalone_a4": {
+      "tool": "Tectonic with Dissertation/style.tex, rendered with pdftoppm at 144 dpi",
+      "result": "passed",
+      "document_pages": 4,
+      "table_pages": "2-3",
+      "following_section_page": 4,
+      "page_size_points": "595.28 x 841.89 (A4)",
+      "visual_inspection": "Both table pages are legible with repeated headers, intact rules, balanced four-row/two-row pagination, complete source note, and no overlap or clipping.",
+      "overfull_boxes": 0,
+      "scoped_warnings": "Two non-material narrow-header underfull paragraphs and five longtable measurement-pass underfull alignments; absolute-path warnings arise only from the disposable validation harness."
+    }
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locator": "Detailed chapter-plan entry '4.1 Requirements and trust boundaries' and current go/no-go state.",
+      "role": "Approved section scope and prohibition on converting engineering evidence into live, human or empirical claims."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locator": "Headings 'Status and evidence boundary', 'P0 scope', 'Explicit non-goals', 'Stakeholders and authority', 'Constraints', 'Primary risks' and 'Change control'.",
+      "role": "Actor authority, prototype scope, explicit exclusions and separate-approval boundaries."
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "4383245a195d8e9e94efb90904c4a64d3a23ccd5aac6df1acffb532647f604a4",
+      "locator": "Headings 'System context and trust boundaries', 'Runtime deployment', 'Component responsibilities', 'Data flow and invariants', 'Deterministic-first and model routing' and 'Scalability and production gaps'.",
+      "role": "Current component ownership, local runtime, optional-model boundary, human export authority and production gaps."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9ed985e0506bbcbe4c8f74b329ec4baf4bea79b36231c09b613d6f1dd8403744",
+      "locator": "Requirement conventions; FR-ID-001--004; FR-EXT-004--008; FR-VER-002; FR-REP-004--009; FR-UI-003--004; NFR-SEC-001--005; NFR-RES-001; FR-INT-001 and 006; NFR-CI-001; FR-RES-001--004; P1 backlog; P2 exclusions.",
+      "role": "Stable requirement IDs, exact implementation statuses, held execution and non-goal contracts."
+    },
+    {
+      "path": "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+      "sha256": "6d7422a02c09bb78e752581401ea4643bbf364d178a09b550210e75f01f8bd55",
+      "locator": "Headings 'Security posture', 'Data classification and permitted flow', 'Offline company-intelligence intake boundary', 'Approved public-web company-research boundary', 'External model policy', 'Human/participant and ethics hold' and 'Production prohibition'.",
+      "role": "Classification flows, local-only boundary, optional-provider controls, approval holds and explicit production prohibition."
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "34f8f3ba2e8cb33f58beaf24ad265e5031f34ba5a3afb703cc8ea6cbda01b49d",
+      "locator": "Opening permission boundary, Companies House/openai_web_search/public_web_capture source rows, 'G2 admission checklist' and redistribution boundary.",
+      "role": "Exact held, conditional and not-admitted source states; implementation is separated from live permission and source truth."
+    },
+    {
+      "path": "docs/adr/0007-offline-company-intelligence-foundation.md",
+      "sha256": "5f3de605d76803bf556cf41cc98fe73770732a4f2f70f2c704ef1da449f2b861",
+      "locator": "Decision items 1--10 and Consequences.",
+      "role": "Accepted local first-slice, Companies House number intake, named identity review and live/production exclusions."
+    },
+    {
+      "path": "docs/adr/0008-bounded-live-company-research.md",
+      "sha256": "1b90b27672451e1b26513d67d11992a44388eaa54266c4f48f8a488cae1cf38f",
+      "locator": "Decision items 1--7 and Consequences.",
+      "role": "Accepted bounded discovery/capture/exact-span/review design and its residual live, source, model and deployment boundaries."
+    },
+    {
+      "path": "src/portfolio_agent/config.py",
+      "sha256": "5c9e1824b18f5d3f738c1c14d8bd163077abff3ae920b98f0018a8b4b3c3a856",
+      "locator": "Settings defaults and from_env live/model gate fields.",
+      "role": "Default-closed live retrieval and external-model configuration evidence."
+    },
+    {
+      "path": "src/portfolio_agent/bootstrap.py",
+      "sha256": "cf8fd0cd7770a01881c00dcb66c27f96091c16129d571154f7b07b865ca30c6a",
+      "locator": "Runtime dataclass research_mode and create_runtime cumulative gate checks.",
+      "role": "Fail-closed runtime construction and explicit fixture/live separation."
+    },
+    {
+      "path": "src/portfolio_agent/cli.py",
+      "sha256": "59ba21f9c1ecd6b3225031d05193c71ecbed2be194b28ef0b1ee96c344719231",
+      "locator": "Parser serve options and main serve branch host rejection.",
+      "role": "Loopback-only command boundary and explicitly synthetic fixture mode."
+    },
+    {
+      "path": "src/portfolio_agent/web.py",
+      "sha256": "d25ff0da3c2a58e1a4bc0d5b521287464e3853d15cdbd1abaa04838d31a4b8d1",
+      "locator": "ALLOWED_HOST_HEADERS/ALLOWED_CLIENTS, create_app security middleware, require_csrf and reviewer_identity.",
+      "role": "Loopback/Host, CSRF and configured local-reviewer controls."
+    },
+    {
+      "path": "src/portfolio_agent/enums.py",
+      "sha256": "c7ee84b4f5ad4e84342879b69bf4b544ec1b38109b19aabb8a64707c3aeef380",
+      "locator": "DataClassification and research/report/identity state enums.",
+      "role": "Closed data-class and explicit workflow-state vocabulary."
+    },
+    {
+      "path": "src/portfolio_agent/security.py",
+      "sha256": "4bb5919bfef6699d4b5393e256c7ad42e880ea74bec23ff0e69dbfb4987e03a5",
+      "locator": "contains_prompt_injection and assert_external_model_safe.",
+      "role": "Non-public and instruction-like content rejection before model use."
+    },
+    {
+      "path": "src/portfolio_agent/company_intelligence.py",
+      "sha256": "19f5d9372c4e9ce5ef07b1e4f6de3fe88f0dd72aba4fc3e473a207c5fe7c1728",
+      "locator": "CompanyIntakeService.create, decide_identifier and _select_or_create_company.",
+      "role": "Number-only intake, unresolved placeholder, classification boundary and named decision implementation."
+    },
+    {
+      "path": "src/portfolio_agent/reporting.py",
+      "sha256": "ca8d6a6627a3c486ea587c5df9a868342bf3c27416c5f25cba95570855d37e6e",
+      "locator": "ReportService.approve, edit_section, export, _assert_approval_ready and _verified_export_bundle.",
+      "role": "Independent-verification readiness, optimistic approval, reapproval and manifest/hash export controls."
+    },
+    {
+      "path": "tests/integration/test_web.py",
+      "sha256": "8c13cf0fd4849e24fcc8b95c940e31538dee9e40637b092a8d49f080f4e5dca7",
+      "locator": "test_web_rejects_csrf_host_forgery_and_form_actor; test_container_local_mode_accepts_only_private_container_clients.",
+      "role": "Selected executable evidence for local Host/client, CSRF, reviewer and Docker-local boundaries."
+    },
+    {
+      "path": "tests/integration/test_company_intelligence.py",
+      "sha256": "767a57ddfdbeefd1f088208a80875a85f0af6093a444e238e61323a927a27cc4",
+      "locator": "test_number_only_intake_is_idempotent_and_requires_named_review.",
+      "role": "Selected executable evidence for Companies House number-only intake and named identity decision."
+    },
+    {
+      "path": "tests/unit/test_security.py",
+      "sha256": "a9ea965aaf2ad401dc24731fe8c5ce4bf6745399cfbc1192a85ce72fc2bb6dff",
+      "locator": "Prompt-injection and non-public external-model boundary tests.",
+      "role": "Selected executable evidence for classification and untrusted-content controls."
+    },
+    {
+      "path": "tests/integration/test_llm_boundary.py",
+      "sha256": "851981c6c39cd8b1e1bf7cfc47045f58ac7e7654586384c7336e9c4f82fd91fa",
+      "locator": "test_restricted_content_is_rejected_before_client_invocation; test_default_runtime_refuses_open_external_gates_before_database_creation.",
+      "role": "Selected integration evidence for pre-client data rejection and cumulative default-runtime gates, not live company/model performance."
+    },
+    {
+      "path": "tests/integration/test_company_research.py",
+      "sha256": "4250792d2f7d433f9e832e6a8336b7532e2faa15c23ae53cfb363dafc4b08570",
+      "locator": "test_live_research_rejects_non_public_case_and_mismatched_runtime_flags.",
+      "role": "Selected fake-client/fetcher boundary evidence; not a live company-research execution."
+    },
+    {
+      "path": "tests/integration/test_reporting.py",
+      "sha256": "5b475101d7969304991dcbebae96ceec15bb6d44735d3f89bd2c3695c5e5dcf5",
+      "locator": "test_export_is_blocked_until_audited_human_approval; test_section_edit_creates_version_and_requires_reapproval; test_finalized_export_is_reverified_before_reuse.",
+      "role": "Selected executable evidence for synthetic/offline approval and export integrity mechanisms, not participant evidence."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "Rows keyed nist2023airmf, greshake2023indirect and amershi2019guidelines.",
+      "role": "Local citation, file, source-role and limitation bindings."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "role": "Independent local checksum bindings for the three admitted academic PDFs."
+    },
+    {
+      "citation_key": "nist2023airmf",
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 32--35",
+      "role": "Documented intended scope, human oversight, third-party risk, testing, uncertainty and independent assessment guidance; not certification."
+    },
+    {
+      "citation_key": "greshake2023indirect",
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81",
+      "locator": "PDF pp. 1 and 3--5",
+      "role": "Indirect prompt-injection boundary for retrieved content; not proof of detector completeness or system security."
+    },
+    {
+      "citation_key": "amershi2019guidelines",
+      "path": "Dissertation/sources/papers/13_amershi_human_ai_guidelines.pdf",
+      "sha256": "82fff584c6b986f573608361478e93447538c6ce707e4b9b04d45d584272ea03",
+      "locator": "PDF p. 3",
+      "role": "Clear capability limits, efficient correction and scoped service under uncertainty; not a usability evaluation of this artefact."
+    }
+  ],
+  "boundary_traceability": [
+    {
+      "boundary": "Local runtime and accountable actor",
+      "status": "Loopback/Host/CSRF/configured-reviewer mechanisms implemented and selected tests passed; no production authentication or multi-user claim."
+    },
+    {
+      "boundary": "Legal identity first",
+      "status": "Companies House number-only intake and named decision implemented offline; legal identity truth and live registry use remain held."
+    },
+    {
+      "boundary": "Classification and data authority",
+      "status": "Classification and provider controls implemented; restricted-data authority and ethics evidence are not verified."
+    },
+    {
+      "boundary": "Public discovery and optional model",
+      "status": "Code and local/fake boundary checks exist; live public-company execution, completed web-search integration and empirical result are not claimed."
+    },
+    {
+      "boundary": "Named review and export",
+      "status": "Approval/export mechanisms implemented on synthetic/offline flows; authorised human observation and reviewer-utility results remain unavailable."
+    },
+    {
+      "boundary": "Prototype scope and non-goals",
+      "status": "Contract boundary only; live connectors, participants, deployment and production controls require separate authority and evidence."
+    }
+  ],
+  "limitations": [
+    "The exhibit contains no empirical value, participant observation, coverage result, cost, timing, source-quality score or production claim.",
+    "Local tests establish only the exercised contracts; they do not establish ethics approval, data authority, source lawfulness, live availability, model quality, security effectiveness or external validity.",
+    "Offline Companies House syntax and intake do not prove current legal identity or registry truth.",
+    "The existence of bounded research code and fake/local checks does not establish completed or authorised live web-search integration.",
+    "store=False is not represented as zero data retention and does not replace processing authority or minimisation.",
+    "A configured local reviewer is an accountable prototype actor, not a production authenticated principal or evidence of an authorised participant study."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_t1_requirements_trust_boundary_matrix.tex",
+      "sha256": "ba6c12e0d46653031625cf389ec652dd5f0a9bfed43d95f1b78af14df038033a",
+      "role": "Two-page portrait LaTeX longtable with repeated headers and deterministic section boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_t1_requirements_trust_boundary_matrix.txt",
+      "sha256": "322746127c1c803a35581fd27b9fd3cbe1b40d278bb1c3b49d8dcfc0507a1934",
+      "role": "Complete linear text alternative with expanded controls, evidence locators, source roles and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

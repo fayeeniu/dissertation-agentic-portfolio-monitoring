@@ -1,0 +1,73 @@
+LIT-T3 - Data-semantics failure-prevention matrix
+Author: Faye Niu
+Target section: 2.3 Data quality, entity identity, missingness, and time
+LaTeX label: tab:data-semantics-matrix
+Placement: dedicated portrait table page between Sections 2.3 and 2.4
+
+Purpose and interpretation
+
+This table separates data meanings that must remain distinct if portfolio claims are to be reviewable and historically valid. It is an author synthesis of locally admitted literature and frozen project contracts. It is non-empirical and does not report implementation or evaluation results. It contains no mutable corpus count or result value.
+
+The literature supports preserving the meaning and cause of missing information. The exact project taxonomy - observed, zero, blank, none stated, not applicable, not reported, not found publicly and invalid - is an artefact design choice. It is not presented as a published or universal missing-data standard. Additional connector-specific operational states may exist elsewhere in the implementation, but they are outside this literature table's compact reporting contract.
+
+Table columns
+
+Semantic control; required distinction; unsafe collapse; reporting or evaluation consequence; key local literature.
+
+Row 1 - Legal identity
+
+Required distinction: Keep an exact source-scoped legal identifier, such as a Companies House number, separate from display names, domains and aliases. Names may help order candidates but do not prove identity. An unresolved candidate, conflicting identifier or ambiguous match remains held for a named decision.
+
+Unsafe collapse: Do not use name-only or uncontrolled fuzzy matching as a silent legal-entity merge. Do not treat incorporation as proof of current economic activity, and do not join records merely because labels look similar.
+
+Reporting or evaluation consequence: Evidence can be attributed to the wrong company, creating cross-company contamination and unsupported synthesis. Identity-resolution accuracy and coverage are invalid if ambiguous cases are silently counted as resolved rather than held or incorrect.
+
+Key local literature and verified pages: `thorne2026funding`, PDF pp. 5--6; `surak2026gateways`, PDF p. 6; `galanakis2026chrt`, PDF pp. 1--3 and 6.
+
+Row 2 - Observed value or missing state
+
+Required distinction: Store a typed value separately from its semantic state. The compact project taxonomy used in this literature boundary distinguishes observed, zero, blank, none stated, not applicable, not reported, not found publicly and invalid. Zero is evidence-bearing when explicitly observed. Blank means that a field exists without a supplied value. Other absence states retain the source's reason or the bounded search outcome.
+
+Unsafe collapse: Do not treat SQL null, an empty cell, explicit none, not applicable, not reported, no eligible public record, invalid content and numeric zero as equivalent. Do not infer a positive or negative value from absence alone.
+
+Reporting or evaluation consequence: Collapsing these states creates false totals, false impact or absence claims and misleading completeness. It also invalidates missing-state classification and blank-versus-zero evaluation because semantically different cases share one label.
+
+Key local literature and verified pages: `gebru2021datasheets`, PDF pp. 4--6; `bradley2024synfintabs`, PDF pp. 3--5; `nikiforova2020quality`, PDF pp. 2--3 and 15--17.
+
+Row 3 - Publication, effective, retrieval and cutoff time
+
+Required distinction: Retain the observation or value period, publication time, effective or availability time, retrieval time and reporting cutoff as separate fields. The source must have been available by the frozen cutoff for a historical claim, even if it is retrieved later.
+
+Unsafe collapse: Do not store one generic timestamp, treat retrieval time as publication time, relabel a cumulative or point-in-time value as a reporting-period value, or use later-published evidence to support an earlier cutoff.
+
+Reporting or evaluation consequence: Future information can leak into historical reports and inflate measured performance. Stale and post-cutoff claims can appear eligible. Equal-source-access comparisons also fail when conditions receive evidence from different availability windows.
+
+Key local literature and verified pages: `hardman2023small`, PDF pp. 3, 5--6 and 21--25; `galanakis2026chrt`, PDF pp. 1--3 and 6; `kapoor2023leakage`, PDF pp. 3 and 5.
+
+Row 4 - Correction, version and snapshot
+
+Required distinction: Preserve immutable source bytes and checksum, the source and semantic contract version, the extraction or schema version and the report-relevant snapshot. A correction is a new version with its own publication or availability time; it does not rewrite the evidence that was available at an earlier cutoff.
+
+Unsafe collapse: Do not overwrite an earlier snapshot, silently reuse a version label after semantics change, or backfill corrected values into a past report or evaluation unit.
+
+Reporting or evaluation consequence: Claims, denominators and approval bindings cannot be reproduced. Historical comparisons can change after the fact, and a rerun may evaluate a different information set while appearing equivalent.
+
+Key local literature and verified pages: `gebru2021datasheets`, PDF pp. 4--10; `hardman2023small`, PDF pp. 3, 5--6 and 21--25; `kapoor2023leakage`, PDF pp. 1--7.
+
+Row 5 - Use-case data quality
+
+Required distinction: Define quality against a named data object, user task and reporting purpose. Evaluate relevant dimensions such as accuracy, reliability, timeliness, completeness, consistency, accessibility and interpretability through explicit, versioned rules and visible failure states.
+
+Unsafe collapse: Do not replace the dimensions with one context-free quality score. Do not assume that open availability, a passed schema or a matching checksum establishes fitness, correctness or interpretability for every use.
+
+Reporting or evaluation consequence: A single score hides why data failed, applies eligibility rules to the wrong task and makes comparisons across different data objects or reporting purposes misleading. Report dimensions and failure states separately.
+
+Key local literature and verified pages: `nikiforova2020quality`, PDF pp. 1--3 and 15--17; `krasikov2020ready`, PDF pp. 5--9.
+
+Cross-row boundary
+
+The matrix is a design rationale for an evaluable contract. It does not establish that the implemented system satisfies the distinctions, that one taxonomy is universally correct, or that later evaluation will produce a particular result. Implementation evidence and empirical findings belong to later chapters.
+
+Source note
+
+Author synthesis from locally admitted citation keys `thorne2026funding`, `surak2026gateways`, `galanakis2026chrt`, `gebru2021datasheets`, `bradley2024synfintabs`, `nikiforova2020quality`, `hardman2023small`, `kapoor2023leakage` and `krasikov2020ready`. Claim scope and page locators follow frozen claim-ledger rows `2.3-P1`--`2.3-P5` and `SECTION_2_3_EVIDENCE.md`.

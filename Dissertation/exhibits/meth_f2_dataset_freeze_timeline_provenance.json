@@ -1,0 +1,258 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-F2",
+  "title": "Dataset tiers and freeze timeline",
+  "author": "Faye Niu",
+  "target_section": "3.3 Dataset tiers and freeze protocol",
+  "suggested_latex_label": "fig:meth-dataset-freeze-timeline",
+  "purpose": "Show which D0 and separately authorised D1 evidence may inform one versioned evaluation freeze, preserve D2 as an untouched company-period out-of-sample holdout until approved access, and bound subsequent C0-C3 execution, adjudication and analysis without inventing a fourth dataset tier or a confirmatory result.",
+  "generated_at_utc": "2026-08-27T19:03:58Z",
+  "hashes_recomputed_at_utc": "2026-08-27T19:22:08Z",
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_sample_sizes": false,
+    "contains_invented_thresholds": false,
+    "claims_d1_execution": false,
+    "claims_d2_opening": false,
+    "claims_final_c0_c3_execution": false,
+    "claims_real_world_performance": false,
+    "interpretation": "A methodology, access and evidence-class boundary. The current manifest states are repository facts; no pilot, holdout, manual, participant or final comparative outcome is asserted."
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.svg",
+    "renderer": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.py",
+    "portable_command": "python3 Dissertation/exhibits/meth_f2_dataset_freeze_timeline.py",
+    "validated_command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/meth_f2_dataset_freeze_timeline.py",
+    "validated_python_dependency": "ReportLab 4.4.9",
+    "pdf_backend": "ReportLab deterministic vector operations with invariant=1 and PDF core Helvetica fonts",
+    "svg_width": 900,
+    "svg_height": 1280,
+    "pdf_page_width_points": 900,
+    "pdf_page_height_points": 1280,
+    "pdf_pages": 1,
+    "raster_content": false,
+    "deterministic": true,
+    "repeat_render_sha256": "35f9c46841f3bd4b1e62028d58ee8ed3e9a10fd73fcecee340be36f3518f9d11",
+    "repeat_render_byte_identical": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_has_title": true,
+    "svg_has_description": true,
+    "plain_text_alternative": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.txt",
+    "pdf_tagging_claimed": false,
+    "greyscale_redundancy": "Every tier, stage, current state, held condition, arrow boundary and stop rule is named in text; colour is supplementary only."
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "locators": [
+        "Protocol status",
+        "Experimental conditions",
+        "Dataset partitions and leakage control",
+        "D0 - synthetic development/evaluation fixtures",
+        "D1 - authorised pilot/calibration set",
+        "D2 - final out-of-sample set",
+        "Gold/reference standard",
+        "Source-access parity",
+        "Analysis plan",
+        "Reproducibility record",
+        "Ethics and stop conditions",
+        "Validity threats to discuss"
+      ],
+      "role": "Binding dataset-tier definitions, access and change controls, current D2 seal, C0-C3 comparison sequence, reference, analysis, reproducibility and authority boundaries."
+    },
+    {
+      "path": "fixtures/evaluation_manifest.json",
+      "sha256": "1c16234a0dbb965ba0db882531389ddcc52c588c9d7904ba964d480f1ce24254",
+      "locators": [
+        "datasets[0]: tier D0, namespace benchmark:d0, status executable, classification synthetic, test-only partition policy",
+        "datasets[1]: tier D1, status protocol_only, null path/checksum, source_version not-admitted",
+        "datasets[2]: tier D2, status sealed, null path/checksum, source_version sealed, final untouched holdout policy"
+      ],
+      "role": "Exact executable/protocol/sealed state, namespace, classification, path/checksum and permitted-use evidence for D0-D2."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locators": [
+        "Current go/no-go state - 27 August 2026",
+        "Detailed chapter plan: 3.3 Dataset tiers and freeze protocol",
+        "Detailed chapter plan: 5.7 Manual and HITL comparison",
+        "Claim-control rule"
+      ],
+      "role": "Approved target-section scope, participant-observation boundary and current C0/C3 held or no-go state."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locators": [
+        "Status and evidence boundary",
+        "Constraints",
+        "Research success",
+        "Primary risks",
+        "Change control"
+      ],
+      "role": "Separates synthetic and implementation evidence from findings, forbids final-OOS access before freeze and requires conclusions to remain within the executed population and protocol."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "locators": [
+        "Requirement conventions",
+        "NFR-REL-002",
+        "NFR-PERF-001",
+        "NFR-RES-001--NFR-RES-003",
+        "FR-EVAL-001"
+      ],
+      "role": "Implemented versus protocol-only status convention, repeatability and separation of synthetic engineering, authorised restricted-data and participant evidence."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "626b40751085a01a7cbaeb10f8167cc2fec25b4a0843005cc5ac03243e0d28bc",
+      "locators": [
+        "Rows keyed bradley2024synfintabs, gebru2021datasheets, kapoor2023leakage and pineau2021reproducibility"
+      ],
+      "role": "Local citation-key, bibliographic, origin, path, page-count, checksum, admission-role and limitation bindings."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "cdd565425d0b94da54e6cf47fff42a28513b6ce99a0925fd471358c9085f66fa",
+      "role": "Independent local checksum bindings for the admitted academic source files."
+    },
+    {
+      "citation_key": "bradley2024synfintabs",
+      "path": "Dissertation/sources/papers/06_bradley_et_al_2024_synfintabs.pdf",
+      "sha256": "60e7b6f40296943598d07bcfcf259f4a71af4143007adbae47fd3cda2d2728be",
+      "locator": "PDF pp. 1-5",
+      "role": "Bounded support for using labelled synthetic financial-table data in extraction evaluation; not evidence of this artefact's real-world performance."
+    },
+    {
+      "citation_key": "gebru2021datasheets",
+      "path": "Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf",
+      "sha256": "c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0",
+      "locator": "PDF pp. 2 and 4-7",
+      "role": "Dataset-purpose, composition, sampling, split, sensitive-data, external-resource and intended-use documentation guidance."
+    },
+    {
+      "citation_key": "kapoor2023leakage",
+      "path": "Dissertation/sources/papers/32_kapoor_data_leakage.pdf",
+      "sha256": "c433bceda841ca09fe2fd7ddf857fc0818fdf98553e62e54a37cc394c6f70c42",
+      "locator": "PDF pp. 1-7 and 17-21",
+      "role": "Leakage taxonomy and reporting controls for test-set separation, preprocessing, model choice, dependencies, temporal structure and scientific claims."
+    },
+    {
+      "citation_key": "pineau2021reproducibility",
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1-4 and 9-13",
+      "role": "Code, data, procedure, metric, experimental-detail and reporting information needed for reproducible evaluation; not proof of external validity."
+    }
+  ],
+  "traceability": [
+    {
+      "figure_claim": "D0 is visible fictional labelled test-only evidence for regression and mechanism evaluation, not real portfolio or practitioner performance.",
+      "evidence": [
+        "fixtures/evaluation_manifest.json datasets[0]",
+        "EVALUATION_PROTOCOL D0 definition",
+        "bradley2024synfintabs PDF pp. 1-5",
+        "gebru2021datasheets PDF pp. 1-7"
+      ],
+      "visible_control": "D0 card and explicit NOT real-world statement"
+    },
+    {
+      "figure_claim": "D1 is a separately authorised pilot/calibration tier that may inform the freeze but remains pilot evidence and outside confirmatory estimates unless the plan pre-declares exploratory use.",
+      "evidence": [
+        "fixtures/evaluation_manifest.json datasets[1]",
+        "EVALUATION_PROTOCOL D1 definition",
+        "gebru2021datasheets PDF pp. 2 and 4-7",
+        "pineau2021reproducibility PDF pp. 1-4 and 9-13"
+      ],
+      "visible_control": "D1 card, AUTHORISED PILOT tag and pilot-only boundary"
+    },
+    {
+      "figure_claim": "The catalogue, rules, schemas, prompts, code and analysis plan are frozen once before D2 access.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Dataset partitions and leakage control and Reproducibility record",
+        "PROJECT_CHARTER Constraints and Research success",
+        "kapoor2023leakage PDF pp. 1-7 and 17-21",
+        "pineau2021reproducibility PDF pp. 1-4 and 9-13"
+      ],
+      "visible_control": "ONE VERSIONED FREEZE card and six named frozen components"
+    },
+    {
+      "figure_claim": "D2 is currently sealed with no data path or checksum and must not be inspected or used for tuning before an approved post-freeze transition.",
+      "evidence": [
+        "fixtures/evaluation_manifest.json datasets[2]",
+        "EVALUATION_PROTOCOL D2 definition"
+      ],
+      "visible_control": "D2 red seal boundary, CURRENT: SEALED badge and no-access text"
+    },
+    {
+      "figure_claim": "Comparable C0-C3 execution follows only an approved D2 opening; current D2 is sealed and C0/C3 are held, so no final result may be inferred.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Experimental conditions, D2 definition and Protocol status",
+        "REPORT_STRUCTURE Current go/no-go state - 27 August 2026",
+        "fixtures/evaluation_manifest.json datasets[2]"
+      ],
+      "visible_control": "AFTER AUTHORISED OPENING stage, C0/C3 HELD pills and no-result line"
+    },
+    {
+      "figure_claim": "Participant observations belong to authorised C0/C3 execution rather than an invented D3 tier.",
+      "evidence": [
+        "REPORT_STRUCTURE detailed Section 3.3 entry",
+        "EVALUATION_PROTOCOL Units of analysis and Ethics and stop conditions"
+      ],
+      "visible_control": "NO FOURTH DATASET TIER callout"
+    },
+    {
+      "figure_claim": "A D2-informed post-access change creates an exploratory run and cannot retain a silent confirmatory label.",
+      "evidence": [
+        "EVALUATION_PROTOCOL D2 definition and Analysis plan",
+        "PROJECT_CHARTER Constraints and Change control",
+        "kapoor2023leakage PDF pp. 1-7 and 17-21",
+        "pineau2021reproducibility PDF pp. 1-4 and 9-13"
+      ],
+      "visible_control": "POST-ACCESS CHANGE callout"
+    }
+  ],
+  "limitations": [
+    "The exhibit is conceptual author synthesis and does not report an empirical result.",
+    "It contains no sample size, participant count, prevalence, accuracy, effect size, confidence interval, threshold, time, token, cost, coverage, usability or human-benefit value.",
+    "The figure does not imply that D1 or D2 has been executed, that D2 has been opened, or that final C0-C3 evaluation has occurred.",
+    "D0 synthetic mechanism and regression evidence cannot be generalised to real portfolio, practitioner, participant, production or investment outcomes.",
+    "Visible D0 state, namespace, classification and partition-policy wording describes declarations in fixtures/evaluation_manifest.json; the exhibit does not independently demonstrate loader enforcement, namespace rewriting or group-partition isolation.",
+    "D1 may inform a freeze only after separate authority and must retain pilot or exploratory labelling as specified by the protocol.",
+    "Freezing, manifesting and sealing reduce leakage risk but do not guarantee reference truth, correct adjudication, protocol validity, representativeness, reproducibility or external validity.",
+    "The current C0 and participant-based C3 states remain held; synthetic D0 measurements cannot substitute for their unavailable outcomes.",
+    "Participant observations are part of authorised workflow-condition execution, not an additional dataset tier.",
+    "The PDF is vector-only but is not claimed to be tagged; the complete TXT alternative provides a linear accessible companion."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.py",
+      "sha256": "012bd024d7078ee8a3bb50406849c95b053f97edb4f0afd59dba9dd1678bdbc3",
+      "role": "Deterministic accessible-SVG to vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.svg",
+      "sha256": "bea4ec49085772b1dc4ba6b5ecb7e5450ebb7a39c688cb98301192a48e378a00",
+      "role": "Accessible vector source and visual source of truth."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.pdf",
+      "sha256": "35f9c46841f3bd4b1e62028d58ee8ed3e9a10fd73fcecee340be36f3518f9d11",
+      "role": "Deterministic one-page vector PDF for LaTeX inclusion."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f2_dataset_freeze_timeline.txt",
+      "sha256": "40c90056d79908f509727436e47b3c4fe34500bb85d8f3502ed4f4d896063a8e",
+      "role": "Complete plain-text alternative with expanded reading order, current states, source basis and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

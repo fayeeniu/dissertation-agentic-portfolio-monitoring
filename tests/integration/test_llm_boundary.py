@@ -1,24 +1,35 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
 
 import pytest
+from sqlalchemy import select
 
-from portfolio_agent.bootstrap import create_runtime
+from portfolio_agent.bootstrap import create_openai_experiment_runtime, create_runtime, project_root
+from portfolio_agent.cli import main
 from portfolio_agent.config import Settings
 from portfolio_agent.enums import DataClassification
+from portfolio_agent.experiments import OpenAISmokeTestError, run_openai_synthetic_smoke
 from portfolio_agent.llm.base import ExtractionProviderError, ExtractionRequest
+from portfolio_agent.llm.deterministic import DeterministicExtractionProvider
+from portfolio_agent.llm.experiment import (
+    SYNTHETIC_EXPERIMENT_EVIDENCE_ID,
+    SyntheticOpenAIExperimentProvider,
+)
 from portfolio_agent.llm.openai_provider import OpenAIStructuredExtractionProvider
+from portfolio_agent.models import ExtractionModel
 from portfolio_agent.schemas import EvidenceItem, StrictExtraction
 
 
 @dataclass
 class _FakeResponse:
     output_text: str
+    model: str
     usage: Any = field(default_factory=lambda: SimpleNamespace(input_tokens=11, output_tokens=7))
 
 
@@ -29,7 +40,7 @@ class _FakeResponses:
 
     def create(self, **kwargs: Any) -> _FakeResponse:
         self.calls.append(kwargs)
-        return _FakeResponse(self._outputs.pop(0))
+        return _FakeResponse(self._outputs.pop(0), model=kwargs["model"])
 
 
 class _FakeClient:
@@ -43,8 +54,8 @@ def _settings(tmp_path: Path) -> Settings:
         database_url=f"sqlite:///{tmp_path / 'llm.db'}",
         raw_data_dir=tmp_path / "raw",
         allow_external_llm=True,
-        openai_model="gpt-5.4-mini",
-        openai_escalation_model="gpt-5.4",
+        openai_model="gpt-5.6-luna",
+        openai_escalation_model="gpt-5.6-luna",
     )
 
 
@@ -94,6 +105,23 @@ def _valid_output() -> str:
     )
 
 
+def _valid_product_output() -> str:
+    return json.dumps(
+        {
+            "company_name": "Aster Analytics",
+            "metric_key": "products_launched",
+            "value": 2,
+            "unit": "products",
+            "currency": None,
+            "period_label": "SYN-2025-Q2",
+            "evidence_locator": "fixture://news/aster/products",
+            "evidence_span": "2",
+            "abstain_reason": None,
+            "confidence": 0.9,
+        }
+    )
+
+
 def test_restricted_content_is_rejected_before_client_invocation(tmp_path: Path) -> None:
     client = _FakeClient([_valid_output()])
     provider = OpenAIStructuredExtractionProvider(_settings(tmp_path), client=client)
@@ -106,9 +134,9 @@ def test_restricted_content_is_rejected_before_client_invocation(tmp_path: Path)
 @pytest.mark.parametrize(
     ("model", "escalation_model"),
     (
-        ("unapproved-model", "gpt-5.4"),
-        ("gpt-5.4", "gpt-5.4-mini"),
-        ("gpt-5.4-mini", "gpt-5.4-mini"),
+        ("unapproved-model", "gpt-5.6-luna"),
+        ("gpt-5.6-luna", "unapproved-model"),
+        ("gpt-5.4-mini", "gpt-5.4"),
     ),
 )
 def test_external_provider_rejects_unapproved_model_sequence(
@@ -121,11 +149,11 @@ def test_external_provider_rejects_unapproved_model_sequence(
         openai_model=model,
         openai_escalation_model=escalation_model,
     )
-    with pytest.raises(ValueError, match="approved model sequence"):
+    with pytest.raises(ValueError, match="approved model route"):
         OpenAIStructuredExtractionProvider(settings, client=_FakeClient([_valid_output()]))
 
 
-def test_validation_failure_escalates_once_and_retains_attempt_telemetry(
+def test_validation_failure_repairs_once_and_retains_attempt_telemetry(
     tmp_path: Path,
 ) -> None:
     wrong_locator = json.loads(_valid_output())
@@ -135,13 +163,39 @@ def test_validation_failure_escalates_once_and_retains_attempt_telemetry(
 
     outcome = provider.extract(_request(DataClassification.SYNTHETIC))
 
-    assert [call["model"] for call in client.responses.calls] == ["gpt-5.4-mini", "gpt-5.4"]
+    assert [call["model"] for call in client.responses.calls] == [
+        "gpt-5.6-luna",
+        "gpt-5.6-luna",
+    ]
     assert all(call["store"] is False for call in client.responses.calls)
+    assert all(call["max_output_tokens"] == 512 for call in client.responses.calls)
+    assert all(call["reasoning"] == {"effort": "none"} for call in client.responses.calls)
+    assert all(
+        'JSON number 2 becomes string "2"' in call["instructions"]
+        for call in client.responses.calls
+    )
+    for call in client.responses.calls:
+        schema = call["text"]["format"]["schema"]
+        assert schema["required"] == list(schema["properties"])
+        assert schema["additionalProperties"] is False
+        for nullable_field in (
+            "unit",
+            "currency",
+            "period_label",
+            "evidence_span",
+            "abstain_reason",
+        ):
+            field_schema = schema["properties"][nullable_field]
+            assert {variant.get("type") for variant in field_schema["anyOf"]} >= {"null"}
+            assert "default" not in field_schema
     assert outcome.attempts == 2
     assert [attempt.status for attempt in outcome.attempt_records] == ["failed", "succeeded"]
+    assert outcome.attempt_records[0].input_tokens == 11
+    assert outcome.attempt_records[0].output_tokens == 7
     assert outcome.attempt_records[1].escalation_cause == "first_model_validation_failure"
     assert outcome.input_tokens == 11
     assert outcome.output_tokens == 7
+    assert outcome.model == "gpt-5.6-luna"
 
 
 def test_two_invalid_responses_fail_without_unbounded_retry(tmp_path: Path) -> None:
@@ -352,3 +406,158 @@ def test_default_runtime_refuses_open_external_gates_before_database_creation(
     with pytest.raises(RuntimeError, match="Gate G2"):
         create_runtime(live_settings)
     assert not (tmp_path / "llm.db").exists()
+
+
+def test_synthetic_experiment_provider_rejects_changed_target_before_live_call(
+    tmp_path: Path,
+) -> None:
+    client = _FakeClient([_valid_product_output()])
+    live = OpenAIStructuredExtractionProvider(_settings(tmp_path), client=client)
+    provider = SyntheticOpenAIExperimentProvider(live, DeterministicExtractionProvider())
+    request = _request(DataClassification.SYNTHETIC)
+    request.evidence.id = SYNTHETIC_EXPERIMENT_EVIDENCE_ID
+    request.evidence.source_type = "synthetic_public_fixture"
+    request.evidence.connector = "fixture_connector"
+
+    with pytest.raises(PermissionError, match="checksum has changed"):
+        provider.extract(request)
+    assert client.responses.calls == []
+
+
+def test_live_smoke_requires_command_acknowledgement() -> None:
+    with pytest.raises(SystemExit, match="acknowledge-synthetic-only"):
+        main(["openai-smoke"])
+
+
+def test_live_smoke_reads_only_private_local_key_and_uses_ephemeral_state(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    env_path = tmp_path / ".env"
+    env_path.write_text(
+        "PORTFOLIO_REVIEWER_NAME=Ignored unquoted local value\nOPENAI_API_KEY='sk-local-test'\n",
+        encoding="utf-8",
+    )
+    env_path.chmod(0o600)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setattr("portfolio_agent.cli.project_root", lambda: tmp_path)
+    captured: dict[str, Settings] = {}
+    disposed: list[bool] = []
+
+    def fake_runtime(settings: Settings) -> Any:
+        captured["settings"] = settings
+        return SimpleNamespace(engine=SimpleNamespace(dispose=lambda: disposed.append(True)))
+
+    monkeypatch.setattr("portfolio_agent.cli.create_openai_experiment_runtime", fake_runtime)
+    monkeypatch.setattr(
+        "portfolio_agent.cli.run_openai_synthetic_smoke",
+        lambda _runtime: {"status": "passed"},
+    )
+
+    assert main(["openai-smoke", "--acknowledge-synthetic-only"]) == 0
+
+    settings = captured["settings"]
+    assert settings.allow_external_llm is True
+    assert settings.allow_live_public_retrieval is False
+    assert settings.enable_synthetic_fixture_connector is True
+    assert settings.database_url != f"sqlite:///{tmp_path / 'var' / 'portfolio.db'}"
+    assert str(tmp_path / "var" / "experiments" / "runtimes") in settings.database_url
+    assert disposed == [True]
+    assert "OPENAI_API_KEY" not in os.environ
+
+
+def test_live_smoke_refuses_group_readable_local_env(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    env_path = tmp_path / ".env"
+    env_path.write_text("OPENAI_API_KEY=sk-local-test\n", encoding="utf-8")
+    env_path.chmod(0o644)
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setattr("portfolio_agent.cli.project_root", lambda: tmp_path)
+
+    with pytest.raises(RuntimeError, match="chmod 600"):
+        main(["openai-smoke", "--acknowledge-synthetic-only"])
+
+
+def test_experiment_runtime_requires_all_cumulative_guards(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    base = _settings(tmp_path)
+    client = _FakeClient([_valid_product_output()])
+    with pytest.raises(RuntimeError, match="ALLOW_EXTERNAL_LLM"):
+        create_openai_experiment_runtime(replace(base, allow_external_llm=False), client=client)
+    with pytest.raises(RuntimeError, match="SYNTHETIC_FIXTURE_CONNECTOR"):
+        create_openai_experiment_runtime(base, client=client)
+    with pytest.raises(RuntimeError, match="cannot enable public retrieval"):
+        create_openai_experiment_runtime(
+            replace(
+                base, enable_synthetic_fixture_connector=True, allow_live_public_retrieval=True
+            ),
+            client=client,
+        )
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    with pytest.raises(RuntimeError, match="process environment"):
+        create_openai_experiment_runtime(
+            replace(base, enable_synthetic_fixture_connector=True),
+        )
+    assert not (tmp_path / "llm.db").exists()
+
+
+def test_real_workflow_experiment_routes_exactly_one_synthetic_item_to_openai(
+    tmp_path: Path,
+) -> None:
+    settings = replace(
+        _settings(tmp_path),
+        project_root=project_root(),
+        enable_synthetic_fixture_connector=True,
+    )
+    client = _FakeClient([_valid_product_output()])
+    runtime = create_openai_experiment_runtime(settings, client=client)
+
+    result = run_openai_synthetic_smoke(runtime, output_dir=tmp_path / "manifests")
+
+    assert result["status"] == "passed"
+    assert result["external_model_attempt_count"] == 1
+    assert result["models"] == ["gpt-5.6-luna"]
+    assert len(client.responses.calls) == 1
+    with runtime.session_factory() as session:
+        extractions = list(
+            session.scalars(
+                select(ExtractionModel).where(ExtractionModel.run_id == result["run_id"])
+            ).all()
+        )
+    live_extractions = [
+        row for row in extractions if row.provider == "openai_responses_structured_extractor"
+    ]
+    assert [row.evidence_item_id for row in live_extractions] == [SYNTHETIC_EXPERIMENT_EVIDENCE_ID]
+    assert all(
+        row.provider == "deterministic_structured_extractor"
+        for row in extractions
+        if row.evidence_item_id != SYNTHETIC_EXPERIMENT_EVIDENCE_ID
+    )
+
+
+def test_live_smoke_writes_failure_manifest_and_fails_closed(tmp_path: Path) -> None:
+    settings = replace(
+        _settings(tmp_path),
+        project_root=project_root(),
+        enable_synthetic_fixture_connector=True,
+    )
+    runtime = create_openai_experiment_runtime(
+        settings,
+        client=_FakeClient(["not-json", "still-not-json"]),
+    )
+    output_dir = tmp_path / "manifests"
+
+    with pytest.raises(OpenAISmokeTestError, match="did not produce"):
+        run_openai_synthetic_smoke(runtime, output_dir=output_dir)
+
+    manifests = list(output_dir.glob("openai-smoke-*.json"))
+    assert len(manifests) == 1
+    manifest = json.loads(manifests[0].read_text(encoding="utf-8"))["manifest"]
+    assert manifest["strict_extraction_persisted"] is False
+    assert len(manifest["external_model_attempts"]) == 2
+    serialized = json.dumps(manifest)
+    assert "Aster Analytics" not in serialized
+    assert "fictional company announced" not in serialized

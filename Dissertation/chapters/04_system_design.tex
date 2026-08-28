@@ -1,0 +1,163 @@
+\chapter{System Design and Implementation}
+\section{Requirements and trust boundaries}
+
+The implemented release is a local, loopback-only, single-user research prototype, not a production service. Requirement NFR-SEC-001 limits the server binding, while FR-UI-003 rejects non-local clients and unexpected host headers. For the bounded company-research route, FR-INT-001 allows a Companies House number without a name or website; however, FR-RES-001 requires that identifier to receive named review before research starts. The number is therefore the sole required intake value for this route, not proof of complete company identity or economic activity \citep{galanakis2026chrt,hardman2023small,nist2023airmf}.
+
+Data is classified as public, internal, restricted or synthetic at intake, and each case retains its purpose and actor. Under the charter, the student operates the prototype, portfolio companies retain confidentiality interests, and data owners or the university ethics body authorise restricted or participant use. FR-EXT-005 makes external-model processing opt-in and limits it to public or synthetic evidence. The implemented client sends \texttt{store=False}, but provider documentation still describes abuse-monitoring and application-state retention unless approved controls apply; this setting is not Zero Data Retention \citep{gebru2021datasheets,cddo2023genai,openai2026datacontrols}.
+
+Outputs require review. FR-REP-005 blocks report export without approval, and FR-RES-007 requires named review plus content-hash checking for company-deck access. These tests establish mechanisms, not reviewer benefit. The scope excludes remote or multi-user production deployment, person profiling, speculative valuation and automatic buy/sell recommendations. Direct live Companies House retrieval remains held at G2; the public-web route is implemented, but neither its live smoke nor future frozen evaluation has run. Table~\ref{tab:sys-requirements-trust-boundary} maps these controls and holds against misleading communication and untrusted content, without proving compliance or production safety \citep{fca2024promotions,greshake2023indirect,nist2023airmf}.
+
+\input{exhibits/sys_t1_requirements_trust_boundary_matrix.tex}
+\section{Architecture and local deployment}
+
+The implemented artefact uses one Python service as a modular application. FastAPI receives browser requests and renders Jinja templates; route handlers call a \texttt{Runtime} that assembles importing, source, workflow, reporting, intake and optional company-research services. Those services own domain actions and SQLAlchemy sessions, so templates remain presentation boundaries. The CLI constructs the same runtime for database initialisation, imports, workflow execution, review and export. This makes the artefact and its intended functions inspectable, but implementation alone does not demonstrate utility \citep{hevner2004design,peffers2007dsrm}.
+
+SQLite stores canonical identity, workflow, claim, review and audit records with foreign keys enabled. Startup runs Alembic to the declared migration head rather than creating tables directly. Imported bytes and source captures are written once below ignored local directories, checksum-verified and recorded by path; approved exports use staged, manifest-backed bundles. Separating relational metadata from local evidence bytes supports traceability, while recorded versions, dependencies and environments aid reproducibility rather than proving the evidence true \citep{pineau2021reproducibility,gebru2021datasheets}.
+
+Native execution binds the FastAPI/Jinja interface to loopback. The Docker Compose route runs the same CLI service in a pinned Python image, publishes only a loopback host port, places writable state in the persistent \texttt{portfolio-state} volume and keeps the container root filesystem read-only. Health, local-client and migration tests verify these mechanisms. Figure~\ref{fig:sys-architecture-deployment-boundary} maps the request and data path. The public-web research route is implemented behind explicit gates, but its live smoke and evaluation remain unrun \citep{pineau2021reproducibility,nist2023airmf}.
+
+This deployment remains a single-user research prototype. It has no production authentication or authorisation, tenant isolation, horizontal scaling, managed secret or storage service, durable job system, backup regime, central observability or demonstrated disaster recovery. Loopback, CSRF, local files and container restrictions reduce the current local attack surface; they do not establish hosted security or resilience. Any remote or multi-user release would require a separately designed, authorised and evaluated operating model \citep{nist2023airmf,cddo2023genai}.
+
+\clearpage
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f1_architecture_deployment_boundary.pdf}
+  \caption{Local architecture, deployment and external-boundary status. Author synthesis of repository contracts, implementation and local verification evidence; conceptual and non-empirical.}
+  \label{fig:sys-architecture-deployment-boundary}
+\end{figure}
+\clearpage
+\section{Canonical data, persistence, and provenance}
+
+Canonicalisation starts from a versioned catalogue. Each metric definition fixes a key, type, unit, sourceability, aliases and one period semantic; the catalogue hash prevents a version from being reused with altered meaning. Reporting periods and observations then bind company, metric, period and raw submission. Normalisation preserves original and normalised values separately. Blank, explicit zero, none stated, not applicable, not reported, not found publicly, source unavailable and invalid are typed states, not interchangeable nulls. This improves task-specific interpretability but embeds project definitions that still require domain approval \citep{nikiforova2020quality,gebru2021datasheets}.
+
+SQLite separates canonical companies and identifiers from submissions, observations, reporting periods, evidence, claims and reports. Foreign keys, uniqueness constraints and indexes protect relationships, while Alembic revisions 0001--0009 reproduce the ORM schema and add provenance and company-research tables incrementally. Tests compare migrated and metadata schemas and exercise downgrade preflights. This approach supports a local prototype and reversible evolution, but many semantic states remain strings or JSON checked by application services; database consistency therefore cannot establish source correctness, business meaning or concurrent production use \citep{pineau2021reproducibility,gebru2021datasheets}.
+
+Imported files are hashed before persistence and published create-once under checksum-addressed paths. Connector snapshots record source and version, reviewed identifier, cutoff, locator, media type, checksum, retrieval and publication times, and classification. Facts retain value, unit, currency, periods, effective and publication times, exact structured locator and extraction method/schema. A versioned derivation hash covers terminal snapshot metadata, facts and events, detecting same-byte parser drift. The public-web case implements redacted capture and checksum verification, but no live capture has run. Immutability and hashes strengthen repeatability and tamper detection; they neither prove truth nor guarantee source access \citep{pineau2021reproducibility,gebru2021datasheets}.
+
+Claims persist normalised values and link many-to-many with evidence items; each evidence item carries publisher, locator, times, checksum, connector version, classification and trust or time flags. Independent verification records supported, contradicted, insufficient, stale or untrusted outcomes without rewriting the source. Portfolio reports can export these links without raw evidence. The separate company-research schema stores accepted verbatim spans with source URLs and groups divergent multi-source statements as contradiction candidates requiring named resolution. That path is live-unrun, and a citation or checksum provides traceability rather than correctness; human resolution may also remain fallible \citep{gao2023alce,gao2023rarr}.
+
+Report sections are append-versioned. An edit retires the current section, increments report and optimistic-lock versions, clears approval and recalculates the report-content hash. Approval records named actor, reason and report version only after every claim has verification; export then requires the approved current version, creates JSON, Markdown and HTML with a content hash and file manifest, stages writes and re-verifies hashes before reuse. This binds the decision to controlled content without autonomous publication. Gold labels, reviewer outcomes and other evaluation fields remain protocol-only and null pending authority; implementation does not demonstrate review benefit. Figure~\ref{fig:sys-canonical-data-provenance-model} maps these boundaries \citep{nist2023airmf,amershi2019guidelines,pineau2021reproducibility}.
+
+\clearpage
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f2_canonical_data_provenance_model.pdf}
+  \caption{Canonical data, provenance and approval lineage. Author synthesis of implemented relational contracts and held protocol extensions; conceptual and non-empirical.}
+  \label{fig:sys-canonical-data-provenance-model}
+\end{figure}
+\clearpage
+\section{Intake and legal-identity control}
+
+The portfolio-import route accepts XLSX, CSV and JSON, then hashes the original bytes before writing a create-once snapshot. Its dataset identifier combines those bytes with the reporting-period label; a repeated hash and period reuses the stored submission only when classification, cutoff and profile remain compatible. Each company row then enters the same deterministic identity resolver, while conflicting identifiers become explicit counted holds rather than silent repairs or merges. This keeps source bytes, period and identity decisions traceable, but a checksum supports repeatability and integrity, not factual truth \citep{pineau2021reproducibility,gebru2021datasheets}.
+
+The company-intelligence route accepts a Companies House number without a name or website. It removes spaces and hyphens, uppercases prefixes and zero-pads short numeric values before structural validation. For a newly submitted number, valid shape alone creates an exact identifier, unresolved placeholder company and identity-held case; it does not query or confirm against the register. Website, name-plus-jurisdiction and declared-company document routes instead persist submitted claims. Domains remain pending, and document bytes remain untrusted and checksum-bound, because legal registration and operational identity are not equivalent \citep{galanakis2026chrt,hardman2023small}.
+
+Identity becomes ready only after a named actor accepts the exact identifier with a substantive reason before source use. A rejection leaves identity unresolved; an identifier/name disagreement, a reused name with another number, a cross-classification collision, or a domain verified elsewhere is refused or held. Names may suggest a candidate, but neither name normalisation nor fuzzy similarity merges companies; name-only portfolio imports create unresolved records for review. This conservative choice sacrifices recall to reduce false joins, consistent with evidence that heterogeneous registers need cautious linkage and retain matching error \citep{thorne2026funding,surak2026gateways,galanakis2026chrt}.
+
+Normalised intake content, purpose, classification and contract versions form a fingerprint, so exact repeats reuse one artefact and case; database uniqueness backs that local rule. Document creation tolerates an identical concurrent file winner and rejects checksum disagreement. However, the pre-query and insert path is a synchronous local boundary, not demonstrated multi-worker exactly-once processing. Downstream source collection requires the reviewed number to match the source key and company. Figure~\ref{fig:sys-legal-identity-decision-flow} maps these gates. Direct live Companies House access remains held at G2; offline replay does not establish current registry truth \citep{pineau2021reproducibility,gebru2021datasheets,galanakis2026chrt}.
+
+\clearpage
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f3_legal_identity_decision_flow.pdf}
+  \caption{Legal-identity intake, decision and downstream research gate. Author synthesis of implemented local controls and held live-source boundaries; conceptual and non-empirical.}
+  \label{fig:sys-legal-identity-decision-flow}
+\end{figure}
+\clearpage
+\section{Fixed portfolio workflow and independent verification}
+
+The implemented portfolio workflow follows eight fixed stages: plan, resolve identity, collect evidence, extract values, normalise them, verify claims, compose a report and stop at human review. Each stage has a named functional role and a persisted run record with input and output hashes, status, timing, attempts and bounded metadata. It also preserves the order and outcome of every completed stage for later examination within this local release. An exception records failure and prevents later stages; unresolved identity also stops collection. These controls make execution inspectable, but artefact construction alone does not establish utility \citep{pineau2021reproducibility,hevner2004design}.
+
+Collection stores run-linked evidence and its time decision before extraction. Only temporally eligible, trusted public evidence reaches the extraction provider; untrusted material is counted and bypassed. A strict schema binds extracted company, metric, period, value and exact evidence locator, while deterministic metric rules then normalise type, unit, currency and missing state. Existing run--evidence extractions are reused and provider attempts are stored. This supports traceable claim preparation, although attribution and repeatability remain distinct from correctness \citep{gao2023alce,gao2023rarr,pineau2021reproducibility}.
+
+During verification, the workflow reviews sourceability, provenance, period, trust, value and currency before constructing a claim and linked verification record. The pure verifier returns only supported, contradicted, insufficient-evidence, stale or rejected-untrusted states; a current public conflict cannot be averaged away. Its role is separate from the extractor and composer, and it cannot silently rewrite their records. However, this is functional separation within one programme, not proof of independent human judgement or superior accuracy \citep{gao2023alce,gao2023rarr,nist2023airmf}.
+
+Composition places supported claims in the narrative and exposes other states as exceptions, then hashes the current, versioned report and moves it to pending review. A named reviewer may approve, reject or request an edit; each decision records actor, reason and report version. Editing creates a new section version, recalculates the content hash and revokes approval. Export remains unavailable until current approval, and optimistic locking plus a manifest-backed staged write guards stale or partial publication attempts \citep{amershi2019guidelines,bucinca2021forcing,pineau2021reproducibility}.
+
+The design favours deterministic orchestration, explicit stops and narrow roles over open-ended agent conversation. This reduces uncontrolled branching and makes failure locations auditable, but limits adaptive planning and does not show that more roles improve outcomes. Bounded attempts handle provider failure, while duplicate extraction and completed-export checks support local retry; they do not prove distributed exactly-once execution. Figure~\ref{fig:sys-fixed-workflow-verification-state-machine} compactly maps these control boundaries. Current code and synthetic tests establish engineering state only; RQ1--RQ3 benefits require the frozen evaluations and authorised human comparison \citep{guo2024multiagent,wu2024autogen,peffers2007dsrm}.
+
+\clearpage
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f4_fixed_workflow_verification_state_machine.pdf}
+  \caption{Fixed workflow, independent verification states, named approval and controlled export. Author synthesis of implemented local controls and held evaluation boundaries; conceptual and non-empirical.}
+  \label{fig:sys-fixed-workflow-verification-state-machine}
+\end{figure}
+\clearpage
+\section{Deterministic source adapters, time, and quality}
+
+The source layer is a versioned capability registry, not an unrestricted crawler. Each request specifies source, company, exact reviewed identifier, cutoff, fact keys and mode. Before adapter invocation, the registry rejects unsupported capabilities, unresolved, unreviewed or expired identity, and live retrieval with closed admission. A policy block is therefore pre-collection, not a persisted claim that the publisher held no record \citep{gebru2021datasheets,pineau2021reproducibility}.
+
+Only two deterministic adapters are usable, both through synthetic offline replay. Companies House manifest 1.4.0 matches an exact number and exposes company, filing and charge fields through JSON locators. UKRI manifest 1.3.0 matches an exact organisation identifier, selects the latest cutoff-available correction and emits stable project and outcome locators. Replays persist source version, bytes, checksum, retrieval and publication metadata, and a derivation hash. This supports repeatable inspection, not current registry truth or complete company coverage \citep{galanakis2026chrt,hardman2023small,pineau2021reproducibility}.
+
+Time is claim-relative. Public evidence lacking recorded publication or availability time, published after the inclusive UK civil cutoff, future-effective, or expired before the period is ineligible; retrieval time stays separate. Post-cutoff events are omitted. A cumulative metric must exactly span stored programme start to cutoff. UKRI funding binds only when every in-window award has a finite explicit GBP amount; otherwise missing or non-GBP diagnostics and a missing state remain, without inferred zero or conversion \citep{hardman2023small,kapoor2023leakage,nikiforova2020quality}.
+
+Returned facts require exact and structured locators, declared extraction method and schema, permitted metric, unit and currency, and valid time bounds. An exact lookup without a match is \texttt{no\_record}; an unavailable source is \texttt{source\_unavailable}; a policy block occurs before invocation; an invalid value is a typed missing state; and a terminal collection problem is \texttt{failed}. Separate storage or escalation explicitly prevents absence, invalidity and failure becoming interchangeable evidence \citep{gao2023alce,gebru2021datasheets,nikiforova2020quality}.
+
+The versioned quality contract excludes untrusted or time-ineligible evidence, holds incomplete provenance, conflicts and terminal failures, and warns on bounded no-record, source-unavailable and expected-missingness cases. Table~\ref{tab:sys-adapter-capability-state} explicitly maps these decisions without treating a flag as truth. Deterministic replay makes identical inputs inspectable for later review, but coverage remains bounded by admitted snapshots and recorded source semantics. Direct live Companies House and UKRI retrieval remain held at G2; no live-source completeness or outcome claim follows \citep{nikiforova2020quality,pineau2021reproducibility,nist2023airmf}.
+
+\input{exhibits/sys_t2_deterministic_adapter_capability_state_matrix.tex}
+\section{Bounded public-web company-research case study}
+
+The case-study path begins only after a public case has a reviewed Companies House number and a
+fixed reporting cutoff. The Responses API then uses \texttt{web\_search} with
+\texttt{store=False} to plan discovery, but the application admits only canonical HTTPS URLs that
+also appear in the tool's returned source list. Titles and model prose remain candidate metadata,
+not company facts for later controlled capture. This separation is necessary because sourced model output can still contain
+incomplete or incorrect support \citep{openai2026websearch,gao2023alce}.
+
+Each candidate is fetched by application code rather than trusted from search. It rejects
+credentials, non-default ports, local hosts and non-public DNS answers; checks robots; revalidates
+every redirect; permits six textual MIME types; and enforces elapsed, redirect and byte limits. The
+network backend connects to a validated public IP while the HTTPS pool retains hostname-based TLS
+verification before any extraction attempt. Retrieved pages are treated as hostile data because indirect prompt injection can
+enter through remotely supplied content \citep{greshake2023indirect,autio2024genai}.
+
+Accepted bytes are converted to visible text, personal contacts are redacted, and snapshot files
+use content hashes, exclusive creation and owner-scoped directories. Extraction receives only
+bounded redacted text. A proposed statement survives only when its URL matches a captured source,
+statement equals evidence span, span occurs literally, cutoff and minimum-length rules pass, and
+dates or amounts appear in that span before any database admission. Thus, citations become inspectable evidence links rather than
+proof by presence alone \citep{gao2023alce,gao2023rarr,autio2024genai}.
+
+The workflow persists four serial tasks---discover, capture, extract and compose---under a
+fingerprint covering identity, cutoff, model, prompt, policy and budgets. A later task cannot start
+before its prerequisite; retries are bounded; elapsed time, model calls, tool calls, tokens, source
+characters, bytes and redirects are counted. Named cancellation fences stale completion, while
+recovery records interrupted work and rejects changed contracts. These mechanisms make operational
+limits observable for each persisted attempt, consistent with documented monitoring and risk-response practice
+\citep{nist2023airmf,autio2024genai}.
+
+Composition is deterministic over accepted claims and sources. It groups claims by category, marks
+multi-source disagreements for named resolution, lists blocked, unsupported, failed and uncovered
+categories, and hashes a pending-review profile. Figure~\ref{fig:sys-company-research-funnel}
+summarises this funnel. A missing source or unsupported claim therefore remains visible instead of
+completing a persuasive narrative. However, tests use fakes and controlled network responses: no
+live company, model or public-web run establishes coverage, accuracy, usefulness or superiority.
+This case study is implementation evidence within the stated evaluation rather than another empirical research question
+\citep{gao2023alce,gao2023rarr,nist2023airmf}.
+
+\input{exhibits/sys_f5_company_research_evidence_funnel.tex}
+\section{Human review and controlled outputs}
+
+The portfolio-report path stops at pending review. Approval or rejection requires the configured
+reviewer identity, a substantive rationale and the current optimistic-lock token. Approval is
+permitted only when every claim has a recorded verification; an edit appends a section version,
+recalculates the report hash and revokes the prior decision. These controls create a deliberate
+decision point, but they do not demonstrate that review improves judgement
+\citep{amershi2019guidelines,bucinca2021forcing}.
+
+Company-research profiles use a separate, narrower gate. Before a named approve or reject decision,
+the service rechecks the profile hash, pinned run contract and completed composition task; stale
+locks, altered content and unfinished recovery are refused. Contradiction candidates and coverage
+gaps remain inside the reviewable dossier. Only approved profiles can be downloaded, as JSON or
+printable HTML, and neither format converts unresolved evidence into support
+\citep{gao2023alce,nist2023airmf}.
+
+For portfolio reports, export accepts only the current approved version and produces JSON, Markdown
+and accessible HTML. Files are staged below the local export root, bound to a versioned manifest and
+content hash, then reverified before reuse; a partial write is not marked exported. This is
+controlled local release, not autonomous publication. Native PDF or presentation export, remote
+distribution, production authentication and demonstrated reviewer effectiveness remain outside the
+implemented evidence \citep{pineau2021reproducibility,gebru2021datasheets,nist2023airmf}.
+\section{Failure, recovery, and implementation-status ledger}

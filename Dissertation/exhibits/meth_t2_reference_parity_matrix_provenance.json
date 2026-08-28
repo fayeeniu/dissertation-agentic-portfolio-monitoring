@@ -1,0 +1,153 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-T2",
+  "title": "Gold-reference construction and source-access parity controls",
+  "author": "Faye Niu",
+  "target_section": "3.4 Gold/reference construction and source parity",
+  "latex_label": "tab:meth-reference-parity-matrix",
+  "purpose": "Specify the staged construction, agreement, adjudication, freeze, scoring and source-access parity controls required before C0-C3 outputs may be compared against a common reference.",
+  "generated_at_utc": "2026-08-27T19:38:14Z",
+  "hashes_recomputed_at_utc": "2026-08-27T19:38:14Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_sample_sizes": false,
+    "contains_invented_thresholds": false,
+    "gold_reference_constructed": false,
+    "gold_reference_frozen": false,
+    "empirical_score_asserted": false,
+    "interpretation": "Author synthesis of the current project evaluation contract and locally admitted methodological sources. The exhibit defines a planned control process; it does not demonstrate that the process has been executed or that any condition is accurate, reliable or superior."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place METH-T2 on one dedicated portrait page immediately after Section 3.4 and prevent Section 3.5 from preceding it when the exhibit is input at the approved chapter location."
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "role": "Binding project protocol for reference construction, source-access parity, manual capture, reproducibility, ethics stops, validity controls and current held evidence state.",
+      "locator": "Headings 'Protocol status', 'Experimental conditions', 'Gold/reference standard', 'Source-access parity', 'Manual baseline capture', 'Reproducibility record', 'Ethics and stop conditions', and 'Validity threats to discuss'."
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "role": "Project semantics used to seed the codebook and typed label fields.",
+      "locator": "Headings 'Canonical principles', 'Missing-state contract', 'Canonical value representation', 'Period-semantics contract', 'Sourceability classes', and 'Claim and verification semantics'."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 3.4 scope and current gold/C0/C3 evidence hold.",
+      "locator": "Headings 'Research contract', 'Implemented case study and held future evaluation', 'Current go/no-go state - 27 August 2026', and detailed chapter-plan entry '3.4 Gold/reference construction and source parity'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "626b40751085a01a7cbaeb10f8167cc2fec25b4a0843005cc5ac03243e0d28bc",
+      "role": "Local admission, citation-key, role and limitation binding for the five academic sources used by the exhibit.",
+      "locator": "Rows keyed artstein2008agreement, gao2023alce, pineau2021reproducibility, gebru2021datasheets and nist2023airmf."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "cdd565425d0b94da54e6cf47fff42a28513b6ce99a0925fd471358c9085f66fa",
+      "role": "Repository checksum binding for the five locally admitted PDF files.",
+      "locator": "Entries for papers/35_artstein_poesio_intercoder_agreement.pdf, papers/28_gao_alce_citations.pdf, papers/33_pineau_reproducibility.pdf, papers/20_gebru_datasheets_for_datasets.pdf and papers/11_nist_ai_rmf_1_0.pdf."
+    },
+    {
+      "path": "Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf",
+      "sha256": "1729af43712921de3857555972c6a3376d66bcba2474f81a32cddf4f98aef058",
+      "role": "Supports the distinction between observed agreement, chance-corrected reliability and validity; task/design assumptions; prevalence, bias and unitising limitations; and rejection of coefficient-as-truth reasoning.",
+      "locator": "Local PDF pages 2-8, 16-23 and 36-37."
+    },
+    {
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "role": "Supports separate human annotation of citation completeness and whether cited passages support statements; benchmark values are not transferred.",
+      "locator": "Local PDF pages 3-5 and 8-10."
+    },
+    {
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "role": "Supports versioned records of data, code, procedures, metrics and reporting needed for reproducible empirical work; reproducibility is not treated as truth or validity.",
+      "locator": "Local PDF pages 1-5 and 9-13."
+    },
+    {
+      "path": "Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf",
+      "sha256": "c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0",
+      "role": "Supports versioned documentation of purpose, composition, collection, external resources, intended use and maintenance for the frozen reference bundle.",
+      "locator": "Local PDF pages 2 and 4-10."
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "role": "Supports documented test sets, metrics, measurement assumptions, human-subject safeguards and internal-independent or external assessment; it does not certify this procedure.",
+      "locator": "Local PDF pages 32-35."
+    }
+  ],
+  "stage_traceability": [
+    {
+      "stage": "1. Define",
+      "required_control": "Version the codebook, typed label schema, eligible-source rules and source availability cutoff before labelling or scoring."
+    },
+    {
+      "stage": "2. Label",
+      "required_control": "Two authorised domain reviewers independently label the same frozen source bundle and retain separate records until agreement is measured."
+    },
+    {
+      "stage": "3. Capture",
+      "required_control": "Record canonical value or missing state, evidence eligibility, sourceability, period, claim support, report-section requirement and exact locator."
+    },
+    {
+      "stage": "4. Measure",
+      "required_control": "Report raw agreement and use a task-appropriate chance-corrected statistic only if the sample, labels and design support it; otherwise record null with a reason."
+    },
+    {
+      "stage": "5. Adjudicate",
+      "required_control": "Resolve each disagreement against the frozen passage with a recorded reason, disagreement category and versioned codebook change where needed."
+    },
+    {
+      "stage": "6. Freeze",
+      "required_control": "Freeze the adjudicated reference, codebook, source bundle and manifest hash before scoring; manual and system outputs remain evaluated conditions, not truth."
+    },
+    {
+      "stage": "7. Score",
+      "required_control": "Score against the same frozen reference, blind to condition where practicable, and record unavoidable unblinding or deviations."
+    },
+    {
+      "stage": "8. Enforce",
+      "required_control": "Apply the same definitions, period, eligible source window and gold reference; record inaccessible/deleted/paywalled/login-only/later-published states; separate availability from retrieval; reject after-cutoff support."
+    }
+  ],
+  "limitations": [
+    "The exhibit is conceptual and non-empirical; it contains no result value, sample size, acceptance threshold, condition ranking, timing, cost or user-outcome claim.",
+    "The current evaluation protocol is draft-for-domain/ethics review, and the gold/reference is not yet constructed or frozen; no empirical score may be inferred from this exhibit.",
+    "Two reviewers and high agreement do not make labels true. Reliability is distinct from validity, and chance-corrected coefficients require task- and design-specific assumptions.",
+    "Adjudication can introduce or preserve domain bias; every resolution reason and definition change must remain versioned and auditable.",
+    "Equal information access can be imperfect where sources are inaccessible, deleted, paywalled, login-only or published later; deviations must be recorded rather than hidden.",
+    "Publication or availability time is distinct from retrieval time. Material unavailable by the reporting cutoff cannot support the historical claim even if retrieved later.",
+    "Manual C0 and system C1-C3 outputs are comparison conditions, not an independent gold reference.",
+    "The complete plain-text companion provides linear reading-order access; no claim is made that a downstream dissertation PDF is tagged."
+  ],
+  "validation": {
+    "standalone_compile": "Passed with Tectonic using the dissertation style through a temporary, non-retained book harness.",
+    "scoped_tex_warnings": "No overfull boxes, underfull boxes, LaTeX warnings or package warnings originated from METH-T2. The temporary harness emitted only absolute-path reproducibility notices and the dissertation style's existing inputenc-with-Unicode-engine package warning.",
+    "layout": "Visually inspected at 180 dpi: one dedicated A4 portrait table page; all four columns, eight stages, source note and current-status hold are legible; no clipping or colour-dependent encoding; the following section begins after the post-table clearpage.",
+    "source_integrity": "Every recorded local input and output hash was recomputed and verified; strict source validation passed.",
+    "integration_boundary": "The chapter was not edited. Full-dissertation placement must be rechecked after the approved Section 3.4 input is added."
+  },
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_t2_reference_parity_matrix.tex",
+      "sha256": "afc5ccdf3f74283f37a04d16ec69e9010b47f1cd19d0721e10d13ce33719f327",
+      "role": "One-page portrait LaTeX flow matrix with deterministic pre/post placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_t2_reference_parity_matrix.txt",
+      "sha256": "466fa38d3db34be6126093e3dce23dd5ebd7c58eb648dc2eb9d37defba6cf099",
+      "role": "Complete plain-text alternative with expanded stage, agreement, temporal, parity, evidence-state and source limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

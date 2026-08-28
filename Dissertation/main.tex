@@ -1,0 +1,48 @@
+\documentclass[11pt,a4paper,openany]{book}
+\input{style}
+\input{metadata}
+
+\hypersetup{
+  pdftitle={\DissertationTitle},
+  pdfauthor={\CandidateName},
+  pdfsubject={WMG MSc Applied Artificial Intelligence dissertation - abstract-only structural draft},
+  pdfkeywords={agentic AI, portfolio reporting, company intelligence, provenance, human review}
+}
+
+\begin{document}
+\frontmatter
+\input{frontmatter/submission_proforma}
+\pagenumbering{roman}
+\input{frontmatter/title}
+\input{frontmatter/declaration}
+\input{frontmatter/abstract}
+\tableofcontents
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of tables}
+\listoftables
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{List of figures}
+\listoffigures
+\input{frontmatter/glossary}
+
+\mainmatter
+\input{chapters/01_introduction}
+\input{chapters/02_literature_review}
+\input{chapters/03_methodology}
+\input{chapters/04_system_design}
+\input{chapters/05_evaluation_results}
+\input{chapters/06_discussion}
+\input{chapters/07_governance_limitations}
+\input{chapters/08_conclusion}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{References}
+\input{references}
+
+\appendix
+\input{appendices/appendix_structure}
+
+\end{document}

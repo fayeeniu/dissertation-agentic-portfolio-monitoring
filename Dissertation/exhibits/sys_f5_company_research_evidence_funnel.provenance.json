@@ -1,0 +1,74 @@
+{
+  "artifact_id": "SYS-F5",
+  "title": "Bounded public-web evidence funnel",
+  "created_by": "Faye Niu",
+  "created_at": "2026-08-28",
+  "evidence_state": "implemented_and_controlled_fixture_tested_live_company_research_unrun",
+  "interpretation": "Author synthesis of current working-tree implementation and controlled tests; not a live-source, coverage, accuracy, usefulness, production or investment result.",
+  "inputs": [
+    {
+      "path": "src/portfolio_agent/company_research.py",
+      "sha256": "738d77f9175167b038c9a58cef3e5dd4576da7c6898a1e1c15962777795f5e32"
+    },
+    {
+      "path": "tests/integration/test_company_research.py",
+      "sha256": "75294af86d10bd69bf02883a24e846ae3f6bb9331d8833c2259b5053f8e30f3d"
+    },
+    {
+      "path": "tests/integration/test_company_research_migration.py",
+      "sha256": "37c66ea35bef404dcbb32fc97a183eabe6f517f0a9dc6545ba6a68490d0ba7fd"
+    },
+    {
+      "path": "tests/unit/test_company_research_fixtures.py",
+      "sha256": "919b5fb2f021951bab564d3c338b933c95b847170147cedf5ccb5039af439ca8"
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "136ccf2eee2bc98ed00457171e486224da290a76437c70a6e73c944cb65d0dad"
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c"
+    },
+    {
+      "path": "Dissertation/sources/html/openai_web_search.pdf",
+      "sha256": "46840b66aa2d1de8b8295686d4fd754614f5ff7afb45bbf55b9333adae777fe8"
+    },
+    {
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1"
+    },
+    {
+      "path": "Dissertation/sources/papers/16_lewis_rarr_attribution.pdf",
+      "sha256": "012e1231dc847c4cee6c7cb0e6ffee43f5799f70754930c815db1674ceffeab9"
+    },
+    {
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81"
+    },
+    {
+      "path": "Dissertation/sources/papers/12_nist_genai_profile.pdf",
+      "sha256": "6e73620ab6b64e90ef2c04bf0e0d6246185a2f4b1b13cab0df494496cff89b6a"
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_f5_company_research_evidence_funnel.tex",
+      "sha256": "90d8fd5b301a794f0192a8b7c9b96931870f5c1bd8761dc33378ca951c808624"
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f5_company_research_evidence_funnel.txt",
+      "sha256": "85c4028f5e6cc7695387bf2d706d166f80363882f3e37412377b97a01936bdcd"
+    }
+  ],
+  "validation": {
+    "focused_test_command": ".venv/bin/pytest -q tests/integration/test_company_research.py tests/integration/test_company_research_migration.py tests/unit/test_company_research_fixtures.py",
+    "focused_test_result": "37 passed",
+    "focused_test_limitation": "Controlled fake and synthetic tests only; no live company, model, public-web, participant or production run was performed.",
+    "live_calls": 0
+  }
+}

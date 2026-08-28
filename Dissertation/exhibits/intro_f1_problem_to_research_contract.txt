@@ -1,0 +1,19 @@
+INTRO-F1 - From heterogeneous evidence to the research contract
+Author: Faye Niu
+Target section: 1.2 Problem definition and motivation
+
+Alternative text
+
+The figure is a left-to-right conceptual traceability map. A top input band lists heterogeneous public company evidence: legal identity and filings, funding and grant events, public sites and documents, and submitted portfolio records. This input leads to four failure families in the left column. F1 is identity collision: similar names can identify the wrong legal company. F2 is missing or ambiguous values: empty, unavailable and zero are different evidence states. F3 is temporal mismatch: filing and publication can lag the reporting cutoff. F4 is unsupported or unsafe synthesis: support or attribution may be lost, and retrieved public text may contain hostile instructions.
+
+The middle column maps these failures to six project controls. C1 uses the exact Companies House number and holds legal identity for a named review decision. C2 preserves explicit missing states, including the distinction between blank and zero. C3 uses a frozen reporting cutoff and publication or availability time. C4 admits immutable evidence only while retaining its checksum, publisher and exact locator. C5 applies an independent verifier that records support, contradiction or explicit abstention. C6 requires named approval and a matching content hash before export.
+
+The right column links controls C1-C4 to RQ1 on data and evidence fidelity; C5 to RQ2 on independent verification; and C6 to RQ3 on efficiency and human review. RQ1 asks whether the workflow produces typed, temporally eligible, provenance-complete and reviewable claims without collapsing uncertainty. RQ2 compares support, contradiction, abstention, provenance completeness and repeat consistency with and without independent verification. RQ3 compares correctness, completeness, time, edit burden, approval time and reviewer utility only where separately authorised. RQ3 is marked EVIDENCE HELD.
+
+Interpretation boundary
+
+Arrows show intended design traceability. Their width encodes no measured quantity. The figure does not report prevalence, effect size, achieved time savings, live coverage, cost, user benefit or production readiness.
+
+Caption source note
+
+Project problem and control mapping: SOURCE_EVIDENCE_MATRIX.md (TR-03, TR-07 and WB-02-WB-05), PROJECT_CHARTER.md (problem definition, intended contribution and risk controls), DATA_DICTIONARY.md (missing-state, period, claim and approval contracts), and REQUIREMENTS.md (FR-ID, FR-MET-003, FR-TIME, FR-VER and FR-REP). Supporting locally archived literature: Hardman and Ramirez Santos (2023, PDF pp. 21-25), Nikiforova et al. (2020, PDF pp. 15-17), Thorne et al. (2026, PDF pp. 1-6), Gao et al. (2023a, ALCE, PDF pp. 1--4), and Greshake et al. (2023, PDF pp. 1-4). This is a conceptual mapping only; the arrows do not represent prevalence, effect size, achieved time savings, live coverage, cost, user benefit or production readiness.

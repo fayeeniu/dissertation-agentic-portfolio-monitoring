@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block title %}{{ company.canonical_name }} · Company 360{% endblock %}
+{% block content %}
+<section class="page-intro company-hero" aria-labelledby="page-title">
+  <div>
+    <p class="eyebrow">Company 360 · identity and documents</p>
+    <h1 id="page-title">{{ company.canonical_name }}</h1>
+    <p class="lede">This workspace separates submitted identity, discovered sources, captured evidence, exact-span claims, and named decisions. Placeholder labels are not official company names.</p>
+  </div>
+  <span class="status status-{{ company.resolution_status }}">{{ humanize(company.resolution_status) }}</span>
+</section>
+
+<section class="next-action" aria-labelledby="company-next-action-title">
+  <div>
+    <p class="eyebrow">Next safe human action</p>
+    <h2 id="company-next-action-title">{{ next_action }}</h2>
+    <p>{{ next_detail }}</p>
+  </div>
+  <a class="button secondary" href="/companies">Back to Companies ledger</a>
+</section>
+
+<nav class="company-tabs" aria-label="Company 360 sections">
+  <a href="#identity">Identity</a>
+  <a href="#documents">Documents</a>
+  <a href="#research-state">Research state</a>
+  <a href="#evidence">Evidence</a>
+  <a href="#deck">Deck</a>
+</nav>
+
+<section id="identity" class="panel" aria-labelledby="identity-title">
+  <div class="section-heading">
+    <div><p class="step">Identity and documents</p><h2 id="identity-title">Identity claims and named decisions</h2></div>
+    <span>{{ identifiers | length }} identifiers · {{ domains | length }} domains</span>
+  </div>
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <caption>Submitted identity claims and review state</caption>
+      <thead><tr><th scope="col">Claim</th><th scope="col">Current state</th><th scope="col">Latest decision</th><th scope="col">Named review</th></tr></thead>
+      <tbody>
+      {% for identifier in identifiers %}
+        {% set state = identifier_states.get(identifier.id, 'pending') %}
+        <tr>
+          <td data-label="Claim"><strong>{{ humanize(identifier.scheme) }}</strong><small><code>{{ identifier.normalized_value }}</code></small></td>
+          <td data-label="Current state"><span class="status status-{{ 'resolved' if state == 'accepted' else ('rejected' if state == 'rejected' else 'held') }}">{{ 'Identity reviewed' if state == 'accepted' else ('Identity rejected' if state == 'rejected' else 'Identity held') }}</span></td>
+          <td data-label="Latest decision">{% set history = identifier_decisions.get(identifier.id, []) %}{% if history %}<span>{{ humanize(history[0].decision) }} by {{ history[0].actor }}</span><small>{{ history[0].reason }}</small>{% else %}<span>Not available</span>{% endif %}</td>
+          <td data-label="Named review">
+            {% set governed_candidates = identifier_candidates.get(identifier.id, []) %}
+            {% if reviewer_name and governed_candidates %}
+            {% for candidate in governed_candidates %}
+            <form action="/identity-candidates/{{ candidate.id }}/decide" method="post" class="stacked-form compact-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="company_id" value="{{ company.id }}">
+              <input type="hidden" name="return_company_id" value="{{ company.id }}">
+              <small>Candidate {{ candidate.submitted_name }} · {{ humanize(candidate.reason_code) }}</small>
+              <label for="candidate-decision-{{ candidate.id }}">Decision</label>
+              <select id="candidate-decision-{{ candidate.id }}" name="decision"><option value="accept">Accept</option><option value="reject">Reject</option></select>
+              <label for="candidate-reason-{{ candidate.id }}">Rationale</label>
+              <textarea id="candidate-reason-{{ candidate.id }}" name="reason" required minlength="5" maxlength="2000"></textarea>
+              <button type="submit" class="secondary">Record candidate decision</button>
+            </form>
+            {% endfor %}
+            {% elif reviewer_name and state == 'pending' %}
+            <form action="/company-identifiers/{{ identifier.id }}/decide" method="post" class="stacked-form compact-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <label for="identifier-decision-{{ loop.index }}">Decision</label>
+              <select id="identifier-decision-{{ loop.index }}" name="decision"><option value="accept">Accept</option><option value="reject">Reject</option></select>
+              <label for="identifier-reason-{{ loop.index }}">Rationale</label>
+              <textarea id="identifier-reason-{{ loop.index }}" name="reason" required minlength="5" maxlength="2000"></textarea>
+              <button type="submit" class="secondary">Record identity decision</button>
+            </form>
+            {% else %}<span>Review history retained</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      {% for domain in domains %}
+        <tr>
+          <td data-label="Claim"><strong>First-party domain</strong><small>{{ domain.normalized_domain }}</small></td>
+          <td data-label="Current state"><span class="status status-{{ domain.status }}">{{ 'Verified first-party claim' if domain.status == 'verified' else humanize(domain.status) }}</span></td>
+          <td data-label="Latest decision">{% set history = domain_decisions.get(domain.id, []) %}{% if history %}<span>{{ humanize(history[0].decision) }} by {{ history[0].actor }}</span><small>{{ history[0].reason }}</small>{% else %}<span>Not available</span>{% endif %}</td>
+          <td data-label="Named review">
+            {% if reviewer_name and domain.status == 'pending' %}
+            <form action="/company-domains/{{ domain.id }}/decide" method="post" class="stacked-form compact-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <label for="domain-decision-{{ loop.index }}">Decision</label>
+              <select id="domain-decision-{{ loop.index }}" name="decision"><option value="accept">Accept</option><option value="reject">Reject</option></select>
+              <label for="domain-reason-{{ loop.index }}">Rationale</label>
+              <textarea id="domain-reason-{{ loop.index }}" name="reason" required minlength="5" maxlength="2000"></textarea>
+              <button type="submit" class="secondary">Record domain decision</button>
+            </form>
+            {% else %}<span>Review history retained</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+      {% if not identifiers and not domains %}<tr><td colspan="4">No exact identifier or domain claim is recorded. Provide exact identity evidence; do not merge by name.</td></tr>{% endif %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="documents" class="panel" aria-labelledby="documents-title">
+  <div class="section-heading">
+    <div><p class="step">Immutable intake ledger</p><h2 id="documents-title">Authorised inputs and documents</h2></div>
+    <span>{{ artifacts | length }} recorded</span>
+  </div>
+  <div class="table-wrap">
+    <table class="responsive-table">
+      <caption>Authorised intake artifacts</caption>
+      <thead><tr><th scope="col">Kind</th><th scope="col">Submitted metadata</th><th scope="col">Classification</th><th scope="col">Integrity</th><th scope="col">Boundary</th></tr></thead>
+      <tbody>
+      {% for artifact in artifacts %}
+        <tr>
+          <td data-label="Kind"><strong>{{ humanize(artifact.kind) }}</strong><small>{{ artifact.original_filename or 'No file' }}</small></td>
+          <td data-label="Submitted metadata"><span>{{ artifact.normalized_value or 'Not available' }}</span><small>Recorded by {{ artifact.actor }}</small></td>
+          <td data-label="Classification"><span class="status status-{{ artifact.classification }}">{{ humanize(artifact.classification) }}</span><small>{{ artifact.submitted_value_json.get('trust_state', 'submitted claim') }}</small></td>
+          <td data-label="Integrity">{% if artifact.content_sha256 %}<code class="truncate-id">{{ artifact.content_sha256 }}</code>{% else %}<span>Request fingerprint only</span>{% endif %}<small><code class="truncate-id">{{ artifact.fingerprint }}</code></small></td>
+          <td data-label="Boundary"><span>No model or source call</span><small>Intake is never sent automatically; restricted/internal bytes remain outside the external-model path</small></td>
+        </tr>
+      {% else %}<tr><td colspan="5">No intake artifacts are recorded.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="research-state" class="panel" aria-labelledby="research-state-title">
+  <div class="section-heading">
+    <div><p class="step">Bounded public research</p><h2 id="research-state-title">{% if research_runs %}Persisted research runs and controls{% else %}No public research has run{% endif %}</h2></div>
+    <span>{{ 'Explicit live opt-in enabled' if company_research_enabled else 'Disabled by default' }}</span>
+  </div>
+  {% if company_research_enabled and reviewer_name and company.classification == 'public' and company.resolution_status == 'resolved' and cases %}
+  <form action="/research-cases/{{ cases[0].id }}/runs" method="post" class="inline-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label for="research-cutoff">Evidence cutoff</label>
+    <input id="research-cutoff" name="reporting_cutoff" type="date" required>
+    <button type="submit">Create bounded research run</button>
+  </form>
+  <p class="hint">Creating a run does not call the network. Each stage is advanced explicitly and recorded.</p>
+  {% elif company_research_enabled and company.classification != 'public' %}
+  <p class="empty">This case is {{ humanize(company.classification) }}. External-model research is permitted only for a separately created public case.</p>
+  {% elif not company_research_enabled %}
+  <p class="empty">Live source retrieval remains held by G2 in this runtime. Set both live-retrieval and external-model opt-ins, an API key, and a named reviewer to enable the approved path.</p>
+  {% endif %}
+
+  {% for run in research_runs %}
+  {% set run_tasks = tasks_by_run.get(run.id, []) %}
+  {% set running_tasks = run_tasks | selectattr('status', 'equalto', 'running') | list %}
+  <article id="research-run-{{ run.id }}" class="research-run-card">
+    <div class="section-heading">
+      <div><h3>Research run <code>{{ short_id(run.id) }}</code></h3><p>Cutoff {{ run.reporting_cutoff }} · policy {{ run.source_policy_version }} · model {{ run.model }}</p></div>
+      <span class="status status-{{ run.status }}">{{ humanize(run.status) }}</span>
+    </div>
+    <ol class="task-ledger" aria-label="Persisted research stages">
+      {% for task in run_tasks %}
+      <li><strong>{{ humanize(task.capability) }}</strong> <span class="status status-{{ task.status }}">{{ humanize(task.status) }}</span><small>{{ task.attempt_count }}/{{ task.max_attempts }} attempts{% if task.error_code %} · {{ humanize(task.error_code) }}: {{ task.error_message }}{% endif %}</small></li>
+      {% endfor %}
+    </ol>
+    {% if company_research_enabled and reviewer_name and (run.status in ['pending', 'running', 'failed'] or running_tasks) %}
+    <div class="research-controls">
+      {% if not running_tasks %}
+      <form action="/company-research-runs/{{ run.id }}/advance" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit">Run next persisted stage</button></form>
+      {% else %}
+      <form action="/company-research-runs/{{ run.id }}/recover" method="post" class="inline-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="recover-reason-{{ run.id }}">Interrupted-task recovery rationale</label><input id="recover-reason-{{ run.id }}" name="reason" required minlength="5" maxlength="2000"><button type="submit">Recover interrupted stage</button></form>
+      {% endif %}
+      <form action="/company-research-runs/{{ run.id }}/cancel" method="post" class="inline-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="cancel-reason-{{ run.id }}">Cancellation rationale</label><input id="cancel-reason-{{ run.id }}" name="reason" required minlength="5" maxlength="2000"><button type="submit" class="secondary">Cancel run</button></form>
+    </div>
+    {% endif %}
+    <dl class="coverage-grid"><div><dt>Discovered</dt><dd>{{ run.coverage_json.get('discovered', sources_by_run.get(run.id, []) | length) }}</dd></div><div><dt>Captured</dt><dd>{{ run.coverage_json.get('fetched', 0) }}</dd></div><div><dt>Claims</dt><dd>{{ run.coverage_json.get('claim_count', claims_by_run.get(run.id, []) | length) }}</dd></div><div><dt>Model calls</dt><dd>{{ run.usage_json.get('model_calls', 0) }}</dd></div></dl>
+  </article>
+  {% else %}
+  <p class="empty">No public research run is recorded. Page views never trigger source or model calls.</p>
+  {% endfor %}
+</section>
+
+<section id="evidence" class="panel" aria-labelledby="evidence-title">
+  <div class="section-heading"><div><p class="step">Source coverage</p><h2 id="evidence-title">Discovered and captured public sources</h2></div><span>{{ research_sources | default([]) | length }} sources</span></div>
+  {% for run in research_runs %}
+  {% set run_sources = sources_by_run.get(run.id, []) %}
+  {% if run_sources %}
+  <div class="table-wrap"><table class="responsive-table"><caption>Sources for run {{ short_id(run.id) }}</caption><thead><tr><th scope="col">Publisher</th><th scope="col">Tier</th><th scope="col">State</th><th scope="col">Integrity</th><th scope="col">Gap</th></tr></thead><tbody>
+  {% for source in run_sources %}<tr><td data-label="Publisher"><a href="{{ source.final_url or source.url }}" rel="noreferrer">{{ source.title or source.publisher_domain }}</a><small>{{ source.publisher_domain }}</small></td><td data-label="Tier">{{ humanize(source.source_tier) }}</td><td data-label="State"><span class="status status-{{ source.status }}">{{ humanize(source.status) }}</span><small>{{ source.media_type or 'No captured media' }}</small></td><td data-label="Integrity">{% if source.raw_sha256 %}<code class="truncate-id">{{ source.raw_sha256 }}</code><small>{{ source.byte_size }} bytes · {{ source.retrieved_at }}</small>{% else %}Not evidence{% endif %}</td><td data-label="Gap">{% if source.error_code %}{{ humanize(source.error_code) }}<small>{{ source.error_message }}</small>{% else %}None recorded{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% endif %}
+  {% else %}<p class="empty">No source discovery has run.</p>{% endfor %}
+</section>
+
+<section id="deck" class="panel" aria-labelledby="deck-title">
+  <div class="section-heading"><div><p class="step">Exact-span synthesis</p><h2 id="deck-title">Reviewable company-intelligence deck</h2></div><span>{{ profile_versions | length }} versions</span></div>
+  {% for profile in profile_versions %}
+  {% if profile.research_run_id %}
+  <article class="deck-card">
+    <div class="section-heading"><div><h3>Deck version {{ profile.version }}</h3><p><code>{{ profile.content_sha256 }}</code></p></div><span class="status status-{{ profile.status }}">{{ humanize(profile.status) }}</span></div>
+    {% if profile.content_json.get('contradictions') %}
+    <section class="deck-section contradiction-review" aria-labelledby="contradictions-{{ profile.id }}"><h4 id="contradictions-{{ profile.id }}">Potential contradictions requiring named resolution</h4><p>These are source-separated claim sets about the same model-labelled subject. They are not silently reconciled.</p><ul>{% for contradiction in profile.content_json.get('contradictions', []) %}<li><strong>{{ humanize(contradiction.get('category')) }} · {{ humanize(contradiction.get('subject_key')) }}</strong><small>{{ humanize(contradiction.get('status')) }}</small><ul>{% for claim in contradiction.get('claims', []) %}<li><blockquote>{{ claim.get('evidence_span') }}</blockquote><a href="{{ claim.get('source_url') }}" rel="noreferrer">Source</a></li>{% endfor %}</ul></li>{% endfor %}</ul></section>
+    {% endif %}
+    {% for section in profile.content_json.get('sections', []) %}
+      {% if section.get('claims') %}<section class="deck-section"><h4>{{ humanize(section.get('key')) }}</h4><ul>{% for claim in section.get('claims') %}<li><p>{{ claim.get('statement') }}</p><blockquote>{{ claim.get('evidence_span') }}</blockquote><small><a href="{{ claim.get('source_url') }}" rel="noreferrer">Open captured source</a> · {{ humanize(claim.get('perspective')) }} · {{ humanize(claim.get('verification_status')) }}</small></li>{% endfor %}</ul></section>{% endif %}
+    {% endfor %}
+    <details><summary>Coverage and limitations</summary><pre>{{ profile.content_json.get('coverage') | tojson(indent=2) }}</pre><ul>{% for limitation in profile.content_json.get('limitations', []) %}<li>{{ limitation }}</li>{% endfor %}</ul></details>
+    {% if reviewer_name and profile.status == 'pending_review' %}
+    {% set profile_tasks = tasks_by_run.get(profile.research_run_id, []) %}
+    {% set profile_running = profile_tasks | selectattr('status', 'equalto', 'running') | list %}
+    {% if not profile_running %}
+    <form action="/profile-versions/{{ profile.id }}/decide" method="post" class="stacked-form compact-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="expected_lock_version" value="{{ profile.lock_version }}"><label for="profile-decision-{{ profile.id }}">Decision</label><select id="profile-decision-{{ profile.id }}" name="decision"><option value="approve">Approve</option><option value="reject">Reject</option></select><label for="profile-reason-{{ profile.id }}">Rationale</label><textarea id="profile-reason-{{ profile.id }}" name="reason" required minlength="5" maxlength="2000"></textarea><button type="submit">Record named deck decision</button></form>
+    {% else %}<p class="empty">Composition output exists but task finalization is incomplete. Recover the interrupted stage before review.</p>{% endif %}
+    {% elif profile.status == 'approved' %}
+    <p><a class="button" href="/profile-versions/{{ profile.id }}/deck/html">Download printable HTML deck</a> <a class="button secondary" href="/profile-versions/{{ profile.id }}/deck/json">Download evidence JSON</a></p>
+    {% endif %}
+  </article>
+  {% endif %}
+  {% else %}<p class="empty">No cited deck exists. Discovery output alone never creates a deck.</p>{% endfor %}
+</section>
+
+<section class="panel" aria-labelledby="summary-title">
+  <div class="section-heading">
+    <div><p class="step">Workspace totals</p><h2 id="summary-title">Case and profile summary</h2></div>
+  </div>
+  <div class="company-summary-grid">
+    <article><h3>Research cases</h3><p>{{ cases | length }} case{{ '' if cases | length == 1 else 's' }} pinned to the core company-profile template.</p></article>
+    <article><h3>Profile versions</h3><p>{% if profile_versions %}{{ profile_versions | length }} persisted{% else %}Not available — synthesis has not run{% endif %}.</p></article>
+    <article><h3>Source coverage</h3><p>{% if research_runs %}{{ sources_by_run.get(research_runs[0].id, []) | length }} discovered in the latest run{% else %}Not available{% endif %}.</p></article>
+    <article><h3>Evidence boundary</h3><p>Only exact-span claims from captured public text enter a deck; unsupported areas remain gaps.</p></article>
+  </div>
+</section>
+{% endblock %}

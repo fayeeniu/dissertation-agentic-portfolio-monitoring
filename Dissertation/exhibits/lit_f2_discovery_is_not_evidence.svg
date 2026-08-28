@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1340" viewBox="0 0 900 1340"
+     role="img" aria-labelledby="lit-f2-title lit-f2-desc">
+  <title id="lit-f2-title">Discovery is not evidence</title>
+  <desc id="lit-f2-desc">A conceptual, non-empirical author synthesis for dissertation Section 2.5. The left lane shows LLM-assisted discovery moving from a bounded topic plan through adaptive queries, documented Responses API web-search candidates and a source inventory. The right lane starts with official adapters and fixed evidence-control guardrails. The lanes join only at a neutral candidate queue, which contains identifiers and origin metadata but has no evidence status. After source admission and controlled capture, the evidence path splits. Route one runs deterministic structured extraction first. Route two optionally uses bounded OpenAI model-assisted extraction only for admitted unstructured public or synthetic evidence with store=False, a strict schema and an exact passage requirement. Both routes converge on deterministic exact-span and schema validation plus normalisation, then independent verification. Verification produces either a supported claim or explicit held and conflict outputs. Retrieved content remains outside the instruction boundary as untrusted data and cannot grant tools or actions. Missing and not-admitted outcomes remain explicit. Report approval and export remain separate gates.</desc>
+  <defs>
+    <style>
+      .background { fill:#FFFFFF; }
+      .title { font:700 30px Helvetica, Arial, sans-serif; fill:#172B3A; }
+      .subtitle { font:14px Helvetica, Arial, sans-serif; fill:#4B5F6D; }
+      .rule { stroke:#B7C5CF; stroke-width:1.5; }
+      .lane-divider { stroke:#CCD5DD; stroke-width:2; }
+      .discovery-header { fill:#EEEDFF; stroke:#5A58C8; stroke-width:2; }
+      .evidence-header { fill:#E6F5F3; stroke:#0F7C80; stroke-width:2; }
+      .lane-header-text-purple { font:700 15px Helvetica, Arial, sans-serif; fill:#4745AD; }
+      .lane-header-text-teal { font:700 15px Helvetica, Arial, sans-serif; fill:#0C6669; }
+      .discovery-box { fill:#F5F4FF; stroke:#6865CC; stroke-width:2; }
+      .guardrail-box { fill:#F0F8F7; stroke:#4B9A99; stroke-width:1.5; }
+      .official-box { fill:#EAF6F4; stroke:#0F7C80; stroke-width:2; }
+      .queue-box { fill:#FFF3D8; stroke:#A86D1B; stroke-width:2.5; }
+      .evidence-band { fill:#F6FBFA; stroke:#B6D9D6; stroke-width:1.5; }
+      .evidence-box { fill:#EAF6F4; stroke:#0F7C80; stroke-width:2; }
+      .route-default-box { fill:#EAF6F4; stroke:#0F7C80; stroke-width:2; }
+      .route-model-box { fill:#F2EEFF; stroke:#6A5ACD; stroke-width:2; }
+      .validation-box { fill:#E8F1F8; stroke:#52758A; stroke-width:2.25; }
+      .supported-box { fill:#E9F5EC; stroke:#2E7D5B; stroke-width:2.5; }
+      .containment-box { fill:#FCEDEF; stroke:#B83A4B; stroke-width:2; }
+      .outcome-box { fill:#FFF3D8; stroke:#A86D1B; stroke-width:2; }
+      .boundary-box { fill:#EAF2F7; stroke:#52758A; stroke-width:2; }
+      .status-pill { fill:#E6EEF3; stroke:#9EB0BC; stroke-width:1; }
+      .status-text { font:700 11px Helvetica, Arial, sans-serif; fill:#405563; }
+      .node-title { font:700 17px Helvetica, Arial, sans-serif; fill:#15384D; }
+      .node-title-purple { font:700 17px Helvetica, Arial, sans-serif; fill:#403E9C; }
+      .node-title-teal { font:700 17px Helvetica, Arial, sans-serif; fill:#0B686B; }
+      .node-title-green { font:700 17px Helvetica, Arial, sans-serif; fill:#226545; }
+      .node-title-model { font:700 17px Helvetica, Arial, sans-serif; fill:#4D3FA3; }
+      .validation-title { font:700 16.5px Helvetica, Arial, sans-serif; fill:#34586E; }
+      .node-body { font:14px Helvetica, Arial, sans-serif; fill:#354A58; }
+      .compact-body { font:13px Helvetica, Arial, sans-serif; fill:#354A58; }
+      .guardrail-body { font:13px Helvetica, Arial, sans-serif; fill:#354A58; }
+      .small-label { font:700 12px Helvetica, Arial, sans-serif; fill:#5C6D78; }
+      .branch-title-red { font:700 13px Helvetica, Arial, sans-serif; fill:#9C2738; }
+      .branch-title-amber { font:700 13px Helvetica, Arial, sans-serif; fill:#805016; }
+      .branch-body { font:12.5px Helvetica, Arial, sans-serif; fill:#4A3D35; }
+      .boundary-title { font:700 15px Helvetica, Arial, sans-serif; fill:#34586E; }
+      .boundary-body { font:13px Helvetica, Arial, sans-serif; fill:#344854; }
+      .flow-arrow { fill:none; stroke:#667784; stroke-width:2.25; marker-end:url(#arrow); }
+      .discovery-arrow { fill:none; stroke:#6865CC; stroke-width:2.25; marker-end:url(#discovery-arrow); }
+      .branch-arrow { fill:none; stroke:#9A5F25; stroke-width:2; marker-end:url(#branch-arrow); }
+      .source-note { font:11px Helvetica, Arial, sans-serif; fill:#526471; }
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#667784"/>
+    </marker>
+    <marker id="discovery-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#6865CC"/>
+    </marker>
+    <marker id="branch-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#9A5F25"/>
+    </marker>
+  </defs>
+
+  <rect class="background" x="0" y="0" width="900" height="1340"/>
+  <text class="title" x="40" y="44">Discovery is not evidence</text>
+  <text class="subtitle" x="40" y="70">Discovery yields candidates; admitted evidence follows an explicit extraction route before deterministic validation and verification.</text>
+  <rect class="status-pill" x="675" y="27" width="185" height="31" rx="15"/>
+  <text class="status-text" x="767.5" y="47" text-anchor="middle">CONCEPTUAL · NON-EMPIRICAL</text>
+  <line class="rule" x1="40" y1="89" x2="860" y2="89"/>
+
+  <rect class="discovery-header" x="40" y="108" width="370" height="43" rx="9"/>
+  <text class="lane-header-text-purple" x="225" y="135" text-anchor="middle">LLM-ASSISTED DISCOVERY LANE</text>
+  <rect class="evidence-header" x="490" y="108" width="370" height="43" rx="9"/>
+  <text class="lane-header-text-teal" x="675" y="135" text-anchor="middle">BOUNDED EVIDENCE-CONTROL LANE</text>
+  <line class="lane-divider" x1="450" y1="108" x2="450" y2="505"/>
+
+  <rect class="discovery-box" x="40" y="165" width="370" height="70" rx="9"/>
+  <text class="node-title-purple" x="60" y="188">Topic plan</text>
+  <text class="compact-body" x="60" y="209">Bounded topics, cutoff and budgets</text>
+  <text class="compact-body" x="60" y="227">No claim or source decision</text>
+
+  <path class="discovery-arrow" d="M 225 235 L 225 250"/>
+  <rect class="discovery-box" x="40" y="250" width="370" height="70" rx="9"/>
+  <text class="node-title-purple" x="60" y="273">Adaptive queries</text>
+  <text class="compact-body" x="60" y="294">Model may reformulate searches</text>
+  <text class="compact-body" x="60" y="312">Permissions and budgets stay fixed</text>
+
+  <path class="discovery-arrow" d="M 225 320 L 225 335"/>
+  <rect class="discovery-box" x="40" y="335" width="370" height="75" rx="9"/>
+  <text class="node-title-purple" x="60" y="359">Responses API web-search candidates</text>
+  <text class="node-body" x="60" y="382">URLs, citations and source lists remain candidates</text>
+  <text class="node-body" x="60" y="402">Documented capability - not execution proof</text>
+
+  <path class="discovery-arrow" d="M 225 410 L 225 430"/>
+  <rect class="discovery-box" x="40" y="430" width="370" height="70" rx="9"/>
+  <text class="node-title-purple" x="60" y="453">Source inventory</text>
+  <text class="compact-body" x="60" y="474">URL, domain and origin metadata</text>
+  <text class="compact-body" x="60" y="492">No support or admission status</text>
+
+  <rect class="official-box" x="490" y="165" width="370" height="70" rx="9"/>
+  <text class="node-title-teal" x="510" y="188">Official adapters</text>
+  <text class="compact-body" x="510" y="209">Reviewed capability identifiers</text>
+  <text class="compact-body" x="510" y="227">Deterministic or local replay paths</text>
+
+  <rect class="guardrail-box" x="490" y="255" width="370" height="170" rx="9"/>
+  <text class="small-label" x="510" y="279">FIXED GUARDRAILS - DESIGN CONTRACT</text>
+  <text class="guardrail-body" x="510" y="304">• Model output remains a typed proposal</text>
+  <text class="guardrail-body" x="510" y="328">• Optional model use is admitted and bounded</text>
+  <text class="guardrail-body" x="510" y="352">• Tools, domains, redirects and actions stay fixed</text>
+  <text class="guardrail-body" x="510" y="376">• Retrieval does not establish grounding</text>
+  <text class="guardrail-body" x="523" y="397">or source truth</text>
+  <text class="small-label" x="510" y="416">Controls shown; effectiveness is not measured here.</text>
+
+  <path class="discovery-arrow" d="M 225 500 L 225 510 L 340 530"/>
+  <path class="flow-arrow" d="M 675 235 L 675 245 L 875 245 L 875 500 L 560 530"/>
+  <rect class="queue-box" x="250" y="530" width="400" height="75" rx="10"/>
+  <text class="small-label" x="450" y="551" text-anchor="middle">SOLE MEETING POINT</text>
+  <text class="node-title" x="450" y="576" text-anchor="middle">Candidate queue</text>
+  <text class="node-body" x="450" y="596" text-anchor="middle">URLs or identifiers + origin metadata; no evidence status</text>
+
+  <rect class="evidence-band" x="25" y="625" width="850" height="590" rx="12"/>
+  <text class="small-label" x="450" y="650" text-anchor="middle">SOURCE ADMISSION BEFORE CAPTURE - TWO EXPLICIT EXTRACTION ROUTES</text>
+
+  <path class="flow-arrow" d="M 450 605 L 450 665"/>
+  <rect class="evidence-box" x="250" y="665" width="400" height="60" rx="9"/>
+  <text class="node-title-teal" x="270" y="690">Source admission</text>
+  <text class="node-body" x="270" y="713">Policy eligibility required before capture or extraction</text>
+
+  <path class="flow-arrow" d="M 450 725 L 450 755"/>
+  <rect class="evidence-box" x="250" y="755" width="400" height="60" rx="9"/>
+  <text class="node-title-teal" x="270" y="780">Controlled fetch and capture</text>
+  <text class="node-body" x="270" y="803">Guarded request; permitted bytes captured immutably</text>
+
+  <path class="flow-arrow" d="M 450 815 L 450 828 L 250 845"/>
+  <path class="flow-arrow" d="M 450 815 L 450 828 L 660 845"/>
+
+  <rect class="route-default-box" x="50" y="845" width="390" height="100" rx="9"/>
+  <text class="small-label" x="70" y="867">ROUTE 1 - DEFAULT / RUN FIRST</text>
+  <text class="node-title-teal" x="70" y="891">Deterministic structured extraction</text>
+  <text class="compact-body" x="70" y="916">Structured value leaf or complete finite token</text>
+  <text class="compact-body" x="70" y="935">Failure produces explicit abstention</text>
+
+  <rect class="route-model-box" x="460" y="845" width="400" height="100" rx="9"/>
+  <text class="small-label" x="480" y="867">ROUTE 2 - OPTIONAL / BOUNDED OPENAI</text>
+  <text class="node-title-model" x="480" y="891">Model-assisted extraction</text>
+  <text class="compact-body" x="480" y="912">Admitted unstructured public/synthetic evidence only</text>
+  <text class="compact-body" x="480" y="930">store=False; strict schema + exact span; typed proposal</text>
+
+  <path class="flow-arrow" d="M 250 945 L 250 962 L 380 980"/>
+  <path class="flow-arrow" d="M 660 945 L 660 962 L 520 980"/>
+  <rect class="validation-box" x="210" y="980" width="480" height="70" rx="9"/>
+  <text class="validation-title" x="230" y="1003">Deterministic exact-span/schema validation</text>
+  <text class="compact-body" x="230" y="1024">and normalisation; both routes must pass</text>
+  <text class="compact-body" x="230" y="1042">Schema or span failure is held</text>
+
+  <path class="flow-arrow" d="M 450 1050 L 450 1080"/>
+  <rect class="evidence-box" x="250" y="1080" width="400" height="60" rx="9"/>
+  <text class="node-title-teal" x="270" y="1105">Independent verification</text>
+  <text class="node-body" x="270" y="1128">Support, time, provenance, trust and conflict checked</text>
+
+  <path class="flow-arrow" d="M 450 1140 L 390 1150"/>
+  <path class="flow-arrow" d="M 450 1140 L 705 1150"/>
+  <rect class="supported-box" x="220" y="1150" width="300" height="65" rx="9"/>
+  <text class="node-title-green" x="240" y="1176">SUPPORTED CLAIM</text>
+  <text class="compact-body" x="240" y="1199">Report-eligible; approval/export separate</text>
+
+  <rect class="outcome-box" x="550" y="1145" width="310" height="70" rx="9"/>
+  <text class="branch-title-amber" x="570" y="1170">HELD / CONFLICT</text>
+  <text class="branch-body" x="570" y="1190">Unsupported, stale, untrusted or contradicted set</text>
+  <text class="branch-body" x="570" y="1208">Visible non-claim output</text>
+
+  <rect class="containment-box" x="40" y="655" width="185" height="160" rx="9"/>
+  <text class="branch-title-red" x="55" y="680">RETRIEVED CONTENT</text>
+  <text class="branch-title-red" x="55" y="697">OUTSIDE INSTRUCTION</text>
+  <text class="branch-title-red" x="55" y="714">BOUNDARY</text>
+  <text class="branch-body" x="55" y="739">Untrusted data only.</text>
+  <text class="branch-body" x="55" y="759">No tools/actions authorised.</text>
+  <text class="branch-body" x="55" y="780">Injection/restricted content</text>
+  <text class="branch-body" x="55" y="801">is rejected or held.</text>
+  <path class="branch-arrow" d="M 225 785 L 243 785"/>
+
+  <rect class="outcome-box" x="675" y="655" width="185" height="160" rx="9"/>
+  <text class="branch-title-amber" x="690" y="680">MISSING / NOT ADMITTED</text>
+  <text class="branch-body" x="690" y="706">Unadmitted source</text>
+  <text class="branch-body" x="690" y="728">Blocked or inaccessible</text>
+  <text class="branch-body" x="690" y="750">No record / capture held</text>
+  <text class="branch-body" x="690" y="772">Explicit gap; no extraction</text>
+  <text class="branch-body" x="690" y="794">No report claim</text>
+  <path class="branch-arrow" d="M 650 695 L 668 695"/>
+  <path class="branch-arrow" d="M 650 785 L 668 785"/>
+
+  <rect class="boundary-box" x="40" y="1230" width="820" height="65" rx="10"/>
+  <text class="boundary-title" x="60" y="1253">DISCOVERY IS NOT EVIDENCE</text>
+  <text class="boundary-body" x="60" y="1275">Discovery stops at the queue. Only admitted evidence passing an explicit extraction route, deterministic validation</text>
+  <text class="boundary-body" x="60" y="1291">and independent verification may reach a supported claim.</text>
+
+  <line class="rule" x1="40" y1="1305" x2="860" y2="1305"/>
+  <text class="source-note" x="40" y="1322">Source: local Section 2.5 packet + project contracts; exact local pages/files/hashes are in the TXT and provenance.</text>
+  <text class="source-note" x="40" y="1338">Author: Faye Niu · LIT-F2 · conceptual, non-empirical, not a result; no live coverage, latency, cost, token-use or performance claim.</text>
+</svg>

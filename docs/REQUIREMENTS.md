@@ -64,10 +64,10 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | FR-EXT-002 | Every extraction must satisfy a strict typed schema and expected company/metric identity. | `StrictExtraction`; identity checks. | Implemented |
 | FR-EXT-003 | Keep extracted and normalized values separate and preserve provider/schema version. | `Extraction` model. | Implemented |
 | FR-EXT-004 | Reject instruction-like/untrusted evidence before extraction or model processing. | Injection detector; workflow and security tests. | Implemented |
-| FR-EXT-005 | External model use must be opt-in, limited to public/synthetic evidence, use `store=False`, and use bounded attempts. | OpenAI provider policy gates. | Implemented, not externally exercised |
-| FR-EXT-006 | Model routing must enforce `gpt-5.4-mini` and escalate once to `gpt-5.4` only after strict-validation failure; arbitrary/reversed pairs fail before client construction. | Settings and provider adapter. | Implemented, not externally exercised |
+| FR-EXT-005 | External model use must be opt-in, limited to public/synthetic evidence, use `store=False`, and use bounded attempts. | OpenAI provider policy gates. | Implemented; one bounded synthetic live call exercised |
+| FR-EXT-006 | Model routing must enforce `gpt-5.6-luna` for every external call and permit at most one same-model repair only after strict-validation failure; any model outside the pinned route fails before client construction. | Settings and provider adapter. | Implemented; primary route exercised in the bounded synthetic smoke, repair path mocked |
 | FR-EXT-007 | Model name, attempts, tokens, and errors must be observable; unknown monetary cost must remain null. | Agent/extraction records; no invented pricing. | Implemented |
-| FR-EXT-008 | Every non-null model extraction must cite a complete finite numeric token or exact structured value leaf present in the supplied evidence whose parsed value/currency/unit agree; substrings, scaled/percentage truncation, and non-finite values fail closed. Nulls require an abstention reason. | `StrictExtraction` v2 and adversarial mocked-provider tests. | Implemented, not externally exercised |
+| FR-EXT-008 | Every non-null model extraction must cite a complete finite numeric token or exact structured value leaf present in the supplied evidence whose parsed value/currency/unit agree; substrings, scaled/percentage truncation, and non-finite values fail closed. Nulls require an abstention reason. | `StrictExtraction` v2 and adversarial mocked-provider tests. | Implemented; exact structured-value path exercised live, adversarial paths mocked |
 
 ### Bounded multi-agent workflow
 
@@ -115,7 +115,7 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | FR-UI-004 | Derive reviewer identity from local configuration, never an action form field. | `PORTFOLIO_REVIEWER_NAME`; mutation tests. | Implemented |
 | FR-OBS-001 | Give every dataset, workflow, agent action, evidence item, extraction, claim, report, and review a stable ID. | Data model. | Implemented |
 | FR-OBS-002 | Retain input/output hashes, duration, attempts, provider/model, tokens, errors, and bounded metadata. | Agent ledger. | Implemented |
-| FR-OBS-003 | Pin dependencies and maintain reversible, model-equivalent Alembic history; a downgrade that cannot satisfy a legacy constraint must fail before any mutation. | `pyproject.toml`; revisions `0001`–`0007`; schema/round-trip/legacy-hash/duplicate-name preflight tests. | Implemented with documented legacy loss boundary |
+| FR-OBS-003 | Pin dependencies and maintain reversible, model-equivalent Alembic history; a downgrade that cannot satisfy a legacy constraint must fail before any mutation. | `pyproject.toml`; revisions `0001`–`0009`; schema/round-trip/legacy-hash/duplicate-name/first-slice/live-research-data preflight tests. | Implemented with documented loss boundaries |
 | FR-OBS-004 | Core tests and evaluation must run without a network or API key. | Full test suite and deterministic evaluation. | Implemented |
 
 ## P0 non-functional requirements
@@ -152,6 +152,50 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | FR-VIZ-001 | Generate multiple accessible dissertation visuals with source/N/cutoff/text alternative and immutable hash; manifests must be byte-identical across checkout paths. | 15-SVG pack, pathless manifest, relocation determinism, and XML tests. | Implemented synthetic/illustrative |
 | FR-EVAL-001 | Report identity/extraction/time/quality/contradiction/provenance/abstention/event/report/reviewer outcomes with explicit nulls. | Evaluation v2 schemas/tests. | D0 automated; human/event empirical outcomes null |
 
+## Company-intelligence first-slice requirements
+
+| ID | Requirement | Acceptance evidence | Status |
+|---|---|---|---|
+| FR-CASE-001 | Persist a company research case pinned to one declared purpose, classification, and immutable core-company-profile template version. | `ResearchCase`, template/version constraints, migration and intake tests. | Implemented offline |
+| FR-CASE-002 | Preserve versioned profile records separately from reports so a later Company 360 synthesis cannot overwrite prior approved content. | `ProfileVersion` case/version uniqueness and immutable content hash. | Foundation implemented; synthesis deferred |
+| FR-INT-001 | Accept a structurally valid Companies House number without requiring a company name or website, but hold identity until a named decision. | Number-only intake and decision tests, including prefixed numbers. | Implemented offline |
+| FR-INT-002 | Accept HTTPS website, name-plus-jurisdiction, and declared-company document inputs as reviewable claims without auto-merging legal identity. | Domain/name/document negative merge and validation tests. | Implemented offline |
+| FR-INT-003 | Parse CSV/XLSX bulk rows independently through the same normalized intake contract and fail atomically on malformed input. | Frozen synthetic bulk fixture and atomicity tests. | Implemented offline |
+| FR-INT-004 | Fingerprint normalized intake requests and reuse the original artifact/case for exact duplicates. | Duplicate single and bulk intake tests plus unique constraint. | Implemented offline |
+| FR-INT-005 | Store uploaded bytes create-once with safe basename, `0600` mode, checksum, classification, purpose, and actor; do not execute or externally process content. | Snapshot mode/hash and fail-closed boundary tests. | Implemented local-only |
+| FR-INT-006 | Identifier and domain linkage require configured named accept/reject decisions with substantive rationale, preserving the append-only decision history. | Identifier/domain decision service and route tests. | Implemented local-only |
+| FR-C360-001 | Provide a Companies ledger whose counts, identity state, verified domain, case state, artifacts, and next safe action derive from persisted records. | View-model and route tests. | Implemented local-only |
+| FR-C360-002 | Provide a Company 360 identity/documents skeleton that distinguishes submitted claims, verified links, holds, and unavailable evidence without inventing facts. | Semantic HTML, empty/error, and persisted-state tests. | Implemented local-only |
+| NFR-CI-001 | Keep live retrieval, external models, person-level public data, background workers, production auth/tenancy, and deployment fail-closed in the first slice. | Bootstrap/config negative tests and architecture review. | Implemented boundary |
+
+## Approved live company-research requirements
+
+| ID | Requirement | Acceptance evidence | Status |
+|---|---|---|---|
+| FR-RES-001 | Create an idempotent research run only for a public case with a reviewed Companies House number, pinned cutoff, model, prompt, policy, and budgets. | `test_company_research.py`; revision `0009`. | Implemented |
+| FR-RES-002 | Use OpenAI Responses web search for source discovery while preventing search snippets or uncaptured model prose from becoming evidence. | Fake Responses source test and persisted discovery/source states. | Implemented; live smoke unrun |
+| FR-RES-003 | Capture discovered pages only through the HTTPS, connection-pinned DNS/IP, redirect, robots, MIME, timeout, and byte-bounded fetcher; retain blocked/unsupported/failed as distinct gaps. | Safe-fetcher and pinned-transport adversarial tests. | Implemented local-only |
+| FR-RES-004 | Redact personal contacts before immutable derivative persistence and extraction with `store=False`; reject restricted cases, invalid schemas, tiny/mismatched/post-cutoff spans, prompt injection, personal contacts, and recommendation language. | Classification, redaction, cutoff, and verbatim-span safety tests. | Implemented |
+| FR-RES-005 | Persist serial discovery, capture, extraction, and composition tasks with fingerprints, bounded attempts, telemetry, explicit failure, fenced cancellation, and named interrupted-task recovery. | Task/attempt/run interruption and cancellation assertions. | Implemented local synchronous worker boundary |
+| FR-RES-006 | Compose a deterministic Company 360 deck from accepted verbatim-span claims only, preserving source URL, perspective, category, contradiction candidates, coverage gaps, limitations, and content hash. | Deck/contradiction/hash/XSS-safe HTML tests. | Implemented |
+| FR-RES-007 | Require configured named approval with optimistic locking and content-hash verification before every HTML/JSON deck view or download. | Web review/tamper/download integration test. | Implemented |
+
+## Agent control-room requirements
+
+| ID | Requirement | Acceptance evidence | Status |
+|---|---|---|---|
+| FR-ACR-001 | Project run, company, and portfolio state through a read-only JSON layer that derives no value the database does not hold and reports an unknown denominator as `Not available`, never as zero. | `test_control_room_api.py` closed-gate, hold, and graph projections. | Implemented |
+| FR-ACR-002 | Render the execution graph from persisted tasks and source rows, including per-source captured, blocked, unsupported, and failed lanes and their claim linkage. | `test_control_room_api.py` node, lane, and claim-linkage assertions. | Implemented |
+| FR-ACR-003 | Apply the existing double-submit CSRF contract and locally configured reviewer identity to every JSON mutation, and refuse a research run while the live gates are closed. | `test_control_room_api.py` CSRF and closed-gate refusals. | Implemented |
+| FR-ACR-004 | Preserve named optimistic-locked profile approval through the JSON boundary; a stale lock version must fail. | `test_control_room_api.py` lock-version approval test. | Implemented |
+| FR-ACR-005 | Reserve colour, glow, and motion for real execution state, express every state in text as well as colour, and remove all motion under `prefers-reduced-motion` without removing information. | `AgentGraph` reduced-motion gating; rendered desktop and mobile checks. | Implemented |
+| FR-ACR-006 | Provide an offline fixture research mode that exercises the real orchestrator, snapshot checksums, exact-span validator, contradiction ledger, and approval gate without a model call or an outbound request, and label every such run as synthetic. | `test_company_research_fixtures.py`; `test_control_room_api.py` fixture run. | Implemented |
+| FR-ACR-007 | Route every company-research model call to the approved `gpt-5.6-luna` model with stage-specific effort, in code and never by model choice; record the model that actually ran on every attempt. | `test_model_routing.py` route, sent-parameter, and approved-route tests. | Implemented |
+| FR-ACR-008 | State the exact-span, cutoff, privacy, perspective, and prohibited-source acceptance rules verbatim in the model briefs. | `test_model_routing.py` brief-content tests. | Implemented |
+| FR-ACR-009 | Keep a run readable, reviewable, cancellable, and its approved deck downloadable after the prompt or source-policy version moves on, while refusing to execute a further stage on it. | `test_control_room_api.py` superseded-run and approved-deck tests. | Implemented |
+| FR-ACR-010 | Direct source planning toward company identity, financing, customers, partnerships, products, technology, certifications, operating scale, expansion, awards, public performance, and adverse evidence, while retaining the canonical public/mixed CBIT metric definitions in the prompt. | `test_model_routing.py` prompt-contract tests. | Implemented |
+| FR-ACR-011 | Present direct metric evidence, related public signals, company-input requirements, bounded-search gaps, contradictions, and source provenance as separate text-labelled visual states in responsive and print-safe HTML. | `test_investment_metrics.py`; `test_company_research.py`; rendered report inspection. | Implemented |
+
 ## P1 backlog — deferred until evidence freeze
 
 | ID | Candidate feature | Entry condition |
@@ -160,7 +204,7 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | P1-SCH-001 | Scheduled recurring collection | Approved operations model, idempotency, alerting, failure recovery |
 | P1-ID-001 | Broader alias adjudication and registry-search assistance | Gold identities, authority, precision study; no auto-merge |
 | P1-MET-001 | Versioned catalogue editor and domain sign-off | Catalogue governance owner identified |
-| P1-LLM-001 | Execute the opt-in OpenAI path on public/synthetic evidence | Budget, data approval, frozen prompt/schema, API integration tests |
+| P1-LLM-001 | Run and evaluate the approved live company-research path | Separately authorised live smoke, frozen benchmark, cost/coverage evidence |
 | P1-REP-001 | Reviewer comparisons and structured comment threads | User-study design or product need |
 | P1-EXP-001 | PDF export | Accessible PDF template and visual QA process |
 
@@ -171,7 +215,7 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 - Social scraping, unrestricted crawling, autonomous emails/posts/publication.
 - Automatic investment recommendations or portfolio-company scoring.
 - Fine-tuning, autonomous code execution, or arbitrary tool use by agents.
-- Slide-deck generation and presentation polish.
+- Native PPTX/PDF rendering and presentation polish; the approved slice exports printable HTML and evidence JSON.
 - Cloud deployment or external storage.
 
 ## Definition of done for P0

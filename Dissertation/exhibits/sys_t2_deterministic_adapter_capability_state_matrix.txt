@@ -1,0 +1,137 @@
+SYS-T2 — Deterministic adapter and capability-state matrix
+
+Author: Faye Niu
+Target section: 4.6 Deterministic source adapters, time, and quality
+Suggested LaTeX label: tab:sys-adapter-capability-state
+Status: author synthesis; conceptual; non-empirical; not a result.
+
+Purpose
+-------
+This table separates executable offline source-adapter mechanics from capability admission and live-source authority. It maps each adapter or boundary to its versioned capability, identity and time rules, retained locator/capture evidence, distinct outcomes, and current evidence limit. It reports no live source result, coverage, accuracy, availability, cost, source truth, legal conclusion or production guarantee.
+
+State vocabulary
+----------------
+- Record: shorthand for a successful collection containing an admitted record. It is not a truth label.
+- No-record: a completed, bounded exact-identifier lookup found no matching record in the queried snapshot or response. It is not zero, universal absence, or proof that no record exists elsewhere.
+- Unavailable: the admitted source or configured offline snapshot could not be accessed at collection time. It is not no-record.
+- Blocked: policy, admission, kill-switch or transport controls stopped the action. For held live registry modes this occurs before connector invocation.
+- Invalid: identifier, company binding, cutoff/window, manifest, response, fact, locator, schema or semantic contract failed validation. It is not silently repaired.
+- Failure: collection or persistence ended in a terminal error. The quality contract holds it for review rather than reporting a pass or zero.
+
+Row 1 — Registry capability gate
+--------------------------------
+Adapter/source:
+SourceRegistry and the admitted-source policy.
+
+Admitted capability/version:
+Each connector supplies a SourceCapabilityManifest. The registry checks the source key, manifest version, publisher, exact identifier scheme, allowed fact keys and metric bindings, extraction method and schema, unit and currency, event types, media types, retrieval modes, public-only boundary, licence/terms state and live_retrieval_admitted flag. Persisted derivations use source-derivation-v2; legacy v1 hashes remain verifiable but new/backfilled hashes use v2.
+
+Identity, cutoff and period rule:
+The requested source-scoped identifier must be reviewed, belong to the requested company, match the manifest scheme and source, and remain valid at the reporting cutoff. A programme start cannot follow the cutoff. A fact declared since_programme_start must exactly cover the persisted programme start through reporting cutoff.
+
+Locator and capture evidence:
+The request fingerprint binds source key/version, company, normalised identifier, cutoff, programme start, requested fact keys and retrieval mode. The registry records source version, locator, retrieval and publication times, classification, media and terminal metadata. When content exists it stores checksum-addressed immutable bytes. A semantic derivation SHA-256 covers terminal metadata, window, facts, structured locators, extraction method/schema, events and temporal fields. Replay verifies both raw and derivation hashes.
+
+Outcome states:
+A missing/unconfigured source, non-admitted key, incompatible manifest/mode, unreviewed/cross-company/expired identity, invalid window or live mode without admission is blocked or invalid before connector I/O. Valid collections persist record (succeeded), no-record, source-unavailable or failed as distinct states. Fact/media/event/locator/schema drift fails closed. No state is silently converted to a successful record.
+
+Current status/limitation:
+Implemented and tested for repository-owned offline synthetic replays. The checks establish deterministic contract handling and traceability within exercised cases. They do not establish publisher authority, source truth, live availability, complete coverage or production behaviour.
+
+Row 2 — Companies House offline replay
+----------------------------------------
+Adapter/source:
+Companies House synthetic snapshot connector.
+
+Admitted capability/version:
+Source key companies_house; connector manifest 1.4.0; source-policy admission version 2026-08-26.1; offline_snapshot mode. The manifest admits exact identity/status, incorporation/dissolution, SIC/postcode, explicit accounts/filing facts and charges/events within its declared fact/event/media contracts. It forbids inferred valuation, private-funding amount, dilution, recommendation or causal impact.
+
+Identity, cutoff and period rule:
+The connector requires an exact structurally valid Companies House number, and the registry additionally requires that number to be reviewed, source-bound, company-bound and valid at cutoff. Incorporation, dissolution, filing and charge events are included only when their event date is no later than the reporting cutoff. Account period end is retained separately. Dormant and filing_not_due are typed states rather than inferred numeric values.
+
+Locator and capture evidence:
+The offline document is immutable fixture JSON. Stored evidence retains checksum, source/manifest version, media type, retrieval/publication timestamps and request fingerprint. Facts carry JSON-pointer locators plus extraction method/schema. Filing and charge events use stable transaction/charge identifiers. The registry also stores and verifies the versioned semantic derivation hash.
+
+Outcome states:
+A unique exact-number match produces a record. No match produces no_record with no_exact_company_number. An unconfigured offline snapshot produces source_unavailable. Invalid number, wrong scheme, duplicate registry number, fact/locator/schema mismatch or drift is invalid and fails closed. Terminal collection failure remains failure. None of these states is repaired to zero or a supported claim.
+
+Current status/limitation:
+Implemented and locally tested using repository-owned synthetic data. It does not prove live/current Companies House truth, legal identity authority beyond named review, complete register coverage, source quality, valuation, live availability or production readiness.
+
+Row 3 — UKRI offline replay
+----------------------------
+Adapter/source:
+UKRI Gateway to Research synthetic snapshot connector.
+
+Admitted capability/version:
+Source key ukri_gtr; connector manifest 1.3.0; source-policy admission version 2026-08-26.1; offline_snapshot only. The manifest declares lifecycle event types and deterministic JSON aggregation facts, including project identifiers, award count, explicit GBP amount coverage, missing/non-GBP diagnostics, typed total missing state and lifecycle coverage.
+
+Identity, cutoff and period rule:
+The connector requires the exact UKRI organisation identifier, with registry review/company/source/cutoff binding. It selects the latest available project record version whose updated_at date is no later than cutoff. For cumulative grant evidence, programme start is mandatory and the fact window must equal programme start through cutoff. An amount becomes complete grant_funding evidence only if every included award has a finite explicit GBP amount. Missing or non-GBP awards prevent the complete total and produce typed diagnostics/missingness.
+
+Locator and capture evidence:
+The immutable fixture is checksummed. Project and outcome event locators use stable public identifiers and record version rather than array position. Derived facts retain a locator and structured fields for method, programme start, award-date-through cutoff, included project IDs, extraction method/schema, unit/currency and publication time. The registry binds these values into request and derivation hashes.
+
+Outcome states:
+A unique exact organisation match produces a record; no exact match produces no_record with no_exact_ukri_organisation_id. Wrong scheme, invalid programme window, duplicate organisation, unsupported fact binding or output drift is invalid. Missing amount produces not_reported; non-GBP coverage produces not_applicable; neither becomes zero or complete GBP total. Terminal failures remain separate.
+
+Current status/limitation:
+Implemented and locally tested using repository-owned synthetic replay. It does not establish live UKRI interface access, exhaustive award/project coverage, source truth, current availability, publisher permission, programme causation or production reliability.
+
+Row 4 — Companies House read-only API mode
+--------------------------------------------
+Adapter/source:
+Declared Companies House read_only_api capability.
+
+Admitted capability/version:
+The mode exists in connector manifest 1.4.0 and source-policy admission version 2026-08-26.1, but live_retrieval_admitted is false. The source-admission register marks direct Companies House live retrieval HELD pending captured current interface, licence/terms, credential, retention, attribution, time-semantics, storage and smoke-protocol evidence.
+
+Identity, cutoff and period rule:
+Any future live attempt would still require an exact reviewed Companies House number bound to the company and cutoff, plus the admitted response fact/event/media contract. A valid identifier or API credential alone would not authorise the call or establish source truth.
+
+Locator and capture evidence:
+No admitted live capture is asserted by this exhibit. Before future use, the project would need immutable response bytes, checksum, source and manifest version, retrieval/publication/effective time, exact fact/event locators, extraction schema and a named source-admission decision.
+
+Outcome states:
+The registry blocks the live mode before connector invocation because live_retrieval_admitted is false. Invalid identity/configuration remains invalid. Consequently, this dissertation has no live Companies House record, no-record, unavailable or failure observation from this adapter.
+
+Current status/limitation:
+Held and live-unrun. Code presence and synthetic transport tests do not constitute permission, live official retrieval evidence, source availability, complete coverage or production readiness.
+
+Row 5 — Public-web discovery and capture boundary
+--------------------------------------------------
+Adapter/source:
+The separately conditioned public-web company-research path. It is not a SourceRegistry Companies House/UKRI adapter and cannot silently substitute for one.
+
+Admitted capability/version:
+The source-admission register identifies public-web-research-v1 for URL discovery and guarded public-page capture. It is conditioned on explicit live/model gates, public company-level scope, named review and source-specific admission. Discovery output is candidate inventory only. A candidate is not evidence.
+
+Identity, cutoff and period rule:
+The path requires a public research case, reviewed Companies House number, pinned reporting cutoff, fixed budgets and canonical claim/metric scope. Retrieved text remains untrusted data outside the instruction boundary. Source-specific publication/availability and claim-period rules still apply before support.
+
+Locator and capture evidence:
+Evidence requires an accessible admitted publisher URL, guarded captured bytes, checksum, retrieval metadata, exact substantive span and source-specific admission/redistribution decision. Search snippets, uncaptured model prose and source lists alone cannot support a claim.
+
+Outcome states:
+Candidate/fetched, blocked, unsupported and failed gaps remain explicit. Later missing, held or conflict states cannot become supported output. No candidate does not establish an official-source no-record result. Kill switches stop new external actions but do not rewrite prior records.
+
+Current status/limitation:
+The boundary and local/fake-provider checks are implemented; the register describes conditioned local use. This exhibit reports no live empirical execution, coverage, quality, source-truth, availability, model-benefit or production claim. It does not compare this path with official adapters.
+
+Source note
+-----------
+Faye Niu's author synthesis of versioned repository requirements, source-admission and capability contracts, source-registry/adapter code, deterministic synthetic fixtures and local tests. Nikiforova et al. (2020, PDF pp. 1–3 and 15–17) supports attaching data-quality checks to a defined data object and use; Gao et al. (2023a, ALCE, PDF pp. 3–4 and 10) separates traceability and citation support from answer correctness; NIST (2023, PDF pp. 33–35) supports documenting evaluated conditions, uncertainty and limitations. These sources do not certify the project, an adapter, a publisher record or live-source truth.
+
+Interpretive limitations
+------------------------
+1. This is a design/implementation matrix, not an empirical result.
+2. Offline replay is mechanism and regression evidence only; it is not live source retrieval.
+3. A checksum, locator, manifest, capability or derivation hash supports traceability and deterministic checking, not correctness or completeness of the underlying publisher record.
+4. No live Companies House or UKRI call, official adapter coverage comparison, source-quality rate, latency/cost measure, production availability or operational benefit is asserted.
+5. The exact collection and quality state taxonomy is a project contract, not a universal standard.
+6. Direct registry adapters remain held. The conditioned public-web path is separate and cannot grant source authority to them.
+7. No missing, no-record, unavailable, blocked, invalid, failed, held or conflict state may be reported as zero or supported evidence without its own contract-satisfying evidence.
+
+Suggested integration
+---------------------
+Use \input{exhibits/sys_t2_deterministic_adapter_capability_state_matrix.tex} immediately after Section 4.6 prose and before Section 4.7. The exhibit contains deliberate \clearpage boundaries and occupies one dedicated portrait page when validated with the dissertation style.

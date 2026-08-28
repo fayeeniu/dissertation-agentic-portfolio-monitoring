@@ -1,0 +1,273 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-F3",
+  "title": "Analysis decision flow",
+  "author": "Faye Niu",
+  "target_section": "3.6 Statistical and qualitative analysis",
+  "suggested_latex_label": "fig:meth-analysis-decision-flow",
+  "purpose": "Make the current-draft pre-inference accounting, dependence, conditional-method, uncertainty, sensitivity and qualitative-audit plan explicit, while holding the exact statistical method and sample size until D1 evidence and supervisor/statistical review.",
+  "generated_at_utc": "2026-08-27T20:28:58Z",
+  "hashes_recomputed_at_utc": "2026-08-27T20:47:10Z",
+  "revision": {
+    "revised_at_utc": "2026-08-27T20:47:10Z",
+    "review_findings": [
+      "METH36-001: current-state wording identifies a draft or planned analysis protocol; the explicit future TO FREEZE gate is retained.",
+      "METH36-002: named candidate methods are restricted to an exact paired method for binary outcomes and conditional paired Wilcoxon-style analysis for non-normal time/edit outcomes."
+    ]
+  },
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_sample_sizes": false,
+    "contains_acceptance_thresholds": false,
+    "selects_final_statistical_method": false,
+    "claims_inference": false,
+    "claims_participant_feedback": false,
+    "interpretation": "A bounded current-draft analysis plan. Candidate method families and qualitative procedures remain conditional on the executed design, authorised evidence and a future protocol freeze."
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/meth_f3_analysis_decision_flow.svg",
+    "renderer": "Dissertation/exhibits/meth_f3_analysis_decision_flow.py",
+    "portable_command": "python3 Dissertation/exhibits/meth_f3_analysis_decision_flow.py",
+    "validated_command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/meth_f3_analysis_decision_flow.py",
+    "validated_python_dependency": "ReportLab 4.4.9",
+    "pdf_backend": "ReportLab deterministic vector operations with invariant=1 and PDF core Helvetica fonts",
+    "svg_width": 900,
+    "svg_height": 1280,
+    "pdf_page_width_points": 900,
+    "pdf_page_height_points": 1280,
+    "pdf_pages": 1,
+    "raster_content": false,
+    "deterministic": true,
+    "repeat_render_sha256": "257433a5887e62adc9f0bbe0db2fe321c57bb8201a938c096b01a67ec862f8b3",
+    "repeat_render_byte_identical": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_has_title": true,
+    "svg_has_description": true,
+    "plain_text_alternative": "Dissertation/exhibits/meth_f3_analysis_decision_flow.txt",
+    "pdf_tagging_claimed": false,
+    "greyscale_redundancy": "Every gate, quantitative decision, qualitative code family, integration boundary and stop condition is named in text; colour is supplementary only."
+  },
+  "validation": {
+    "svg_xml_parse": "passed",
+    "renderer_execution": "passed",
+    "repeat_render": "byte-identical",
+    "pdf_metadata": "one page; 900 x 1280 points; PDF 1.4; deterministic timestamps; no encryption, JavaScript or form fields",
+    "direct_render_inspection": "passed at 130 dpi; no clipping, overlap or unreadable label observed",
+    "standalone_a4_integration": {
+      "status": "passed",
+      "tool": "Tectonic with the repository style.tex",
+      "page_size": "A4 portrait",
+      "placement": "dedicated figure page followed by the next section on a new page",
+      "figure_constraint": "width=textwidth, height=0.82textheight, keepaspectratio",
+      "warnings": "No overfull or underfull box warning. The temporary harness emitted only the repository's expected inputenc-on-XeTeX warning plus command-line warnings for intentional absolute paths.",
+      "visual_inspection": "Figure, source note and caption were legible with clear margins; the following section started after the figure page."
+    }
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "locators": [
+        "Units of analysis",
+        "Experimental conditions",
+        "Dataset partitions and leakage control",
+        "D1 - authorised pilot/calibration set",
+        "Primary and secondary measures",
+        "Analysis plan, items 1-10 and the following TO FREEZE paragraph",
+        "Error taxonomy",
+        "Reproducibility record",
+        "Ethics and stop conditions",
+        "Validity threats to discuss"
+      ],
+      "role": "Current draft units, pairing, dependence, conditional method families, uncertainty, multiplicity, strata, sensitivity, preservation, error-code, authority and future TO FREEZE boundaries."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locators": [
+        "Current go/no-go state - 27 August 2026",
+        "Detailed chapter plan: 3.6 Statistical and qualitative analysis",
+        "Claim-control rule"
+      ],
+      "role": "Approved target-section scope and current evidence-held boundary."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locators": [
+        "Status and evidence boundary",
+        "Constraints",
+        "Research success",
+        "Primary risks",
+        "Change control"
+      ],
+      "role": "Separates protocol and implementation evidence from findings and constrains claims to the planned information boundary and future protocol-freeze controls."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locators": [
+        "Rows keyed demsar2006comparisons, diciccio1996bootstrap, gale2013framework, artstein2008agreement, kapoor2023leakage, pineau2021reproducibility and nist2023airmf"
+      ],
+      "role": "Local citation-key, bibliographic, origin, path, page-count, checksum, admission-role and limitation bindings."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "role": "Independent local checksum bindings for the admitted academic source files."
+    },
+    {
+      "citation_key": "demsar2006comparisons",
+      "path": "Dissertation/sources/papers/36_demsar_statistical_comparisons.pdf",
+      "sha256": "aa5fa1c71338d0d380e7a97e3503ce486d4e5798069647a8d39f57a1f99a7c8c",
+      "locator": "PDF pp. 5-9",
+      "role": "Conditional support for checking experimental unit, dependence and assumptions before paired or non-parametric comparisons; it does not select this study's test."
+    },
+    {
+      "citation_key": "diciccio1996bootstrap",
+      "path": "Dissertation/sources/papers/38_diciccio_efron_bootstrap_confidence_intervals.pdf",
+      "sha256": "fe14c39facbca45177f75720d520432e8206862ed5d5c167d0033a467f779752",
+      "locator": "PDF pp. 1-4",
+      "role": "Bootstrap interval accuracy, coverage and assumption caveats; the resampling unit and interval procedure remain study-specific."
+    },
+    {
+      "citation_key": "gale2013framework",
+      "path": "Dissertation/sources/papers/37_gale_framework_method_qualitative_analysis.pdf",
+      "sha256": "c7b29d818b4c1c2d53e198efdb4ab1f840c36f47d22a5c8eb3d9d17fecb21902",
+      "locator": "PDF pp. 3-7",
+      "role": "Coding, analytical framework, case-by-code matrix, cross-case interpretation and audit-trail support; health-research examples require bounded transfer."
+    },
+    {
+      "citation_key": "artstein2008agreement",
+      "path": "Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf",
+      "sha256": "1729af43712921de3857555972c6a3376d66bcba2474f81a32cddf4f98aef058",
+      "locator": "PDF pp. 2-8 and 26-28",
+      "role": "Agreement-versus-validity, coder, unitising and assumption boundaries; agreement is not evidence of source truth."
+    },
+    {
+      "citation_key": "kapoor2023leakage",
+      "path": "Dissertation/sources/papers/32_kapoor_data_leakage.pdf",
+      "sha256": "c433bceda841ca09fe2fd7ddf857fc0818fdf98553e62e54a37cc394c6f70c42",
+      "locator": "PDF pp. 1-7",
+      "role": "Leakage, dependence and analysis-path reporting risks; not proof that this study's final evaluation has executed."
+    },
+    {
+      "citation_key": "pineau2021reproducibility",
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1-5",
+      "role": "Complete metric, procedure, code and result reporting needed to assess reproducibility; not evidence of external validity."
+    },
+    {
+      "citation_key": "nist2023airmf",
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 33-35",
+      "role": "Rigorous testing, uncertainty, documented limitation and independent-review guidance; the voluntary framework does not certify this artefact."
+    }
+  ],
+  "traceability": [
+    {
+      "figure_claim": "Eligible, excluded, failed and scored units retain denominators and reasons, followed by descriptive distributions before inference.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Analysis plan items 1-2",
+        "Pineau et al. (2021), PDF pp. 1-5",
+        "NIST (2023), PDF pp. 33-35"
+      ],
+      "visible_control": "Shared FLOW ACCOUNTING BEFORE ANALYSIS gate"
+    },
+    {
+      "figure_claim": "Comparisons pair the same company-period or claim, and repeated fields or claims are not treated as independent units.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Units of analysis and Analysis plan items 3-4",
+        "Demsar (2006), PDF pp. 5-9",
+        "Kapoor and Narayanan (2023), PDF pp. 1-7"
+      ],
+      "visible_control": "Q2 dependence/unit check"
+    },
+    {
+      "figure_claim": "An exact paired method for binary outcomes and a paired Wilcoxon-style analysis for non-normal time/edit outcomes are candidates only when the design, sample and assumptions support them.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Analysis plan item 5 and TO FREEZE paragraph",
+        "Demsar (2006), PDF pp. 5-9"
+      ],
+      "visible_control": "Q3 conditional-method card and final STOP / TO FREEZE boundary"
+    },
+    {
+      "figure_claim": "Effect estimates require uncertainty and named units, assumptions and failures; an interval procedure is not automatic.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Analysis plan item 6 and Reproducibility record",
+        "DiCiccio and Efron (1996), PDF pp. 1-4",
+        "NIST (2023), PDF pp. 33-35"
+      ],
+      "visible_control": "Q4 effect and uncertainty card"
+    },
+    {
+      "figure_claim": "Multiplicity is predeclared or exploratory, strata require sample support, sensitivity includes failures and justified exclusions, and negative/null/regressive outcomes remain visible.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Analysis plan items 7-10",
+        "Pineau et al. (2021), PDF pp. 1-5",
+        "Kapoor and Narayanan (2023), PDF pp. 1-7"
+      ],
+      "visible_control": "Q5 multiplicity, strata and sensitivity card"
+    },
+    {
+      "figure_claim": "The predefined nine-family error taxonomy and any consented reviewer feedback feed a case-by-code matrix with versioned coding, disagreement and negative cases.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Error taxonomy, Ethics and stop conditions, and Validity threats to discuss",
+        "Gale et al. (2013), PDF pp. 3-7",
+        "Artstein and Poesio (2008), PDF pp. 2-8 and 26-28"
+      ],
+      "visible_control": "K1-K5 qualitative branch, including all nine named code families"
+    },
+    {
+      "figure_claim": "The exact statistical method and sample size remain TO FREEZE after D1 variance/annotation evidence and supervisor/statistical review; no inferential result is asserted now.",
+      "evidence": [
+        "EVALUATION_PROTOCOL Analysis plan TO FREEZE paragraph",
+        "REPORT_STRUCTURE Section 3.6 and current go/no-go state",
+        "PROJECT_CHARTER Status and evidence boundary and Change control"
+      ],
+      "visible_control": "Final red STOP / TO FREEZE boundary"
+    }
+  ],
+  "limitations": [
+    "The exhibit is conceptual author synthesis and does not report an empirical or inferential result.",
+    "It contains no sample size, participant count, result, effect estimate, interval, p-value, threshold, prevalence, time, token, cost, coverage, usability or human-benefit value.",
+    "Named statistical families are conditional options, not a preselected test suite; D1 evidence and supervisor/statistical review are still required.",
+    "The current analysis plan is a draft; the exact method, sample size and protocol remain subject to the explicit future TO FREEZE gate.",
+    "The exhibit does not establish that D1 has run, that D2 has opened, that the final reference exists, that C0-C3 have executed, or that participant feedback has been collected.",
+    "Aggregation, clustering and bootstrap wording does not select a resampling unit, interval procedure or dependence model; these remain design-specific.",
+    "A framework matrix provides an auditable structure for interpretation but does not make purposive qualitative records population-representative or convert frequency into prevalence.",
+    "Agreement measures coding consistency under stated assumptions; they do not establish source truth, claim validity or adjudication quality.",
+    "Preserving negative, null and regressive outcomes reduces selective-reporting risk but does not guarantee validity, reproducibility or generalisation.",
+    "The PDF is vector-only but is not claimed to be tagged; the complete TXT alternative provides a linear accessible companion."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_f3_analysis_decision_flow.py",
+      "sha256": "4cf964d4e6fa935e4456d54f934ef73347977e140c202b8085104b4e1c74ab23",
+      "role": "Deterministic accessible-SVG to vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f3_analysis_decision_flow.svg",
+      "sha256": "7b2e009ff5dda7a75a817ed9ac289659f306fd766eb30fc60010554a56dbb9de",
+      "role": "Accessible vector source and visual source of truth."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f3_analysis_decision_flow.pdf",
+      "sha256": "257433a5887e62adc9f0bbe0db2fe321c57bb8201a938c096b01a67ec862f8b3",
+      "role": "Deterministic one-page vector PDF for LaTeX inclusion."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_f3_analysis_decision_flow.txt",
+      "sha256": "7a1cdc94d7a45c93f12fe29fd349bfb7ba22407f1eac1c0245b86d9609737abf",
+      "role": "Complete plain-text alternative with expanded reading order, source roles and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

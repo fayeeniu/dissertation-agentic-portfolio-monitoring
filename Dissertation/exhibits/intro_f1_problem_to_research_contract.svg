@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">From heterogeneous evidence to the research contract</title>
+  <desc id="desc">A conceptual traceability map. Heterogeneous public company evidence leads to four failure families: identity collision, ambiguous missing values, temporal mismatch, and unsupported or unsafe synthesis. Project controls connect these risks to RQ1 on data and evidence fidelity, RQ2 on independent verification, and RQ3 on efficiency and human review. RQ3 empirical evidence is held.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#8A929D"/>
+    </marker>
+    <style>
+      .title { font: 700 31px Helvetica, Arial, sans-serif; fill: #1F2937; }
+      .subtitle { font: 15px Helvetica, Arial, sans-serif; fill: #5B6573; }
+      .colhead { font: 700 17px Helvetica, Arial, sans-serif; letter-spacing: 0.7px; fill: #354052; }
+      .tag { font: 700 13px Helvetica, Arial, sans-serif; letter-spacing: 0.5px; }
+      .boxtitle { font: 700 18px Helvetica, Arial, sans-serif; fill: #1F2937; }
+      .boxbody { font: 15px Helvetica, Arial, sans-serif; fill: #3F4856; }
+      .controltitle { font: 700 16px Helvetica, Arial, sans-serif; fill: #173F38; }
+      .controlbody { font: 14px Helvetica, Arial, sans-serif; fill: #36554F; }
+      .rqtitle { font: 700 18px Helvetica, Arial, sans-serif; fill: #234C83; }
+      .rqbody { font: 14px Helvetica, Arial, sans-serif; fill: #3C587A; }
+      .small { font: 12px Helvetica, Arial, sans-serif; fill: #5B6573; }
+      .source { font: 18px Helvetica, Arial, sans-serif; fill: #4D5663; }
+      .connector { fill: none; stroke: #8A929D; stroke-width: 1.5; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="780" fill="#FAF8F4"/>
+  <text class="title" x="40" y="42">From heterogeneous evidence to the research contract</text>
+  <text class="subtitle" x="40" y="68">Conceptual problem-control map. Arrows show design traceability; line width encodes no measured quantity.</text>
+
+  <rect x="40" y="88" width="1120" height="66" rx="12" fill="#F2EFE9" stroke="#7B6F60" stroke-width="1.5"/>
+  <rect x="56" y="104" width="142" height="34" rx="17" fill="#7B6F60"/>
+  <text x="127" y="126" text-anchor="middle" style="font:700 14px Helvetica,Arial,sans-serif;fill:#FFFFFF">EVIDENCE INPUT</text>
+  <text class="boxtitle" x="220" y="116">Heterogeneous public company evidence</text>
+  <text class="boxbody" x="220" y="139">legal identity and filings  |  funding and grant events  |  public sites and documents  |  submitted portfolio records</text>
+  <path class="connector" d="M198 154 C240 154,300 181,355 181"/>
+
+  <text class="colhead" x="40" y="187">FAILURE FAMILIES</text>
+  <text class="colhead" x="440" y="187">PROJECT CONTROLS</text>
+  <text class="colhead" x="865" y="187">RESEARCH QUESTIONS</text>
+
+  <!-- Connectors are drawn behind the cards. -->
+  <path class="connector" d="M355 238 C390 238,404 220,440 220"/>
+  <path class="connector" d="M355 338 C390 338,404 285,440 285"/>
+  <path class="connector" d="M355 438 C390 438,404 350,440 350"/>
+  <path class="connector" d="M355 538 C390 538,404 415,440 415"/>
+  <path class="connector" d="M355 538 C393 538,402 480,440 480"/>
+  <path class="connector" d="M355 538 C395 538,400 545,440 545"/>
+
+  <path class="connector" d="M780 220 C824 220,825 270,865 270"/>
+  <path class="connector" d="M780 285 C824 285,825 270,865 270"/>
+  <path class="connector" d="M780 350 C824 350,825 270,865 270"/>
+  <path class="connector" d="M780 415 C824 415,825 270,865 270"/>
+  <path class="connector" d="M780 480 C824 480,825 400,865 400"/>
+  <path class="connector" d="M780 545 C824 545,825 530,865 530"/>
+
+  <!-- Failure-family cards. -->
+  <rect x="40" y="198" width="315" height="80" rx="10" fill="#FFF4E5" stroke="#C26A1B" stroke-width="1.5"/>
+  <text class="tag" x="56" y="219" fill="#A65009">F1</text>
+  <text class="boxtitle" x="88" y="220">Identity collision</text>
+  <text class="boxbody" x="56" y="247">Similar names can identify the wrong</text>
+  <text class="boxbody" x="56" y="266">legal company.</text>
+
+  <rect x="40" y="298" width="315" height="80" rx="10" fill="#FFF4E5" stroke="#C26A1B" stroke-width="1.5"/>
+  <text class="tag" x="56" y="319" fill="#A65009">F2</text>
+  <text class="boxtitle" x="88" y="320">Missing or ambiguous values</text>
+  <text class="boxbody" x="56" y="347">Empty, unavailable and zero are</text>
+  <text class="boxbody" x="56" y="366">different evidence states.</text>
+
+  <rect x="40" y="398" width="315" height="80" rx="10" fill="#FFF4E5" stroke="#C26A1B" stroke-width="1.5"/>
+  <text class="tag" x="56" y="419" fill="#A65009">F3</text>
+  <text class="boxtitle" x="88" y="420">Temporal mismatch</text>
+  <text class="boxbody" x="56" y="447">Filing and publication can lag the</text>
+  <text class="boxbody" x="56" y="466">reporting cutoff.</text>
+
+  <rect x="40" y="498" width="315" height="80" rx="10" fill="#FFF4E5" stroke="#C26A1B" stroke-width="1.5"/>
+  <text class="tag" x="56" y="519" fill="#A65009">F4</text>
+  <text class="boxtitle" x="88" y="520">Unsupported or unsafe synthesis</text>
+  <text class="boxbody" x="56" y="547">Support or attribution may be lost;</text>
+  <text class="boxbody" x="56" y="566">retrieved text may contain instructions.</text>
+
+  <!-- Project-control cards. -->
+  <rect x="440" y="192" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="214">C1  Exact legal identity</text>
+  <text class="controlbody" x="456" y="236">Companies House number; named identity hold.</text>
+
+  <rect x="440" y="257" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="279">C2  Explicit missing states</text>
+  <text class="controlbody" x="456" y="301">Preserve blank, zero, absent and unavailable.</text>
+
+  <rect x="440" y="322" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="344">C3  Time eligibility</text>
+  <text class="controlbody" x="456" y="366">Frozen cutoff plus publication or availability time.</text>
+
+  <rect x="440" y="387" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="409">C4  Admitted immutable evidence</text>
+  <text class="controlbody" x="456" y="431">Checksum, publisher and exact locator retained.</text>
+
+  <rect x="440" y="452" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="474">C5  Independent verifier</text>
+  <text class="controlbody" x="456" y="496">Support, contradiction or explicit abstention.</text>
+
+  <rect x="440" y="517" width="340" height="56" rx="9" fill="#EAF6F3" stroke="#247A6B" stroke-width="1.5"/>
+  <text class="controltitle" x="456" y="539">C6  Named approval and export gate</text>
+  <text class="controlbody" x="456" y="561">Current content hash must match approved review.</text>
+
+  <!-- RQ cards. -->
+  <rect x="865" y="218" width="295" height="104" rx="11" fill="#EDF3FB" stroke="#3867A6" stroke-width="1.7"/>
+  <text class="tag" x="881" y="241" fill="#3867A6">RQ1</text>
+  <text class="rqtitle" x="928" y="242">Data and evidence fidelity</text>
+  <text class="rqbody" x="881" y="269">Typed, temporally eligible, provenance-</text>
+  <text class="rqbody" x="881" y="288">complete and reviewable claims without</text>
+  <text class="rqbody" x="881" y="307">collapsing uncertainty.</text>
+
+  <rect x="865" y="348" width="295" height="104" rx="11" fill="#EDF3FB" stroke="#3867A6" stroke-width="1.7"/>
+  <text class="tag" x="881" y="371" fill="#3867A6">RQ2</text>
+  <text class="rqtitle" x="928" y="372">Independent verification</text>
+  <text class="rqbody" x="881" y="399">Compare support, contradiction,</text>
+  <text class="rqbody" x="881" y="418">abstention, provenance completeness</text>
+  <text class="rqbody" x="881" y="437">and repeat consistency.</text>
+
+  <rect x="865" y="478" width="295" height="104" rx="11" fill="#EDF3FB" stroke="#3867A6" stroke-width="1.7"/>
+  <text class="tag" x="881" y="501" fill="#3867A6">RQ3</text>
+  <rect x="928" y="486" width="116" height="20" rx="10" fill="#FCECEF" stroke="#A34A5C"/>
+  <text x="986" y="500" text-anchor="middle" style="font:700 10px Helvetica,Arial,sans-serif;fill:#8C3347">EVIDENCE HELD</text>
+  <text class="rqtitle" x="881" y="526">Efficiency and human review</text>
+  <text class="rqbody" x="881" y="542">Correctness, completeness and time;</text>
+  <text class="rqbody" x="881" y="559">edit burden and approval time;</text>
+  <text class="rqbody" x="881" y="576">reviewer utility, where authorised.</text>
+
+  <line x1="40" y1="616" x2="1160" y2="616" stroke="#D7D2CA"/>
+  <text class="small" x="40" y="640"><tspan font-weight="700">Interpretation boundary:</tspan> this is a design traceability map, not an empirical result.</text>
+  <text class="small" x="40" y="660">It reports no prevalence, effect size, time saving, live coverage, cost, user benefit or production-readiness claim.</text>
+  <text class="source" x="40" y="684"><tspan font-weight="700">Source note:</tspan> controls from SOURCE_EVIDENCE_MATRIX, PROJECT_CHARTER, DATA_DICTIONARY and REQUIREMENTS.</text>
+  <text class="source" x="40" y="704">Missingness and time: Hardman and Ramirez Santos (2023, PDF pp. 21-25); Nikiforova et al. (2020, PDF pp. 15-17);</text>
+  <text class="source" x="40" y="724">Thorne et al. (2026, PDF pp. 1-6). Citation and safety: Gao et al. (2023a, ALCE, PDF pp. 1--4);</text>
+  <text class="source" x="40" y="744">Greshake et al. (2023, PDF pp. 1-4). Full requirement IDs, local locators and SHA-256 hashes: intro_f1_provenance.json.</text>
+  <text x="1160" y="760" text-anchor="end" style="font:11px Helvetica,Arial,sans-serif;fill:#7A828D">INTRO-F1  |  Faye Niu</text>
+</svg>

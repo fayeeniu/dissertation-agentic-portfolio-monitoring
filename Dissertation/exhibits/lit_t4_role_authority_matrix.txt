@@ -1,0 +1,85 @@
+LIT-T4 - Role-and-authority matrix for bounded multi-agent reporting
+Author: Faye Niu
+Target section: 2.6 Bounded multi-agent systems and human review
+LaTeX label: tab:lit-role-authority-matrix
+Placement: dedicated portrait table page between Sections 2.6 and 2.7
+
+Purpose and interpretation
+
+This matrix defines the permitted authority, required handoff and explicit failure boundary for five workflow roles. It is an author synthesis of locally admitted literature and frozen project contracts. It is conceptual, non-empirical and not a result. A role label, message exchange or completed conversation does not establish independent intelligence, competence, superiority or benefit.
+
+Model-assisted roles are bounded record processors. A planner may propose a query plan and candidates. An extractor may propose typed values or claims tied to admitted evidence and exact spans. The independent verifier assesses the producer record and writes a separate outcome; it does not silently repair or replace that record. The composer is deterministic and may render only eligible verified material. The named reviewer has decision authority over a versioned report but cannot create evidential support.
+
+Table columns
+
+Role; permitted input or tools; required output; stop or failure condition; forbidden authority.
+
+Row 1 - Query planner or discovery
+
+Permitted input or tools: A frozen research question, reporting cutoff, source policy, approved domains or catalogues, and explicit time, attempt and tool budgets. The role may use only approved search or catalogue interfaces. Retrieved content and URLs remain candidate material, not evidence.
+
+Required output: A typed, bounded query plan and candidate queue. Each record retains topic or query scope, candidate identifier or URL, origin metadata, budget use and stop reason. The output is a proposal for later admission, never a supported claim.
+
+Stop or failure condition: Stop when the declared scope, cutoff, time, attempt or tool budget is reached; an interface fails; a candidate conflicts with source policy; or no eligible candidate is found. Record an explicit empty, missing, inaccessible or held state rather than extending the search without authority.
+
+Forbidden authority: The role cannot admit a source, treat a candidate as evidence, create a report claim, broaden the research purpose, change permissions, authorise an action, approve a report or publish an output.
+
+Literature basis: `guo2024multiagent`, PDF pp. 3--5 and 10--11; `wu2024autogen`, PDF pp. 1--5; `nist2023airmf`, PDF pp. 33--38.
+
+Row 2 - Evidence extractor
+
+Permitted input or tools: A source-policy-admitted immutable capture or typed source record, its exact locator, provenance and time fields, and a strict output schema. Structured evidence is processed deterministically first. Where the separate project contract permits model assistance, it remains bounded to admitted evidence and an exact span; the role receives no authority to widen source access or execute source content as instructions.
+
+Required output: A typed extraction proposal containing the exact source span or structured locator, value or semantic missing state, relevant period and availability fields, source identifier, transformation metadata and provenance. The output remains a proposal until independent verification records an outcome.
+
+Stop or failure condition: Abstain or hold when exact support cannot be located; the schema is invalid; identity, value, period or meaning is ambiguous; evidence is stale, conflicting or untrusted; or a tool, attempt or budget limit fails. Missing values remain explicit and are not repaired from model memory.
+
+Forbidden authority: The extractor cannot invent or infer unsupported content, fill evidence gaps, alter source admission, conceal missingness, decide its own support status, mark a claim report-eligible, rewrite verifier outcomes, approve or export.
+
+Literature basis: `guo2024multiagent`, PDF pp. 3--5; `wu2024autogen`, PDF pp. 1--5; `nist2023airmf`, PDF pp. 33--35. The deterministic-first extraction route is a project design choice supported by the frozen repository contract, not a universal literature result.
+
+Row 3 - Independent verifier
+
+Permitted input or tools: The unchanged producer claim or extraction record, its immutable evidence and exact span, provenance, source-admission and time fields, plus deterministic rules for value, period, sourceability, trust and contradiction. Independence here means a separately persisted functional role and record, not a claim about independent cognition.
+
+Required output: A separate verification record identifying the assessed producer record and recording one explicit outcome - supported, contradicted, stale, insufficient evidence or rejected-untrusted - with reasons, checked locators, rule version and audit metadata.
+
+Stop or failure condition: Reject or hold when evidence or its locator is absent; value, currency, period, trust, sourceability or provenance does not match; a current conflict remains; the input has changed; or a rule or bounded execution fails. The failure remains visible downstream.
+
+Forbidden authority: The verifier cannot silently rewrite or replace the record it assesses, search for convenient replacement support, override source policy, average away conflict, compose report text, approve or export. Correction requires a new producer record and a new verification outcome.
+
+Literature basis: `guo2024multiagent`, PDF pp. 4--5 and 10--11; `wu2024autogen`, PDF pp. 2--5; `nist2023airmf`, PDF pp. 33--35.
+
+Row 4 - Deterministic composer
+
+Permitted input or tools: Only verified, report-eligible typed claims; explicit contradicted, held and missing exceptions; canonical metric and period semantics; and fixed templates, ordering, citation and hashing rules. It does not receive unrestricted source content or a generative fact-creation role.
+
+Required output: A reproducible report candidate that includes supported statements, exact evidence links, visible conflicts, unknowns, coverage limits and limitations. The report and section versions have a content hash and remain pending human review.
+
+Stop or failure condition: Refuse composition when a candidate lacks an eligible verification outcome, a required provenance link is absent, unresolved evidence is presented as supported, or a template, schema, ordering or content-hash invariant fails. Preserve the exception rather than repairing it in prose.
+
+Forbidden authority: The composer cannot add or infer facts, repair missing evidence, change verification status, suppress exceptions, create recommendations or causal explanations, approve the report, publish or export.
+
+Literature basis: `guo2024multiagent`, PDF pp. 3--5 and 10--11; `wu2024autogen`, PDF pp. 2--5; `peffers2007dsrm`, PDF pp. 16--18; `pineau2021reproducibility`, PDF pp. 1--4.
+
+Row 5 - Named human reviewer
+
+Permitted input or tools: The current versioned report, each claim and exact support, separate verifier records, conflicts, uncertainty, limitations and the content hash, presented through the controlled review interface. Reviewer identity comes from authorised configuration and the decision is bound to the reviewed version.
+
+Required output: A named and time-stamped approve, reject or return-for-correction decision with rationale and report version. A returned item creates a correction path and later re-review; approval controls export eligibility but does not certify source truth or general utility.
+
+Stop or failure condition: Do not approve when reviewer identity or authority is absent, the version or optimistic lock is stale, exact support is incomplete, a conflict is unresolved, or the evidence and limitation view is unavailable. Reject or return the version with a recorded reason.
+
+Forbidden authority: The reviewer cannot manufacture evidential support, relabel unsupported content as supported, override source admission or temporal eligibility, silently alter an approved version, or treat human presence as proof of improved accuracy, calibrated trust, usability or benefit.
+
+Literature basis: `amershi2019guidelines`, PDF pp. 3--5 and 16--19; `bucinca2021forcing`, PDF pp. 1--4 and 16--18; `nist2023airmf`, PDF pp. 32--35.
+
+Cross-role contract
+
+The handoff is serial and typed: planner candidate -> admitted evidence -> extractor proposal -> independent verification record -> deterministic report candidate -> named decision. Every role has a bounded input, output, stop state and forbidden authority. Role, task and attempt IDs, hashes, durations, errors, stop reasons, cancellation and recovery state should remain auditable. No stage may publish directly, and message or agent count is not a success measure.
+
+The matrix is a design rationale for later implementation and evaluation. It does not demonstrate that role decomposition, independent verification or human review improves accuracy, trust, utility, cost or time. It does not transfer AutoGen pilot findings or the Bucinca et al. task findings to this artefact. Human-review outcomes and live multi-agent performance remain unreported where not authorised and executed.
+
+Source note
+
+Author synthesis from locally admitted citation keys `guo2024multiagent`, `wu2024autogen`, `peffers2007dsrm`, `nist2023airmf`, `amershi2019guidelines`, `bucinca2021forcing` and `pineau2021reproducibility`. Claim scope and exact page locators follow frozen claim-ledger rows `2.6-P1`--`2.6-P4` and `SECTION_2_6_EVIDENCE.md`.

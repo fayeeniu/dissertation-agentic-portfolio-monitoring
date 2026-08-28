@@ -3,6 +3,7 @@
 - Status: Accepted for offline dissertation prototype
 - Date: 2026-08-26
 - Supersedes: no prior ADR; narrows and extends ADRs 0002–0005
+- Active model identity in decision 6 is superseded by [ADR 0011](0011-gpt-5-6-luna-routing.md).
 
 ## Context
 
@@ -57,7 +58,9 @@ the portfolio and weaken the dissertation evaluation.
   workflow remains reproducible while source-oriented orchestration is evaluated.
 - Companies House and UKRI/GtR are implemented only as immutable synthetic replay in the default
   research path. Live retrieval requires the separate G2 source/identity authority gate.
-- The optional model adapter exists but no real model call is evidence until G4 is granted.
+- The separately acknowledged checksum-pinned synthetic smoke may establish API connectivity and
+  strict persistence. It is not empirical model-quality, portfolio, retention, or cost evidence
+  and does not close G4.
 - SQLite remains suitable only for controlled local work despite stale-write protection.
 - D0 scores establish functional behavior on designed cases, not superiority or real-portfolio
   performance.

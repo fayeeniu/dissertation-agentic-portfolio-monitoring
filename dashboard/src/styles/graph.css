@@ -1,0 +1,499 @@
+/* ==========================================================================
+   Agent execution graph
+   The topology is read from persisted tasks and source rows. Every animated
+   element maps to a real state: an executing stage, a handoff that happened,
+   or a wait on a person.
+   ========================================================================== */
+
+.graph {
+  position: relative;
+  padding: 1.4rem 1.15rem 1.25rem;
+  background:
+    radial-gradient(60rem 22rem at 30% -6rem, rgba(67, 216, 189, 0.05), transparent 70%),
+    linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.graph::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: 0.34;
+  mask-image: radial-gradient(60rem 26rem at 40% 30%, #000, transparent 78%);
+  pointer-events: none;
+}
+
+/* The scroll lives outside the measurement root so node geometry stays correct
+   at any scroll offset. */
+.graph-scroll {
+  position: relative;
+  z-index: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-3) transparent;
+}
+
+.graph-inner {
+  position: relative;
+  min-width: min-content;
+}
+
+.graph-edges {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 0;
+}
+
+.graph-spine {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 2.6rem;
+  position: relative;
+  z-index: 1;
+  min-width: 60rem;
+}
+
+/* Gates are bookends: they carry less content than the four executing stages,
+   so they take a fixed narrow column and leave the width to the work. */
+.graph-cell {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.graph-cell[data-kind="gate"] {
+  flex: 0 1 10.5rem;
+}
+
+/* --- node ---------------------------------------------------------------- */
+
+.gnode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+  width: 100%;
+  padding: 0.72rem 0.8rem 0.68rem;
+  text-align: left;
+  border-radius: var(--r);
+  border: 1px solid var(--rule-2);
+  background: linear-gradient(180deg, var(--raised), var(--surface-2));
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--t-state) var(--ease-out),
+    box-shadow var(--t-state) var(--ease-out),
+    background var(--t-state) var(--ease-out),
+    transform var(--t-feedback) var(--ease-out);
+}
+
+.gnode:hover {
+  transform: translateY(-1px);
+  border-color: var(--rule-3);
+}
+
+.gnode[data-status="pending"] {
+  opacity: 0.58;
+  border-style: dashed;
+}
+
+.gnode[data-status="succeeded"] {
+  border-color: rgba(67, 216, 189, 0.3);
+}
+
+.gnode[data-status="running"] {
+  border-color: rgba(67, 216, 189, 0.62);
+  box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.2), 0 0 30px -8px var(--evidence-glow);
+  animation: node-live 2.1s var(--ease-move) infinite;
+}
+
+.gnode[data-status="awaiting"] {
+  border-color: rgba(240, 180, 94, 0.55);
+  box-shadow: 0 0 26px -10px var(--human-glow);
+  animation: node-wait 3.4s var(--ease-move) infinite;
+}
+
+.gnode[data-status="failed"] {
+  border-color: rgba(242, 112, 93, 0.55);
+  background: linear-gradient(180deg, rgba(242, 112, 93, 0.09), var(--surface-2));
+}
+
+.gnode[data-status="cancelled"] {
+  opacity: 0.5;
+}
+
+.gnode[data-selected="true"] {
+  box-shadow: 0 0 0 1px var(--focus), 0 10px 30px -18px #000;
+  border-color: var(--focus);
+}
+
+.gnode[data-dimmed="true"] {
+  opacity: 0.34;
+}
+
+@keyframes node-live {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.2), 0 0 30px -8px var(--evidence-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.4), 0 0 46px -6px var(--evidence-glow);
+  }
+}
+
+@keyframes node-wait {
+  0%,
+  100% {
+    box-shadow: 0 0 22px -12px var(--human-glow);
+  }
+  50% {
+    box-shadow: 0 0 34px -8px var(--human-glow);
+  }
+}
+
+.gnode-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.gnode-layer {
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gnode-engine {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: var(--mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  flex: none;
+}
+
+.gnode-engine::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: none;
+  background: var(--ink-4);
+}
+
+.gnode-engine[data-engine="model"]::before {
+  background: var(--model);
+  border-radius: 50%;
+}
+
+/* A repair-tier attempt is the same engine at a smaller size; the dimmer dot
+   says so without adding another colour to the vocabulary. */
+.gnode-engine[data-tier="repair"]::before {
+  opacity: 0.45;
+}
+.gnode-engine[data-engine="deterministic"]::before {
+  background: var(--evidence);
+  border-radius: 1px;
+}
+.gnode-engine[data-engine="human"]::before {
+  background: var(--human);
+  transform: rotate(45deg);
+}
+
+.gnode-label {
+  font-size: 0.8125rem;
+  font-weight: 550;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+}
+
+.gnode-detail {
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--ink-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gnode-detail {
+  flex: 1 1 auto;
+}
+
+.gnode-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.1rem;
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  color: var(--ink-4);
+}
+
+.gnode-timer {
+  color: var(--evidence);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ports anchor the drawn edges to the card. */
+.gnode-port {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--canvas);
+  border: 1px solid var(--rule-3);
+  top: 50%;
+  transform: translateY(-50%);
+}
+.gnode-port[data-side="in"] {
+  left: -4px;
+}
+.gnode-port[data-side="out"] {
+  right: -4px;
+}
+.gnode[data-status="succeeded"] .gnode-port,
+.gnode[data-status="running"] .gnode-port {
+  border-color: var(--evidence);
+}
+
+/* --- lanes --------------------------------------------------------------- */
+
+.graph-lanes {
+  position: relative;
+  z-index: 1;
+  margin-top: 3.4rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.graph-lanes-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.7rem;
+}
+
+.lane-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.lane {
+  position: relative;
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--rule);
+  background: var(--canvas-2);
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--t-state) var(--ease-out),
+    background var(--t-state) var(--ease-out),
+    opacity var(--t-state) var(--ease-out);
+}
+
+.lane:hover {
+  border-color: var(--rule-3);
+  background: var(--surface);
+}
+
+.lane[data-status="fetched"] {
+  border-color: rgba(67, 216, 189, 0.26);
+}
+.lane[data-status="discovered"] {
+  opacity: 0.62;
+  border-style: dashed;
+}
+.lane[data-status="blocked"],
+.lane[data-status="failed"] {
+  border-color: rgba(242, 112, 93, 0.3);
+}
+.lane[data-status="unsupported"] {
+  opacity: 0.66;
+}
+.lane[data-selected="true"] {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 1px var(--focus);
+}
+.lane[data-dimmed="true"] {
+  opacity: 0.28;
+}
+
+.lane-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.lane-domain {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.lane-tier {
+  font-family: var(--mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  flex: none;
+}
+
+.lane[data-tier="official"] .lane-tier {
+  color: var(--evidence);
+}
+
+.lane-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.5938rem;
+  color: var(--ink-4);
+}
+
+.lane-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.lane-state::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lane[data-status="fetched"] .lane-state {
+  color: var(--evidence);
+}
+.lane[data-status="blocked"] .lane-state,
+.lane[data-status="failed"] .lane-state {
+  color: var(--danger);
+}
+
+/* --- legend -------------------------------------------------------------- */
+
+.graph-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+.graph-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.graph-legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  font-style: normal;
+}
+
+@media (max-width: 74rem) {
+  .graph-spine {
+    flex-direction: column;
+    gap: 1.9rem;
+    min-width: 0;
+  }
+  .graph-cell[data-kind="gate"] {
+    flex: 1 1 auto;
+  }
+  .graph-scroll {
+    overflow-x: visible;
+  }
+  .graph-inner {
+    min-width: 0;
+  }
+  .gnode {
+    min-height: 0;
+  }
+  .gnode-port[data-side="in"] {
+    left: 50%;
+    top: -4px;
+    transform: translateX(-50%);
+  }
+  .gnode-port[data-side="out"] {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -4px;
+    transform: translateX(-50%);
+  }
+  .graph-lanes {
+    margin-top: 2rem;
+  }
+  .graph-lanes-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}
+
+/* Reduced motion. SMIL packets are not governed by the CSS animation reset in
+   globals.css, so they are removed explicitly here as well as by the render
+   guard in AgentGraph. Every state they report is also written in text. */
+@media (prefers-reduced-motion: reduce) {
+  .graph-edges circle {
+    display: none;
+  }
+
+  .gnode[data-status="running"],
+  .gnode[data-status="awaiting"] {
+    animation: none;
+  }
+}

@@ -66,6 +66,9 @@ test/evaluation harness. Restricted/internal evidence cannot cross that boundary
   permissions.
 - No queue, scheduler, cloud store, background crawler, authentication provider, or API key
   is required for P0.
+- An optional Next.js control room runs as a second local process and reaches the service only
+  through its own server-side proxy, so the loopback and CSRF boundaries are unchanged. The
+  Python service remains fully usable without it.
 
 This is suitable for controlled dissertation experimentation, not concurrent production use.
 
@@ -81,11 +84,15 @@ This is suitable for controlled dissertation experimentation, not concurrent pro
 | `temporal.py` / `quality.py` | Claim-relative time eligibility and executable, versioned missing/no-record/unavailable/failure dispositions | Global stale flags, conflated terminal states, or opaque quality scores |
 | `context.py` / `visualizations.py` | Period-semantics/exposure-aware change, segmented minimum-N five-number context, accessible dissertation SVGs | Rankings, incompatible programme/duration cohorts, causal labels, or hidden small samples |
 | `llm/` | Typed extraction provider abstraction and guarded optional OpenAI adapter | Workflow control, restricted data permission, report approval |
+| `company_research.py` | Explicit OpenAI web discovery, guarded page capture, serial persisted research stages, exact-span company claims, deterministic deck composition | Identity approval, arbitrary browsing, person profiling, investment recommendations, native presentation rendering |
 | `workflow.py` | Fixed stage order, stage audit, evidence/extraction/claim/report coordination | Open-ended planning or autonomous publication |
 | `verification.py` | Pure conservative support/contradiction/stale/trust decision | Source collection, text generation, human judgement |
 | `reporting.py` | Optimistic versions, decisions, approval gate, staged manifest-backed export | Changing verification status or publishing autonomously |
 | `evaluation.py` / `evaluation_datasets.py` | Namespaced D0 execution, D1 protocol, sealed D2, null-aware layer outcomes | Real manual/HITL findings or holdout access |
 | `web.py` | Accessible loopback UI, Host/client enforcement, CSRF, configured reviewer identity | Production authentication, tenant isolation, remote exposure |
+| `api.py` | Read-only JSON projection of persisted runs, tasks, sources, claims, and profiles; CSRF-checked mutation pass-through to the same services the Jinja routes call | Business logic, derived values, or any state the database does not hold |
+| `company_research_fixtures.py` | Recorded source map and recorded candidate sentences for the offline rehearsal mode | Weakening any acquisition, validation, contradiction, or approval control |
+| `dashboard/` (Next.js) | Operator control room: execution graph rendered from persisted rows, state-bound motion, evidence inspector, review gate | Reaching the research service directly from the browser, holding the CSRF token, or displaying unpersisted state |
 
 ## End-to-end state machine
 
@@ -199,16 +206,16 @@ Its route is:
 
 1. classification must be `public` or `synthetic`;
 2. injection detector/trust state must pass;
-3. `gpt-5.4-mini` receives only the minimum evidence and a public-provenance-derived opaque
+3. `gpt-5.6-luna` receives only the minimum evidence and a public-provenance-derived opaque
    reference/metric/period; a restricted portfolio company name is never copied into that request;
 4. output must validate against strict JSON Schema and cite a complete finite numeric token or an
    exact structured value leaf; provenance-envelope fields cannot ground a value;
-5. one escalation to `gpt-5.4` is allowed only after validation/parsing failure;
+5. one low-effort repair attempt on `gpt-5.6-luna` is allowed only after validation/parsing failure;
 6. failure after the bounded route stops extraction; and
 7. downstream deterministic normalization and independent verification remain mandatory.
 
-The ordered `gpt-5.4-mini` → `gpt-5.4` pair is an enforced allowlist, not a freely configurable
-model selector. Companies House replay/API JSON also routes its required scalar identity/status
+The repeated `gpt-5.6-luna` route is an enforced allowlist, not a freely configurable model
+selector. Companies House replay/API JSON also routes its required scalar identity/status
 fields through the production document-extraction boundary and checks the extracted pointer value
 against the validated connector record.
 

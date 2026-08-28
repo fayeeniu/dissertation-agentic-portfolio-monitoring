@@ -1,0 +1,100 @@
+METH-T1 — C0–C3 evaluation-condition matrix
+Target section: 3.2 Evaluand and experimental conditions
+Suggested LaTeX label: tab:meth-condition-matrix
+
+Purpose and evidence boundary
+This is an author-synthesised, conceptual and non-empirical matrix of the frozen project
+evaluation contracts. It defines what each condition would evaluate; it does not report an
+experimental value, acceptance threshold, participant outcome, operational effect or production
+claim. “Implemented” below means an executable workflow exists for the stated synthetic mechanism
+evidence. It does not mean that authorised manual, human-participant or live-company evidence has
+been collected.
+
+Shared parity rule
+All comparable conditions must use the same canonical metric definitions, reporting period,
+eligible input and source-access window, and frozen gold reference. The gold reference is built
+independently and is not replaced by a C0 manual report. Frozen schemas, prompts, code, compute
+environment and stopping rules form part of the workflow configuration where they apply. A C0
+practitioner may use established tools, including model assistance, only when each aid is recorded;
+otherwise the “manual” label would be misleading.
+
+Columns
+1. Condition.
+2. Operational workflow.
+3. Independent verifier.
+4. Human involvement.
+5. Scoring point.
+6. Parity controls.
+7. Current evidence state.
+
+C0 — Manual
+- Operational workflow: An authorised practitioner completes the existing reporting workflow
+  within the same frozen input and source-access window used by comparable conditions. Every tool
+  or model aid is logged.
+- Independent verifier: No condition-level independent verifier is defined.
+- Human involvement: The practitioner produces the report. This is the manual condition, not the
+  later named-review stage used by C3.
+- Scoring point: The completed manual report. Timing and corrections are captured only if the
+  required authority and observation protocol permit this.
+- Parity controls: The shared metric definitions, reporting period, eligible inputs, source-access
+  window and frozen gold reference apply.
+- Current evidence state: PROTOCOL-ONLY and currently NO-GO. Execution is held pending verified
+  ethics/data authority, gold-reference construction and protocol freeze.
+
+C1 — Deterministic/single-agent baseline
+- Operational workflow: One extraction-and-composition path applies the common catalogue and
+  normaliser, emits eligible normalised candidates and retains available provenance. It has no
+  independent verification stage.
+- Independent verifier: No.
+- Human involvement: No human edits before scoring.
+- Scoring point: The automated C1 report before any human review.
+- Parity controls: The shared controls apply, together with frozen schemas, prompts where used,
+  code, compute environment and stopping rules.
+- Current evidence state: IMPLEMENTED on synthetic labelled D0 cases. This is engineering and
+  mechanism evidence only, not evidence of real portfolio or practitioner performance.
+
+C2 — Bounded multi-agent verification
+- Operational workflow: Bounded planner, resolver, collector, extractor, normaliser, verifier and
+  composer roles are used. The separate verifier controls support eligibility before deterministic
+  composition.
+- Independent verifier: Yes. The verifier is separate from extraction and composition.
+- Human involvement: No human edits before scoring.
+- Scoring point: The verifier-gated C2 report before human review.
+- Parity controls: The same common and frozen technical controls as C1 apply.
+- Current evidence state: IMPLEMENTED on synthetic labelled D0 cases. This is engineering and
+  mechanism evidence only, not evidence of real portfolio or practitioner performance.
+
+C3 — C2 plus human-in-the-loop named review
+- Operational workflow: The C2 output enters the versioned named-review workflow.
+- Independent verifier: Yes, inherited from C2.
+- Human involvement: Under an authorised protocol, a named reviewer may edit, approve or reject
+  the versioned report.
+- Scoring point: The approved post-review version is scored separately from its pre-review C2
+  version. The pre/post comparison is a sub-comparison; it does not replace comparison with C0.
+- Parity controls: The shared controls and C2 configuration apply, together with the frozen review
+  and observation protocol.
+- Current evidence state: The workflow is IMPLEMENTED, but human results are PROTOCOL-ONLY and
+  currently NO-GO pending the same authority and freeze requirements as C0.
+
+Explicit exclusion
+The implemented but live-unrun bounded public-web company-research path is not a C0, C1, C2 or C3
+experimental condition. Its tests and controls may provide engineering evidence only. It cannot be
+used as an empirical C0–C3 result or as a substitute for held C0/C3 outcomes.
+
+Source note
+Author synthesis of locally frozen project contracts, not results:
+- docs/EVALUATION_PROTOCOL.md: “Protocol status”, “Research question and evaluand”, “Experimental
+  conditions”, “Dataset partitions and leakage control”, and D0–D2 tier definitions.
+- Dissertation/REPORT_STRUCTURE.md: “Implemented case study and held future evaluation”, “Current
+  go/no-go state - 27 August 2026”, and Section 3.2 structure entry.
+- docs/PROJECT_CHARTER.md: evidence-category boundary between source evidence, implementation
+  evidence, protocol and finding.
+- docs/REQUIREMENTS.md: status conventions and NFR-RES-001 separation of synthetic engineering,
+  authorised restricted-data and participant evidence.
+
+Accessibility and limitations
+This complete text alternative repeats the visual table in reading order. The table is designed
+for portrait printing and does not rely on colour. The companion does not claim that the generated
+dissertation PDF is tagged. The matrix specifies condition contracts and present evidence states;
+it does not establish comparability in an unexecuted study, validate the gold reference, or supply
+missing ethics/data authority.

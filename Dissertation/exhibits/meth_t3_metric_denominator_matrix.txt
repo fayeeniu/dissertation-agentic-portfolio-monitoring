@@ -1,0 +1,232 @@
+METH-T3 - Metric, denominator and interpretation contract
+Target section: 3.5 Measures and denominators
+LaTeX label: tab:meth-metric-denominator-matrix
+
+Purpose and current status
+This is Faye Niu's conceptual, non-empirical synthesis of the current project measurement contract.
+It defines what is observed, counted or compared; what belongs in each denominator; when a result
+must remain null; and how dependence changes interpretation. It contains no result, sample size,
+acceptance threshold, condition ranking, time saving, cost claim, usability claim or production
+performance claim. The gold/reference, several denominators, severity aggregation and authorised
+human instrument are not yet frozen.
+
+Universal null and zero rule
+If a layer has no eligible labelled cases, or a rate has a zero denominator, record NULL or N/A with
+the reason. Never report that unavailable rate as zero. Zero is a measured value only when the
+required observation and a positive eligible denominator exist. F1 is null unless precision and
+recall are both defined and their sum is greater than zero. No acceptance threshold is supplied.
+
+Reading-order alternative
+
+1. Claim precision
+- Unit: one emitted claim eligible for scoring.
+- Numerator: supported emitted claims.
+- Denominator: all emitted claims eligible for scoring.
+- Null/zero: no eligible emitted claims means NULL/N/A with the reason, never zero.
+- Interpretation: claims from the same company/report are clustered. Precision must be read with
+  recall because a condition can improve precision by emitting fewer claims.
+
+2. Claim recall
+- Unit: one gold claim required by the frozen scope.
+- Numerator: correctly emitted gold claims.
+- Denominator: all gold claims required by scope.
+- Null/zero: no required labelled gold claims means NULL/N/A, never zero.
+- Interpretation: cluster by company/report and preserve omissions rather than dropping them.
+
+3. F1
+- Unit: one condition on the same frozen claim set used for precision and recall.
+- Formula: F1 = 2 * precision * recall / (precision + recall).
+- Denominator/comparator: there is no new population; F1 uses the same frozen scoring set.
+- Null/zero: F1 is NULL unless precision and recall are defined and precision + recall is positive.
+- Interpretation: always report precision and recall separately. F1 is not a decision threshold.
+
+4. Unsupported-claim rate
+- Unit: one emitted claim.
+- Numerator: emitted claims without gold/evidence support.
+- Denominator: all emitted claims.
+- Null/zero: no emitted claims means NULL/N/A, never zero.
+- Interpretation: freeze evidence/support eligibility. Fluency or citation presence does not prove
+  support.
+
+5. Claim-support rate
+- Unit: one emitted claim.
+- Numerator: emitted claims satisfying the frozen support rule.
+- Denominator: all emitted claims.
+- Null/zero: no emitted claims means NULL/N/A, never zero.
+- Interpretation: keep support separate from answer correctness and provenance completeness.
+
+6. Contradiction-detection recall
+- Unit: one gold conflict.
+- Numerator: correctly flagged gold conflicts.
+- Denominator: all gold conflicts.
+- Null/zero: no labelled gold conflicts means NULL/N/A, never zero.
+- Interpretation: linked conflicts are clustered. Record false conflict flags separately so high
+  recall does not conceal over-flagging.
+
+7. Identity, acquisition, temporal and source-quality outcomes
+- Unit: one company-source-period layer outcome.
+- Observation: correctness of legal identity, acquisition/access state, temporal eligibility and
+  source-quality decision, recorded as separate outcomes.
+- Denominator: TO FREEZE - the label-eligible units for each layer.
+- Null/zero: a layer with no labels is NULL. Event-linkage outcomes are NULL in the current D0
+  synthetic pack.
+- Interpretation: do not combine the layers into one context-free quality score. Group by company,
+  report and sourceability.
+
+8. Strict schema validity and extraction accuracy
+- Unit: one extraction record or field.
+- Numerator/observation: schema-valid output and exact/field-level match to the frozen label.
+- Denominator: TO FREEZE - whether attempted or eligible records are counted, and whether the unit is
+  the record or field.
+- Null/zero: no labelled eligible records means NULL, never zero.
+- Interpretation: stratify by format, metric type and sourceability. Fields within one report are
+  dependent observations.
+
+9. Normalisation and missing-state accuracy
+- Unit: one company-metric-reporting-period field.
+- Numerator/observation: correct type, value, unit and currency; correct missing-state label; and a
+  separate blank-versus-zero confusion matrix.
+- Denominator: TO FREEZE - labelled in-scope fields by task and data type.
+- Null/zero: no labels means NULL. A numeric zero is a valid observed value, not a missing state.
+  Accuracy can be zero only when the denominator is positive and none of the labels are correct.
+- Interpretation: report by data type and missing-state class. Repeated company fields are not
+  independent.
+
+10. Provenance completeness
+- Unit: one eligible emitted claim.
+- Numerator: eligible emitted claims containing source ID, exact locator, publisher where
+  applicable, retrieval time, checksum and period.
+- Denominator: all eligible emitted claims.
+- Null/zero: no eligible emitted claims means NULL/N/A, never zero.
+- Interpretation: completeness measures traceability. It does not prove that the source or claim is
+  true.
+
+11. Locator validity
+- Unit: one claim-locator binding at the frozen retrieval snapshot.
+- Observation: whether the exact locator resolves to the admitted immutable snapshot.
+- Denominator: TO FREEZE - eligible locators or claims and how multiple locators are treated.
+- Null/zero: no eligible inspected locators means NULL. A broken inspected locator is a failure, not
+  missing data.
+- Interpretation: locator resolution is separate from passage support and source truth.
+
+12. Report-section completeness
+- Unit: one report and one required section.
+- Observation: section status against the frozen reference template.
+- Denominator: TO FREEZE - the required-section set and whether explicit held/empty sections count as
+  transparent completion or absence.
+- Null/zero: no frozen template or scored report means NULL.
+- Interpretation: aggregate at report/company level. Section presence does not establish factual
+  correctness.
+
+13. Factual-error count and severity
+- Unit: one scored claim and report.
+- Observation: factual-error count by the pre-specified error taxonomy, with a severity label for
+  each error.
+- Denominator/comparator: count per report. Any severity weighting or aggregation is TO FREEZE before
+  scoring.
+- Null/zero: no scored report means NULL. Zero is valid only after an eligible report is checked and
+  no error is found.
+- Interpretation: severity definitions must be frozen before condition identity or outcomes are
+  inspected. Claims remain clustered within reports.
+
+14. Transparency rate
+- Unit: one missing, conflicted or stale item.
+- Numerator/observation: eligible items whose state and reason are visibly surfaced.
+- Denominator: TO FREEZE - the exact eligible item set and report-level aggregation.
+- Null/zero: no eligible labelled items means NULL/N/A, never zero.
+- Interpretation: report missing, conflict and stale strata separately; do not create a
+  context-free quality score.
+
+15. Active human and elapsed time
+- Unit: one authorised C0 operator or C3 reviewer completing one report/task.
+- Observation: active human minutes and elapsed wall-clock minutes recorded separately under common
+  start/stop rules.
+- Comparator: paired company-period/report with the same review-ready definition. Aggregation is TO
+  FREEZE.
+- Null/zero: current D0 and unauthorised C0/C3 observations are NULL. Missing or retrospectively
+  reconstructed time is not zero.
+- Interpretation: cluster repeated tasks by reviewer and report. Record allowed tools/model help,
+  interruptions and waiting time.
+
+16. Machine stage duration, retries and failures
+- Unit: one machine stage/attempt and one workflow run.
+- Observation: stage duration, attempt/retry event and failure/re-run event.
+- Denominator/comparator: each executed stage/run; summary aggregation and the failure-inclusive
+  comparator are TO FREEZE.
+- Null/zero: an unexecuted stage is N/A with the reason, not zero.
+- Interpretation: pair the same company-period, preserve stage boundaries and retain failures.
+
+17. Tokens and monetary cost
+- Unit: one model/attempt and workflow run.
+- Observation: input/output tokens by model and run. Monetary cost uses the official price effective
+  on the execution date, with the exact formula and currency recorded.
+- Comparator: the same executed workflow unit and model/version. Do not estimate a missing price.
+- Null/zero: missing token telemetry or price is NULL. Zero is valid only when logs prove that there
+  was no billable model/API usage.
+- Interpretation: report tokens separately from money. Model/version, price date and currency bind
+  the comparison.
+
+18. Repeat reliability
+- Unit: one fixed workflow configuration and one repeated company/report/claim unit.
+- Observation: exact outcome-vector equality across deterministic repeats; per-field/claim agreement
+  across stochastic repeats; run completion; schema validity; and failure-category distribution.
+- Denominator: TO FREEZE - repeat set, outcome-vector scope, pair/denominator and any stochastic
+  agreement statistic.
+- Null/zero: no qualifying repeats or a zero denominator means NULL, never zero.
+- Interpretation: cluster by company/report and retain the configuration hash and all failures. No
+  universal repeat-consistency threshold is supplied.
+
+19. C3 usability and reviewer edit burden
+- Unit: one authorised reviewer, task and report.
+- Observation: an ethics-approved selection of task success, time on task, decision reversals,
+  confidence calibration or a licensed validated usability scale; plus append-only edit events,
+  edited sections and optional character/semantic edit distance.
+- Denominator/comparator: TO FREEZE in the authorised instrument and task protocol. Preserve C2
+  pre-review and C3 post-review versions; any C0 comparison uses the same authorised task contract.
+- Null/zero: current D0 and any state without an authorised participant observation are NULL. Do not
+  synthesize reviewer utility.
+- Interpretation: cluster by reviewer/report and record order, experience and unavoidable
+  unblinding. Do not select a favourable usability scale after seeing outcomes.
+
+Local academic basis
+- gao2023alce: Dissertation/sources/papers/28_gao_alce_citations.pdf, PDF pages 3-4 and 10. Supports
+  separate evaluation of answer correctness, citation recall/completeness and citation precision;
+  its benchmark values and automatic NLI judgements do not transfer to this project.
+- nikiforova2020quality:
+  Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf, PDF pages 1-3
+  and 15-17. Supports use-case-specific, multi-dimensional data-quality evaluation and a Companies
+  House example; it does not define this project's missing-state taxonomy or empirical scores.
+- pineau2021reproducibility: Dissertation/sources/papers/33_pineau_reproducibility.pdf, PDF pages 1-5
+  and 9-13. Supports explicit data, code, metric, procedure and reporting records; reproducibility
+  does not establish validity or production utility.
+- artstein2008agreement:
+  Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf, PDF pages 2-8, 16-23 and
+  36-37. Supports separating agreement/reliability from validity and selecting coefficients according
+  to the annotation task and assumptions; it supplies no universal acceptance threshold.
+- nist2023airmf: Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf, PDF pages 32-35. Supports
+  documented measurement, uncertainty, rigorous testing, human oversight and independent review;
+  the framework does not certify this artefact.
+- amershi2019guidelines: Dissertation/sources/papers/13_amershi_human_ai_guidelines.pdf, PDF pages 3-5
+  and 16-19. Supports correction, dismissal, feedback and control in human-AI interaction; it is a
+  design-guideline study, not evidence of this project's usability or reviewer benefit.
+
+Exact repository inputs
+- docs/EVALUATION_PROTOCOL.md: headings "Units of analysis", "Primary and secondary measures",
+  "Claim quality", "Extraction and normalization", "Provenance and report quality", "Efficiency
+  and resource use", "Reliability", "Usability (C3 only)", "Automated synthetic harness", "Manual
+  baseline capture", "HITL capture", "Analysis plan" and "Error taxonomy".
+- docs/DATA_DICTIONARY.md: canonical value, missing-state, period, sourceability, claim, verification
+  and report-lifecycle semantics.
+- Dissertation/REPORT_STRUCTURE.md: approved Section 3.5 scope and explicit null/zero-denominator
+  requirement.
+- Dissertation/sources/MANIFEST.csv and SHA256SUMS: admitted key, local file, source role,
+  limitation and checksum bindings for the six academic sources above.
+
+Accessibility and limitations
+The LaTeX exhibit reads top-to-bottom as a metric contract. Each row supplies the unit, observation,
+denominator/comparator, null rule and clustering/interpretation boundary; meaning does not rely on
+colour. This file is the complete linear text alternative. The matrix is a protocol artefact, not
+proof that measures are validly operationalised or that any condition has been scored. "TO FREEZE"
+is an intentional evidence hold. Definitions may require supervisor, domain, ethics and statistical
+review before D1/D2 or authorised C0/C3 execution. A downstream dissertation PDF is not claimed to
+be tagged; this companion preserves reading order.

@@ -24,9 +24,15 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .db import Base
 from .enums import (
+    CompanyResearchRunStatus,
+    CompanyResearchTaskStatus,
     DataClassification,
     IdentityCandidateStatus,
+    LinkReviewStatus,
+    ProfileVersionStatus,
     ReportStatus,
+    ResearchCaseStatus,
+    ResearchSourceStatus,
     ResolutionStatus,
     RunStatus,
     WorkflowStage,
@@ -110,6 +116,9 @@ class CompanyModel(Base):
     classification: Mapped[str] = mapped_column(
         String(32), default=DataClassification.RESTRICTED.value
     )
+    entity_type: Mapped[str | None] = mapped_column(String(32), index=True)
+    jurisdiction: Mapped[str | None] = mapped_column(String(64), index=True)
+    lifecycle_status: Mapped[str | None] = mapped_column(String(32), index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 
@@ -182,6 +191,316 @@ class IdentityDecisionModel(Base):
     decision: Mapped[str] = mapped_column(String(32))
     actor: Mapped[str] = mapped_column(String(255))
     reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ResearchTemplateModel(Base):
+    __tablename__ = "research_templates"
+    __table_args__ = (UniqueConstraint("key"),)
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("rt"))
+    key: Mapped[str] = mapped_column(String(100), index=True)
+    name: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ResearchTemplateVersionModel(Base):
+    __tablename__ = "research_template_versions"
+    __table_args__ = (
+        UniqueConstraint("template_id", "version", name="uq_research_template_version"),
+        UniqueConstraint("sha256"),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("rtv"))
+    template_id: Mapped[str] = mapped_column(
+        ForeignKey("research_templates.id", ondelete="CASCADE"), index=True
+    )
+    version: Mapped[str] = mapped_column(String(50))
+    objective: Mapped[str] = mapped_column(Text)
+    required_capabilities_json: Mapped[list[str]] = mapped_column(JSON, default=list)
+    optional_capabilities_json: Mapped[list[str]] = mapped_column(JSON, default=list)
+    claim_keys_json: Mapped[list[str]] = mapped_column(JSON, default=list)
+    budgets_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    sha256: Mapped[str] = mapped_column(String(64), index=True)
+    published_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ResearchCaseModel(Base):
+    __tablename__ = "research_cases"
+    __table_args__ = (
+        UniqueConstraint(
+            "company_id",
+            "purpose",
+            "template_version_id",
+            "classification",
+            name="uq_research_case_scope",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("case"))
+    company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="CASCADE"), index=True
+    )
+    template_version_id: Mapped[str] = mapped_column(
+        ForeignKey("research_template_versions.id", ondelete="RESTRICT"), index=True
+    )
+    purpose: Mapped[str] = mapped_column(Text)
+    classification: Mapped[str] = mapped_column(String(32), index=True)
+    status: Mapped[str] = mapped_column(
+        String(32), default=ResearchCaseStatus.IDENTITY_HOLD.value, index=True
+    )
+    created_by: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    company: Mapped[CompanyModel] = relationship()
+    template_version: Mapped[ResearchTemplateVersionModel] = relationship()
+
+
+class IntakeArtifactModel(Base):
+    __tablename__ = "intake_artifacts"
+    __table_args__ = (UniqueConstraint("fingerprint"),)
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("ia"))
+    research_case_id: Mapped[str] = mapped_column(
+        ForeignKey("research_cases.id", ondelete="CASCADE"), index=True
+    )
+    company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="CASCADE"), index=True
+    )
+    kind: Mapped[str] = mapped_column(String(40), index=True)
+    fingerprint: Mapped[str] = mapped_column(String(64), index=True)
+    normalized_value: Mapped[str | None] = mapped_column(Text)
+    submitted_value_json: Mapped[dict[str, Any]] = mapped_column(JSON)
+    content_sha256: Mapped[str | None] = mapped_column(String(64), index=True)
+    snapshot_path: Mapped[str | None] = mapped_column(Text)
+    original_filename: Mapped[str | None] = mapped_column(String(255))
+    classification: Mapped[str] = mapped_column(String(32), index=True)
+    actor: Mapped[str] = mapped_column(String(255))
+    purpose: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    research_case: Mapped[ResearchCaseModel] = relationship()
+    company: Mapped[CompanyModel] = relationship()
+
+
+class CompanyDomainModel(Base):
+    __tablename__ = "company_domains"
+    __table_args__ = (
+        UniqueConstraint("company_id", "normalized_domain", name="uq_company_domain"),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("dom"))
+    company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="CASCADE"), index=True
+    )
+    url: Mapped[str] = mapped_column(Text)
+    normalized_domain: Mapped[str] = mapped_column(String(255), index=True)
+    status: Mapped[str] = mapped_column(
+        String(32), default=LinkReviewStatus.PENDING.value, index=True
+    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    company: Mapped[CompanyModel] = relationship()
+
+
+class CompanyDomainDecisionModel(Base):
+    __tablename__ = "company_domain_decisions"
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("dd"))
+    company_domain_id: Mapped[str] = mapped_column(
+        ForeignKey("company_domains.id", ondelete="CASCADE"), index=True
+    )
+    decision: Mapped[str] = mapped_column(String(32))
+    actor: Mapped[str] = mapped_column(String(255))
+    reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyIdentifierDecisionModel(Base):
+    __tablename__ = "company_identifier_decisions"
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("cidr"))
+    company_identifier_id: Mapped[str] = mapped_column(
+        ForeignKey("company_identifiers.id", ondelete="CASCADE"), index=True
+    )
+    decision: Mapped[str] = mapped_column(String(32))
+    actor: Mapped[str] = mapped_column(String(255))
+    reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ProfileVersionModel(Base):
+    __tablename__ = "profile_versions"
+    __table_args__ = (
+        UniqueConstraint("research_case_id", "version", name="uq_profile_case_version"),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("pv"))
+    research_case_id: Mapped[str] = mapped_column(
+        ForeignKey("research_cases.id", ondelete="CASCADE"), index=True
+    )
+    research_run_id: Mapped[str | None] = mapped_column(
+        ForeignKey("company_research_runs.id", ondelete="RESTRICT"),
+        unique=True,
+        index=True,
+    )
+    version: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(
+        String(32), default=ProfileVersionStatus.DRAFT.value, index=True
+    )
+    content_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    content_sha256: Mapped[str] = mapped_column(String(64), index=True)
+    created_by: Mapped[str] = mapped_column(String(255))
+    reviewed_by: Mapped[str | None] = mapped_column(String(255))
+    review_reason: Mapped[str | None] = mapped_column(Text)
+    lock_version: Mapped[int] = mapped_column(Integer, default=1)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    research_case: Mapped[ResearchCaseModel] = relationship()
+
+
+class CompanyResearchRunModel(Base):
+    __tablename__ = "company_research_runs"
+    __table_args__ = (UniqueConstraint("request_fingerprint"),)
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("crun"))
+    research_case_id: Mapped[str] = mapped_column(
+        ForeignKey("research_cases.id", ondelete="CASCADE"), index=True
+    )
+    company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="CASCADE"), index=True
+    )
+    request_fingerprint: Mapped[str] = mapped_column(String(64), index=True)
+    reporting_cutoff: Mapped[date] = mapped_column(Date, index=True)
+    source_policy_version: Mapped[str] = mapped_column(String(100))
+    model: Mapped[str] = mapped_column(String(100))
+    prompt_version: Mapped[str] = mapped_column(String(100))
+    status: Mapped[str] = mapped_column(
+        String(32), default=CompanyResearchRunStatus.PENDING.value, index=True
+    )
+    budgets_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    usage_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    coverage_json: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_by: Mapped[str] = mapped_column(String(255))
+    cancelled_by: Mapped[str | None] = mapped_column(String(255))
+    cancellation_reason: Mapped[str | None] = mapped_column(Text)
+    error_code: Mapped[str | None] = mapped_column(String(100))
+    error_message: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyResearchTaskModel(Base):
+    __tablename__ = "company_research_tasks"
+    __table_args__ = (
+        UniqueConstraint("research_run_id", "capability", name="uq_company_research_task"),
+        UniqueConstraint("request_fingerprint"),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("ctask"))
+    research_run_id: Mapped[str] = mapped_column(
+        ForeignKey("company_research_runs.id", ondelete="CASCADE"), index=True
+    )
+    stage_order: Mapped[int] = mapped_column(Integer)
+    capability: Mapped[str] = mapped_column(String(100), index=True)
+    request_fingerprint: Mapped[str] = mapped_column(String(64), index=True)
+    status: Mapped[str] = mapped_column(
+        String(32), default=CompanyResearchTaskStatus.PENDING.value, index=True
+    )
+    attempt_count: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=2)
+    input_hash: Mapped[str | None] = mapped_column(String(64))
+    output_hash: Mapped[str | None] = mapped_column(String(64))
+    error_code: Mapped[str | None] = mapped_column(String(100))
+    error_message: Mapped[str | None] = mapped_column(Text)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyResearchTaskAttemptModel(Base):
+    __tablename__ = "company_research_task_attempts"
+    __table_args__ = (
+        UniqueConstraint(
+            "research_task_id", "attempt_number", name="uq_company_research_task_attempt"
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("cta"))
+    research_task_id: Mapped[str] = mapped_column(
+        ForeignKey("company_research_tasks.id", ondelete="CASCADE"), index=True
+    )
+    attempt_number: Mapped[int] = mapped_column(Integer)
+    status: Mapped[str] = mapped_column(String(32), index=True)
+    model: Mapped[str | None] = mapped_column(String(100))
+    input_hash: Mapped[str] = mapped_column(String(64))
+    output_hash: Mapped[str | None] = mapped_column(String(64))
+    input_tokens: Mapped[int | None] = mapped_column(Integer)
+    output_tokens: Mapped[int | None] = mapped_column(Integer)
+    tool_calls: Mapped[int | None] = mapped_column(Integer)
+    duration_ms: Mapped[int | None] = mapped_column(Integer)
+    error_code: Mapped[str | None] = mapped_column(String(100))
+    error_message: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyResearchSourceModel(Base):
+    __tablename__ = "company_research_sources"
+    __table_args__ = (
+        UniqueConstraint("research_run_id", "url", name="uq_company_research_source_url"),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("crs"))
+    research_run_id: Mapped[str] = mapped_column(
+        ForeignKey("company_research_runs.id", ondelete="CASCADE"), index=True
+    )
+    url: Mapped[str] = mapped_column(Text)
+    final_url: Mapped[str | None] = mapped_column(Text)
+    title: Mapped[str | None] = mapped_column(String(500))
+    publisher_domain: Mapped[str] = mapped_column(String(255), index=True)
+    source_tier: Mapped[str] = mapped_column(String(40), index=True)
+    status: Mapped[str] = mapped_column(
+        String(32), default=ResearchSourceStatus.DISCOVERED.value, index=True
+    )
+    http_status: Mapped[int | None] = mapped_column(Integer)
+    media_type: Mapped[str | None] = mapped_column(String(100))
+    byte_size: Mapped[int | None] = mapped_column(Integer)
+    raw_sha256: Mapped[str | None] = mapped_column(String(64), index=True)
+    snapshot_path: Mapped[str | None] = mapped_column(Text)
+    snapshot_kind: Mapped[str | None] = mapped_column(String(40))
+    redaction_count: Mapped[int] = mapped_column(Integer, default=0)
+    text_sha256: Mapped[str | None] = mapped_column(String(64), index=True)
+    retrieved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    error_code: Mapped[str | None] = mapped_column(String(100))
+    error_message: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyResearchClaimModel(Base):
+    __tablename__ = "company_research_claims"
+    __table_args__ = (UniqueConstraint("claim_hash"),)
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("rcl"))
+    research_run_id: Mapped[str] = mapped_column(
+        ForeignKey("company_research_runs.id", ondelete="CASCADE"), index=True
+    )
+    research_source_id: Mapped[str] = mapped_column(
+        ForeignKey("company_research_sources.id", ondelete="CASCADE"), index=True
+    )
+    claim_hash: Mapped[str] = mapped_column(String(64), index=True)
+    category: Mapped[str] = mapped_column(String(40), index=True)
+    subject_key: Mapped[str] = mapped_column(String(100), index=True)
+    statement: Mapped[str] = mapped_column(Text)
+    evidence_span: Mapped[str] = mapped_column(Text)
+    source_locator: Mapped[str] = mapped_column(Text)
+    event_date: Mapped[str | None] = mapped_column(String(32))
+    amount: Mapped[str | None] = mapped_column(String(100))
+    currency: Mapped[str | None] = mapped_column(String(8))
+    perspective: Mapped[str] = mapped_column(String(40))
+    verification_status: Mapped[str] = mapped_column(String(40), index=True)
+    extraction_method: Mapped[str] = mapped_column(String(100))
+    model: Mapped[str] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 

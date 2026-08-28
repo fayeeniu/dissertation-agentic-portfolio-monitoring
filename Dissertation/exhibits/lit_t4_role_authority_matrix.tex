@@ -1,0 +1,61 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \caption{Role-and-authority matrix for bounded multi-agent reporting}
+  \label{tab:lit-role-authority-matrix}
+  \footnotesize
+  \setlength{\tabcolsep}{2.1pt}
+  \renewcommand{\arraystretch}{1.16}
+  \hyphenpenalty=3500
+  \exhyphenpenalty=3500
+  \begin{tabularx}{\textwidth}{@{}P{0.145\textwidth}P{0.185\textwidth}P{0.19\textwidth}Y P{0.19\textwidth}@{}}
+    \toprule
+    \rowcolor{WMGBlue!10}
+    \textbf{Role} &
+    \textbf{Permitted input / tools} &
+    \textbf{Required output} &
+    \textbf{Stop / failure condition} &
+    \textbf{Forbidden authority} \\
+    \midrule
+    \textbf{Query planner / discovery} &
+    Frozen question, cutoff, source policy and budgets; approved search or catalogue interfaces. &
+    Typed query plan and candidate queue with origin, scope and stop reason. Candidates are proposals only. &
+    Scope, time, attempt or tool limit reached; no eligible candidate; policy mismatch. Record empty, missing or held state. &
+    Admit a source; treat a candidate as evidence; create a report claim; widen permissions or authorise actions. \\
+    \addlinespace
+    \rowcolor{DraftPale}
+    \textbf{Evidence extractor} &
+    Admitted immutable evidence, exact locator and typed schema; deterministic parser or bounded approved extractor. &
+    Typed extraction proposal with exact span, value/state, time and provenance. &
+    No exact support; invalid schema; ambiguity, conflict, stale evidence, budget or tool failure. Abstain or hold. &
+    Fill gaps from memory; change source admission; conceal missingness; decide support, report eligibility or approval. \\
+    \addlinespace
+    \textbf{Independent verifier} &
+    Producer record, immutable evidence/span, provenance and deterministic support rules. &
+    Separate assessment recording supported, contradicted, stale, insufficient or rejected-untrusted, with reason. &
+    Evidence/locator absent; value, period, trust or provenance mismatch; unresolved conflict or rule failure. Reject or hold. &
+    Silently rewrite the producer record; seek replacement support; override policy; compose, approve or export. \\
+    \addlinespace
+    \rowcolor{DraftPale}
+    \textbf{Deterministic composer} &
+    Verified eligible claims, explicit exceptions, canonical template, ordering and citation rules. &
+    Reproducible report candidate with citations, conflicts, unknowns, limitations and content hash. &
+    Any claim lacks an eligible verification outcome; template, schema or hash invariant fails. Refuse composition. &
+    Add or infer facts; repair missing evidence; alter verification; hide exceptions; approve or publish. \\
+    \addlinespace
+    \textbf{Named human reviewer} &
+    Versioned report, exact support, verifier records, conflicts, uncertainty, limitations and content hash. &
+    Named, timed approve, reject or return-for-correction decision with rationale and report version. &
+    Identity or version mismatch; unresolved support or conflict; incomplete evidence; no review authority. Do not approve. &
+    Manufacture support; silently change the approved version; override source eligibility; treat review as proof of truth or utility. \\
+    \bottomrule
+  \end{tabularx}
+  \vspace{3pt}
+
+  \parbox{\textwidth}{\scriptsize
+    \textit{Interpretation:} Author synthesis; conceptual, non-empirical and not a result. Programmed roles and messages do not establish independent intelligence, superiority or benefit.\\
+    \textit{Authority rule:} Model-assisted roles may propose or assess bounded records; the verifier cannot silently rewrite, the composer cannot add facts, and the reviewer adds decision authority rather than evidence.\\
+    \textit{Source note:} Locally admitted keys guo2024multiagent, wu2024autogen, peffers2007dsrm, nist2023airmf, amershi2019guidelines, bucinca2021forcing and pineau2021reproducibility; claim scope follows ledger rows 2.6-P1--2.6-P4.
+  }
+\end{table}
+\clearpage

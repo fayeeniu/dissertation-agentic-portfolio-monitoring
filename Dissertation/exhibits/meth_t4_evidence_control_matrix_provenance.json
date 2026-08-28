@@ -1,0 +1,216 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "METH-T4",
+  "title": "Ethics, leakage and reproducibility evidence-control matrix",
+  "author": "Faye Niu",
+  "target_section": "3.7 Ethics, leakage prevention, and reproducibility",
+  "latex_label": "tab:meth-evidence-control-matrix",
+  "purpose": "Map material ethical, leakage, source, model, reproducibility and researcher-bias boundaries to preventive controls, retained records, stop/escalation rules and their exact current evidence states.",
+  "generated_at_utc": "2026-08-27T21:10:44Z",
+  "hashes_recomputed_at_utc": "2026-08-27T21:22:25Z",
+  "status": {
+    "author_synthesis": true,
+    "conceptual": true,
+    "non_empirical": true,
+    "contains_results": false,
+    "claims_ethics_approval": false,
+    "claims_participant_data": false,
+    "claims_restricted_data_authority": false,
+    "claims_d1_or_d2_access": false,
+    "claims_live_evaluation": false,
+    "claims_production_readiness": false,
+    "interpretation": "Implemented/tested labels apply only to named repository mechanisms and selected local checks. Documented plans, unverified approvals and unavailable/sealed execution states remain separate and cannot supply empirical outcomes."
+  },
+  "placement": {
+    "source_type": "LaTeX longtable",
+    "orientation": "A4 portrait",
+    "table_pages": 2,
+    "repeated_header": true,
+    "deliberate_break": "After the fourth control family, before prompt-injection/model controls.",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "integration": "Input immediately after Section 3.7 prose and before Chapter 4 or the next heading."
+  },
+  "validation": {
+    "selected_control_tests": {
+      "command": ".venv/bin/pytest -q tests/unit/test_evaluation.py tests/unit/test_security.py tests/integration/test_reporting.py tests/integration/test_llm_boundary.py::test_restricted_content_is_rejected_before_client_invocation tests/integration/test_llm_boundary.py::test_external_provider_rejects_unapproved_model_sequence tests/integration/test_llm_boundary.py::test_default_runtime_refuses_open_external_gates_before_database_creation",
+      "result": "22 passed"
+    },
+    "standalone_a4": {
+      "tool": "Tectonic with Dissertation/style.tex",
+      "result": "passed",
+      "document_pages": 4,
+      "table_pages": "2-3",
+      "following_section_page": 4,
+      "visual_inspection": "Both table pages are legible with repeated headers, intact rules, no overlap or clipping, and balanced four-row/three-row pagination.",
+      "overfull_boxes": 0,
+      "scoped_warnings": "Five non-material longtable measurement-pass underfull alignment messages; repository inputenc-on-XeTeX warning; absolute-path warnings belong only to the disposable validation harness."
+    }
+  },
+  "inputs": [
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "locator": "Headings 'Protocol status', 'Dataset partitions and leakage control', 'D0', 'D1', 'D2', 'Gold/reference standard', 'Analysis plan', 'Reproducibility record', 'Ethics and stop conditions', and 'Validity threats to discuss'.",
+      "role": "Current draft authority, dataset-tier, holdout, record, stop, validity and no-result boundaries."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locator": "Headings 'Stakeholders and authority', 'Constraints', 'Research success', 'Primary risks', and 'Change control'.",
+      "role": "Authority ownership, restricted-data, external-processing, negative-result, leakage and separate-approval boundaries."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9ed985e0506bbcbe4c8f74b329ec4baf4bea79b36231c09b613d6f1dd8403744",
+      "locator": "Requirement conventions; FR-EXT-004--008, FR-REP-004--009, FR-OBS-001--004, NFR-SEC-001--005 and NFR-RES-001--003.",
+      "role": "Implemented-versus-protocol-only convention and exact security, model, approval, observability and research-control statuses."
+    },
+    {
+      "path": "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+      "sha256": "6d7422a02c09bb78e752581401ea4643bbf364d178a09b550210e75f01f8bd55",
+      "locator": "Headings 'Data classification and permitted flow', 'Data lifecycle', 'Approved public-web company-research boundary', 'Exposed credential incident', 'Threat model', 'External model policy', 'Local storage controls', 'Human/participant and ethics hold', 'Security validation gate', and 'Production prohibition'.",
+      "role": "Classification, storage, credential, untrusted-content, external-provider, participant, stop and production boundaries, including explicit unverified work."
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "8cc3e9c79b366a59efa1f29331449f33f7f863c0119927c6a05bcc07fb9e2267",
+      "locator": "Opening implemented-versus-permission boundary, source table, 'G2 admission checklist', and 'Local research-corpus redistribution boundary'.",
+      "role": "Exact conditional, held and not-admitted source states and source-specific terms/redistribution requirements."
+    },
+    {
+      "path": "fixtures/evaluation_manifest.json",
+      "sha256": "1c16234a0dbb965ba0db882531389ddcc52c588c9d7904ba964d480f1ce24254",
+      "locator": "datasets[0] D0 executable, datasets[1] D1 protocol_only with null path/checksum, and datasets[2] D2 sealed with null path/checksum.",
+      "role": "Machine-readable current D0/D1/D2 status, namespace, classification, partition and permitted-use evidence."
+    },
+    {
+      "path": "tests/unit/test_evaluation.py",
+      "sha256": "c419930306d029770554126ed8277e8a70da07e7dadb9ae553837951f3d5414f",
+      "locator": "Synthetic human-condition hold, D2 sealed loader, manifest checksum, group-partition, schema and source-version tests.",
+      "role": "Selected executable evidence for D0 admission and D2/checksum/group fail-closed mechanisms."
+    },
+    {
+      "path": "tests/unit/test_security.py",
+      "sha256": "a9ea965aaf2ad401dc24731fe8c5ce4bf6745399cfbc1192a85ce72fc2bb6dff",
+      "locator": "Prompt-injection detection and non-public external-model boundary tests.",
+      "role": "Selected executable evidence for untrusted-content and classification controls."
+    },
+    {
+      "path": "tests/integration/test_llm_boundary.py",
+      "sha256": "851981c6c39cd8b1e1bf7cfc47045f58ac7e7654586384c7336e9c4f82fd91fa",
+      "locator": "Restricted-content pre-client rejection, unapproved model-sequence rejection and default closed-gate tests.",
+      "role": "Selected integration evidence for the bounded external-provider mechanism, not evidence of model quality or authorised restricted processing."
+    },
+    {
+      "path": "tests/integration/test_reporting.py",
+      "sha256": "5b475101d7969304991dcbebae96ceec15bb6d44735d3f89bd2c3695c5e5dcf5",
+      "locator": "Pre-approval export block, reapproval after edit, failed/partial export and hash-reverification tests.",
+      "role": "Selected integration evidence for approval/export and manifest-backed artifact controls."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "locator": "'Current go/no-go state - 27 August 2026' and detailed chapter-plan entry '3.7 Ethics, leakage prevention, and reproducibility'.",
+      "role": "Approved section scope and held human/restricted/final-evaluation evidence state."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "Rows keyed nist2023airmf, gebru2021datasheets, greshake2023indirect, kapoor2023leakage and pineau2021reproducibility.",
+      "role": "Local citation, file, admission-role and limitation bindings."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "role": "Independent local checksum bindings for the five admitted academic PDFs."
+    },
+    {
+      "citation_key": "nist2023airmf",
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 32-35",
+      "role": "Documented scope, oversight, human-subject protection, testing, uncertainty, privacy and independent-assessment guidance; not certification."
+    },
+    {
+      "citation_key": "gebru2021datasheets",
+      "path": "Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf",
+      "sha256": "c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0",
+      "locator": "PDF pp. 2 and 4-10",
+      "role": "Dataset lifecycle, consent/privacy, external-resource restriction, licence/terms, distribution and maintenance documentation; not project authority."
+    },
+    {
+      "citation_key": "greshake2023indirect",
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81",
+      "locator": "PDF pp. 1 and 3-5",
+      "role": "Indirect prompt-injection boundary for retrieved content; not proof of detector completeness or system security."
+    },
+    {
+      "citation_key": "kapoor2023leakage",
+      "path": "Dissertation/sources/papers/32_kapoor_data_leakage.pdf",
+      "sha256": "c433bceda841ca09fe2fd7ddf857fc0818fdf98553e62e54a37cc394c6f70c42",
+      "locator": "PDF pp. 1-7 and 17-21",
+      "role": "Leakage, dependence-aware partitioning and reproducibility-risk guidance; not proof of a leakage-free final evaluation."
+    },
+    {
+      "citation_key": "pineau2021reproducibility",
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1-5 and 9-13",
+      "role": "Code, data, procedure, metric, statistical and reporting records needed to assess reproducibility; not external validity."
+    }
+  ],
+  "control_traceability": [
+    {
+      "control_family": "Restricted/personal/secret data",
+      "status": "Mechanisms implemented/tested; real-data authority, retention/deletion schedule and credential rotation not verified; no restricted external execution."
+    },
+    {
+      "control_family": "Human C0/C3 observation",
+      "status": "Approval evidence not verified; no-go; participant and qualitative executions unavailable."
+    },
+    {
+      "control_family": "D0/D1/D2 leakage",
+      "status": "D0 mechanism implemented/tested; D1 protocol-only; D2 sealed and loader-blocked; no D1/D2 result."
+    },
+    {
+      "control_family": "Public-source rights and cutoff",
+      "status": "Bounded controls implemented; local public-web use conditional and source-specific; direct registry evaluation and redistribution held/unavailable."
+    },
+    {
+      "control_family": "Prompt injection and external model",
+      "status": "Mechanisms implemented/tested; no D1/D2/participant processing and no model-quality, retention-control or superiority result."
+    },
+    {
+      "control_family": "Reproducibility drift",
+      "status": "Observability and D0 repeat mechanisms implemented/tested; final empirical run bundle unavailable."
+    },
+    {
+      "control_family": "Reference/researcher/selective-reporting bias",
+      "status": "Documented plan; gold/reference and final protocol not frozen; confirmatory/human execution unavailable."
+    }
+  ],
+  "limitations": [
+    "The exhibit is conceptual and reports no empirical finding, effect, sample, participant, time, cost or acceptance threshold.",
+    "Implemented mechanisms and selected local tests do not establish ethics compliance, lawful source use, absence of leakage, security effectiveness, reproducibility, validity or production readiness.",
+    "Approval evidence not verified is an epistemic and operational no-go state; it is not a claim that an external body granted or refused approval.",
+    "D1, D2, human C0 and human C3 executions are unavailable and cannot be replaced with D0 synthetic measurements.",
+    "The bounded public-web mechanism and source register do not create publisher redistribution rights or exhaustive coverage.",
+    "store=False is not represented as zero data retention and does not replace processor authority or minimisation.",
+    "The final reproducibility bundle, reference, analysis and deviation records remain prospective until authorised protocol execution."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/meth_t4_evidence_control_matrix.tex",
+      "sha256": "1568610c1ac0e2d70e31cf011aa0264cbfa35b4f7fa7e99ad6fac98e922d72d3",
+      "role": "Two-page portrait LaTeX longtable with repeated headers and deterministic section boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/meth_t4_evidence_control_matrix.txt",
+      "sha256": "80cf12b8249653b747117a74f26081ce4553426b9c4bd8061f3efc82cfa2932c",
+      "role": "Complete linear text alternative with expanded controls, evidence states, source roles and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

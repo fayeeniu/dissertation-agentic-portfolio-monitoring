@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1180" viewBox="0 0 900 1180"
+     role="img" aria-labelledby="sys-f3-title sys-f3-desc">
+  <title id="sys-f3-title">Legal-identity intake and decision flow</title>
+  <desc id="sys-f3-desc">A status-coded flow starts with either a portfolio file import or a Companies House-number-only company case. Both paths create checksum- or fingerprint-bound intake records and reuse identical submissions. Exact Companies House numbers, names, domains and documents become separate identity claims. Only an exact, structurally normalised number can enter the named legal-identity decision gate; names only order candidates, domains remain separately reviewed links, and documents remain untrusted local evidence. Named decisions produce resolved, conflicted or unresolved outcomes, with no fuzzy or name-only automatic merge. Downstream public-web company research is available only to a public, identity-ready case with a resolved company and reviewed Companies House number. That research path is implemented but has no completed live run. Direct live Companies House registry retrieval remains held, while synthetic replay is implementation evidence only. The figure does not claim authoritative live resolution, perfect deduplication, an external identity API, or production concurrency.</desc>
+  <defs>
+    <style><![CDATA[
+      .page { fill:#FFFFFF; }
+      .divider { stroke:#9FB2BD; stroke-width:1.5; }
+      .title { font:700 29px Helvetica,Arial,sans-serif; fill:#173444; }
+      .subtitle { font:16.5px Helvetica,Arial,sans-serif; fill:#526875; }
+      .concept { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
+      .concept-text { font:700 11px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
+      .legend-label { font:700 11.5px Helvetica,Arial,sans-serif; fill:#314E5D; text-anchor:middle; }
+      .legend-tested { fill:#E8F3F8; stroke:#0072B2; stroke-width:2.2; }
+      .legend-live { fill:#FFF5DD; stroke:#A86700; stroke-width:2.2; stroke-dasharray:9 6; }
+      .legend-held { fill:#FBEAEC; stroke:#A83443; stroke-width:2.2; stroke-dasharray:2 5; }
+      .zone { fill:#F7FBFC; stroke:#0072B2; stroke-width:2.1; }
+      .zone-title { font:700 14px Helvetica,Arial,sans-serif; fill:#284A5A; }
+      .zone-status { font:700 11.5px Helvetica,Arial,sans-serif; fill:#536975; text-anchor:end; }
+      .box { fill:#FFFFFF; stroke:#718894; stroke-width:1.5; }
+      .box-tested { fill:#EAF4F8; stroke:#0072B2; stroke-width:1.9; }
+      .box-live { fill:#FFF7E5; stroke:#A86700; stroke-width:2; stroke-dasharray:8 5; }
+      .box-held { fill:#FBECEF; stroke:#A83443; stroke-width:2; stroke-dasharray:2 5; }
+      .box-conflict { fill:#FFF1F1; stroke:#A83443; stroke-width:1.9; }
+      .box-unresolved { fill:#F1F3F4; stroke:#687983; stroke-width:1.9; }
+      .box-title { font:700 14.2px Helvetica,Arial,sans-serif; fill:#173F51; }
+      .box-body { font:12.1px Helvetica,Arial,sans-serif; fill:#405965; }
+      .box-small { font:11.2px Helvetica,Arial,sans-serif; fill:#465E69; }
+      .status-tested { font:700 10.5px Helvetica,Arial,sans-serif; fill:#00629A; }
+      .status-live { font:700 10.5px Helvetica,Arial,sans-serif; fill:#8C5700; }
+      .status-held { font:700 10.5px Helvetica,Arial,sans-serif; fill:#912D3A; }
+      .status-neutral { font:700 10.5px Helvetica,Arial,sans-serif; fill:#53646D; }
+      .arrow { fill:none; stroke:#617684; stroke-width:2.1; marker-end:url(#arrowhead); }
+      .arrow-support { fill:none; stroke:#7E8F98; stroke-width:1.8; stroke-dasharray:5 5; marker-end:url(#arrowhead); }
+      .arrow-live { fill:none; stroke:#A86700; stroke-width:2.1; stroke-dasharray:8 5; marker-end:url(#arrowhead-live); }
+      .arrow-held { fill:none; stroke:#A83443; stroke-width:2; stroke-dasharray:2 5; marker-end:url(#arrowhead-held); }
+      .guard { fill:#ECEFF0; stroke:#687983; stroke-width:1.5; stroke-dasharray:10 5 2 5; }
+      .guard-text { font:700 11.2px Helvetica,Arial,sans-serif; fill:#455B66; text-anchor:middle; }
+      .stop { fill:#FFF1F1; stroke:#A83443; stroke-width:1.4; }
+      .stop-text { font:700 11.3px Helvetica,Arial,sans-serif; fill:#812C38; text-anchor:middle; }
+      .nongoal { fill:#ECEFF0; stroke:#687983; stroke-width:2; stroke-dasharray:12 5 2 5; }
+      .nongoal-head { font:700 11.5px Helvetica,Arial,sans-serif; fill:#455B66; }
+      .nongoal-body { font:11.5px Helvetica,Arial,sans-serif; fill:#455B66; }
+      .source { font:10.7px Helvetica,Arial,sans-serif; fill:#5A6C76; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#617684"/></marker>
+    <marker id="arrowhead-live" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#A86700"/></marker>
+    <marker id="arrowhead-held" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#A83443"/></marker>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="900" height="1180"/>
+  <text class="title" x="38" y="52">Legal-identity intake and decision flow</text>
+  <text class="subtitle" x="40" y="82">A reviewed exact company number gates research; alternate inputs remain supporting claims.</text>
+  <rect class="concept" x="697" y="26" width="168" height="34" rx="17"/>
+  <text class="concept-text" x="781" y="48">CONCEPTUAL / NO RESULTS</text>
+  <line class="divider" x1="38" y1="105" x2="864" y2="105"/>
+
+  <rect class="legend-tested" x="40" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="166" y="145">IMPLEMENTED + LOCAL TESTS</text>
+  <rect class="legend-live" x="324" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="450" y="145">IMPLEMENTED / LIVE UNRUN</text>
+  <rect class="legend-held" x="608" y="121" width="252" height="38" rx="9"/>
+  <text class="legend-label" x="734" y="145">HELD / GATE CLOSED</text>
+
+  <rect class="zone" x="40" y="178" width="820" height="262" rx="14"/>
+  <text class="zone-title" x="58" y="204">1  TWO INTAKE ROUTES, ONE CREATE-ONCE / IDEMPOTENT BOUNDARY</text>
+  <text class="zone-status" x="840" y="204">IMPLEMENTED + LOCALLY TESTED</text>
+  <path class="arrow" d="M 235 305 L 235 328"/>
+  <path class="arrow" d="M 665 305 L 665 328"/>
+  <path class="arrow" d="M 235 403 L 235 451 L 362 451 L 362 500"/>
+  <path class="arrow" d="M 665 403 L 665 451 L 538 451 L 538 500"/>
+  <rect class="box-tested" x="60" y="222" width="350" height="83" rx="10"/>
+  <text class="box-title" x="78" y="246">Portfolio file import</text>
+  <text class="box-body" x="78" y="267">XLSX / CSV / JSON + reporting period + classification</text>
+  <text class="box-small" x="78" y="285">company name and supplied external ID are submitted claims</text>
+  <text class="status-tested" x="78" y="299">PORTFOLIO IMPORT PATH</text>
+  <rect class="box-tested" x="490" y="222" width="350" height="83" rx="10"/>
+  <text class="box-title" x="508" y="246">Company research case intake</text>
+  <text class="box-body" x="508" y="267">Companies House number alone is sufficient input</text>
+  <text class="box-small" x="508" y="285">website / name + jurisdiction / document are optional claims</text>
+  <text class="status-tested" x="508" y="299">IDENTITY STARTS ON HOLD</text>
+
+  <rect class="box-tested" x="60" y="328" width="350" height="75" rx="10"/>
+  <text class="box-title" x="78" y="351">RawSubmission integrity</text>
+  <text class="box-small" x="78" y="371">bytes SHA-256 + period-bound dataset ID + local 0600 file</text>
+  <text class="status-tested" x="78" y="393">SAME HASH + PERIOD REUSED</text>
+  <rect class="box-tested" x="490" y="328" width="350" height="75" rx="10"/>
+  <text class="box-title" x="508" y="351">IntakeArtifact integrity</text>
+  <text class="box-small" x="508" y="371">contract/purpose/classification fingerprint; document SHA/file</text>
+  <text class="status-tested" x="508" y="393">IDENTICAL FINGERPRINT REUSED</text>
+
+  <rect class="zone" x="40" y="466" width="820" height="342" rx="14"/>
+  <text class="zone-title" x="58" y="492">2  CLAIMS FEED AN EXACT-NUMBER, NAMED DECISION GATE</text>
+  <text class="zone-status" x="840" y="492">NO SILENT MERGE</text>
+  <path class="arrow" d="M 145 574 L 145 598 L 344 598 L 344 621"/>
+  <path class="arrow-support" d="M 348 574 L 348 603 L 414 603 L 414 621"/>
+  <path class="arrow-support" d="M 552 574 L 552 603 L 486 603 L 486 621"/>
+  <path class="arrow-support" d="M 755 574 L 755 598 L 556 598 L 556 621"/>
+  <rect class="box-tested" x="55" y="510" width="180" height="64" rx="9"/>
+  <text class="box-title" x="70" y="533">Exact CH number claim</text>
+  <text class="box-small" x="70" y="552">uppercase compact form</text>
+  <text class="status-tested" x="70" y="568">STRUCTURAL CHECK ONLY</text>
+  <rect class="box" x="258" y="510" width="180" height="64" rx="9"/>
+  <text class="box-title" x="273" y="533">Name claim</text>
+  <text class="box-small" x="273" y="552">normalized candidate-order hint</text>
+  <text class="status-neutral" x="273" y="568">NOT LEGAL AUTHORITY</text>
+  <rect class="box" x="462" y="510" width="180" height="64" rx="9"/>
+  <text class="box-title" x="477" y="533">Domain claim</text>
+  <text class="box-small" x="477" y="552">canonical HTTPS; separate review</text>
+  <text class="status-neutral" x="477" y="568">DOES NOT RESOLVE IDENTITY</text>
+  <rect class="box" x="665" y="510" width="180" height="64" rx="9"/>
+  <text class="box-title" x="680" y="533">Document claim</text>
+  <text class="box-small" x="680" y="552">checksum-bound local bytes</text>
+  <text class="status-neutral" x="680" y="568">UNTRUSTED / NOT EXECUTED</text>
+
+  <rect class="guard" x="278" y="584" width="344" height="25" rx="7"/>
+  <text class="guard-text" x="450" y="601">NO FUZZY OR NAME-ONLY AUTOMATIC MERGE</text>
+  <rect class="box-tested" x="170" y="621" width="560" height="80" rx="11"/>
+  <text class="box-title" x="190" y="646">Exact identifier authority review</text>
+  <text class="box-body" x="190" y="666">global scheme+number uniqueness; classification boundary; candidate/conflict check</text>
+  <text class="box-small" x="190" y="684">named actor + substantive rationale -> append-only accept/reject decision</text>
+  <text class="status-tested" x="592" y="646">NUMBER REVIEW, NOT LIVE LOOKUP</text>
+
+  <path class="arrow" d="M 450 701 L 450 715 L 178 715 L 178 728"/>
+  <path class="arrow" d="M 450 701 L 450 728"/>
+  <path class="arrow" d="M 450 701 L 450 715 L 723 715 L 723 728"/>
+  <rect class="box-tested" x="55" y="728" width="246" height="65" rx="9"/>
+  <text class="box-title" x="70" y="750">RESOLVED / ACCEPTED</text>
+  <text class="box-small" x="70" y="768">number reviewed; company/case ready</text>
+  <text class="status-tested" x="70" y="786">DOWNSTREAM GATE MAY OPEN</text>
+  <rect class="box-conflict" x="327" y="728" width="246" height="65" rx="9"/>
+  <text class="box-title" x="342" y="750">CONFLICT / AMBIGUITY HOLD</text>
+  <text class="box-small" x="342" y="768">identifier/name/classification mismatch</text>
+  <text class="status-held" x="342" y="786">RETAIN DATA; REVIEW REQUIRED</text>
+  <rect class="box-unresolved" x="600" y="728" width="245" height="65" rx="9"/>
+  <text class="box-title" x="615" y="750">UNRESOLVED / REJECTED</text>
+  <text class="box-small" x="615" y="768">missing / invalid / pending / rejected authority</text>
+  <text class="status-neutral" x="615" y="786">CASE REMAINS IDENTITY_HOLD</text>
+
+  <path class="arrow" d="M 178 793 L 178 868"/>
+  <rect class="zone" x="40" y="831" width="820" height="201" rx="14"/>
+  <text class="zone-title" x="58" y="857">3  DOWNSTREAM RESEARCH REQUIRES REVIEWED LEGAL IDENTITY</text>
+  <text class="zone-status" x="840" y="857">FAIL CLOSED</text>
+  <path class="arrow-live" d="M 310 920 L 337 920"/>
+  <path class="arrow-held" d="M 310 892 L 320 892 L 320 866 L 739 866 L 739 875"/>
+  <rect class="box-tested" x="55" y="875" width="255" height="91" rx="10"/>
+  <text class="box-title" x="72" y="899">Research eligibility gate</text>
+  <text class="box-small" x="72" y="919">public case + case READY</text>
+  <text class="box-small" x="72" y="936">company RESOLVED + reviewed CH number</text>
+  <text class="status-tested" x="72" y="957">ALL CONDITIONS REQUIRED</text>
+  <rect class="box-live" x="337" y="875" width="269" height="91" rx="10"/>
+  <text class="box-title" x="354" y="899">Bounded public-web research</text>
+  <text class="box-small" x="354" y="919">URL discovery -> guarded capture -> exact spans</text>
+  <text class="box-small" x="354" y="936">fake/synthetic/adversarial engineering checks</text>
+  <text class="status-live" x="354" y="957">LIVE COMPANY RUN UNCLAIMED</text>
+  <rect class="box-held" x="633" y="875" width="212" height="91" rx="10"/>
+  <text class="box-title" x="650" y="899">Direct registry retrieval</text>
+  <text class="box-small" x="650" y="919">Companies House source adapter</text>
+  <text class="box-small" x="650" y="936">synthetic replay is not admission</text>
+  <text class="status-held" x="650" y="957">G2 HELD / NO LIVE CLAIM</text>
+  <rect class="stop" x="84" y="985" width="732" height="29" rx="8"/>
+  <text class="stop-text" x="450" y="1004">ANY CONFLICTED, UNRESOLVED, PENDING OR REJECTED IDENTITY -> NO COLLECTION OR RESEARCH</text>
+
+  <rect class="nongoal" x="40" y="1050" width="820" height="62" rx="10"/>
+  <text class="nongoal-head" x="58" y="1073">EXPLICIT LIMIT / NON-GOAL:</text>
+  <text class="nongoal-body" x="236" y="1073">no authoritative live resolution; perfect deduplication; name/domain auto-merge;</text>
+  <text class="nongoal-body" x="236" y="1092">external identity API; or production concurrency. Local uniqueness/create-once controls are not a multi-user guarantee.</text>
+
+  <text class="source" x="40" y="1138">Source note: author synthesis of repository intake, identity, research-gate and local-test contracts; conceptual and non-empirical.</text>
+  <text class="source" x="40" y="1157">Design context: Galanakis et al. (2026), pp. 1-3, 6; Thorne et al. (2026), pp. 5-6; Nikiforova et al. (2020), pp. 15-17.</text>
+  <text class="source" x="40" y="1175">A Companies House number anchors legal identity; it does not prove current operations, source completeness, economic activity or live registry authority.</text>
+</svg>

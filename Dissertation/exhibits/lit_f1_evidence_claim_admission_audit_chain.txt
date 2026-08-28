@@ -1,0 +1,124 @@
+LIT-F1 TEXT ALTERNATIVE
+=======================
+
+Title: Evidence-to-claim admission and audit chain
+Author: Faye Niu
+Target section: 2.4 Provenance, source admission, contradiction, and auditable synthesis
+Status: Conceptual, non-empirical author synthesis; this is not a result.
+
+Purpose
+-------
+The figure shows the project design rationale for moving from a discovered evidence candidate to an approved report or export. The main chain has eight ordered gates. A failed gate creates an explicit rejected or held state; it does not create an inferred replacement. The lower panels distinguish evidence traceability from the truth of the underlying source.
+
+Main admission and audit chain
+------------------------------
+
+1. Candidate discovery
+   - Search produces URLs and leads only.
+   - Search snippets, generated summaries and model prose are candidates, not evidence.
+
+2. Source-policy admission
+   - The source role, scope, access conditions and identity are reviewed under a versioned source policy.
+   - An unadmitted source fails closed and cannot support a downstream claim.
+
+3. Immutable capture
+   - Where capture is permitted, the record binds the publisher URL, publication and retrieval or capture times, captured bytes, SHA-256 checksum and versioned local snapshot.
+   - A later correction is retained as a new version rather than silently overwriting the earlier record.
+
+4. Exact passage or span
+   - A page, section or verbatim span must support the bounded claim.
+   - Retrieved instruction-like text remains untrusted data and is not executed as an instruction.
+   - If the exact support is absent or outside the reporting cutoff, the item is held.
+
+5. Typed claim
+   - The claim records the relevant entity, metric, value or explicit state, period, evidence link and exact locator.
+   - Missing, ambiguous or unsupported fields remain explicit rather than being filled by prose.
+
+6. Independent verification
+   - A separate verifier checks exact support, source eligibility, event and availability time, trust state and provenance completeness.
+   - The verifier records an outcome without silently rewriting the primary extraction or synthesis.
+
+7. Contradiction state
+   - Competing current evidence remains visible as an explicit conflict set.
+   - Conflicting values are not silently averaged, and the newest or most fluent statement is not selected by default.
+   - The item is retained as an exception or held for a stated policy or named review.
+
+8. Approved report or export
+   - Only the current, supported report version may proceed through named approval.
+   - Approval is bound to the content or version hash and an export manifest.
+   - An edit revokes approval and returns the current version to the approval gate.
+
+Rejected and held branches
+--------------------------
+
+A. REJECTED - NOT ADMITTED (branches from source-policy admission)
+   - Examples: wrong entity or scope; unresolved policy or access condition; snippet-only evidence; source role not permitted.
+   - Consequence: no downstream claim is created.
+
+B. HELD - CAPTURE OR SPAN (branches from immutable capture or exact passage/span)
+   - Examples: access, licence, media type or size prevents capture; content is restricted or instruction-like; exact support is absent; evidence is post-cutoff.
+   - Consequence: the gap remains explicit and no replacement value or supporting passage is inferred.
+
+C. HELD - CLAIM OUTCOME (branches from verification or contradiction handling)
+   - States include insufficient evidence, stale evidence, rejected-untrusted evidence and contradicted evidence.
+   - Contradicted claims form an explicit conflict set. Held items are excluded from the supported narrative but remain visible as exceptions or gaps.
+   - Resolution requires a stated policy or named review; the figure does not claim that review automatically improves the outcome.
+
+D. NO APPROVED EXPORT (branches from the approval/export gate)
+   - Examples: approval is absent, stale or rejected; review edits the report; content version or hash does not match the approved version.
+   - Consequence: the current version must return to review and approval before export.
+
+Critical evidence boundary
+--------------------------
+
+Traceability can establish the recorded origin URL and publisher; captured bytes; publication, retrieval, capture and reporting-cutoff times; SHA-256 checksum and version; exact passage or span; typed claim; verifier decision; named approval; and the report/export version bound by that approval. This supports auditability and repeatability.
+
+Traceability cannot establish source truth. An admitted or cited source may still be wrong, incomplete, biased, stale or in conflict with another source. Attribution and passage support do not prove that the source fact is true. Verification records a bounded decision under the stated evidence and policy; it does not establish certainty. Uncertainty and limitations therefore remain part of the report.
+
+Local evidence basis and exact locators
+---------------------------------------
+
+- SECTION_2_4_EVIDENCE.md, "Paragraph 1: provenance as traceability, not truth" and claim-ledger row 2.4-P1:
+  - gebru2021datasheets, local PDF pp. 2-6 and 9-10.
+  - pineau2021reproducibility, local PDF pp. 1-4.
+
+- SECTION_2_4_EVIDENCE.md, "Paragraph 2: source admission and claim-fit are separate gates" and claim-ledger row 2.4-P2:
+  - gao2023alce, local PDF pp. 3-4 and 10.
+  - gao2023rarr, local PDF pp. 1-2.
+  - pineau2021reproducibility, local PDF pp. 1-3.
+
+- SECTION_2_4_EVIDENCE.md, "Paragraph 3: immutable capture, exact locator and version" and claim-ledger row 2.4-P3:
+  - gebru2021datasheets, local PDF pp. 6 and 9-10.
+  - pineau2021reproducibility, local PDF pp. 1-5.
+  - mitchell2019modelcards, local PDF pp. 1-4 and 7-8.
+
+- SECTION_2_4_EVIDENCE.md, "Paragraph 4: contradiction and unverifiable states" and claim-ledger row 2.4-P4:
+  - huang2023hallucination, local PDF pp. 5-7 and 11-13.
+  - gao2023rarr, local PDF p. 2.
+  - gao2023alce, local PDF pp. 3-4 and 10.
+
+- SECTION_2_4_EVIDENCE.md, "Paragraph 5: auditable synthesis and independent verification" and claim-ledger row 2.4-P5:
+  - nist2023airmf, local PDF pp. 33-35.
+  - gao2023alce, local PDF pp. 3-4 and 10.
+  - gao2023rarr, local PDF pp. 1-2.
+  - amershi2019guidelines, local PDF pp. 3-5.
+
+Project-contract basis
+----------------------
+
+The project-specific source states, record fields, failure behaviour and approval/export rules are grounded in docs/PROJECT_CHARTER.md, docs/DATA_DICTIONARY.md, docs/REQUIREMENTS.md, docs/SOURCE_ADMISSION_REGISTER.md, docs/ARCHITECTURE.md and docs/SECURITY_AND_DATA_GOVERNANCE.md. Those files define the design contract; they are not empirical evidence of live performance or user benefit.
+
+Limitations and excluded claims
+-------------------------------
+
+- The figure contains no prevalence, frequency, accuracy, effect size, time saving, cost, live-coverage, user-benefit or production-performance value.
+- It does not claim that admission, checksums, citations, source prestige, independent verification or human approval establish source truth.
+- It does not claim immutable capture is always legally or technically permitted.
+- It does not claim independent or human review automatically improves outcomes.
+- It does not report implementation or evaluation results and does not establish exhaustive public-web coverage, investment outcomes or deployment safety.
+- The PDF is a vector companion but is not claimed to be tagged. This complete text alternative supplies the accessible linear reading order.
+
+Short caption source note
+-------------------------
+
+Source: author synthesis of the locally frozen Section 2.4 evidence packet and project contracts. Exact source files, PDF pages and SHA-256 hashes are recorded in the exhibit provenance manifest. Conceptual and non-empirical; not a result.

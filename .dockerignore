@@ -1,0 +1,37 @@
+.git
+.agents
+!.agents/
+.agents/*
+!.agents/runs/
+.agents/runs/*
+!.agents/runs/uk-literature-public-evidence-upgrade.md
+.idea
+.venv
+.mypy_cache
+.pytest_cache
+.ruff_cache
+__pycache__
+*.py[cod]
+*.egg-info
+.coverage
+htmlcov
+build
+dist
+
+# Never send local configuration, imported data, or runtime artifacts to the builder.
+.env
+.env.*
+!.env.example
+var/*
+!var/.gitkeep
+data/*
+!data/README.md
+research
+
+# The control room is a separate host process; never ship its build output.
+dashboard
+
+.DS_Store
+~$*
+*.db
+*.sqlite3

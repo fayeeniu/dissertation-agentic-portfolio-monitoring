@@ -1,0 +1,80 @@
+SYS-F3 - Legal-identity intake and decision flow
+Author: Faye Niu
+Target section: 4.4 Intake and legal-identity control
+Suggested LaTeX label: fig:sys-legal-identity-decision-flow
+Status: author synthesis; conceptual, non-empirical, and not a result.
+
+Purpose
+This figure explains how the prototype receives portfolio records and company-research cases, preserves the submitted bytes or identity claims, and prevents downstream research until a named reviewer accepts an exact Companies House number as the legal-identity anchor. It separates locally tested implementation controls from an implemented but live-unrun public-web research route and a held direct Companies House retrieval route. It does not claim authoritative live identity resolution, perfect deduplication, source completeness, external identity-API use, or production concurrency.
+
+Status key
+1. Solid blue boundary - IMPLEMENTED + LOCAL TESTS. The schema or service control exists and is exercised by local unit, integration, migration, or API tests. This is engineering evidence, not a production or empirical-performance claim.
+2. Dashed amber boundary - IMPLEMENTED / LIVE UNRUN. The bounded public-web research mechanics have fake, synthetic, or adversarial test coverage, but no completed live public-company run or external-model result is claimed.
+3. Dotted red boundary - HELD / GATE CLOSED. Direct live Companies House registry retrieval remains held by the source-admission G2 decision. Synthetic registry replay does not grant live authority.
+
+Reading order
+
+1. Two intake routes, one create-once and idempotent boundary - implemented and locally tested.
+
+   Portfolio file import:
+   - The PortfolioImporter accepts XLSX, CSV, or canonical JSON together with a reporting period, reporting cutoff where supplied, and classification.
+   - It hashes the supplied bytes, derives a period-bound dataset identity, writes a restrictive local raw snapshot, and records a RawSubmission with filename, checksum, path, classification, period and catalogue/profile metadata.
+   - The same admitted bytes for the same period reuse the existing import rather than creating a second dataset or rewriting the raw file.
+   - Company name and supplied external identifier remain submitted identity claims. They are not assumed to identify the same legal entity merely because a normalized name matches.
+
+   Company-research case intake:
+   - A structurally valid Companies House number is sufficient to create a first-class company case. A name or website is not required.
+   - Website, name plus jurisdiction, or a declared-company document may also be submitted, but they remain reviewable claims. They do not resolve legal identity automatically.
+   - The service creates a stable IntakeArtifact fingerprint over the intake-contract version, template version, input kind, purpose, classification and canonical submitted-value object. An identical fingerprint reuses the existing artifact, company and case.
+   - Document bytes receive a SHA-256, safe basename, classification, purpose and actor. The create-once local file is mode 0600. Existing bytes are verified before reuse, conflicting concurrent bytes fail, and a failed database transaction removes only the newly created snapshot.
+   - Uploaded content is recorded as untrusted, is not executed, and is not sent to an external model by this intake step.
+
+2. Identity claims feed an exact-number, named decision gate - implemented and locally tested.
+
+   Exact Companies House number claim:
+   - The implementation applies Unicode normalization, trims and uppercases the input, removes spaces and hyphens, and zero-pads a digit-only number up to eight digits.
+   - The conservative structural rule accepts exactly eight digits or a two-letter prefix followed by six digits. Structural validity is not authoritative proof that a live registry record exists or that the company is currently operating.
+   - The normalized value is globally unique within its closed identifier scheme and is source-scoped to Companies House. A new public identifier remains reviewed=false until a named decision.
+
+   Supporting claims without legal-merge authority:
+   - Company names are normalized only to order or suggest candidates. Same normalized names may coexist. There is no fuzzy matcher and no name-only automatic merge.
+   - An HTTPS website is canonicalized into a domain claim with its own pending, verified, or rejected decision history. Verifying a domain does not mark the company legal identity as resolved.
+   - A document is checksum-addressed local evidence tied to a declared company claim. It remains untrusted and cannot establish legal identity by itself.
+
+   Named authority review:
+   - The decision checks exact scheme-plus-number uniqueness, classification boundaries, candidate state, existing identifier ownership and any submitted-name mismatch.
+   - Accept or reject requires a configured named actor and substantive rationale. The decision is appended to IdentityDecision or CompanyIdentifierDecision history rather than silently overwriting the submitted claim.
+   - A stale or already final identifier/domain decision is refused. An accepted identity cannot cross a data-classification boundary or attach a number already owned by another company.
+   - This is a local human decision over persisted claims. It is not a hidden live Companies House lookup.
+
+   Outcomes:
+   - RESOLVED / ACCEPTED: the exact number is reviewed, Company.resolution_status becomes resolved, and the associated ResearchCase becomes ready. Only this outcome may proceed to the downstream eligibility gate.
+   - CONFLICT / AMBIGUITY HOLD: identifier/name disagreement, same-name/different-number collision, classification conflict, or duplicate identifier ownership prevents an automatic merge. The candidate remains held for named review. Imported observations remain attached and auditable rather than being discarded.
+   - UNRESOLVED / REJECTED: missing, structurally invalid, pending, or rejected authority leaves the company unresolved/candidate and the ResearchCase in identity_hold.
+
+3. Downstream research requires reviewed legal identity - fail closed.
+   - CompanyResearchService checks four persisted conditions together: the case classification is public; the case status is ready; the company resolution status is resolved; and the company has a reviewed Companies House-number identifier.
+   - If any condition is absent, the service returns an identity/classification hold before creating or advancing research. A name, verified domain, document, or structurally valid but unreviewed number cannot bypass this gate.
+   - When all conditions hold and the separately configured external gates are open, the bounded public-web route can perform URL discovery, guarded capture and exact-span extraction. The implementation has fake, synthetic, and adversarial engineering tests, but no completed live company or model run is claimed.
+   - Direct Companies House registry retrieval is a different source path. Its connector and temporal/provenance mechanisms have synthetic replay tests, while live access remains G2 HELD pending current access, licence/terms, credential, retention, attribution and exact-identifier review. Synthetic replay is not live source admission.
+
+Concurrency and integrity boundary
+- Database uniqueness constraints protect the exact identifier scheme/value and intake fingerprint within the local database.
+- Create-once file creation verifies competing bytes, and final decision state refuses a stale second decision. Other review/report paths also use local optimistic version checks where specified.
+- These controls reduce duplicate or stale local writes. They do not make SQLite and the local filesystem a multi-user production identity service, distributed transaction system, or authoritative deduplication platform.
+
+Explicit limitations and non-goals
+- No authoritative live legal-identity resolution is asserted.
+- No fuzzy, name-only, domain-only or document-only automatic company merge is implemented.
+- No perfect deduplication, external identity API, hosted identity service, multi-user tenancy, distributed locking or production concurrency guarantee is claimed.
+- A Companies House number anchors source-scoped legal identity. Registry presence does not by itself establish current trading activity, economic performance, ownership, complete filings, source truth or source fitness for every use.
+
+Visual source note
+Author synthesis of the current repository intake, identity, research-gate, source-admission and local-test contracts. The figure contains no mutable company count, live registry observation, identity accuracy result, model result, user outcome or production claim.
+
+Academic design context, all locally admitted and checksum-verified:
+- Galanakis et al. (2026), local PDF pp. 1-3 and 6: Companies House incorporation records provide a broad registered-company identity context, while legal incorporation is not equivalent to economic activity; the paper does not validate this implementation.
+- Thorne et al. (2026), local PDF pp. 5-6: reconstructed company/funding links require conservative treatment because identifiers and links can remain incomplete or ambiguous; this does not establish the project's identity accuracy.
+- Nikiforova et al. (2020), local PDF pp. 15-17: data-quality checks should be attached to the specified object and use case; it does not certify the project's controls.
+
+Repository locators and exact SHA-256 values are recorded in `sys_f3_legal_identity_decision_flow_provenance.json`.

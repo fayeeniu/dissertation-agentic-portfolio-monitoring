@@ -4,8 +4,12 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-APPROVED_OPENAI_MODEL = "gpt-5.4-mini"
-APPROVED_OPENAI_ESCALATION_MODEL = "gpt-5.4"
+APPROVED_OPENAI_MODEL = "gpt-5.6-luna"
+# Retain the existing configuration field as a compatibility boundary. Planning and
+# repair now use the same cost-efficient model, with reasoning effort differentiating
+# the work instead of a second model family.
+APPROVED_OPENAI_ESCALATION_MODEL = "gpt-5.6-luna"
+APPROVED_REASONING_EFFORTS = ("low", "medium", "high")
 
 
 def _as_bool(value: str | None, *, default: bool = False) -> bool:
@@ -28,7 +32,17 @@ class Settings:
     http_timeout_seconds: float = 10.0
     http_max_response_bytes: int = 5 * 1024 * 1024
     http_max_attempts: int = 3
-    openai_timeout_seconds: float = 30.0
+    openai_timeout_seconds: float = 120.0
+    #: Reasoning effort for research planning. The repair pass on a retry always
+    #: runs at ``low`` because it is a mechanical correction.
+    openai_reasoning_effort: str = "medium"
+    company_research_max_sources: int = 24
+    company_research_max_tool_calls: int = 12
+    company_research_max_source_chars: int = 12_000
+    company_research_max_corpus_chars: int = 160_000
+    company_research_max_output_tokens: int = 10_000
+    company_research_max_redirects: int = 3
+    company_research_max_elapsed_seconds: int = 240
     reviewer_name: str | None = None
 
     @classmethod
@@ -64,6 +78,28 @@ class Settings:
                 os.getenv("PORTFOLIO_HTTP_MAX_RESPONSE_BYTES", str(5 * 1024 * 1024))
             ),
             http_max_attempts=int(os.getenv("PORTFOLIO_HTTP_MAX_ATTEMPTS", "3")),
-            openai_timeout_seconds=float(os.getenv("PORTFOLIO_OPENAI_TIMEOUT_SECONDS", "30")),
+            openai_timeout_seconds=float(os.getenv("PORTFOLIO_OPENAI_TIMEOUT_SECONDS", "120")),
+            openai_reasoning_effort=os.getenv("PORTFOLIO_OPENAI_REASONING_EFFORT", "medium"),
+            company_research_max_sources=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_SOURCES", "24")
+            ),
+            company_research_max_tool_calls=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_TOOL_CALLS", "12")
+            ),
+            company_research_max_source_chars=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_SOURCE_CHARS", "12000")
+            ),
+            company_research_max_corpus_chars=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_CORPUS_CHARS", "160000")
+            ),
+            company_research_max_output_tokens=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_OUTPUT_TOKENS", "10000")
+            ),
+            company_research_max_redirects=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_REDIRECTS", "3")
+            ),
+            company_research_max_elapsed_seconds=int(
+                os.getenv("PORTFOLIO_COMPANY_RESEARCH_MAX_ELAPSED_SECONDS", "240")
+            ),
             reviewer_name=os.getenv("PORTFOLIO_REVIEWER_NAME") or None,
         )

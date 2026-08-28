@@ -1,0 +1,333 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "SYS-F2",
+  "title": "Canonical data and provenance model",
+  "author": "Faye Niu",
+  "target_section": "4.3 Canonical data, persistence, and provenance",
+  "suggested_latex_label": "fig:sys-canonical-data-provenance-model",
+  "purpose": "Explain the implemented canonical company/metric/period semantics, typed missingness, immutable snapshot and derivation lineage, evidence-linked claims, independent verification, versioned approval and manifest-bound export, while separating the locally tested report path from the implemented but live-unrun company-research path and protocol-only evaluation extensions.",
+  "generated_at_utc": "2026-08-27T22:50:50Z",
+  "hashes_recomputed_at_utc": "2026-08-27T23:04:48Z",
+  "revision": "1.0.2",
+  "status": {
+    "evidence_class": "conceptual_non_empirical",
+    "result_status": "not_a_result",
+    "canonical_report_path": "implemented_and_locally_tested",
+    "company_research_live_public_capture": "implemented_mechanics_but_live_unrun",
+    "domain_catalogue_freeze_d1_d2_and_human_observations": "protocol_only_unpopulated",
+    "external_database_or_cloud_storage": "not_claimed",
+    "production_readiness": "not_claimed",
+    "source_truth": "not_established_by_traceability_or_hashes"
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.svg",
+    "renderer": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.py",
+    "command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/sys_f2_canonical_data_provenance_model.py",
+    "format": "restricted accessible SVG rendered with deterministic ReportLab vector operations",
+    "dimensions_points": {
+      "width": 900,
+      "height": 1180
+    },
+    "raster_content": false,
+    "deterministic": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_title": "Canonical data and provenance model",
+    "svg_description_chars": 1018,
+    "complete_text_alternative": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.txt",
+    "status_encoding": "Colour is redundant with solid, dashed and dotted boundaries plus explicit status text.",
+    "greyscale": "Implemented, live-unrun and protocol-only states remain distinguishable by line pattern and label without colour.",
+    "reading_order": "canonical semantics, evidence and lineage, report approval and export, protocol-only sidecar, lineage limitation",
+    "pdf_tagging_claim": "none; the TXT companion is the accessible alternative"
+  },
+  "validation": {
+    "python_compile": "PASS",
+    "svg_xml_accessibility": "PASS: well-formed XML, role=img, aria-labelledby, title and 1018-character description retained",
+    "pdf_metadata": "PASS: one page, 900 x 1180 pt, author Faye Niu, invariant timestamp metadata",
+    "vector_check": "PASS: no PDF image XObjects; required semantic markers extract from the PDF",
+    "repeat_render": {
+      "status": "PASS",
+      "runs": 3,
+      "byte_identical": true,
+      "sha256": "b29e1a06a9a5150d9531a4c6d2e76381fa04422e5efe3f09bdd60d298302999d"
+    },
+    "standalone_a4": {
+      "status": "PASS",
+      "harness": "/private/tmp/sys_f2_a4_validation.tex",
+      "command": "/opt/homebrew/bin/tectonic --outdir /private/tmp /private/tmp/sys_f2_a4_validation.tex",
+      "result": "two-page A4 validation document: dedicated portrait figure/caption page followed by the next-section marker; no overfull, underfull or clipping warning",
+      "note": "The temporary harness uses an absolute asset path solely for local validation; the dissertation insertion should use the repository-relative path."
+    },
+    "visual_inspection": "PASS: native 900 x 1180 pt and A4 page renders inspected for clipping, overlap, reading order, line-pattern status redundancy, source-note presence and portrait readability",
+    "targeted_tests": {
+      "status": "PASS",
+      "pytest_cases_passed": 20,
+      "selected_test_nodes": 13,
+      "command": ".venv/bin/pytest -q tests/unit/test_normalization.py::test_missing_states_are_not_collapsed tests/integration/test_importers.py::test_json_import_is_immutable_idempotent_and_preserves_missing_states tests/integration/test_connector_contracts.py::test_registry_detects_same_bytes_with_changed_fact_derivation tests/integration/test_connector_contracts.py::test_registry_backfills_legacy_derivation_and_detects_persisted_fact_tampering tests/integration/test_source_workflow_integration.py::test_source_v2_snapshots_feed_run_relative_evidence_events_and_report tests/integration/test_source_workflow_integration.py::test_later_source_run_does_not_leak_future_events_into_earlier_ui_or_export tests/integration/test_reporting.py::test_export_is_blocked_until_audited_human_approval tests/integration/test_reporting.py::test_section_edit_creates_version_and_requires_reapproval tests/integration/test_reporting.py::test_finalized_export_is_reverified_before_reuse tests/integration/test_schema_equivalence.py::test_metadata_and_alembic_head_have_equivalent_schema tests/integration/test_company_research.py::test_company_number_runs_search_capture_exact_span_deck_and_named_review tests/integration/test_company_research_migration.py::test_0009_empty_schema_downgrades_and_reupgrades tests/integration/test_company_research_migration.py::test_0009_populated_downgrade_fails_before_schema_mutation",
+      "scope": "local database, fixture/fake company-research, migration and filesystem-export checks only; no live public-source or model call",
+      "warning": "One pre-existing StarletteDeprecationWarning from fastapi.testclient/httpx compatibility; all selected cases passed."
+    },
+    "strict_source_gate": {
+      "status": "PASS",
+      "command": ".venv/bin/python Dissertation/scripts/check_sources.py --strict-bibliography",
+      "result": "38 local PDFs and hashes verified; 2 immutable web captures; 85 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "late_input_refresh": {
+      "status": "PASS",
+      "paths": [
+        {
+          "path": "src/portfolio_agent/company_research.py",
+          "previous_sha256": "7f0770d758c1248f42deb7a7f2c1bdcc2d2885acfa3f3fac21f506b67abc53c6",
+          "current_sha256": "dc3a71ef0633083a4ae84f4ff6eae571295f23f00daa45a3eea4cd702fb3643d"
+        },
+        {
+          "path": "tests/integration/test_company_research.py",
+          "previous_sha256": "7cdaaa02e2ddde3b7fe2b203529188c3e17ed161fbbbe90a6260cf7bc0c0d1d5",
+          "current_sha256": "4011e0616598f52c76094331388f715c411b9e2a9c8582d6fbd680628a83d2e7"
+        }
+      ],
+      "semantic_check": "Current code still persists guarded source snapshot/raw/text hashes, validates and stores verbatim exact-span claims and claim hashes, retains contradiction candidates, hashes versioned profile content, and requires named review plus content-hash verification before approved download. The updated focused test still exercises captured sources, exact-span claims, contradiction retention and named review. The SYS-F2 live-unrun lane remains accurate; no exhibit output changed.",
+      "focused_test": "PASS: tests/integration/test_company_research.py::test_company_number_runs_search_capture_exact_span_deck_and_named_review",
+      "strict_source_gate": "PASS: 38 local PDFs and hashes verified; 2 immutable web captures; 85 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "hash_audit": "PASS: all 34 declared inputs and all 4 declared outputs matched after the late input refresh"
+  },
+  "interpretive_boundaries": [
+    "The figure is an author synthesis of repository contracts and local engineering evidence; it reports no empirical performance or user outcome.",
+    "A content or derivation hash supports integrity, stable identity and lineage. It does not establish publisher correctness, source completeness, encryption, anonymisation, lawful authority, ethics approval or production fitness.",
+    "The canonical Report/Claim path and CompanyResearchSource/CompanyResearchClaim/ProfileVersion path are separate persisted models; the figure does not imply an unimplemented automatic merge.",
+    "The guarded company-research path has fake, synthetic and adversarial engineering evidence but no completed live public-company capture or external-model result.",
+    "The domain-approved catalogue freeze, D1/D2 reference construction, and C0/C3 participant or reviewer observations remain protocol-only and unpopulated.",
+    "SQLite and ignored local files are the implemented persistence boundary. No external database, managed object store, cloud deployment, multi-user concurrency or production guarantee is represented."
+  ],
+  "inputs": [
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "locator": "Canonical principles; Core entities; Missing-state contract; Canonical value representation; Period-semantics contract; Sourceability classes; P0 metric catalogue; Company-intelligence first-slice records; Claim and verification semantics; Report lifecycle",
+      "role": "Authoritative project semantics for canonical records, typed missingness, evidence, claims, versions and report lifecycle."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9ed985e0506bbcbe4c8f74b329ec4baf4bea79b36231c09b613d6f1dd8403744",
+      "locator": "FR-ING-001--005; FR-MET-001--006; FR-CON-001--006; FR-EXT-001--005; FR-VER-001--007; FR-REP-001--009; FR-OBS-001--003; FR-CASE-002; FR-RES-006--007; FR-EVAL-001",
+      "role": "Implemented, live-unrun and protocol-only requirement statuses encoded in the visual."
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "4383245a195d8e9e94efb90904c4a64d3a23ccd5aac6df1acffb532647f604a4",
+      "locator": "Component responsibilities; End-to-end state machine; Data flow and invariants; Persistence model; Failure and recovery behaviour; Scalability and production gaps",
+      "role": "Component ownership, state transitions, persistence and non-production boundaries."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locator": "Status and evidence boundary; P0 scope; Explicit non-goals; Stakeholders and authority; Constraints; Primary risks; Change control",
+      "role": "Single-user bounded prototype, authority and non-goal constraints."
+    },
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "locator": "Protocol status; Experimental conditions; Dataset partitions and leakage control; Gold/reference standard; Source-access parity; Automated synthetic harness; Manual baseline capture",
+      "role": "Current distinction between executable D0 mechanisms and unpopulated domain, D1/D2, C0 and C3 evidence."
+    },
+    {
+      "path": "docs/adr/0003-local-sqlite-and-immutable-files.md",
+      "sha256": "14e3e12aa1b3bf17f6be034630e52048a39392aa456bd53b65c85fa67a4e677a",
+      "locator": "Decision; Consequences; Validation and revisit trigger",
+      "role": "Local SQLite, create-once file, manifest staging and hash-limitation design decision."
+    },
+    {
+      "path": "docs/adr/0008-bounded-live-company-research.md",
+      "sha256": "1b90b27672451e1b26513d67d11992a44388eaa54266c4f48f8a488cae1cf38f",
+      "locator": "Decision items 1--7; Consequences",
+      "role": "Separate guarded public research, exact-span, profile versioning and named-review boundary."
+    },
+    {
+      "path": "src/portfolio_agent/models.py",
+      "sha256": "5ebca0b65f5556a4d0fa37e3f5d60f7c191754398ca0d54c6ffafde4fb487652",
+      "locator": "CompanyModel; CompanyIdentifierModel; ProfileVersionModel; CompanyResearchSourceModel; CompanyResearchClaimModel; CatalogueVersionModel; ReportingPeriodModel; MetricDefinitionModel; ObservationModel; EvidenceItemModel; ExtractionModel; ReportModel; ReportSectionModel; ClaimModel; VerificationModel; ReviewDecisionModel; SourceDefinitionModel; SourceSnapshotModel; EvidenceFactModel; ReportExportModel",
+      "role": "Exact relational records, foreign keys, hashes, versions, statuses and audit fields represented in the diagram."
+    },
+    {
+      "path": "src/portfolio_agent/enums.py",
+      "sha256": "c7ee84b4f5ad4e84342879b69bf4b544ec1b38109b19aabb8a64707c3aeef380",
+      "locator": "MissingState; VerificationStatus; ReportStatus; company-research source/profile statuses",
+      "role": "Closed semantic state sets, including the exact twelve missing states."
+    },
+    {
+      "path": "src/portfolio_agent/normalization.py",
+      "sha256": "968957e5576db7fc50965e3744ce0f43fa068e22c792facec34dae684e7a7b13",
+      "locator": "_MISSING_TOKENS; normalize_value",
+      "role": "Original-versus-normalized value contract and explicit blank/zero/invalid handling."
+    },
+    {
+      "path": "src/portfolio_agent/ids.py",
+      "sha256": "632446d543dee666063649db1cc6fff596b0677e34087b9897ee3de321dbd5e7",
+      "locator": "stable_hash; sha256_bytes",
+      "role": "Canonical JSON and byte hash primitives used by persisted lineage contracts."
+    },
+    {
+      "path": "src/portfolio_agent/connectors/registry.py",
+      "sha256": "c7a6e7537a5889ef7e618346ca77b09596e4d0e0d808ba4ecafebeb9591e6ae3",
+      "locator": "SOURCE_DERIVATION_CONTRACT_VERSION; SourceRegistry.collect; _verify_stored_snapshot; _collection_derivation_hash; _verify_stored_derivation; _derivation_hash",
+      "role": "Admitted source manifests, checksum-addressed snapshots and canonical fact/event derivation verification."
+    },
+    {
+      "path": "src/portfolio_agent/workflow.py",
+      "sha256": "3ca7b1aa6178b09aec55d408f9dac29dd51fc71fe74e055dbf31bc9e42d0bb53",
+      "locator": "source snapshot, EvidenceItem, Extraction, Claim, Verification and Report creation paths",
+      "role": "Run/cutoff-bound conversion from admitted source facts into canonical evidence, claims and reports."
+    },
+    {
+      "path": "src/portfolio_agent/verification.py",
+      "sha256": "a891387752a435e60103622813c27dec958742741fc959ba9bbe6d6ce2e78d40",
+      "locator": "verify_claim",
+      "role": "Independent support, contradiction, insufficiency, staleness and untrusted-source claim decisions."
+    },
+    {
+      "path": "src/portfolio_agent/reporting.py",
+      "sha256": "ca8d6a6627a3c486ea587c5df9a868342bf3c27416c5f25cba95570855d37e6e",
+      "locator": "ReportService.approve; edit_section; export; _verified_export_bundle; _write_export_bundle; _assert_approval_ready",
+      "role": "Named approval, edit/version invalidation, content/file hashes, pending/finalized export and re-verification."
+    },
+    {
+      "path": "src/portfolio_agent/company_research.py",
+      "sha256": "dc3a71ef0633083a4ae84f4ff6eae571295f23f00daa45a3eea4cd702fb3643d",
+      "locator": "CompanyResearchService run stages, source capture persistence, exact-span claim validation, contradiction candidates, profile content hash, named review and download verification",
+      "role": "Implemented but live-unrun company-research source/claim/profile lineage mechanics."
+    },
+    {
+      "path": "alembic/versions/0006_source_derivation_hash.py",
+      "sha256": "28751f19c2fa4f7d329a978b8dd875d6ac489b2450cc72df56fefb7a3a7d4f4d",
+      "locator": "upgrade and downgrade",
+      "role": "Additive source-snapshot derivation SHA field."
+    },
+    {
+      "path": "alembic/versions/0007_period_and_fact_provenance.py",
+      "sha256": "1856f75880ff32dbe78b14a506d371bc493fe4bf983f9847ceb2bc596e7c2f69",
+      "locator": "upgrade and downgrade",
+      "role": "Additive period semantics, programme start, structured locator, method/schema and derivation-version fields."
+    },
+    {
+      "path": "alembic/versions/0008_company_intelligence_foundation.py",
+      "sha256": "932a5cec0db5e1ff0cb8db2694df043db57e65ce8aa5dcf891fe4c0452857181",
+      "locator": "upgrade profile_versions and company-intelligence foundation; populated downgrade guard",
+      "role": "Versioned profile/content-hash storage and fail-before-mutation downgrade boundary."
+    },
+    {
+      "path": "alembic/versions/0009_company_research_runs.py",
+      "sha256": "2a0c19d839d0b17c032cdd513b2fcf3ba22f932571455c90bdc711b187460f91",
+      "locator": "upgrade company_research_runs/tasks/attempts/sources/claims and profile link; populated downgrade guard",
+      "role": "Additive company-research source, exact-span claim, task and profile lineage schema."
+    },
+    {
+      "path": "tests/unit/test_normalization.py",
+      "sha256": "f54df4def0dc5c925620eb4a0df792229162810fcda7d125b554e8b4148b93be",
+      "locator": "test_missing_states_are_not_collapsed",
+      "role": "Executable blank/zero/explicit-missing separation evidence."
+    },
+    {
+      "path": "tests/integration/test_importers.py",
+      "sha256": "7e5eae350094d3260a6f4f15e64c56ea46512586dd7eeee7e448ef6d71033089",
+      "locator": "test_json_import_is_immutable_idempotent_and_preserves_missing_states",
+      "role": "Raw-submission immutability, idempotence and observation missing-state evidence."
+    },
+    {
+      "path": "tests/integration/test_connector_contracts.py",
+      "sha256": "2d0c7cd6b7f45a4f14e483e8791a90a85711846f26231c990e67c3112175168e",
+      "locator": "test_registry_detects_same_bytes_with_changed_fact_derivation; test_registry_backfills_legacy_derivation_and_detects_persisted_fact_tampering",
+      "role": "Content/derivation drift and persisted-fact tamper detection evidence."
+    },
+    {
+      "path": "tests/integration/test_source_workflow_integration.py",
+      "sha256": "8f2c8b79229291bfa1acafacd08996172f9ec531f9662bb251fdfe204ecbfd74",
+      "locator": "test_source_v2_snapshots_feed_run_relative_evidence_events_and_report; test_later_source_run_does_not_leak_future_events_into_earlier_ui_or_export",
+      "role": "Snapshot-to-report lineage and temporal isolation evidence."
+    },
+    {
+      "path": "tests/integration/test_reporting.py",
+      "sha256": "5b475101d7969304991dcbebae96ceec15bb6d44735d3f89bd2c3695c5e5dcf5",
+      "locator": "test_export_is_blocked_until_audited_human_approval; test_section_edit_creates_version_and_requires_reapproval; test_finalized_export_is_reverified_before_reuse",
+      "role": "Approval gate, version invalidation and finalized-manifest integrity evidence."
+    },
+    {
+      "path": "tests/integration/test_schema_equivalence.py",
+      "sha256": "f762d9b5fb6c3fcd7c1a9827c587b03b6d50ffda734e561fe0d3e501242a5336",
+      "locator": "test_metadata_and_alembic_head_have_equivalent_schema",
+      "role": "Current Alembic-head and SQLAlchemy-metadata schema-equivalence evidence."
+    },
+    {
+      "path": "tests/integration/test_company_research.py",
+      "sha256": "4011e0616598f52c76094331388f715c411b9e2a9c8582d6fbd680628a83d2e7",
+      "locator": "test_company_number_runs_search_capture_exact_span_deck_and_named_review",
+      "role": "Fake/local source, exact-span claim, contradiction, profile hash and named-review evidence; not a live public-company result."
+    },
+    {
+      "path": "tests/integration/test_company_research_migration.py",
+      "sha256": "37c66ea35bef404dcbb32fc97a183eabe6f517f0a9dc6545ba6a68490d0ba7fd",
+      "locator": "test_0009_empty_schema_downgrades_and_reupgrades; test_0009_populated_downgrade_fails_before_schema_mutation",
+      "role": "Additive migration round-trip and data-loss guard evidence."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "gebru2021datasheets; gao2023alce; pineau2021reproducibility; nist2023airmf rows",
+      "role": "Bibliographic-to-local-file binding and source-role limitations."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "locator": "papers/20_gebru_datasheets_for_datasets.pdf; papers/28_gao_alce_citations.pdf; papers/33_pineau_reproducibility.pdf; papers/11_nist_ai_rmf_1_0.pdf",
+      "role": "Frozen local academic-source checksums."
+    },
+    {
+      "path": "Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf",
+      "sha256": "c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0",
+      "locator": "PDF pp. 1--7",
+      "role": "Dataset documentation context; it does not validate the project implementation."
+    },
+    {
+      "path": "Dissertation/sources/papers/28_gao_alce_citations.pdf",
+      "sha256": "ae9868f07f0f7ffaae5346778f79b7827d9ec6b13b1e6aae4dff6b2ffc37a2e1",
+      "locator": "PDF pp. 1--4",
+      "role": "Answer correctness and citation-support quality as distinct requirements; benchmark results do not transfer to this artefact."
+    },
+    {
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1--4",
+      "role": "Versioned artefact and transparent reporting context; not proof that this study was reproduced."
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 20--23 and 33--35",
+      "role": "Roles, traceability, monitoring and oversight context; not certification of the artefact."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.py",
+      "sha256": "9da2d43019c40537f0eef7f19aba14d6a0e2818777becc2bfe74d8a8eae27fc3",
+      "role": "Deterministic restricted-SVG-to-vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.svg",
+      "sha256": "c13f246401c859f205d2e1719f673dd2e87e524d3ec3f81379c9880ab1945e71",
+      "role": "Accessible vector source and visual source of truth."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.pdf",
+      "sha256": "b29e1a06a9a5150d9531a4c6d2e76381fa04422e5efe3f09bdd60d298302999d",
+      "role": "LaTeX-ready deterministic one-page vector figure."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f2_canonical_data_provenance_model.txt",
+      "sha256": "49393351182322e038eb02cd0658a5445137af46c089ad846a3ae723d3b57a92",
+      "role": "Complete plain-text alternative with expanded fields, reading order, status boundaries, local source roles and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance JSON deliberately does not embed its own SHA-256 because doing so would be circular; its external SHA-256 is reported with the final exhibit packet."
+}

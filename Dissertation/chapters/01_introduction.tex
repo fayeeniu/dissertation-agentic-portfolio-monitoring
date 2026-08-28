@@ -1,0 +1,164 @@
+\chapter{Introduction}
+\section{Early-stage portfolio reporting and company intelligence}
+
+Early-stage portfolio reporting first asks which legal entity is described, and at what date.
+Companies House provides a broad, timely baseline for incorporated firms, but incorporation is not
+economic activity; live records may include dormant companies and exclude unincorporated businesses
+and self-employed people \citep{galanakis2026chrt}. The register is also disclosure-lagged: many
+companies have no accounts filed, while recent records may lack detail because filing follows
+incorporation \citep{hardman2023small}. Stable identifiers and explicit as-of dates are therefore
+interpretive controls, not administrative decoration.
+
+Evidence about company development is distributed across dated events, not held in a single profile.
+Crowdfunding observations vary by pitch, platform, country, sector, region and period, while released
+samples may cover successful pitches only \citep{estrin2024digital}. Repeat-funding research treats
+campaign round as its unit and reports platform-specific associations with investor participation,
+targets, equity offered and overfunding \citep{wasti2024successive}. UK funding-data reconstruction
+connects opportunities, applications, decisions, organisations, projects and outcomes, yet records
+incomplete coverage and uncertain links \citep{thorne2026funding}. Reporting should therefore
+preserve event and source boundaries, not convert observations into a causal company-quality score.
+
+These limitations make auditability a data problem before fluent synthesis. Corporate-register
+fitness depends on intended use: legal identity and address fields are more available than management,
+financial or contact information \citep{krasikov2020ready}; even mandatory Companies House fields can
+be empty, motivating readable, use-case-specific quality requirements linked to executable validation
+\citep{nikiforova2020quality}. Financial-table extraction adds OCR, repeated-value, cell-location and
+negative-sign errors \citep{bradley2024synfintabs}. Evidence capture must retain source identity,
+observation time, extraction location and validation status, allowing material statements to be traced
+and absent or ambiguous evidence to be disclosed.
+
+\section{Problem definition and motivation}
+
+The problem is to identify the legal entity represented by heterogeneous records and interpret each
+field at its availability time. Cross-register research used suffix removal, country-alias
+normalisation, fuzzy matching and manual review, yet left unmatched cases
+\citep{surak2026gateways}. Companies House data can contain empty mandatory fields and inconsistent
+country labels \citep{nikiforova2020quality}, while recent firms may show no accounts or no detail
+because filing occurs later \citep{hardman2023small}. The local design holds records until company
+number and legal identity are resolved, preserves missing states rather than turning blanks into
+zeros, and records availability time to avoid projecting later knowledge backwards.
+
+Fluent synthesis can remain unsafe despite citations. Evaluating cited generation distinguishes
+answer correctness, citation recall and citation precision; none is guaranteed by a marker alone
+\citep{gao2023alce}. Attribution does not establish truth if its source is wrong
+\citep{gao2023rarr}. Retrieved public text can be interpreted as instructions, enabling indirect
+prompt injection that manipulates summaries, source selection or tool actions
+\citep{greshake2023indirect}. The local contract therefore bounds web search to candidate discovery,
+not exhaustive coverage. A report claim requires admitted immutable evidence where capture is
+permitted, an exact locator and separate verification; retrieved text remains untrusted.
+
+Human control is necessary but not automatically effective. General human--AI guidance recommends
+stating capability and uncertainty, allowing correction or dismissal, explaining behaviour and
+providing global controls \citep{amershi2019guidelines}. In a controlled task, participants sometimes
+over-relied on incorrect AI suggestions; forcing reflection reduced over-reliance but created
+preference, trust and subgroup trade-offs \citep{bucinca2021forcing}. The project response is to expose
+conflicts, missing evidence, limitations and exact locators, then require named approval before export.
+These are safeguards, not evidence of better decisions, reduced manual effort or time savings. Their
+benefit remains a question for an authorised human-in-the-loop study; no production or live-use claim
+follows. Figure~\ref{fig:problem-controls-rqs} presents a non-empirical conceptual mapping from these
+risks, through the local controls, to RQ1--RQ3.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{exhibits/intro_f1_problem_to_research_contract.pdf}
+  \caption{Problem-to-research contract linking the identified evidence risks, local controls and
+  research questions. Source: author synthesis of the cited literature and repository contracts; the
+  diagram does not present measured results.}
+  \label{fig:problem-controls-rqs}
+\end{figure}
+
+\section{Aim and research questions}
+
+Following design science, this dissertation aims to build and evaluate a bounded multi-agent artefact
+for portfolio ingestion, validation and report generation. The primary question asks to what extent it
+can automate the end-to-end workflow and how quality and reliability compare with manually produced
+reports. Construction alone does not establish utility; evaluation against stated objectives is
+required \citep{hevner2004design}. The process links problem definition to development, demonstration
+and measurement \citep{peffers2007dsrm}. Table~\ref{tab:research-contract} records the questions as a
+non-result research contract.
+
+RQ1 asks how accurately and reliably the bounded workflow transforms heterogeneous portfolio inputs
+into typed, temporally eligible, provenance-complete and reviewable claims without collapsing
+uncertainty. Measures separate answer correctness, citation support and provenance completeness
+\citep{gao2023alce}. RQ2 asks, under the same information boundary, how bounded independent
+verification changes supported-claim precision, recall, unsupported-claim rate, contradiction
+handling, abstention, provenance completeness and repeat consistency against a deterministic path
+without independent verification; attribution alone cannot establish correctness
+\citep{gao2023rarr}. C0 is manual, C1 deterministic without an independent verifier, C2 bounded
+independent verification, and C3 C2 plus named review.
+
+RQ3 asks, where separately authorised, how automated and named-review conditions compare with the
+manual workflow across report correctness, completeness, active and elapsed time, edit burden,
+approval time and reviewer utility. Human--AI guidance supports exposing capability, uncertainty,
+correction and controls \citep{amershi2019guidelines}, while forcing interventions can create
+preference, trust and subgroup trade-offs \citep{bucinca2021forcing}. C0/C3 human evidence remains
+NO-GO and held pending authority; without authority at freeze, RQ3 remains unanswered and the primary
+question only partly answered. Public-web company research remains an implemented engineering case
+study outside these questions.
+
+\input{exhibits/intro_t1_research_contract.tex}
+
+\section{Research objectives}
+
+Table~\ref{tab:research-contract} defines the question and evidence contract. O1 specifies a bounded
+data and evidence model covering typed claims, legal identity, availability time, explicit missing
+states, source admission, exact locators and provenance; O2 implements it as a fail-closed local
+workflow with independent-verification and named-approval boundaries. Together, O1 and O2 primarily
+operationalise RQ1 and the primary question. O3 tests RQ2 through the frozen C1/C2 comparison under one
+information boundary, using fidelity, support, contradiction, abstention, provenance completeness and
+repeat consistency. These prospective objectives join an artefact to explicit evaluation criteria
+\citep{hevner2004design} and move from problem-derived objectives through development, demonstration
+and evaluation \citep{peffers2007dsrm}; they do not establish utility.
+
+O4 tests RQ3 only under separate authority by evaluating C0--C3 manual and human-control outcomes for
+correctness, completeness, time, edits, approval and reviewer utility. It contributes to the primary
+question only if authorised. Systems should expose capability, uncertainty, correction and controls
+\citep{amershi2019guidelines}, but human interventions can create preference, trust and subgroup
+trade-offs \citep{bucinca2021forcing}. O5 applies across the primary question and RQ1--RQ3 as a
+reporting discipline: distinguish supported, unsupported, contradictory, unavailable, null and held
+evidence, and keep answer correctness separate from citation support and attribution
+\citep{gao2023alce,gao2023rarr}. C0/C3 evidence remains held without authority and must not be replaced
+by D0.
+
+\section{Scope, contribution, and exclusions}
+
+The artefact is scoped as a local, loopback-only, single-user research prototype, not a deployed
+service. Its intended purpose, user, context and operational boundary are stated explicitly because
+risk management depends on a defined use context and a separate deployment decision
+\citep{nist2023airmf}. Public company-level information may cross the external-model boundary only
+through admitted controls. Restricted or internal material remains local and is excluded from public
+generative-AI applications or APIs \citep{cddo2023genai}. This boundary does not establish legal
+compliance, production security or provider-side zero retention.
+
+The contribution is bounded to an evidence-first artefact, a reproducible evaluation protocol and a
+traceable reporting method. This combines design and evaluation against declared objectives without
+treating implementation as demonstrated utility \citep{hevner2004design,peffers2007dsrm}. The method
+keeps answer correctness separate from citation support and attribution, so sourced claims still
+require passage-level verification \citep{gao2023alce,gao2023rarr}. The implemented public-web
+company-research path is included only as a live-unrun engineering case study. It supplies
+architecture and adversarial-control evidence, not live company findings, exhaustive coverage,
+operational benefit or general superiority.
+
+The scope excludes buy/sell recommendations, speculative valuations, person profiling, autonomous
+publication, and claims of remote, multi-tenant or production readiness. Financial communications
+may affect investment decisions and can create additional duties, supporting a conservative boundary
+rather than a claim of legal compliance \citep{fca2024promotions}. Retrieved public content also
+remains untrusted because indirect prompt injection can manipulate model outputs or tool actions
+\citep{greshake2023indirect}. Named approval is required before export, consistent with accountable
+human responsibility and oversight \citep{cddo2023genai}. These controls are project safeguards; they
+do not prove universal prevention, improved decisions or human benefit.
+
+\section{Dissertation roadmap}
+
+Chapter 2 will critically review the literature and define the research gap. Chapter 3 will specify
+the frozen methodology, C0--C3 conditions, evidence tiers and authorisation-dependent holds. Chapter 4
+will describe the implemented artefact and distinguish the live-unrun company-research case study from
+evaluated evidence. Chapter 5 will report engineering and synthetic results while marking unavailable
+outcomes explicitly. Chapter 6 will interpret those findings proportionately against RQ1--RQ3 and the
+primary question, without treating missing evidence as success. Chapter 7 will examine governance,
+ethics, security and validity limitations. Chapter 8 will draw bounded conclusions and sequence the
+future evidence needed to answer held questions. This progression follows design science by connecting
+a problem, artefact, rigorous evaluation and communication \citep{hevner2004design}; it also reflects
+movement from problem identification and objectives through development, demonstration and evaluation,
+with iteration where evidence requires it \citep{peffers2007dsrm}. The sequence is prospective, not
+completed chapters or predetermined results.

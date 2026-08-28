@@ -1,0 +1,61 @@
+LIT-T2 - Signal-to-inference boundary for early-stage company intelligence
+Author: Faye Niu
+Target section: 2.2 Early-stage finance, portfolio reporting, and public company intelligence
+LaTeX label: tab:signal-inference-boundary
+Placement: dedicated portrait table page between Sections 2.2 and 2.3
+
+Purpose and interpretation
+
+This table separates source-bound observations from stronger conclusions that the evidence does not support. It is an author synthesis of locally admitted literature and frozen project contracts. It is non-empirical and is not a company-scoring, ranking, valuation, recommendation or causal model. It contains no corpus count, result metric or investment recommendation.
+
+Table columns
+
+Evidence class; observable or source-bound fact; admissible report statement; unsupported inference; key local literature.
+
+Row 1 - Crowdfunding or funding round
+
+Observable or source-bound fact: An attributed platform, publisher or filing record may identify a campaign or funding round. The record may state an event date, round stage, disclosed amount, currency or campaign outcome. Each field remains limited to the exact source, platform, country, sample and observation window. Missing fields are not inferred.
+
+Admissible report statement: "The named source records this legal entity's campaign or funding event on the stated date." The statement must retain the publisher, exact locator, retrieval or reporting cutoff, and any platform or sample qualification. An amount, stage or outcome is stated only when the admitted record supports it.
+
+Unsupported inference: The event is not proof of firm quality, a universal investor preference, causal impact, future performance, fair valuation or investment merit. Findings from successful pitches or one platform cannot be generalised to all early-stage firms or unsuccessful campaigns.
+
+Key local literature and verified pages: `estrin2024digital`, PDF pp. 1--5 and 12--13; `wasti2024successive`, PDF pp. 1--3 and 6--12.
+
+Row 2 - Public grant or state-support record
+
+Observable or source-bound fact: An admitted public record may name a programme, recipient, award or other support event, event date, publisher, and an amount and currency where explicitly recorded. Corrections, observation cutoff, programme coverage and unmatched records remain visible.
+
+Admissible report statement: "The publisher records the named award or support event for this legal entity." The statement includes the event date, exact locator, reporting cutoff and any limit on amount, currency, programme or interval coverage. A total is not stated unless every included component is explicit and compatible with the claimed interval.
+
+Unsupported inference: The record does not establish that public support caused innovation, growth or later performance; that the firm is superior; that all support has been found; or that an award amount measures realised impact. Selection and linkage mechanisms remain possible explanations.
+
+Key local literature and verified pages: `mondal2025state`, PDF pp. 1--2 and 7; `thorne2026funding`, PDF pp. 1--6; `fca2024promotions`, PDF pp. 5, 9 and 13 for the conservative communication boundary.
+
+Row 3 - Companies House identity or filing event
+
+Observable or source-bound fact: A dated Companies House snapshot may provide an exact company number, legal name, registered status, incorporation record or filing event. The observation is tied to the register state, filing definition, company form, event date and reporting cutoff.
+
+Admissible report statement: "At the stated cutoff, the register records this legal fact or filing for company number X." The statement retains the exact legal identifier, event or filing period, locator and register scope. It describes a legal or filing observation, not an operational conclusion.
+
+Unsupported inference: Incorporation is not proof of active trading or economic activity. Registry presence, status or filings do not alone establish complete operations, ownership, financial health, private funding, valuation or current state beyond the cutoff.
+
+Key local literature and verified pages: `galanakis2026chrt`, PDF pp. 1--3 and 6; `hardman2023small`, PDF pp. 3, 5--6 and 21--25; `krasikov2020ready`, PDF pp. 5--9.
+
+Row 4 - Reconstructed funding-lifecycle link
+
+Observable or source-bound fact: A reconstruction may conservatively link attributed events from heterogeneous sources when component sources, identifiers, dates, linkage rule, conflicts and unmatched gaps are retained. Sources may lack a shared identifier, historical coverage or compatible definitions.
+
+Admissible report statement: "These attributed records form a partial reconstructed timeline for the same legal entity under the stated linkage rule." The statement lists component sources and preserves uncertainty, unmatched events and coverage limits.
+
+Unsupported inference: The link is not an exhaustive funding history. An absent link does not prove that no event occurred. The reconstruction does not establish a causal pathway, a universal funding lifecycle, company quality, future performance or investment suitability.
+
+Key local literature and verified pages: `thorne2026funding`, PDF pp. 1--6; `mondal2025state`, PDF pp. 1--2 and 7.
+
+Cross-row reporting boundary
+
+An admissible statement identifies the legal entity, event or fact, source, exact locator, date or cutoff, and the content actually supported. Gaps, conflicts, corrections, source scope and incomplete coverage remain visible. The table provides a reporting boundary only. It does not provide legal advice, automatic buy or sell advice, speculative valuation, causal performance attribution, company ranking, a universal quality score or evidence that the implemented artefact improves investment outcomes.
+
+Source note
+
+Author synthesis from locally admitted citation keys `estrin2024digital`, `wasti2024successive`, `mondal2025state`, `thorne2026funding`, `galanakis2026chrt`, `hardman2023small`, `krasikov2020ready` and `fca2024promotions`. Claim scope and page locators follow frozen claim-ledger rows `2.2-P1`--`2.2-P4` and `SECTION_2_2_EVIDENCE.md`.

@@ -1,0 +1,160 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-T1",
+  "title": "Review and local source-admission protocol",
+  "author": "Faye Niu",
+  "target_section": "2.1 Review method and evidence boundary",
+  "latex_label": "tab:review-source-admission",
+  "purpose": "Summarise the dissertation's bounded process for discovering, admitting, binding, verifying, retaining limitations in, and freezing locally reviewable literature evidence.",
+  "generated_at_utc": "2026-08-27T15:43:38Z",
+  "hashes_recomputed_at_utc": "2026-08-27T15:43:38Z",
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Flush earlier material, place Table 2.1 on a dedicated portrait float page, and prevent any following section heading from preceding the table."
+  },
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "review_classification": [
+      "purposive",
+      "problem-led",
+      "non-systematic",
+      "non-exhaustive",
+      "not PRISMA"
+    ],
+    "interpretation": "Author synthesis of frozen project evidence contracts, not an empirical result or a claim of source truth."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/sources/SECTION_2_1_EVIDENCE.md",
+      "sha256": "48212fa630c1f2a26cfe8cb4c9c1120cbd8949ca7ddf7878d0822808ab8dac0e",
+      "role": "Section-specific evidence boundary, six-stage source-admission flow, rejection rules and interpretation limits.",
+      "locator": "Headings 'Paragraph 1: review purpose and transparent corpus construction', 'Paragraph 2: admission and claim-fit verification', 'Paragraph 3: source hierarchy and limitations', 'Proposed exhibit LIT-T1', and 'Prohibited overreach'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "role": "Frozen citation-key, source-origin, local-path, checksum, page-count and admission-role bindings.",
+      "locator": "Header contract and admitted source rows; no row count is reproduced in the exhibit."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "45262c6955d0f5803db564673af5ff689f21249f24a94002b17dbd2859947c0b",
+      "role": "Independent local checksum bindings used by strict source validation.",
+      "locator": "Path-to-SHA-256 entries; no corpus count is reproduced in the exhibit."
+    },
+    {
+      "path": "Dissertation/sources/WEB_CAPTURES.csv",
+      "sha256": "b1bbc483f73fdb6b6cd758374a51032d3edb025b45958cd93c127d84fa05f070",
+      "role": "Immutable HTML/PDF capture metadata and checksums for permitted mutable web documentation.",
+      "locator": "Capture metadata header and bound capture rows; no capture count is reproduced in the exhibit."
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "3f7e95233246b1323de02b0a69450a44e8ecc6ada4a60d112c40cbe76efbe0b2",
+      "role": "Claim-level citation-key, local-page, source-role and verification-state contract.",
+      "locator": "Rows '2.1-P1'--'2.1-P3' and ledger header fields 'Paragraph ID', 'Claim purpose', 'Citation keys', 'Verified local pages', and 'Verification status'."
+    },
+    {
+      "path": "Dissertation/scripts/check_sources.py",
+      "sha256": "40f66cac5e2ed17a9e3b1c34591b11a6573a92eafdb688adf3d505c3ad6f876d",
+      "role": "Executable strict validation contract for local files, manifests, checksums, web captures, bibliography keys and paragraph citations.",
+      "locator": "Manifest, PDF, checksum, web-capture, bibliography and citation validation routines."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved placement, purpose and evidence boundary for Section 2.1.",
+      "locator": "Section 2.1 'Review method and evidence boundary' and its exhibit plan."
+    }
+  ],
+  "stage_traceability": [
+    {
+      "stage": 1,
+      "name": "Problem-led discovery",
+      "decision": "Generate candidates from the reporting problem, RQ1--RQ3 and explicit evidence gaps; classify intended source role before admission.",
+      "reject_or_hold": [
+        "off-scope",
+        "duplicate",
+        "snippet-only"
+      ]
+    },
+    {
+      "stage": 2,
+      "name": "Stable local full-text admission",
+      "decision": "Require readable local full text, or an immutable permitted capture, before claim use.",
+      "reject_or_hold": [
+        "inaccessible",
+        "partial",
+        "snippet-only",
+        "no stable capture"
+      ]
+    },
+    {
+      "stage": 3,
+      "name": "Manifest, checksum and bibliography binding",
+      "decision": "Bind the citation key, bibliographic metadata, origin, local path, page count and SHA-256; bind web-capture metadata when used.",
+      "reject_or_hold": [
+        "missing or duplicate key",
+        "absent manifest or checksum record",
+        "path reuse",
+        "metadata or checksum mismatch"
+      ]
+    },
+    {
+      "stage": 4,
+      "name": "Page-level claim verification",
+      "decision": "Inspect the local full text for the exact claim scope and retain the local page locator and source role.",
+      "reject_or_hold": [
+        "unsupported",
+        "mis-scoped",
+        "unlocatable"
+      ]
+    },
+    {
+      "stage": 5,
+      "name": "Contradiction and limitation retention",
+      "decision": "Keep conflicts, unknowns, source hierarchy, reconstruction limits and non-applicable fields attached to the synthesis decision.",
+      "reject_or_hold": [
+        "suppressed contradiction",
+        "omitted material caveat",
+        "source-tier equivalence",
+        "claim expansion beyond verified pages"
+      ]
+    },
+    {
+      "stage": 6,
+      "name": "Strict freeze validation",
+      "decision": "Run the local validator and freeze cited files with their manifest, checksum, bibliography, capture and claim-locator bindings.",
+      "reject_or_hold": [
+        "missing or unreadable local file",
+        "unresolved citation",
+        "mutable-only reference",
+        "binding mismatch"
+      ]
+    }
+  ],
+  "limitations": [
+    "This is a purposive, problem-led, non-systematic and non-exhaustive review process; it is not PRISMA, a registered systematic review, a meta-analysis or a claim of database completeness.",
+    "Local access, hashing, manifest consistency, bibliography binding and citation presence establish internal traceability; they do not establish source truth.",
+    "The frozen local corpus can omit relevant material that is inaccessible, snippet-only, off-scope or unavailable as a stable permitted capture.",
+    "Page-level verification is claim-scoped and does not certify every statement in a source.",
+    "Source roles and evidence hierarchies remain distinct; admission does not make peer-reviewed work, preprints, guidance and vendor documentation equivalent.",
+    "The exhibit contains no mutable corpus count, empirical result, prevalence, effect size, production evidence or exhaustive-coverage claim."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_t1_review_source_admission.tex",
+      "sha256": "ecafb92bed7f70aadfc010ba97ddcf1b1ccc22c03d1a12fb03e1bcfc68aa4a14",
+      "role": "Portrait-width LaTeX table with dedicated float-page boundaries for inclusion in Section 2.1."
+    },
+    {
+      "path": "Dissertation/exhibits/lit_t1_review_source_admission.txt",
+      "sha256": "260000b79f5912637ac3e6f4b141a05afbb9cb27eb972b76ac5cb35c19011d49",
+      "role": "Complete plain-text alternative and expanded interpretation boundary."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

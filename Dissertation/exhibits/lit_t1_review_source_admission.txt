@@ -1,0 +1,64 @@
+LIT-T1 - Review and local source-admission protocol
+Author: Faye Niu
+Target section: 2.1 Review method and evidence boundary
+LaTeX label: tab:review-source-admission
+
+Table columns
+
+Stage; decision and action; required local record; reject or hold.
+
+Stage 1 - Problem-led discovery
+
+Decision and action: Search from the portfolio-reporting problem, RQ1--RQ3 and explicit design or evaluation evidence gaps. Classify each candidate by its intended role, such as direct evidence, supporting method, review, guidance or technical documentation.
+
+Required local record: Record the candidate title, origin and proposed use. Discovery is a candidate-generation step and does not itself admit a source for claim support.
+
+Reject or hold: Reject off-scope or duplicate candidates. Snippet-only material remains unadmitted and cannot support a dissertation claim.
+
+Stage 2 - Stable local full-text admission
+
+Decision and action: Obtain a complete and readable local PDF before claim use. For permitted mutable web documentation, retain an immutable local capture and rendered PDF with capture details.
+
+Required local record: Retain a stable local path, origin URL and, where applicable, capture date, method and paired HTML/PDF record.
+
+Reject or hold: Hold or reject inaccessible, partial or snippet-only sources, and sources for which no stable local capture can be retained. A mutable URL alone is insufficient.
+
+Stage 3 - Manifest, checksum and bibliography binding
+
+Decision and action: Bind one citation key to bibliographic metadata, origin URL, local path, page count, admission role and SHA-256 checksum. Bind web-capture metadata where relevant.
+
+Required local record: The source manifest, checksum file and bibliography must agree. Any web-capture record and its separate checksums must agree with the main manifest and local files.
+
+Reject or hold: A missing or duplicate key, absent manifest row or checksum, reused path, missing bibliography binding, or metadata/hash mismatch blocks admission.
+
+Stage 4 - Page-level claim verification
+
+Decision and action: Read the admitted local full text and verify the exact scope of each intended claim. Record the local PDF pages inspected and distinguish direct support from context, method or limitation evidence.
+
+Required local record: Add a claim-ledger or section-evidence entry containing the claim purpose, citation key, verified local pages, source role and verification status.
+
+Reject or hold: Reject unsupported, mis-scoped or unlocatable claims. A visible citation, a matching checksum or an attributable statement does not prove that the source or claim is true.
+
+Stage 5 - Contradiction and limitation retention
+
+Decision and action: Preserve competing evidence, unknowns, negative or null findings, source hierarchy, reconstruction limits, risks and non-applicable fields. Do not flatten peer-reviewed evidence, preprints, guidance and vendor documentation into one evidence tier.
+
+Required local record: Keep limitations and contradictions attached to the relevant claim, source role and synthesis decision. Record why a source is used narrowly when its scope is limited.
+
+Reject or hold: Hold synthesis that suppresses a contradiction, drops a material caveat, treats source tiers as equivalent or expands a claim beyond the verified pages.
+
+Stage 6 - Strict freeze validation
+
+Decision and action: Run the strict local source validator and freeze the cited local files and their manifest, checksum, bibliography, web-capture and claim-ledger bindings for the section.
+
+Required local record: Every cited key resolves to a readable local PDF, one manifest row, its expected checksum and bibliography entry. Web captures resolve to their immutable local records. Claim locators remain reviewable.
+
+Reject or hold: Any missing or unreadable file, unresolved citation, mutable-only reference, unsupported claim, or metadata/hash binding mismatch blocks the freeze until repaired or explicitly removed.
+
+Method and interpretation boundary
+
+This is a purposive, problem-led, non-systematic and non-exhaustive review process. It is not PRISMA, a registered systematic review, a meta-analysis or a claim of database completeness. It reports no mutable corpus count and no empirical result. Local storage, hashing, manifest consistency, bibliography binding and citation presence establish internal traceability; they do not establish source truth, replication, robustness, generalisability or deployment performance.
+
+Source note
+
+Author synthesis of frozen local source-admission contracts, not results.

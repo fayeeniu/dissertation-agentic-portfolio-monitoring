@@ -1,0 +1,364 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "SYS-F1",
+  "title": "Local architecture and deployment boundaries",
+  "author": "Faye Niu",
+  "target_section": "4.2 Architecture and deployment design",
+  "suggested_latex_label": "fig:sys-architecture-deployment-boundary",
+  "purpose": "Map the implemented local application, shared use-case, persistence, container and optional external-provider boundaries while distinguishing local verification, live-unrun capability, held direct connectors and explicit deployment non-goals.",
+  "generated_at_utc": "2026-08-27T22:21:54Z",
+  "hashes_recomputed_at_utc": "2026-08-27T22:21:54Z",
+  "revision": "1.0.0",
+  "status": {
+    "evidence_class": "conceptual_non_empirical",
+    "result_status": "not_a_result",
+    "live_public_company_execution": "not_claimed",
+    "production_readiness": "not_claimed",
+    "source_truth": "not_established_by_traceability_or_hashes"
+  },
+  "generation": {
+    "source_of_visual_truth": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.svg",
+    "renderer": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.py",
+    "command": "/Users/oskarrodziewicz/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Dissertation/exhibits/sys_f1_architecture_deployment_boundary.py",
+    "format": "restricted accessible SVG rendered with deterministic ReportLab vector operations",
+    "dimensions_points": {
+      "width": 900,
+      "height": 1180
+    },
+    "raster_content": false,
+    "deterministic": true
+  },
+  "accessibility_and_print": {
+    "svg_role": "img",
+    "svg_title": "Local architecture and deployment boundaries",
+    "svg_description_chars": 856,
+    "complete_text_alternative": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.txt",
+    "status_encoding": "Colour is redundant with solid, dashed, dotted and compound-dashed outlines plus explicit status text.",
+    "greyscale": "Status remains distinguishable by line pattern and label without colour.",
+    "pdf_tagging_claim": "none; the TXT companion is the accessible alternative"
+  },
+  "validation": {
+    "python_compile": "PASS",
+    "svg_xml_accessibility": "PASS: well-formed XML, role=img, title and 856-character description retained",
+    "pdf_metadata": "PASS: one page, 900 x 1180 pt, author Faye Niu, invariant timestamp metadata",
+    "vector_check": "PASS: no PDF image XObjects; required text markers extract from the PDF",
+    "repeat_render": {
+      "status": "PASS",
+      "runs": 3,
+      "byte_identical": true,
+      "sha256": "3e2fe6bcd8839b0d558f57379d75e3176450383435ec37aefc146323b3d83a14"
+    },
+    "standalone_a4": "PASS: dedicated portrait figure page in a three-page A4 harness; exhibit occupies one page; no overfull or underfull box warnings; following marker begins on the next page",
+    "visual_inspection": "PASS: native and A4 renders inspected for clipping, overlap, reading order, status redundancy and source-note presence",
+    "targeted_tests": {
+      "status": "PASS",
+      "count": 8,
+      "command": ".venv/bin/pytest -q tests/integration/test_web.py::test_server_rendered_review_pages_and_security_headers tests/integration/test_web.py::test_container_local_mode_accepts_only_private_container_clients tests/integration/test_web.py::test_web_approval_then_export tests/integration/test_reporting.py::test_export_is_blocked_until_audited_human_approval tests/integration/test_schema_equivalence.py::test_metadata_and_alembic_head_have_equivalent_schema tests/integration/test_company_research.py::test_company_number_runs_search_capture_exact_span_deck_and_named_review tests/integration/test_company_research.py::test_live_research_rejects_non_public_case_and_mismatched_runtime_flags tests/integration/test_llm_boundary.py::test_default_runtime_refuses_open_external_gates_before_database_creation",
+      "scope": "local, fake/synthetic and migration checks only; no live public-source or model call",
+      "warning": "One pre-existing StarletteDeprecationWarning from fastapi.testclient/httpx compatibility; tests passed."
+    },
+    "strict_source_gate": {
+      "status": "PASS",
+      "command": ".venv/bin/python Dissertation/scripts/check_sources.py --strict-bibliography",
+      "result": "38 local PDFs and hashes verified; 2 immutable web captures; 80 substantive body paragraphs; 34 distinct cited sources"
+    },
+    "docker_local_runtime": {
+      "status": "PASS for local deployment facts only",
+      "compose_app_hash": "836f4bf5e9f70b8e5dbea13d3cd4c83443530b11c624c764012e5310d2c0f150",
+      "running_service": "app",
+      "container": "agentic-portfolio-app-1",
+      "health": "healthy",
+      "read_only_rootfs": true,
+      "volume": "agentic-portfolio_portfolio-state mounted read/write at /app/var",
+      "published_port": "127.0.0.1:8000",
+      "loopback_health_response": {
+        "status": "ok",
+        "external_llm": "enabled"
+      },
+      "interpretive_boundary": "The health field reports enabled configuration only. No research stage, public-source retrieval or model call was executed or inferred from these checks."
+    }
+  },
+  "inputs": [
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "4383245a195d8e9e94efb90904c4a64d3a23ccd5aac6df1acffb532647f604a4",
+      "locator": "System context and trust boundaries; Runtime deployment; Component responsibilities; Review/export invariant; Persistence model",
+      "role": "Authoritative project architecture and component-ownership contract."
+    },
+    {
+      "path": "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+      "sha256": "6d7422a02c09bb78e752581401ea4643bbf364d178a09b550210e75f01f8bd55",
+      "locator": "Security posture; Approved public-web company-research boundary; Production prohibition; supported container path",
+      "role": "Data-flow, loopback, public-only external-boundary and non-production constraints."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9ed985e0506bbcbe4c8f74b329ec4baf4bea79b36231c09b613d6f1dd8403744",
+      "locator": "FR-ING-003; FR-EXT-005; FR-REP-005--007; FR-UI-001--003; FR-OBS-003; NFR-SEC-001; NFR-CI-001; FR-RES-001--006",
+      "role": "Implemented, live-unrun and held requirement statuses represented in the diagram."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "locator": "In scope; Out of scope; Architecture constraints; Risk register; approval boundary",
+      "role": "Bounded single-user research-prototype scope and explicit non-goals."
+    },
+    {
+      "path": "docs/SOURCE_ADMISSION_REGISTER.md",
+      "sha256": "d6cee707f300910c43c638fb8600ded15e44790236bfbce881461b552e8d32c8",
+      "locator": "companies_house and ukri_gtr rows; openai_web_search and public_web_capture rows; G2 admission checklist; registry/web-research separation",
+      "role": "Current admission status: direct registry connectors held; URL discovery/capture conditionally admitted for bounded local public research."
+    },
+    {
+      "path": "docs/adr/0001-python-fastapi-stack.md",
+      "sha256": "eac0c28c262dc5d3929b8828dc461fa501d7a7b269aaf371939796c446d1347e",
+      "locator": "Decision; Consequences; Validation and revisit trigger",
+      "role": "FastAPI/Jinja/SQLAlchemy/Alembic/SQLite local-stack decision and production limits."
+    },
+    {
+      "path": "docs/adr/0003-local-sqlite-and-immutable-files.md",
+      "sha256": "14e3e12aa1b3bf17f6be034630e52048a39392aa456bd53b65c85fa67a4e677a",
+      "locator": "Decision; Consequences; Validation and revisit trigger",
+      "role": "SQLite metadata, create-once files, export manifests and hash limitations."
+    },
+    {
+      "path": "docs/adr/0008-bounded-live-company-research.md",
+      "sha256": "1b90b27672451e1b26513d67d11992a44388eaa54266c4f48f8a488cae1cf38f",
+      "locator": "Decision items 1--7; Consequences",
+      "role": "Local optional web-discovery/capture/exact-span/review path and separate held phases."
+    },
+    {
+      "path": "compose.yaml",
+      "sha256": "c909f857f3d3ee312977935a7385792d82edf98d2fbd1b8a96b3319cdc538833",
+      "locator": "services.app environment, ports, volumes, read_only, tmpfs, cap_drop and security_opt; portfolio-state volume",
+      "role": "Exact local Compose port, persistent-state and container-hardening configuration."
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "5df5a1e5296953a4e067e4189da304d16305c29770749fed60355344287929a6",
+      "locator": "runtime stage; non-root user; /app/var; healthcheck; docker-local CMD",
+      "role": "Container runtime, local healthcheck and non-root execution configuration."
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "44233e4c6c3ae02af013a81fe0b23a88b4caf175de23771a157a5d0a92daaa8b",
+      "locator": "var/* with var/.gitkeep exception",
+      "role": "Repository exclusion for local runtime state."
+    },
+    {
+      "path": ".dockerignore",
+      "sha256": "2782711fa6588978735a3a251c61d311c5e4fd05d13b52433b393d14394c08ec",
+      "locator": "var/* with var/.gitkeep exception",
+      "role": "Container-build exclusion for local runtime state."
+    },
+    {
+      "path": "src/portfolio_agent/config.py",
+      "sha256": "5c9e1824b18f5d3f738c1c14d8bd163077abff3ae920b98f0018a8b4b3c3a856",
+      "locator": "Settings fields and from_env path/gate/reviewer construction",
+      "role": "Default closed external gates and local SQLite/raw/source paths."
+    },
+    {
+      "path": "src/portfolio_agent/bootstrap.py",
+      "sha256": "cf8fd0cd7770a01881c00dcb66c27f96091c16129d571154f7b07b865ca30c6a",
+      "locator": "Runtime; _assemble_runtime; create_runtime; create_fixture_research_runtime",
+      "role": "Shared services, persistence construction and cumulative live-research gates."
+    },
+    {
+      "path": "src/portfolio_agent/web.py",
+      "sha256": "d25ff0da3c2a58e1a4bc0d5b521287464e3853d15cdbd1abaa04838d31a4b8d1",
+      "locator": "create_app; static/Jinja setup; Host/client/CSP/CSRF middleware; create_api_router inclusion",
+      "role": "FastAPI/Jinja/local API and loopback/browser controls."
+    },
+    {
+      "path": "src/portfolio_agent/api.py",
+      "sha256": "6883fbabbe323186f9e0e4033dfa544cadb8cf69bb173aa2840c8cbcdd822273",
+      "locator": "module contract; create_api_router and /api routes",
+      "role": "Local JSON projection and shared-service mutation boundary."
+    },
+    {
+      "path": "src/portfolio_agent/cli.py",
+      "sha256": "59ba21f9c1ecd6b3225031d05193c71ecbed2be194b28ef0b1ee96c344719231",
+      "locator": "CLI subcommands; serve parser; loopback host guard; docker-local mode",
+      "role": "Command-line entry and local serving boundary."
+    },
+    {
+      "path": "src/portfolio_agent/db.py",
+      "sha256": "6a3660b0369d67569f7e6618669e88739929f23c473ab5bc2f0b2a08836aa88a",
+      "locator": "create_db_engine; SQLite foreign-key hook; create_session_factory; initialize_database",
+      "role": "SQLAlchemy/SQLite persistence and Alembic upgrade-to-head implementation."
+    },
+    {
+      "path": "src/portfolio_agent/reporting.py",
+      "sha256": "ca8d6a6627a3c486ea587c5df9a868342bf3c27416c5f25cba95570855d37e6e",
+      "locator": "ReportService approve, edit_section and export",
+      "role": "Named approval, versioning, manifest-bound export and no-autonomous-publication boundary."
+    },
+    {
+      "path": "src/portfolio_agent/company_research.py",
+      "sha256": "aaaef80a1bb457d5a12c01dce99fc1d5c58d1b067f226bcfcfe7b1457656b2ff",
+      "locator": "CompanyResearchService start/advance; SafePublicFetcher; OpenAI discovery/extraction; validated_profile",
+      "role": "Implemented optional serial discovery, capture, exact-span extraction, composition and review mechanics."
+    },
+    {
+      "path": "tests/integration/test_web.py",
+      "sha256": "8c13cf0fd4849e24fcc8b95c940e31538dee9e40637b092a8d49f080f4e5dca7",
+      "locator": "test_server_rendered_review_pages_and_security_headers; test_web_approval_then_export; test_container_local_mode_accepts_only_private_container_clients",
+      "role": "Local UI, approval/export, integrity and container-client boundary evidence."
+    },
+    {
+      "path": "tests/integration/test_reporting.py",
+      "sha256": "5b475101d7969304991dcbebae96ceec15bb6d44735d3f89bd2c3695c5e5dcf5",
+      "locator": "test_export_is_blocked_until_audited_human_approval; reapproval and failure-path tests",
+      "role": "Approval-gated, versioned and atomic export evidence."
+    },
+    {
+      "path": "tests/integration/test_schema_equivalence.py",
+      "sha256": "f762d9b5fb6c3fcd7c1a9827c587b03b6d50ffda734e561fe0d3e501242a5336",
+      "locator": "test_metadata_and_alembic_head_have_equivalent_schema",
+      "role": "Alembic-head and SQLAlchemy-metadata schema-equivalence evidence."
+    },
+    {
+      "path": "tests/integration/test_company_research.py",
+      "sha256": "7cdaaa02e2ddde3b7fe2b203529188c3e17ed161fbbbe90a6260cf7bc0c0d1d5",
+      "locator": "fake-model/fetcher end-to-end company research; gate rejection; safe-fetcher and URL-boundary tests",
+      "role": "Fake, local and adversarial engineering evidence; not a completed live public-company run."
+    },
+    {
+      "path": "tests/integration/test_llm_boundary.py",
+      "sha256": "851981c6c39cd8b1e1bf7cfc47045f58ac7e7654586384c7336e9c4f82fd91fa",
+      "locator": "restricted-content rejection; strict extraction validation; default-runtime gate refusal",
+      "role": "External-model classification, validation and fail-closed gate evidence."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "a36efc89550cc40bd44215b10310d8bbe8c39210a33989132d036672bdc7e94c",
+      "locator": "nist2023airmf; greshake2023indirect; pineau2021reproducibility rows",
+      "role": "Bibliographic-to-local-file binding and source-role limitations."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "2648ccfe67d35eedd30f307cc369892736db950d5cfe4260a715d6053870f10b",
+      "locator": "11_nist_ai_rmf_1_0.pdf; 29_greshake_indirect_prompt_injection.pdf; 33_pineau_reproducibility.pdf",
+      "role": "Frozen local academic-source checksums."
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "locator": "PDF pp. 20--23 and 33--35",
+      "role": "Risk context, roles, oversight and managed controls; not certification of this artefact."
+    },
+    {
+      "path": "Dissertation/sources/papers/29_greshake_indirect_prompt_injection.pdf",
+      "sha256": "428e23e8c7e4f89310e113e38d082b3f65548a8b887188ebc536099061800e81",
+      "locator": "PDF pp. 1 and 3--5",
+      "role": "Untrusted retrieved content and indirect-prompt-injection threat context; not proof of project-control effectiveness."
+    },
+    {
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "locator": "PDF pp. 1--4",
+      "role": "Reproducibility, versioned artefacts and transparent reporting context; not a reproduction of this system."
+    }
+  ],
+  "traceability": [
+    {
+      "visible_claim": "Loopback browser and CLI enter one local FastAPI/shared Runtime boundary.",
+      "inputs": [
+        "docs/ARCHITECTURE.md",
+        "docs/adr/0001-python-fastapi-stack.md",
+        "src/portfolio_agent/bootstrap.py",
+        "src/portfolio_agent/web.py",
+        "src/portfolio_agent/api.py",
+        "src/portfolio_agent/cli.py",
+        "tests/integration/test_web.py"
+      ],
+      "status": "implemented_and_locally_tested"
+    },
+    {
+      "visible_claim": "SQLAlchemy/SQLite plus Alembic and ignored local raw/source/export files form the persistence boundary.",
+      "inputs": [
+        "docs/ARCHITECTURE.md",
+        "docs/adr/0003-local-sqlite-and-immutable-files.md",
+        "src/portfolio_agent/db.py",
+        "src/portfolio_agent/reporting.py",
+        "tests/integration/test_schema_equivalence.py",
+        ".gitignore"
+      ],
+      "status": "implemented_and_locally_tested"
+    },
+    {
+      "visible_claim": "Docker Compose publishes loopback only and persists /app/var in a named volume under a read-only-rootfs profile.",
+      "inputs": [
+        "compose.yaml",
+        "Dockerfile",
+        "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+        "tests/integration/test_web.py"
+      ],
+      "status": "implemented_and_local_runtime_verified_at_recorded_validation_time"
+    },
+    {
+      "visible_claim": "The optional web-discovery/capture/model boundary is implemented but a live public-company execution is not claimed.",
+      "inputs": [
+        "docs/SOURCE_ADMISSION_REGISTER.md",
+        "docs/adr/0008-bounded-live-company-research.md",
+        "src/portfolio_agent/config.py",
+        "src/portfolio_agent/bootstrap.py",
+        "src/portfolio_agent/company_research.py",
+        "tests/integration/test_company_research.py",
+        "tests/integration/test_llm_boundary.py"
+      ],
+      "status": "implemented_controls_live_unrun"
+    },
+    {
+      "visible_claim": "Direct Companies House and UKRI live registry adapters remain G2-held.",
+      "inputs": [
+        "docs/SOURCE_ADMISSION_REGISTER.md",
+        "docs/REQUIREMENTS.md",
+        "docs/ARCHITECTURE.md"
+      ],
+      "status": "held"
+    },
+    {
+      "visible_claim": "Remote exposure, multi-user auth/tenancy, cloud deployment, autonomous publication and production-security assurance are non-goals.",
+      "inputs": [
+        "docs/PROJECT_CHARTER.md",
+        "docs/ARCHITECTURE.md",
+        "docs/SECURITY_AND_DATA_GOVERNANCE.md",
+        "docs/adr/0001-python-fastapi-stack.md"
+      ],
+      "status": "explicit_non_goal"
+    }
+  ],
+  "limitations": [
+    "The exhibit is an architecture/status synthesis, not an empirical result or evidence of benefit, accuracy, cost, scale or user utility.",
+    "Local tests and a healthy loopback container do not establish production security, multi-user isolation, cloud readiness, source-law compliance or external validity.",
+    "The recorded Docker runtime check is time-specific and makes no claim that a research stage or external call occurred.",
+    "The implemented optional public-research path has fake, synthetic and adversarial engineering evidence; no completed live public-company execution or live-result quality claim is admitted here.",
+    "Direct registry connector implementation or synthetic replay does not grant live permission; current source-admission status remains binding.",
+    "Hashes support integrity and traceability, not source truth, authority, encryption, anonymisation, legal permission or ethical approval.",
+    "No PDF tagging is claimed; use the complete TXT alternative for accessible reading order and detail."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.py",
+      "sha256": "2624fb20c86fe34150e2e6acae244d2818d614d3323cf7cfd2cc4b35dae5a7e9",
+      "role": "Deterministic accessible-SVG to vector-PDF renderer."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.svg",
+      "sha256": "6aef9ac65c5d8112066e1ea9a97ada4a2444398aa5b5f71da1cca325a292f46d",
+      "role": "Accessible vector source and visual source of truth."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.pdf",
+      "sha256": "3e2fe6bcd8839b0d558f57379d75e3176450383435ec37aefc146323b3d83a14",
+      "role": "Deterministic one-page vector PDF for LaTeX inclusion."
+    },
+    {
+      "path": "Dissertation/exhibits/sys_f1_architecture_deployment_boundary.txt",
+      "sha256": "089711806de53be22b7e921a4b6e65091fb05b2f3bbad65ed0f45e06d38c69a0",
+      "role": "Complete plain-text alternative with expanded status, reading order, source roles and limitations."
+    }
+  ],
+  "self_hash_policy": "The provenance JSON deliberately does not embed its own SHA-256 because doing so would be circular; its external SHA-256 is reported with the final exhibit packet."
+}

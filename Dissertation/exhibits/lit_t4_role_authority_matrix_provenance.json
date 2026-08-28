@@ -1,0 +1,186 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-T4",
+  "title": "Role-and-authority matrix for bounded multi-agent reporting",
+  "author": "Faye Niu",
+  "target_section": "2.6 Bounded multi-agent systems and human review",
+  "latex_label": "tab:lit-role-authority-matrix",
+  "purpose": "Define five bounded workflow roles through permitted inputs and tools, required typed outputs, explicit stop or failure conditions, and authorities each role must not exercise.",
+  "generated_at_utc": "2026-08-27T17:44:00Z",
+  "hashes_recomputed_at_utc": "2026-08-27T17:44:00Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_mutable_corpus_counts": false,
+    "demonstrates_role_independence": false,
+    "demonstrates_multi_agent_superiority": false,
+    "demonstrates_human_review_benefit": false,
+    "interpretation": "Author synthesis of locally admitted literature and frozen project contracts; a conceptual authority boundary rather than an implementation or empirical result."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place LIT-T4 on one dedicated portrait page immediately after Section 2.6 and prevent Section 2.7 from preceding it when the exhibit is input at the approved chapter location."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/sources/SECTION_2_6_EVIDENCE.md",
+      "sha256": "94b4bf76d559476f6efabddc3617a69dd45a713b91e4a0c2ea0f177ee85b98c7",
+      "role": "Binding Section 2.6 synthesis, exhibit contract and prohibited-overreach boundary.",
+      "locator": "Headings 'Paragraph 1: decomposition requires programmed roles and interfaces', 'Paragraph 2: bounded orchestration and independent verification', 'Paragraph 3: human authority is not automatic quality improvement', 'Paragraph 4: limits, telemetry and evaluable failure', 'Proposed exhibit LIT-T4', and 'Prohibited overreach'."
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "b3a882d9fe86fe8224609aa5a7aaa467d786bd41d929c21e722bc8e5a0571789",
+      "role": "Frozen paragraph-level citation, page-locator and verification bindings for Section 2.6.",
+      "locator": "Rows '2.6-P1'--'2.6-P4' and ledger header fields 'Paragraph ID', 'Claim purpose', 'Citation keys', 'Verified local pages', and 'Verification status'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "role": "Citation-key, bibliographic, origin, local-path, page-count, checksum and admission-role bindings.",
+      "locator": "Rows keyed 'guo2024multiagent', 'wu2024autogen', 'peffers2007dsrm', 'nist2023airmf', 'amershi2019guidelines', 'bucinca2021forcing' and 'pineau2021reproducibility'."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "45262c6955d0f5803db564673af5ff689f21249f24a94002b17dbd2859947c0b",
+      "role": "Independent local checksum bindings for the admitted literature files.",
+      "locator": "Entries for papers 11, 13, 15, 19, 30, 31 and 33."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 2.6 scope and literature-review argument boundary.",
+      "locator": "Detailed chapter plan entry '2.6 Bounded multi-agent systems and human review' and heading 'Claim-control rule'."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "role": "Frozen project scope, stage order, independent-verifier and named-review boundaries.",
+      "locator": "Headings 'P0 scope', 'Explicit non-goals', 'Success definition', and 'Primary risks'; ordered plan-to-review stages and independent-verifier statements."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "role": "Implemented role separation, verification, deterministic composition, named decision and observability contracts.",
+      "locator": "Requirements FR-AGT-001--FR-AGT-005, FR-VER-001--FR-VER-007, FR-REP-001--FR-REP-009 and FR-OBS-001--FR-OBS-004."
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "2e163af455d017e7118272a02c1ad09ee1bb8b6eae4542b5c5aa26487387792d",
+      "role": "Repository-grounded authority ownership, fixed state machine and data-flow invariants.",
+      "locator": "Headings 'Architectural objective', 'End-to-end state machine', 'Data flow and invariants', and component-responsibility table rows for llm, workflow, verification and reporting."
+    },
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "role": "Distinguishes implemented workflow conditions and held human evidence from claims of benefit.",
+      "locator": "Headings 'Protocol status', 'Experimental conditions', 'Research propositions', and conditions C1--C3."
+    },
+    {
+      "path": "Dissertation/sources/papers/19_guo_llm_multi_agent_survey.pdf",
+      "sha256": "d3410856f2b8629ab7365af3bd62fe8291b1a595ec954f1feb859a2688c7179c",
+      "citation_key": "guo2024multiagent",
+      "role": "Role, communication and orchestration design choices plus coordination and hallucination-propagation limits.",
+      "locator": "PDF pp. 3--5 and 10--11."
+    },
+    {
+      "path": "Dissertation/sources/papers/30_wu_autogen_multi_agent.pdf",
+      "sha256": "40e767979318e4e4098c6ba573f34d232db5d5755b9ca5294ad00bdb0c828979",
+      "citation_key": "wu2024autogen",
+      "role": "Programmed roles, tools, messages, control flow, termination and human-input conditions; pilot findings remain application-specific.",
+      "locator": "PDF pp. 1--5 and 9--10."
+    },
+    {
+      "path": "Dissertation/sources/papers/15_peffers_design_science_methodology.pdf",
+      "sha256": "6fc461bab413c49f213adc346457dad2182963c58db8351e292d4991d7c40e4b",
+      "citation_key": "peffers2007dsrm",
+      "role": "Design-science requirement to evaluate an artefact against stated objectives rather than infer utility from construction.",
+      "locator": "PDF pp. 16--18."
+    },
+    {
+      "path": "Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf",
+      "sha256": "7576edb531d9848825814ee88e28b1795d3a84b435b4b797d3670eafdc4a89f1",
+      "citation_key": "nist2023airmf",
+      "role": "Independent assessment, uncertainty, testing, human oversight, documented limits and safe-failure controls.",
+      "locator": "PDF pp. 32--38."
+    },
+    {
+      "path": "Dissertation/sources/papers/13_amershi_human_ai_guidelines.pdf",
+      "sha256": "82fff584c6b986f573608361478e93447538c6ce707e4b9b04d45d584272ea03",
+      "citation_key": "amershi2019guidelines",
+      "role": "Human-AI correction, dismissal, uncertainty, explanation, feedback and global-control design guidance.",
+      "locator": "PDF pp. 3--5 and 16--19."
+    },
+    {
+      "path": "Dissertation/sources/papers/31_bucinca_cognitive_forcing.pdf",
+      "sha256": "c0c6983901488b46ea3951fb29f96a9420f87952a46816824826d0320d175989",
+      "citation_key": "bucinca2021forcing",
+      "role": "Controlled-task evidence that interventions can reduce overreliance without establishing general team-performance or usability benefit.",
+      "locator": "PDF pp. 1--4 and 16--18."
+    },
+    {
+      "path": "Dissertation/sources/papers/33_pineau_reproducibility.pdf",
+      "sha256": "09e3ba1d1c3dc7111bc3dc112f40c5d0f3d9dbc4b8198ef8bdc48eb852f4da29",
+      "citation_key": "pineau2021reproducibility",
+      "role": "Data, code, procedure, metric and reporting boundaries for repeatable evaluation.",
+      "locator": "PDF pp. 1--4."
+    }
+  ],
+  "row_traceability": [
+    {
+      "role": "Query planner / discovery",
+      "claim_ledger_rows": ["2.6-P1", "2.6-P2", "2.6-P4"],
+      "citation_keys": ["guo2024multiagent", "wu2024autogen", "nist2023airmf"],
+      "authority_boundary": "May propose a bounded plan and candidates; cannot admit evidence, create report claims, broaden permissions or publish."
+    },
+    {
+      "role": "Evidence extractor",
+      "claim_ledger_rows": ["2.6-P1", "2.6-P2", "2.6-P4"],
+      "citation_keys": ["guo2024multiagent", "wu2024autogen", "nist2023airmf"],
+      "authority_boundary": "May propose a typed extraction from admitted evidence and an exact locator; cannot repair gaps, decide support or approve."
+    },
+    {
+      "role": "Independent verifier",
+      "claim_ledger_rows": ["2.6-P2", "2.6-P4"],
+      "citation_keys": ["guo2024multiagent", "wu2024autogen", "nist2023airmf"],
+      "authority_boundary": "Assesses and records support separately; cannot silently rewrite the producer output or seek replacement support."
+    },
+    {
+      "role": "Deterministic composer",
+      "claim_ledger_rows": ["2.6-P1", "2.6-P2", "2.6-P4"],
+      "citation_keys": ["guo2024multiagent", "wu2024autogen", "peffers2007dsrm", "pineau2021reproducibility"],
+      "authority_boundary": "Renders only eligible verified records and explicit exceptions; cannot introduce facts, alter verification or approve."
+    },
+    {
+      "role": "Named human reviewer",
+      "claim_ledger_rows": ["2.6-P3", "2.6-P4"],
+      "citation_keys": ["amershi2019guidelines", "bucinca2021forcing", "nist2023airmf"],
+      "authority_boundary": "May approve, reject or return a version; cannot manufacture support or establish outcome benefit by presence alone."
+    }
+  ],
+  "limitations": [
+    "The exhibit is an author synthesis and conceptual design contract, not an implementation or empirical result.",
+    "Role names, message exchange and separate records do not establish independent cognition, competence or collective intelligence.",
+    "The table does not claim that more agents, debate or role separation is universally superior to a simpler workflow.",
+    "The verifier records an assessment but cannot silently revise the producer output it is meant to assess.",
+    "The deterministic composer can render only eligible records and explicit exceptions; it cannot create or repair facts.",
+    "A named reviewer adds version-bound decision authority, not new evidence or proof of improved accuracy, trust, usability or utility.",
+    "AutoGen pilot results and Bucinca et al. controlled-task findings are not transferred to this artefact.",
+    "No unrun human-review outcome, live multi-agent performance, latency, token, cost or user-benefit value is reported."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_t4_role_authority_matrix.tex",
+      "sha256": "a96885df591432c28b68000facf2efe46fb34556127bd677b25798d7471b3724",
+      "role": "One-page portrait LaTeX role-and-authority matrix with deterministic placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/lit_t4_role_authority_matrix.txt",
+      "sha256": "6277ad18553c5a16a9936e6fcaed7ea2c4595ae2c9f1c9741d5b6203316fce10",
+      "role": "Complete plain-text alternative with expanded role, failure and authority boundaries."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=75", "wheel"]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -38,7 +38,7 @@ portfolio-agent = "portfolio_agent.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-portfolio_agent = ["templates/*.html", "static/*.css"]
+portfolio_agent = ["templates/*.html", "static/*.css", "static/*.js"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers -q"

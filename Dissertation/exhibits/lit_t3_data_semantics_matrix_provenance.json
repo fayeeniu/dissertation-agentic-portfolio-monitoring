@@ -1,0 +1,236 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-T3",
+  "title": "Data-semantics failure-prevention matrix",
+  "author": "Faye Niu",
+  "target_section": "2.3 Data quality, entity identity, missingness, and time",
+  "latex_label": "tab:data-semantics-matrix",
+  "purpose": "Show why legal identity, value and missing-state meaning, time, correction/version state and use-case data quality must remain distinct for reviewable reporting and valid evaluation.",
+  "generated_at_utc": "2026-08-27T16:18:17Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_mutable_corpus_counts": false,
+    "interpretation": "Author synthesis of locally admitted literature and frozen project contracts; a design rationale rather than implementation or evaluation results.",
+    "missing_state_taxonomy_status": "Project design choice, not a published or universal standard."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place LIT-T3 on one dedicated portrait page immediately after Section 2.3 and prevent Section 2.4 from preceding it when input at the approved chapter location."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/sources/SECTION_2_3_EVIDENCE.md",
+      "sha256": "bcee5f88628cef146095e5fdca0f941bffaca826b45e52474197c13b358f16dc",
+      "role": "Section-specific verified synthesis, exhibit contract and prohibited overreach.",
+      "locator": "Headings 'Paragraph 1: quality as fitness for a defined use', 'Paragraph 2: source-scoped legal identity', 'Paragraph 3: semantically distinct missingness', 'Paragraph 4: availability time, cutoff and correction', 'Paragraph 5: synthesis into an evaluable contract', 'Proposed exhibit LIT-T3', and 'Prohibited overreach'."
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "63258af03bdca0a7e8b5b24b5737b01ee2d0e5e321e3b3b05222aa182f04afd5",
+      "role": "Frozen paragraph-level citation, page-locator and verification bindings for Section 2.3.",
+      "locator": "Rows '2.3-P1'--'2.3-P5' and ledger header fields 'Paragraph ID', 'Claim purpose', 'Citation keys', 'Verified local pages', and 'Verification status'."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "31b005f9eb1ada33c8b23a5d75952f2a46ec716c92cbdfab1227bfc7a9c8afb4",
+      "role": "Citation-key, bibliographic, origin, local-path, page-count, checksum and admission-role bindings.",
+      "locator": "Rows keyed 'nikiforova2020quality', 'krasikov2020ready', 'thorne2026funding', 'surak2026gateways', 'galanakis2026chrt', 'gebru2021datasheets', 'bradley2024synfintabs', 'hardman2023small', and 'kapoor2023leakage'."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "45262c6955d0f5803db564673af5ff689f21249f24a94002b17dbd2859947c0b",
+      "role": "Independent local checksum bindings for the admitted literature files.",
+      "locator": "Entries for papers 03, 04, 05, 06, 08, 09, 10, 20 and 32."
+    },
+    {
+      "path": "Dissertation/REPORT_STRUCTURE.md",
+      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "role": "Approved Section 2.3 purpose and dissertation-wide claim-control boundary.",
+      "locator": "Detailed chapter plan entry '2.3 Data quality, entity identity, missingness, and time' and heading 'Claim-control rule'."
+    },
+    {
+      "path": "docs/PROJECT_CHARTER.md",
+      "sha256": "607cb0c1a95311b381a74d622d8fd99c475963e4649a2314dcf6cca3608e8c45",
+      "role": "Project scope and risk controls for immutable snapshots, exact identity, missing-state semantics and temporal leakage.",
+      "locator": "Headings 'Problem definition', 'P0 scope', 'Constraints', and 'Primary risks'; rows 'Blank/zero collapse', 'Entity collision', and 'Temporal leakage'."
+    },
+    {
+      "path": "docs/DATA_DICTIONARY.md",
+      "sha256": "15d6fc2e72edcb2e27f59332cd183b616c00de03c87a247235db66128b513c3c",
+      "role": "Project-specific semantic contracts for identity, values, missing states, time, snapshots, versions and quality violations.",
+      "locator": "Headings 'Canonical principles', 'Core entities', 'Missing-state contract', 'Period-semantics contract', and 'Claim and verification semantics'; rows 'CompanyIdentifier', 'Observation', 'RunEvidence', 'SourceDefinition / SourceSnapshot', and 'QualityContract / QualityViolation'."
+    },
+    {
+      "path": "docs/REQUIREMENTS.md",
+      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "role": "Executable project requirements for immutable inputs, exact identity, time eligibility and distinct quality/missingness outcomes.",
+      "locator": "Requirements FR-ING-002--FR-ING-006, FR-ID-001--FR-ID-004, FR-TIME-001--FR-TIME-002, and FR-QUAL-001."
+    },
+    {
+      "path": "docs/EVALUATION_PROTOCOL.md",
+      "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
+      "role": "Evaluation consequences of identity, missingness, time, source parity and versioned reference contracts.",
+      "locator": "Headings 'Dataset partitions and leakage control', 'Gold/reference standard', 'Source-access parity', 'Extraction and normalization', 'Reliability', and 'Reproducibility record'."
+    },
+    {
+      "path": "docs/SOURCE_EVIDENCE_MATRIX.md",
+      "sha256": "8bf5737f6cced820d123a5d1ef9810de30c36d26345718a70b27f06179ec691c",
+      "role": "Observed workbook blankness and project rules separating public availability, provenance, period and semantic absence.",
+      "locator": "Evidence-to-decision rows WB-02--WB-04 and heading 'Evidence conflicts and resolution rules'."
+    },
+    {
+      "path": "Dissertation/sources/papers/05_nikiforova_et_al_2020_user_oriented_data_quality.pdf",
+      "sha256": "017d96ae1392fc22cb817b1aadc8ec407dac84f2a254a8391301c55bdd0b6d52",
+      "citation_key": "nikiforova2020quality",
+      "role": "Multi-dimensional, user- and task-specific data-quality evaluation.",
+      "locator": "PDF pp. 1--3 and 15--17."
+    },
+    {
+      "path": "Dissertation/sources/papers/10_krasikov_et_al_2020_open_data_ready_enterprises.pdf",
+      "sha256": "c4529fc7cb4e22c93cb8a561705246a87b85bdef1ef77499f8ad79171f27a5bb",
+      "citation_key": "krasikov2020ready",
+      "role": "Use-case-specific corporate-register fitness, accessibility and interpretability boundary.",
+      "locator": "PDF pp. 5--9."
+    },
+    {
+      "path": "Dissertation/sources/papers/09_thorne_et_al_2026_uk_funding_lifecycle.pdf",
+      "sha256": "90000d1f68bb6d82bcfe83271afd9b5433f671a22d9b74864a1833af028efaef",
+      "citation_key": "thorne2026funding",
+      "role": "Identifier heterogeneity, conservative linkage and incomplete matching boundary.",
+      "locator": "PDF pp. 5--6."
+    },
+    {
+      "path": "Dissertation/sources/papers/08_surak_inkley_2026_gateways_funnels_stackers.pdf",
+      "sha256": "c2438d47c38d6f6177db7eacce629a435895208b047cf3760d1156cd777eb221",
+      "citation_key": "surak2026gateways",
+      "role": "Entity-label inconsistency and fuzzy/manual matching ambiguity.",
+      "locator": "PDF p. 6."
+    },
+    {
+      "path": "Dissertation/sources/papers/03_savagar_galanakis_2026_tracking_firm_creation.pdf",
+      "sha256": "1ed8f006e0121594a7adad178592668c7cd47f272aa2bb3c2231872257d21e94",
+      "citation_key": "galanakis2026chrt",
+      "role": "Companies House legal identity, timeliness and distinction from economic activity.",
+      "locator": "PDF pp. 1--3 and 6."
+    },
+    {
+      "path": "Dissertation/sources/papers/20_gebru_datasheets_for_datasets.pdf",
+      "sha256": "c7f595988ee2c109631d5173fdae37ff1774c68ec17add51bd012f2a6e8792d0",
+      "citation_key": "gebru2021datasheets",
+      "role": "Documentation of missing information, unknowns, external dependencies, maintenance and corrections.",
+      "locator": "PDF pp. 4--10."
+    },
+    {
+      "path": "Dissertation/sources/papers/06_bradley_et_al_2024_synfintabs.pdf",
+      "sha256": "60e7b6f40296943598d07bcfcf259f4a71af4143007adbae47fd3cda2d2728be",
+      "citation_key": "bradley2024synfintabs",
+      "role": "Financial-table row, cell, empty-cell and semantic-role structure.",
+      "locator": "PDF pp. 3--5."
+    },
+    {
+      "path": "Dissertation/sources/papers/04_hardman_ramirez_santos_2023_think_small_first.pdf",
+      "sha256": "fb4f6db0aba6cf9d8b09bfd4f936be8980155915dc7b432556b883311935e2ba",
+      "citation_key": "hardman2023small",
+      "role": "Dated register snapshots, filing definitions and filing-lag availability limits.",
+      "locator": "PDF pp. 3, 5--6 and 21--25."
+    },
+    {
+      "path": "Dissertation/sources/papers/32_kapoor_data_leakage.pdf",
+      "sha256": "c433bceda841ca09fe2fd7ddf857fc0818fdf98553e62e54a37cc394c6f70c42",
+      "citation_key": "kapoor2023leakage",
+      "role": "Temporal leakage and under-specified reporting threats to valid ML comparison.",
+      "locator": "PDF pp. 1--7, with the temporal-leakage mechanism on PDF pp. 3 and 5."
+    }
+  ],
+  "row_traceability": [
+    {
+      "semantic_control": "Legal identity",
+      "claim_ledger_rows": [
+        "2.3-P2",
+        "2.3-P5"
+      ],
+      "citation_keys": [
+        "thorne2026funding",
+        "surak2026gateways",
+        "galanakis2026chrt"
+      ],
+      "boundary": "Exact source-scoped identifiers anchor legal identity; names and fuzzy matches remain candidates and cannot silently merge entities."
+    },
+    {
+      "semantic_control": "Observed value or missing state",
+      "claim_ledger_rows": [
+        "2.3-P3",
+        "2.3-P5"
+      ],
+      "citation_keys": [
+        "gebru2021datasheets",
+        "bradley2024synfintabs",
+        "nikiforova2020quality"
+      ],
+      "boundary": "Literature supports preserving meaning and documenting absence; the exact observed/zero/blank/none-stated/not-applicable/not-reported/not-found-publicly/invalid taxonomy is a project design choice."
+    },
+    {
+      "semantic_control": "Publication, effective, retrieval and cutoff time",
+      "claim_ledger_rows": [
+        "2.3-P4",
+        "2.3-P5"
+      ],
+      "citation_keys": [
+        "hardman2023small",
+        "galanakis2026chrt",
+        "kapoor2023leakage"
+      ],
+      "boundary": "Value period and each availability/retrieval/cutoff timestamp remain separate so later evidence cannot support an earlier claim."
+    },
+    {
+      "semantic_control": "Correction, version and snapshot",
+      "claim_ledger_rows": [
+        "2.3-P4",
+        "2.3-P5"
+      ],
+      "citation_keys": [
+        "gebru2021datasheets",
+        "hardman2023small",
+        "kapoor2023leakage"
+      ],
+      "boundary": "Corrections and semantic changes create new versions; earlier evidence bytes and historical information boundaries are not overwritten."
+    },
+    {
+      "semantic_control": "Use-case data quality",
+      "claim_ledger_rows": [
+        "2.3-P1",
+        "2.3-P5"
+      ],
+      "citation_keys": [
+        "nikiforova2020quality",
+        "krasikov2020ready"
+      ],
+      "boundary": "Quality dimensions and rules are evaluated for a named data object and reporting task; no context-free aggregate score establishes universal fitness."
+    }
+  ],
+  "limitations": [
+    "The exhibit is an author synthesis and design rationale, not implementation or evaluation results.",
+    "The exact missing-state taxonomy is a project design choice; literature supports preserving semantic absence but does not publish this exact universal set.",
+    "The compact table omits additional connector-specific operational states documented elsewhere in the project.",
+    "An exact identifier reduces identity ambiguity but does not establish economic activity or the truth of every record attached to that identifier.",
+    "A matching checksum establishes byte identity and traceability, not source correctness or fitness for every reporting use.",
+    "Availability and correction handling remain claim- and cutoff-specific; current evidence cannot be projected retrospectively.",
+    "The exhibit contains no mutable corpus count, result value, measured performance, production claim or universal quality score."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_t3_data_semantics_matrix.tex",
+      "sha256": "3cf71aeb02c814419942ab6a03226e8cde442afae470c73188166c1dce6a57f1",
+      "role": "One-page portrait LaTeX table with deterministic placement boundaries."
+    },
+    {
+      "path": "Dissertation/exhibits/lit_t3_data_semantics_matrix.txt",
+      "sha256": "39bd94f42b75e79f745fa5dca2d3d8aa78990e7a8591b8429b4d4bc6e1ba29b9",
+      "role": "Complete plain-text alternative with expanded semantic and interpretation boundaries."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

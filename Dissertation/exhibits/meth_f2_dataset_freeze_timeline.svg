@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1280" viewBox="0 0 900 1280"
+     role="img" aria-labelledby="meth-f2-title meth-f2-desc">
+  <title id="meth-f2-title">Dataset tiers and freeze timeline</title>
+  <desc id="meth-f2-desc">A portrait methodology timeline. D0 synthetic visible adversarial engineering fixtures and a separately authorised D1 pilot may inform one versioned freeze of the catalogue, rules, schemas, prompts, code and analysis plan. D2 remains a sealed final company-period out-of-sample holdout until an approved opening after the freeze. Only then may comparable C0 to C3 execution occur, followed by adjudication against the frozen reference and bounded analysis. Explicit callouts state that D0 is mechanism evidence rather than real-world performance, D1 is pilot evidence rather than confirmatory evidence unless pre-declared exploratory, participant observations belong to authorised C0 and C3 execution rather than a fourth dataset tier, and any D2-informed post-access change makes the run exploratory. Current D2 and C0 or C3 held states are visible. The figure is conceptual and contains no result values, sample sizes or thresholds.</desc>
+  <defs>
+    <style><![CDATA[
+      .page { fill:#FFFFFF; }
+      .divider { stroke:#9FB2BD; stroke-width:1.5; }
+      .title { font:700 34px Helvetica,Arial,sans-serif; fill:#173444; }
+      .subtitle { font:18px Helvetica,Arial,sans-serif; fill:#526875; }
+      .badgebox { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
+      .badge { font:700 13px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
+      .d0-card { fill:#EAF3F8; stroke:#0072B2; stroke-width:2.2; }
+      .d1-card { fill:#E8F4F2; stroke:#007F73; stroke-width:2.2; }
+      .freeze-card { fill:#F3F6F7; stroke:#4E6B79; stroke-width:2.4; }
+      .d2-card { fill:#FBEAEC; stroke:#B23A48; stroke-width:3; }
+      .run-card { fill:#EEF5F1; stroke:#2D7D5F; stroke-width:2.4; }
+      .result-card { fill:#F4F6F7; stroke:#647C88; stroke-width:1.8; }
+      .warning-card { fill:#FFF5E8; stroke:#B06816; stroke-width:2; }
+      .danger-card { fill:#FBEAEC; stroke:#B23A48; stroke-width:2; }
+      .tag-d0 { fill:#0072B2; stroke:#005C90; stroke-width:1; }
+      .tag-d1 { fill:#007F73; stroke:#00665C; stroke-width:1; }
+      .tag-freeze { fill:#4E6B79; stroke:#38515D; stroke-width:1; }
+      .tag-d2 { fill:#B23A48; stroke:#8E2736; stroke-width:1; }
+      .tag-run { fill:#2D7D5F; stroke:#236348; stroke-width:1; }
+      .tag-text { font:700 12px Helvetica,Arial,sans-serif; fill:#FFFFFF; text-anchor:middle; }
+      .card-title { font:700 19px Helvetica,Arial,sans-serif; fill:#173F51; }
+      .card-body { font:13px Helvetica,Arial,sans-serif; fill:#405965; }
+      .card-body-strong { font:700 13px Helvetica,Arial,sans-serif; fill:#314D5C; }
+      .center-title { font:700 22px Helvetica,Arial,sans-serif; fill:#173F51; text-anchor:middle; }
+      .center-body { font:13.5px Helvetica,Arial,sans-serif; fill:#405965; text-anchor:middle; }
+      .freeze-item { fill:#FFFFFF; stroke:#8398A3; stroke-width:1.1; }
+      .freeze-text { font:700 11.5px Helvetica,Arial,sans-serif; fill:#405965; text-anchor:middle; }
+      .seal-badge { fill:#FFFFFF; stroke:#B23A48; stroke-width:1.4; }
+      .seal-text { font:700 12px Helvetica,Arial,sans-serif; fill:#8E2736; text-anchor:middle; }
+      .condition { fill:#FFFFFF; stroke:#65988E; stroke-width:1.2; }
+      .condition-held { fill:#FFF5E8; stroke:#B06816; stroke-width:1.4; }
+      .condition-text { font:700 11.5px Helvetica,Arial,sans-serif; fill:#285B53; text-anchor:middle; }
+      .condition-held-text { font:700 11px Helvetica,Arial,sans-serif; fill:#86500C; text-anchor:middle; }
+      .step-kicker { font:700 12px Helvetica,Arial,sans-serif; fill:#536B78; }
+      .step-title { font:700 18px Helvetica,Arial,sans-serif; fill:#173F51; }
+      .step-body { font:12.5px Helvetica,Arial,sans-serif; fill:#405965; }
+      .callout-title { font:700 13px Helvetica,Arial,sans-serif; fill:#6E3E08; }
+      .danger-title { font:700 13px Helvetica,Arial,sans-serif; fill:#8E2736; }
+      .callout-body { font:12px Helvetica,Arial,sans-serif; fill:#4E4B46; }
+      .arrow-line { fill:none; stroke:#617684; stroke-width:2.3; }
+      .arrow-head { fill:#617684; stroke:none; }
+      .arrow-label { font:700 11px Helvetica,Arial,sans-serif; fill:#526875; text-anchor:middle; }
+      .source { font:10.7px Helvetica,Arial,sans-serif; fill:#5A6C76; }
+      .status { font:700 11.5px Helvetica,Arial,sans-serif; fill:#455D69; }
+    ]]></style>
+  </defs>
+
+  <rect class="page" x="0" y="0" width="900" height="1280"/>
+  <text class="title" x="38" y="58">Dataset tiers and freeze timeline</text>
+  <text class="subtitle" x="40" y="96">A sealed holdout must not shape the method that will be evaluated on it.</text>
+  <rect class="badgebox" x="688" y="34" width="176" height="38" rx="19"/>
+  <text class="badge" x="776" y="58">CONCEPTUAL / NO RESULTS</text>
+  <line class="divider" x1="38" y1="126" x2="864" y2="126"/>
+
+  <rect class="d0-card" x="40" y="154" width="395" height="178" rx="14"/>
+  <rect class="tag-d0" x="58" y="171" width="118" height="28" rx="7"/>
+  <text class="tag-text" x="117" y="190">D0 / VISIBLE</text>
+  <text class="card-title" x="58" y="226">Synthetic adversarial engineering set</text>
+  <text class="card-body" x="58" y="255">Fictional, labelled, test-only and visible.</text>
+  <text class="card-body" x="58" y="279">Supports regression and mechanism checks.</text>
+  <text class="card-body-strong" x="58" y="307">Not real-world portfolio or practitioner performance.</text>
+
+  <rect class="d1-card" x="465" y="154" width="395" height="178" rx="14"/>
+  <rect class="tag-d1" x="483" y="171" width="174" height="28" rx="7"/>
+  <text class="tag-text" x="570" y="190">D1 / AUTHORISED PILOT</text>
+  <text class="card-title" x="483" y="226">Pilot / calibration set</text>
+  <text class="card-body" x="483" y="255">Smallest separately authorised historical subset.</text>
+  <text class="card-body" x="483" y="279">Clarifies labels, workload, timing and planning.</text>
+  <text class="card-body-strong" x="483" y="303">Pilot only; exclude from confirmatory estimates</text>
+  <text class="card-body-strong" x="483" y="320">unless the analysis plan pre-declares exploratory use.</text>
+
+  <path class="arrow-line" d="M 237 332 L 237 354 L 350 354 L 350 380"/>
+  <path class="arrow-head" d="M 350 390 L 344 378 L 356 378 Z"/>
+  <path class="arrow-line" d="M 662 332 L 662 354 L 550 354 L 550 380"/>
+  <path class="arrow-head" d="M 550 390 L 544 378 L 556 378 Z"/>
+  <text class="arrow-label" x="450" y="371">MAY INFORM ONE FREEZE</text>
+
+  <rect class="freeze-card" x="135" y="390" width="630" height="145" rx="14"/>
+  <rect class="tag-freeze" x="155" y="407" width="180" height="28" rx="7"/>
+  <text class="tag-text" x="245" y="426">ONE VERSIONED FREEZE</text>
+  <text class="center-title" x="450" y="463">Evaluation bundle frozen before D2 access</text>
+  <rect class="freeze-item" x="164" y="482" width="88" height="26" rx="6"/>
+  <rect class="freeze-item" x="259" y="482" width="72" height="26" rx="6"/>
+  <rect class="freeze-item" x="338" y="482" width="82" height="26" rx="6"/>
+  <rect class="freeze-item" x="427" y="482" width="82" height="26" rx="6"/>
+  <rect class="freeze-item" x="516" y="482" width="62" height="26" rx="6"/>
+  <rect class="freeze-item" x="585" y="482" width="151" height="26" rx="6"/>
+  <text class="freeze-text" x="208" y="499">CATALOGUE</text>
+  <text class="freeze-text" x="295" y="499">RULES</text>
+  <text class="freeze-text" x="379" y="499">SCHEMAS</text>
+  <text class="freeze-text" x="468" y="499">PROMPTS</text>
+  <text class="freeze-text" x="547" y="499">CODE</text>
+  <text class="freeze-text" x="661" y="499">ANALYSIS PLAN</text>
+  <text class="center-body" x="450" y="526">D0 and any authorised D1 may inform this boundary; D2 may not.</text>
+
+  <path class="arrow-line" d="M 450 535 L 450 570"/>
+  <path class="arrow-head" d="M 450 580 L 444 568 L 456 568 Z"/>
+  <text class="arrow-label" x="542" y="559">FREEZE PRECEDES ACCESS</text>
+
+  <rect class="d2-card" x="105" y="580" width="690" height="155" rx="14"/>
+  <rect class="tag-d2" x="125" y="598" width="132" height="28" rx="7"/>
+  <text class="tag-text" x="191" y="617">D2 / FINAL OOS</text>
+  <rect class="seal-badge" x="645" y="598" width="130" height="28" rx="7"/>
+  <text class="seal-text" x="710" y="617">CURRENT: SEALED</text>
+  <text class="center-title" x="450" y="658">Sealed company-period holdout</text>
+  <text class="center-body" x="450" y="684">Selected and sealed before final system runs; manifest and state are versioned.</text>
+  <text class="center-body" x="450" y="707">Before approved opening: no inspection, tuning, model selection or connector repair.</text>
+  <text class="center-body" x="450" y="726">Current manifest exposes no data path or checksum and no unlock bypass.</text>
+
+  <path class="arrow-line" d="M 450 735 L 450 770"/>
+  <path class="arrow-head" d="M 450 780 L 444 768 L 456 768 Z"/>
+  <text class="arrow-label" x="565" y="759">APPROVED MANIFEST TRANSITION ONLY</text>
+
+  <rect class="run-card" x="105" y="780" width="690" height="145" rx="14"/>
+  <rect class="tag-run" x="125" y="798" width="192" height="28" rx="7"/>
+  <text class="tag-text" x="221" y="817">AFTER AUTHORISED OPENING</text>
+  <text class="center-title" x="450" y="852">Comparable C0-C3 execution</text>
+  <rect class="condition-held" x="135" y="868" width="142" height="28" rx="7"/>
+  <rect class="condition" x="290" y="868" width="142" height="28" rx="7"/>
+  <rect class="condition" x="445" y="868" width="142" height="28" rx="7"/>
+  <rect class="condition-held" x="600" y="868" width="142" height="28" rx="7"/>
+  <text class="condition-held-text" x="206" y="886">C0 MANUAL - HELD</text>
+  <text class="condition-text" x="361" y="886">C1 BASELINE</text>
+  <text class="condition-text" x="516" y="886">C2 VERIFIER</text>
+  <text class="condition-held-text" x="671" y="886">C3 HITL - HELD</text>
+  <text class="center-body" x="450" y="916">Current: D2 sealed; no final C0-C3 execution or result is asserted.</text>
+
+  <path class="arrow-line" d="M 450 925 L 450 944 L 255 944 L 255 955"/>
+  <path class="arrow-head" d="M 255 965 L 249 953 L 261 953 Z"/>
+
+  <rect class="result-card" x="85" y="965" width="340" height="105" rx="12"/>
+  <text class="step-kicker" x="104" y="990">[REFERENCE]</text>
+  <text class="step-title" x="104" y="1015">Adjudication</text>
+  <text class="step-body" x="104" y="1040">Score against the frozen reference.</text>
+  <text class="step-body" x="104" y="1059">Record disagreements and reasons.</text>
+
+  <path class="arrow-line" d="M 425 1018 L 465 1018"/>
+  <path class="arrow-head" d="M 475 1018 L 463 1012 L 463 1024 Z"/>
+
+  <rect class="result-card" x="475" y="965" width="340" height="105" rx="12"/>
+  <text class="step-kicker" x="494" y="990">[INTERPRET]</text>
+  <text class="step-title" x="494" y="1015">Analysis + limitations</text>
+  <text class="step-body" x="494" y="1040">Pre-specified outcomes, clustering, uncertainty,</text>
+  <text class="step-body" x="494" y="1059">failures, nulls, deviations and limits.</text>
+
+  <rect class="warning-card" x="40" y="1090" width="395" height="76" rx="12"/>
+  <text class="callout-title" x="58" y="1115">NO FOURTH DATASET TIER</text>
+  <text class="callout-body" x="58" y="1138">Participant observations belong to separately authorised</text>
+  <text class="callout-body" x="58" y="1157">C0/C3 execution; they are not D3.</text>
+
+  <rect class="danger-card" x="465" y="1090" width="395" height="76" rx="12"/>
+  <text class="danger-title" x="483" y="1115">POST-ACCESS CHANGE</text>
+  <text class="callout-body" x="483" y="1138">Any D2-informed change starts an exploratory run;</text>
+  <text class="callout-body" x="483" y="1157">confirmatory labelling is lost unless protocol is amended.</text>
+
+  <line class="divider" x1="38" y1="1184" x2="864" y2="1184"/>
+  <text class="source" x="40" y="1205">Local literature: Bradley et al. (2024, PDF pp. 1-5); Gebru et al. (2021, pp. 2, 4-7); Kapoor and Narayanan (2023, pp. 1-7, 17-21);</text>
+  <text class="source" x="40" y="1224">Pineau et al. (2021, pp. 1-4, 9-13). Repository inputs: docs/EVALUATION_PROTOCOL.md and fixtures/evaluation_manifest.json.</text>
+  <text class="source" x="40" y="1243">Exact local files, page locators, limitations and SHA-256 hashes are recorded in the TXT alternative and provenance manifest.</text>
+  <text class="status" x="40" y="1266">Faye Niu | METH-F2 | author synthesis; conceptual and non-empirical; no sample size, threshold or result is asserted.</text>
+</svg>

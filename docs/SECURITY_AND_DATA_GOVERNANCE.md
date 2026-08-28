@@ -39,6 +39,44 @@ management plan must define controller, lawful basis, purpose, locations, access
 retention duration, deletion method, and incident contact. Until then, real input is held to
 the minimum local research purpose and excluded from Git/backups not approved for it.
 
+### Offline company-intelligence intake boundary
+
+The first company-intelligence slice records only locally submitted company-level identity claims
+and authorised document bytes. It performs no DNS lookup, HTTP request, crawling, source admission,
+external-model call, or person-level public-data collection. A structurally valid Companies House
+number and an HTTPS domain remain unverified claims until the configured reviewer records a named
+decision with rationale. Uploaded bytes are create-once, mode `0600`, classified, checksummed, and
+treated as untrusted content; this slice does not claim malware scanning, OCR, or extraction.
+
+Bulk intake is atomic. A malformed row rejects the request rather than leaving an ambiguous partial
+portfolio. Duplicate normalized requests reuse the existing intake artifact and case. Revision
+`0008` is additive for existing data and refuses downgrade before mutation when first-slice records
+would be lost.
+
+### Approved public-web company-research boundary
+
+Revision `0009` adds public company research runs, serial tasks/attempts, source candidates, captured
+source state, exact-span claims, and a research-run link on versioned profiles. The normal runtime
+constructs this capability only when both live retrieval and external-model flags are true, a named
+reviewer is configured, and an API key is present. A run additionally requires a public case with a
+reviewed Companies House number. Page views and run creation do not call external services; the
+reviewer advances each persisted stage explicitly.
+
+OpenAI web search discovers URLs only. Search snippets and free-form output are not evidence. The
+collector permits HTTPS, resolves and rejects non-global addresses before each request/redirect,
+and pins each TCP connection to one of the validated public addresses while preserving hostname
+TLS verification. It checks robots rules, refuses forms/authentication/paywall bypass, strips
+ambient proxy settings, and enforces redirect, MIME, timeout, and decompressed-byte budgets.
+Personal contacts are redacted before a source-owned immutable derivative is persisted; its kind,
+redaction count, checksum, and path are recorded. Extraction receives the same bounded derivative
+with `store=False`; only substantive verbatim spans survive, post-cutoff prose and prompt-injection
+language are rejected, and structured values persist only when literal span-grounded.
+
+This is a local research control, not a publisher redistribution licence or a production SSRF
+guarantee. Hosted/multi-tenant deployment still requires a separately reviewed network-isolated
+egress proxy, authentication, and tenancy controls. Native PPTX/PDF rendering also remains outside
+this slice; approved profiles export hash-verified evidence JSON and printable HTML.
+
 ## Exposed credential incident
 
 One supplied PDF contains a dashboard credential. The credential value and associated account
@@ -67,7 +105,7 @@ Credential rotation remains **unverified external work**. This project cannot cl
 | Temporal leakage | Future evidence supports past report | UK civil cutoff plus publication/effective-time eligibility | Source-specific availability rules and final OOS governance |
 | Formula/malicious workbook | Spreadsheet executes formula or payload | `data_only=False`; no formula execution/macros; `.xlsx` only | File-type scanning and isolated parser for production |
 | Stored XSS/HTML injection | Source/reviewer text rendered as markup | Jinja auto-escape; custom HTML export escapes input; CSP | Security test/fuzzing and CSP nonce if scripts later added |
-| Local unauthorised access | Other user/process reads runtime files | Snapshot/export mode `0600`; loopback bind | Encrypted disk/database and OS account controls |
+| Local unauthorised access | Other user/process reads runtime files | Snapshot/export mode `0600`; loopback bind, or Docker-private clients behind a host-loopback-only published port | Encrypted disk/database and OS account controls |
 | CSRF/local malicious site | Browser posts to loopback UI | Per-process CSRF token+HttpOnly Strict cookie, CSP, loopback client and Host allowlist | Production authentication/session rotation before wider use |
 | DNS rebinding/non-local request | Hostname resolves to loopback or forwarded client reaches app | Host-header and client-address loopback enforcement | Trusted reverse-proxy design only after explicit deployment review |
 | Stale reviewer write | Two pages mutate the same report version | Optimistic `lock_version`; stale action fails | Serializable production store and authenticated audit principal |
@@ -89,9 +127,14 @@ specifically authorised public/synthetic experiment. Controls are cumulative:
   copied into public evidence or external requests;
 - Responses API `store=False` is set;
 - output is a strict schema and then independently normalized/verified;
-- attempts are bounded to the enforced `gpt-5.4-mini` then `gpt-5.4` allowlist; arbitrary or
-  reversed model pairs are rejected before client construction; and
+- attempts are bounded to the enforced `gpt-5.6-luna` primary and same-model repair route; any
+  configured model outside that route is rejected before client construction; and
 - no model result can approve/export.
+
+The executable live path is intentionally narrower than the general adapter: `openai-smoke`
+routes exactly one checksum-pinned synthetic fixture item to the guarded provider, keeps every
+other extraction deterministic, caps each response at 512 output tokens, and writes a content-free
+local manifest. The default runtime still refuses external-model enablement.
 
 OpenAI's [official data controls documentation](https://platform.openai.com/docs/models/default-usage-policies-by-endpoint)
 describes endpoint-specific retention, including default application-state behaviour for the
@@ -102,9 +145,11 @@ ADR-0004 and should be re-verified at execution time because service behaviour m
 
 ## Secrets and configuration
 
-- API keys must be process-environment secrets, not `.env.example`, code, CLI arguments,
-  fixtures, trace metadata, screenshots, or dissertation appendices.
-- `.env` is ignored; `.env.example` contains only non-secret switches.
+- API keys must not appear in `.env.example`, code, CLI arguments, fixtures, trace metadata,
+  screenshots, or dissertation appendices. A process-environment secret is preferred.
+- Live company research reads `OPENAI_API_KEY` from the process environment. The acknowledged
+  synthetic smoke command may additionally read that exact key from an ignored mode-`0600` `.env`.
+  The key must never be written to research tasks, errors, prompts, snapshots, or exports.
 - `PORTFOLIO_REVIEWER_NAME` supplies the local accountable actor. Reviewer names submitted in
   browser form data are deliberately unsupported.
 - Filenames are reduced to safe basenames before local storage.
@@ -154,8 +199,17 @@ Before sharing the repository or any artifact:
 Do not deploy or expose this application. Loopback/Host/CSRF controls reduce local-browser risk,
 but the prototype still lacks authenticated sessions, authorisation roles, tenant isolation,
 encrypted managed storage, secure operational logging, incident monitoring, backup/restore, and
-production threat review. The bounded connector policy is an engineering control, not source-law
-or licence approval; G2 remains open for every live retrieval.
+production threat review. The bounded connector/fetch policy is an engineering control, not
+source-law or redistribution approval. G2 remains closed except for the explicitly conditioned
+local web-discovery/capture path recorded in the source-admission register.
+
+The supported container path is also local-only: `compose.yaml` publishes `127.0.0.1:8000`, drops
+Linux capabilities, and enables private-network client acceptance only because Docker NAT replaces
+the host browser's loopback address with its private gateway address. Compose explicitly injects
+the private `.env` API key and named reviewer into the running container, never into the image; the
+two live-research gates are open in this local profile, while external calls still require an
+explicit research-stage advance. Publishing the container port on `0.0.0.0` or using
+`--docker-local` outside that boundary is unsupported and unsafe.
 
 Atomic export protects normal write/finalization failures and re-verifies hashes on reuse. A hard
 process termination in the narrow interval after directory rename but before database finalization

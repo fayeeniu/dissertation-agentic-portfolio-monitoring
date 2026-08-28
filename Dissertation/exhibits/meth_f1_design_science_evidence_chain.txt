@@ -1,0 +1,123 @@
+METH-F1 TEXT ALTERNATIVE
+========================
+
+Title: Design-science evidence chain
+Author: Faye Niu
+Target section: 3.1 Applied design-science strategy
+Suggested LaTeX label: fig:meth-design-science-evidence-chain
+Status: Conceptual, non-empirical author synthesis; this is not a result.
+
+Purpose and reading order
+-------------------------
+The figure separates construction evidence from empirical findings in an applied design-science dissertation. Read the central chain from top to bottom. The valid route is: problem and objectives -> frozen research contract -> artefact build -> implementation and engineering evidence -> authorised execution of the frozen C0-C3 evaluation -> empirical findings -> proportionate RQ1-RQ3 answer and communication.
+
+The central red gate is the non-leap boundary. Code, tests, migrations, deterministic replay and adversarial cases can establish that specified mechanisms exist and behave under tested conditions. They cannot, without protocol execution, become findings about effectiveness, efficiency, comparison with manual work, human benefit or general utility. An unexecuted condition remains held or null; it does not yield a zero, a positive result or an inferred conclusion.
+
+Central evidence chain
+----------------------
+
+Stage 1 - Problem and objectives [FRAME]
+
+Begin with the relevant portfolio-reporting problem, the intended users and decisions, observable research objectives, scope, exclusions and material failure costs. The problem determines what the artefact must do and what later evaluation must observe. A plausible problem or stated objective is not evidence that the artefact solves it.
+
+Stage 2 - Frozen research contract [FREEZE]
+
+Before scored comparison, freeze RQ1-RQ3, the evaluand, C0-C3 condition definitions, units of analysis, dataset tiers, source-access window, reference construction, metrics, denominators, stop conditions, analysis rules, code and prompt or schema versions. Record what remains protocol-only or requires separate ethics and data authority. A protocol defines a test; it is not itself a result.
+
+Stage 3 - Artefact build [BUILD]
+
+Build the bounded evidence-first workflow specified by the contract: typed ingestion and missing states, source and time controls, exact provenance, bounded extraction, independent verification, deterministic report composition, named review and approval-bound export. Construction demonstrates the existence of an artefact, not its comparative utility.
+
+Stage 4 - Implementation and engineering evidence [ENGINEER]
+
+Collect implementation evidence such as code, tests, migration checks, deterministic replay, synthetic fixtures, adversarial cases, source-contract checks and recorded failure behaviour. This evidence can support statements about mechanisms and invariants under the tested environment and cases. D0 synthetic mechanism evidence must remain distinct from restricted or real-world D1/D2 evidence and from participant findings.
+
+Non-leap boundary
+-----------------
+
+Implementation evidence is not an empirical finding. It cannot answer whether C2 changes supported-claim quality relative to C1, whether automated workflows compare favourably with manual C0, or whether named-review C3 improves quality or utility. The only valid crossing is authorised execution of the frozen evaluation protocol against comparable units and a frozen reference. If ethics, data authority, reference construction or protocol freeze is incomplete, affected conditions remain NO-GO and their outcomes remain null or held.
+
+Stage 5 - Frozen C0-C3 evaluation [EXECUTE]
+
+Execute only authorised conditions using the same eligible input and source-access window, frozen metric definitions and adjudicated reference where applicable.
+
+- C0 manual: an authorised practitioner completes the existing workflow under the same frozen information window. It remains protocol-only until authorised.
+- C1 deterministic baseline: a single extraction and composition path uses the same catalogue and normalisation contract without an independent verifier.
+- C2 bounded independent verification: the bounded workflow adds a separately recorded verifier that controls support eligibility before composition.
+- C3 C2 plus named review: the C2 output enters the versioned review interface and the post-review report is kept separate from its pre-review state. Human outcomes remain protocol-only until authorised.
+
+These labels identify evaluable workflow configurations, not model personalities or a claim that more agents are better. Conditions must receive comparable evidence access and be analysed using pre-specified units, denominators and failure rules.
+
+Stage 6 - Empirical findings [ANALYSE]
+
+Only executed conditions can produce empirical findings. Report observed outcomes, denominators, uncertainty, dependence or clustering, failures, contradictions, abstentions, negative and null results, and protocol deviations. Keep constructed D0 findings scoped to mechanism evidence. Do not transfer them to real portfolio performance, human usability or production operation. Unrun C0, C3, D1 or D2 outcomes stay visibly unavailable.
+
+Stage 7 - RQ answer and communication [COMMUNICATE]
+
+Answer RQ1-RQ3 only to the extent supported by executed evidence. Bind each statement to the relevant artefact version, dataset and source manifest, protocol condition, result table or figure and analysis version. State limitations, held comparisons and uncertainty. Communication may establish an evidence-calibrated design and evaluation contribution; it must not claim investment performance, production readiness, exhaustive source coverage or universal multi-agent superiority.
+
+Researcher involvement across the method
+----------------------------------------
+
+The student is both builder and evaluator, so researcher influence is not treated as external to the method.
+
+1. Framing: the researcher defines the problem, objectives, scope and exclusions. These choices are recorded and connected to observable evaluation outcomes.
+2. Build: the researcher makes implementation and design choices. Assumptions, versions and deviations remain traceable instead of being retroactively described as inevitable.
+3. Evaluation: the researcher freezes the contract before scoring, respects sealed or held data, and does not tune after observing final outcomes.
+4. Interpretation: the researcher analyses only executed conditions and reports uncertainty, failure, negative/null outcomes and limitations rather than selecting only favourable evidence.
+
+The student-as-builder/evaluator role creates confirmation-bias risk. The visible controls mitigate this risk; they do not eliminate it or establish neutral judgement.
+
+Mitigation controls
+-------------------
+
+F1 - Freeze
+
+Freeze research questions, condition definitions, units, metrics, dataset partitions, source-access windows, reference rules, code, prompt/schema versions, stopping rules and the analysis plan before final scoring. Prevent final out-of-sample information from entering feature, prompt, rule or threshold development.
+
+F2 - Versioned evidence
+
+Retain immutable or versioned manifests, checksums, dataset and run identifiers, code/environment versions, raw machine outputs, human decisions, scoring and adjudication records, analysis scripts, deviations, errors, negative outcomes and explicit nulls. Versioned traceability supports repeatability; it does not make a source or label true.
+
+F3 - Independent or adjudicated labels/review
+
+Where ethics and data authority permit, give independent authorised reviewers the same source bundle, measure agreement before adjudication, record disagreement reasons and freeze the adjudicated reference before condition scoring. A prior manual report or system output is a comparison output, not automatic ground truth. Independent review reduces one source of internal bias but does not guarantee validity.
+
+F4 - Claim limits
+
+Separate D0 synthetic mechanism evidence, D1 authorised pilot evidence, sealed D2 evidence and participant findings. Keep unexecuted conditions held or null. Report only the population, information window, protocol, artefact version and measures actually studied. No engineering check or completed workflow is re-labelled as real-world effectiveness evidence.
+
+Greyscale and accessibility reading cues
+----------------------------------------
+
+The figure does not rely on colour alone. Stages are numbered 1 to 7 and carry text tags: FRAME, FREEZE, BUILD, ENGINEER, EXECUTE, ANALYSE and COMMUNICATE. The non-leap boundary uses a boxed label and explicit text. The two side rails are titled RESEARCHER INVOLVEMENT and MITIGATION CONTROLS. This text alternative provides the complete linear reading order. The PDF is vector but is not claimed to be tagged.
+
+Local academic evidence basis
+-----------------------------
+
+- `hevner2004design`, local PDF pp. 4, 9 and 11: design science combines a relevant problem, purposeful artefact construction and rigorous evaluation; utility, quality and efficacy require appropriate evaluation rather than construction alone.
+- `peffers2007dsrm`, local PDF pp. 4 and 16--18: the design-science process connects problem identification, objectives, design/development, demonstration, evaluation and communication; evaluation observes and measures how well the artefact meets its objectives.
+- `pineau2021reproducibility`, local PDF pp. 1--4: repeatable conclusions require accessible code and data where possible, specified procedures and metrics, and reporting boundaries sufficient to understand and reproduce the analysis.
+- `kapoor2023leakage`, local PDF pp. 1--7: data leakage, unavailable artefacts and under-specified reporting can invalidate machine-learning claims, supporting explicit freezes, held data and narrow interpretation.
+
+Repository-contract basis
+-------------------------
+
+- `docs/PROJECT_CHARTER.md` distinguishes source evidence, implemented artefact, protocol and empirical evidence; defines the design-and-evaluation contribution; identifies the student-as-builder/evaluator authority boundary; and prevents engineering checks becoming overstated findings.
+- `docs/EVALUATION_PROTOCOL.md` defines C0-C3, comparable units, D0/D1/D2 boundaries, protocol freeze, source-access parity, independently labelled and adjudicated references, scoring, uncertainty, deviations, reproducibility artefacts, ethics stops and confirmation-bias mitigation.
+- `docs/REQUIREMENTS.md` distinguishes implemented from protocol-only status, requires traceable stage/evidence versions, separates synthetic engineering evidence from authorised restricted or participant evidence, and keeps empirical/user-study claims pending where unexecuted.
+
+Limitations and excluded claims
+-------------------------------
+
+- The figure is an author synthesis and conceptual method map, not an implementation or evaluation result.
+- It contains no sample size, accuracy, effect size, confidence interval, time, cost, token, coverage, usability or human-benefit value.
+- It does not imply that all C0-C3 or D0-D2 conditions have been executed.
+- It does not claim independent or adjudicated labels are infallible, that freezing removes all bias, or that versioning establishes truth.
+- It does not claim the artefact is effective, efficient, production-ready or universally superior to a simpler or manual workflow.
+- It does not infer RQ answers for held, unauthorised or unexecuted conditions.
+
+Short caption source note
+-------------------------
+
+Source: author synthesis from Hevner et al. (2004, local PDF pp. 4, 9 and 11), Peffers et al. (2007, pp. 4 and 16--18), Pineau et al. (2021, pp. 1--4), Kapoor and Narayanan (2023, pp. 1--7), and the frozen local project and evaluation contracts. Conceptual and non-empirical; no result values.

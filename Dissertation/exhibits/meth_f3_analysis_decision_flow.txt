@@ -1,0 +1,149 @@
+METH-F3 - Analysis decision flow
+Target section: 3.6 Statistical and qualitative analysis
+Suggested LaTeX label: fig:meth-analysis-decision-flow
+
+Purpose and evidence boundary
+This is Faye Niu's conceptual, non-empirical synthesis of the current draft analysis plan. It shows
+the decisions required before quantitative comparisons or qualitative interpretation can be
+reported. It does not choose the final statistical method or sample size and contains no result,
+effect estimate, confidence interval, p-value, sample count, acceptance threshold, time saving,
+cost, participant benefit or production-performance claim.
+
+Reading order
+
+Shared accounting gate - flow accounting before analysis
+Record eligible, excluded, failed and scored units for every condition. Each category retains its
+denominator and reason. Publish denominators, descriptive distributions and missingness before an
+inferential choice. A failed unit is not silently removed from the evidence base, and an exclusion
+must be justified rather than selected because of its outcome.
+
+The accounting gate then separates into two parallel branches. The branches answer different
+questions and meet only at integrated interpretation and explicit limitations.
+
+Quantitative branch
+
+Q1 - denominators and descriptives
+State the per-condition denominators, distributions and missingness. No statistical test precedes
+flow accounting. A null or inapplicable outcome remains identified rather than being recoded as
+zero.
+
+Q2 - dependence and unit check
+Pair conditions on the same company-period or claim when they share units. Repeated fields and
+claims within one report or company are dependent observations, not independent replicates.
+Analysis therefore works at the report/company unit or uses a cluster-aware interval whose
+resampling and clustering unit is declared and supported by the design.
+
+Q3 - conditional method family
+For paired binary outcomes, an exact paired method may be considered. For non-normal paired time
+or edit outcomes, a paired Wilcoxon-style analysis may be considered only when the sample and
+assumptions support it. These are candidate method families, not selected tests. The diagram does
+not imply that either family will be used or that any assumption has already passed.
+
+Q4 - effect and uncertainty
+Report the effect size and an uncertainty interval rather than a p-value alone. Name the unit of
+analysis, estimator, assumptions, failures and interval construction. A bootstrap interval is not
+automatically valid: its resampling unit, dependence model, interval procedure and attainable
+coverage must fit the executed design.
+
+Q5 - multiplicity, strata and sensitivity
+Predeclare multiplicity handling when several hypotheses are confirmatory; otherwise label the
+analysis exploratory. Report strata only when their sample and design support interpretation.
+Repeat the main summaries with failed units and justified exclusions included as applicable.
+Preserve negative and null findings and unexpected regressions instead of reporting only favourable
+effects.
+
+Qualitative branch
+
+K1 - authorised inputs only
+Admit the predefined error taxonomy and, only where separately authorised and consented, reviewer
+feedback. Do not infer participant evidence from synthetic fixtures and do not use reviewer
+feedback without the required authority and consent.
+
+K2 - predefined code families
+- ID: wrong company, duplicate merge or unresolved alias.
+- EXT: omitted field, fabricated field or wrong source span.
+- NORM: wrong type, unit or currency; blank-versus-zero error; ratio scaling error.
+- TIME: future evidence, stale value, wrong period or filing-lag error.
+- PROV: missing locator, checksum mismatch or incomplete citation.
+- VER: verifier miss, false rejection or unsupported acceptance.
+- REP: missing required section or inconsistent narrative.
+- SEC: unsafe instruction-following, secret exposure or malformed input handling.
+- HITL: harmful edit, missed exception or ungrounded approval.
+
+K3 - case-by-code framework matrix
+Use cases as rows and the predefined code families, plus justified additions, as columns. Each
+entry retains the exact report, claim, event or feedback locator. The matrix supports comparison
+within and across cases; it does not convert qualitative records into population prevalence.
+
+K4 - versioned coding and disagreement
+Record the coder, codebook and version, applied code, rationale, disagreement and resolution.
+Do not silently overwrite a first judgement. Agreement is evidence about coding consistency under
+the stated task and assumptions; it is not proof of source truth or claim validity.
+
+K5 - patterns, negative cases and limitations
+Compare patterns within and across cases. Retain contradictions, minority patterns, exceptions and
+negative cases. Report consent, data coverage, coder or researcher influence and unresolved
+disagreement. Counts from purposive feedback must not be presented as population frequencies or
+generalised prevalence.
+
+Integration
+Combine quantitative effect and uncertainty statements with qualitative patterns and negative
+cases only at an integrated interpretation stage. Keep the executed evidence, evidence class,
+failed or excluded units, unresolved holds and protocol deviations visible in the limitations.
+Neither branch is allowed to erase contrary evidence from the other.
+
+Explicit stop - TO FREEZE
+The exact statistical method and sample size are not selected now. They remain TO FREEZE after D1
+variance and annotation evidence has been obtained and after supervisor and statistical review.
+No inferential result is asserted by this exhibit or by the current protocol-only choice set.
+
+Local literature basis
+- demsar2006comparisons: Dissertation/sources/papers/36_demsar_statistical_comparisons.pdf,
+  PDF pages 5-9. Supports checking the experimental unit, dependence and assumptions before using
+  paired or non-parametric comparisons. Its multi-dataset classifier setting does not select a test
+  for this company/report study, and repeated runs must not be treated as independent cases.
+- diciccio1996bootstrap: Dissertation/sources/papers/38_diciccio_efron_bootstrap_confidence_intervals.pdf,
+  PDF pages 1-4. Supports interval accuracy and coverage being method- and assumption-dependent.
+  It does not establish a cluster-aware interval or resampling unit for this study.
+- gale2013framework: Dissertation/sources/papers/37_gale_framework_method_qualitative_analysis.pdf,
+  PDF pages 3-7. Supports coding, an analytical framework, case-by-code charting, cross-case
+  comparison, interpretation and an audit trail. Its health-research examples require careful
+  transfer and do not justify population-frequency claims about software errors or feedback.
+- artstein2008agreement: Dissertation/sources/papers/35_artstein_poesio_intercoder_agreement.pdf,
+  PDF pages 2-8 and 26-28. Supports distinguishing coding agreement from validity and recording
+  coder and unit decisions. Agreement does not prove truth and requires task-appropriate assumptions.
+- kapoor2023leakage: Dissertation/sources/papers/32_kapoor_data_leakage.pdf,
+  PDF pages 1-7. Supports separating analysis choices from held-out evidence and accounting for
+  dependence and leakage risks. It does not show that this study has executed its final evaluation.
+- pineau2021reproducibility: Dissertation/sources/papers/33_pineau_reproducibility.pdf,
+  PDF pages 1-5. Supports complete reporting of metrics, procedures, code and outcomes, including
+  information needed to assess reproducibility. Reproducibility does not establish external validity.
+- nist2023airmf: Dissertation/sources/papers/11_nist_ai_rmf_1_0.pdf,
+  PDF pages 33-35. Supports rigorous testing, uncertainty reporting, documented limitations and
+  independent review. The voluntary framework does not certify this artefact or its analysis.
+
+Exact repository inputs
+- docs/EVALUATION_PROTOCOL.md: "Units of analysis", "Experimental conditions", "Dataset
+  partitions and leakage control", "D1 - authorised pilot/calibration set", "Primary and
+  secondary measures", "Analysis plan", "Error taxonomy", "Reproducibility record", "Ethics and
+  stop conditions" and "Validity threats to discuss".
+- Dissertation/REPORT_STRUCTURE.md: Section 3.6 scope, the current evidence boundary and the rule
+  that unavailable empirical outcomes must remain explicitly held.
+- docs/PROJECT_CHARTER.md: the evidence-state boundary, research-success limits, freeze and change
+  controls, and the requirement to keep conclusions within the executed protocol and population.
+- Dissertation/sources/MANIFEST.csv and SHA256SUMS: local citation-key, path, page-count, admission
+  role, limitation and checksum bindings for every academic source named above.
+
+Accessibility and limitations
+The SVG has a programmatic title and full description. The PDF and SVG are vector-only and the
+meaning of every branch, method family, code family, stop and limitation is written in text, so
+colour is supplementary and the figure remains interpretable in greyscale. The PDF is not claimed
+to be tagged; this file is the complete linear reading-order alternative.
+
+This exhibit is an analysis decision contract, not an empirical result. It does not establish that
+D1 has run, that the final gold reference exists, that the D2 holdout has opened, that C0-C3 have
+been executed, that participant feedback has been collected, or that a statistical assumption has
+passed. Exact sample size, estimator, hypothesis family, interval method, clustering or resampling
+unit, multiplicity procedure, strata and qualitative-coding adjudication remain subject to the
+future protocol freeze and evidence available at execution. Preserving negative, null and regressive
+outcomes reduces selective reporting risk but does not itself guarantee validity or generalisation.
