@@ -146,22 +146,19 @@ flowchart LR
 
 Available now:
 
-- portfolio upload with period, cutoff, and classification;
-- a queue for source-scoped identity decisions;
+- company intake rooted in an exact Companies House number;
+- a queue for identifier and domain decisions;
 - a stage-by-stage agent trace with status, duration, and hashes;
-- visual evidence summaries, quality holds, events, provenance, and report tables;
-- report editing with versioning and re-approval;
-- named approve/reject decisions and gated downloads; and
+- source acquisition outcomes, exact-span claims, contradictions, and provenance;
+- versioned company profiles with named approve/reject decisions and gated downloads; and
 - keyboard focus, semantic tables, text-labelled states, and reduced-motion support.
 
 ### The agent control room
 
-There are two surfaces over the same persisted records.
-
-| Surface | What it is | When to use it |
-|---|---|---|
-| Jinja workspace (`http://127.0.0.1:8000`) | The original server-rendered review UI. No Node required. | Import and report review; any environment without Node |
-| Control room (`dashboard/`, `http://localhost:3000`) | A Next.js operator surface for the company-research workflow | Watching a research run execute, inspecting evidence, approving a profile |
+The Next.js application in `dashboard/` is the only dashboard. Docker publishes it at
+`http://127.0.0.1:8000` by default; its server-side proxy reaches a private FastAPI service that is
+not exposed on the host. The browser therefore never holds the backend CSRF token or connects to
+the Python service directly.
 
 The control room's thesis is: **make the bounded agent workflow the interface.** Its centrepiece is
 an execution graph built from the persisted task and source rows, not from a hard-coded diagram.
@@ -264,9 +261,9 @@ flowchart LR
 
 ### Docker Compose: consistent local environment
 
-Docker is the recommended path when you want the app, migrations, digest-pinned Python 3.12 base,
-and fully resolved Python dependency locks to run in one reproducible environment. Docker Desktop
-(or Docker Engine with Compose) is the only host prerequisite.
+Docker is the recommended path when you want the Next.js dashboard, private FastAPI service,
+migrations, persistent state, and pinned dependency locks to run in one reproducible environment.
+Docker Desktop (or Docker Engine with Compose) is the only host prerequisite.
 
 Create a private `.env` once from `.env.example`, setting `OPENAI_API_KEY` and the accountable
 `PORTFOLIO_REVIEWER_NAME`. Docker Compose reads only the explicitly mapped values; the API key is
@@ -283,10 +280,10 @@ research boundary start with one command:
 docker compose up --build --wait
 ```
 
-Open `http://127.0.0.1:8000`. Compose publishes the service only on host loopback. The app's
-explicit Docker-local mode accepts the private Docker gateway inside the container but continues
-to reject public clients and unexpected Host headers. Database migrations run automatically before
-the service becomes healthy.
+Open `http://127.0.0.1:8000`. Compose publishes only the Next.js dashboard on host loopback. Its
+server-side proxy reaches FastAPI over the private Compose network; FastAPI continues to reject
+public clients and unexpected Host headers. Database migrations run before the dashboard becomes
+healthy.
 
 If port 8000 is already occupied, select another host-loopback port without changing the container:
 
@@ -308,9 +305,10 @@ Useful containerised commands:
 
 ```bash
 docker compose logs --follow app
-docker compose exec app portfolio-agent demo
-docker compose exec app portfolio-agent evaluate --manifest fixtures/evaluation_manifest.json --repeats 3
-docker compose exec app portfolio-agent visualize --output /app/var/figures
+docker compose logs --follow api
+docker compose exec api portfolio-agent demo
+docker compose exec api portfolio-agent evaluate --manifest fixtures/evaluation_manifest.json --repeats 3
+docker compose exec api portfolio-agent visualize --output /app/var/figures
 docker compose --profile test run --rm test
 ```
 
@@ -321,8 +319,8 @@ advancing a discovery or extraction stage in Company 360 calls OpenAI.
 
 ### One-time setup for a technical helper
 
-For a native installation instead, requirements are Python 3.12 and a local shell. Run from the
-repository root:
+For native development instead, requirements are Python 3.12, Node.js, and a local shell. Run from
+the repository root:
 
 ```bash
 python3.12 -m venv .venv
@@ -330,29 +328,32 @@ python3.12 -m venv .venv
 .venv/bin/alembic upgrade head
 ```
 
-Configure the local reviewer and start the visual workspace:
+Configure the local reviewer and start the private API:
 
 ```bash
 export PORTFOLIO_REVIEWER_NAME="Your reviewed local identity"
-.venv/bin/portfolio-agent serve
+.venv/bin/portfolio-agent serve --fixture-research
 ```
 
-Open `http://127.0.0.1:8000`. The server rejects non-loopback clients and unexpected Host headers;
-all changes require a same-session CSRF token. The configured reviewer name, not a form field, owns
-identity and report decisions.
+In a second terminal, start the dashboard:
+
+```bash
+npm --prefix dashboard install
+npm --prefix dashboard run dev
+```
+
+Open `http://localhost:3000`. The configured reviewer name, not a browser field, owns identity and
+profile decisions. The Python port is an API boundary, not a dashboard.
 
 ### Day-to-day visual workflow for a non-technical reviewer
 
-1. Open the **Work queue** in the local browser.
-2. In **Import a portfolio snapshot**, choose an authorised XLSX, CSV, or JSON file.
-3. Enter the reporting period and historical cutoff, then choose the correct classification.
-4. Resolve every **Identity hold** using authoritative evidence and a written rationale.
-5. Select **Run to review** for the imported dataset.
-6. Open **Agent trace** to inspect the completed stages and any held or failed state.
-7. Open the report and review visual summaries, tables, provenance, quality findings, and events.
-8. Edit and re-review sections when needed. Every edit creates a new version and revokes approval.
-9. Record a named approval or rejection with a rationale.
-10. Export JSON, Markdown, and HTML only after the current version is approved.
+1. Open **Companies** and register a public case from its exact Companies House number.
+2. Resolve the identity hold with authoritative evidence and a written rationale.
+3. Start a research run with the intended reporting cutoff.
+4. Advance the bounded stages while inspecting source outcomes, attempts, hashes, and claims.
+5. Review contradictions, gaps, metric coverage, and the immutable profile version.
+6. Record a named approval or rejection with a rationale.
+7. Download HTML or JSON only after the exact profile version is approved.
 
 Never interpret a green status as investment advice. It means a technical contract passed, not that
 a company is successful or that a portfolio action is recommended.
@@ -367,9 +368,9 @@ Run the fictional vertical slice. It deliberately stops at human review:
 
 ### Run the agent control room
 
-The control room is a separate Next.js application in `dashboard/`. It talks to the research service
+The control room is the Next.js application in `dashboard/`. It talks to the research service
 through a server-side proxy, so the browser never holds the CSRF token and the service keeps its
-loopback-only boundary.
+local-only boundary.
 
 Start the research service with the offline fixture corpus. No external model call and no outbound
 request is made, and every run produced this way is synthetic:
@@ -396,12 +397,8 @@ where the service is:
 PORTFOLIO_API_ORIGIN=http://127.0.0.1:8010 npm run dev -- -p 3100
 ```
 
-The Docker Compose service also exposes the JSON API. Rebuild the image after pulling these changes
-so the container serves `/api`:
-
-```bash
-docker compose build app && docker compose up -d app
-```
+Docker Compose builds both processes and keeps the JSON API private; use the one-command startup
+above rather than publishing the API separately.
 
 For a real research run, start the service without `--fixture-research` and open both gates as
 described in [Explicit live company research](#explicit-live-company-research). Live runs spend
@@ -426,8 +423,7 @@ The smoke command forces synthetic-only guards and uses a new private runtime di
 ignored `var/experiments/runtimes/`, so it cannot collide with `var/portfolio.db`. Supplying
 `OPENAI_API_KEY` in the process environment still takes precedence over `.env`.
 
-After the command passes, copy the emitted `serve_command` to open that exact persisted run/report
-in the deterministic control room. It has this shape:
+After the command passes, start its exact persisted API with the emitted `api_command`:
 
 ```bash
 PORTFOLIO_DATABASE_URL='sqlite:////…/portfolio.db' \
@@ -435,6 +431,14 @@ PORTFOLIO_RAW_DATA_DIR='/…/raw' \
 PORTFOLIO_SOURCE_SNAPSHOT_DIR='/…/sources' \
 .venv/bin/portfolio-agent serve
 ```
+
+In a second terminal, run the emitted `dashboard_command`:
+
+```bash
+PORTFOLIO_API_ORIGIN='http://127.0.0.1:8000' npm --prefix dashboard run dev
+```
+
+Open `http://localhost:3000` to inspect the exact persisted run in the control room.
 
 The command permits at most one strict extraction target, with at most one validation escalation.
 Each response is capped at 512 output tokens and uses `store=False`. It writes a content-free audit
@@ -477,7 +481,14 @@ export PORTFOLIO_ALLOW_LIVE_PUBLIC_RETRIEVAL=true
 .venv/bin/portfolio-agent serve
 ```
 
-In **Companies**, create a `public` case from the Companies House number, record the named identity
+In a second terminal, start the dashboard against that API:
+
+```bash
+PORTFOLIO_API_ORIGIN='http://127.0.0.1:8000' npm --prefix dashboard run dev
+```
+
+Open `http://localhost:3000`. In **Companies**, create a `public` case from the Companies House
+number, record the named identity
 decision, create a research run, and advance its four persisted stages. Run creation and page views
 do not call external services. Discovery and extraction are the two model stages; capture performs
 connection-pinned bounded publisher requests. If a process stops with a task marked running, use the
@@ -552,12 +563,13 @@ client construction. Every route uses GPT-5.6 Luna and is fixed in code, never c
 |---|---|---|---|
 | Portfolio extraction | one field from one evidence item, plus at most one schema-repair attempt | `gpt-5.6-luna` | `none` |
 | Company research — broad discovery | diverse public-source planning from one exact identifier | `gpt-5.6-luna` | `PORTFOLIO_OPENAI_REASONING_EFFORT`, default `medium` |
-| Company research — evidence selection | exact-span claims selected from the captured corpus | `gpt-5.6-luna` | `low` |
-| Company research — repair | any repeat attempt after rejected output | `gpt-5.6-luna` | `low` |
+| Company research — evidence selection | exact-span claims selected from the captured corpus | `gpt-5.6-luna` | `high` |
+| Company research — repair | any repeat attempt after rejected output | `gpt-5.6-luna` | `high` |
 
 Discovery uses configured reasoning effort to assemble a diverse source bucket across official
 registers, first-party pages, local and trade reporting, public notices, and attributable
-engineering sources. Low-effort Luna calls then select exact-span claims from captured text;
+engineering sources. High-effort Luna calls then select exact-span claims from captured text and
+perform any bounded corrective retry;
 deterministic code still decides which claims enter the ledger. The briefs state the validation contract verbatim because anything
 the validator enforces but the brief omits becomes silently missing evidence. The model that
 actually ran is recorded on every attempt and shown per stage in the control room. See

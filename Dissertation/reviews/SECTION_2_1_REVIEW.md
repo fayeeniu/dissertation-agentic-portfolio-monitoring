@@ -1,5 +1,9 @@
 # Section 2.1 independent review
 
+> Historical review note, 29 August 2026: this decision applies to the superseded review-method
+> section and LIT-T1. The current Section 2.1 is a traditional literature synthesis and requires a
+> new independent review.
+
 Section: `2.1 Review method and evidence boundary`, including LIT-T1  
 Reviewer: `$dissertation-reviewer`  
 Final gate: **PASS**  

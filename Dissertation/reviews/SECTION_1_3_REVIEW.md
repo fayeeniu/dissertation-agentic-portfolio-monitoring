@@ -1,5 +1,42 @@
 # Section 1.3 independent review
 
+## Current Section 1.3: Research aim
+
+Section: `1.3 Research aim`
+Reviewer: `$dissertation-reviewer`
+Review mode: `SECTION_REVIEW`
+Review round: 1
+Final gate: **PASS**
+Final verdict: **APPROVED**
+Evidence confidence: **MEDIUM**
+Completed: 31 August 2026
+
+The reviewer assessed the current 72-word paragraph at
+`chapters/01_introduction.tex:69--76` as a fresh section rather than inheriting the earlier combined
+section's approval. The stated aim matches the current project charter and research contract, treats
+the complete workflow as the study evaluand rather than an achieved real-world result, and explicitly
+requires evaluation against stated objectives instead of inferring usefulness from implementation.
+
+The two design-science sources were checked at the claim-ledger pages and their current PDF hashes
+matched the source manifest. The strict source, claim-ledger, Harvard and British-English checks
+passed. The current dissertation PDF was inspected at physical page 16 and the section rendered
+cleanly. No blocker, major or optional finding was raised.
+
+`AIM13-001` was a non-blocking review-metadata inconsistency: the review log and report structure
+still described the superseded combined Section 1.3 as though it were the current gate. It was
+resolved on 31 August 2026 by separating the historical and current decisions here and updating the
+dependent review-status records. No manuscript prose was changed.
+
+### Current decision
+
+**APPROVED.** No unresolved blocker, major, minor or optional finding remains for the current
+Section 1.3 scope. This gate does not approve Section 1.4 or predict a university mark.
+
+## Historical review: superseded combined section
+
+> This decision applies only to the earlier combined aim-and-questions section and INTRO-T1. It does
+> not describe the current Section 1.3 text or its evidence scope.
+
 Section: `1.3 Aim and research questions`, including INTRO-T1  
 Reviewer: `$dissertation-reviewer`  
 Final gate: **PASS**  

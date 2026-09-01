@@ -90,7 +90,7 @@ Separate D0 synthetic mechanism evidence, D1 authorised pilot evidence, sealed D
 Greyscale and accessibility reading cues
 ----------------------------------------
 
-The figure does not rely on colour alone. Stages are numbered 1 to 7 and carry text tags: FRAME, FREEZE, BUILD, ENGINEER, EXECUTE, ANALYSE and COMMUNICATE. The non-leap boundary uses a boxed label and explicit text. The two side rails are titled RESEARCHER INVOLVEMENT and MITIGATION CONTROLS. This text alternative provides the complete linear reading order. The PDF is vector but is not claimed to be tagged.
+The figure does not rely on colour. Stages are numbered 1 to 7 and carry text tags: FRAME, FREEZE, BUILD, ENGINEER, EXECUTE, ANALYSE and COMMUNICATE. The non-leap boundary uses a boxed label and explicit text. The two side rails are titled RESEARCHER INVOLVEMENT and MITIGATION CONTROLS. The current visual is a monochrome PNG screenshot generated from the corresponding Mermaid source; this text alternative provides the complete linear reading order.
 
 Local academic evidence basis
 -----------------------------

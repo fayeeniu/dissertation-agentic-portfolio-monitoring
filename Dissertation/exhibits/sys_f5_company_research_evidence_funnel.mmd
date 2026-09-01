@@ -1,0 +1,19 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% Line breaks are deliberately short so that two columns of stage detail still fit \textwidth on a
+%% portrait A4 page with legible text.
+block-beta
+  columns 2
+  Z["<b>Controls across every stage</b><br/>Saved tasks in order · limited retries and use · recovery records<br/>named approval before export"]:2
+  D["<b>1 · DISCOVER</b><br/><br/><b>Input:</b> reviewed company number,<br/>cut-off and category plan<br/><br/><b>Source check:</b> public HTTPS addresses<br/>returned in the source list; snippets<br/>and model text are not evidence<br/><br/><b>Saved output:</b> possible source list<br/>and usage; uncovered categories<br/>remain visible"]
+  C["<b>2 · CAPTURE</b><br/><br/><b>Input:</b> possible source address<br/>and fixed response limits<br/><br/><b>Network check:</b> robots, sign-in details,<br/>address, TLS, redirect, status,<br/>file type and downloaded size<br/><br/><b>Saved output:</b> redacted copy, details<br/>and hashes; blocked or failed<br/>state retained"]
+  X["<b>3 · EXTRACT</b><br/><br/><b>Input:</b> limited visible text;<br/>page content remains untrusted<br/><br/><b>Support check:</b> exact address and<br/>passage; cut-off, personal-data,<br/>recommendation and injection checks<br/><br/><b>Saved output:</b> structured claim with<br/>exact passage and location, or a<br/>clear no-claim decision"]
+  P["<b>4 · WRITE PROFILE</b><br/><br/><b>Input:</b> accepted claims and<br/>captured sources in hash order<br/><br/><b>Writing check:</b> keep source links<br/>and disagreement; never infer<br/>valuation or recommendation<br/><br/><b>Saved output:</b> pending-review profile<br/>with a content hash, citations,<br/>conflicts, gaps and limits"]
+
+  Z --> D
+  Z --> C
+  D --> C
+  C --> X
+  X --> P
+
+  class Z fx-live
+  class D,C,X,P fx-stage

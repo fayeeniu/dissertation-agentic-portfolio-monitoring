@@ -1,4 +1,4 @@
-SYS-F1 — Local architecture and deployment boundaries
+SYS-F1: Local architecture and deployment boundaries
 Author: Faye Niu
 Target section: 4.2 Architecture and deployment design
 Suggested LaTeX label: fig:sys-architecture-deployment-boundary
@@ -8,31 +8,31 @@ Purpose
 This figure separates what the local prototype implements and checks from what is implemented but has no completed live public-company execution, what remains held, and what is explicitly outside scope. It does not claim production security, multi-user operation, cloud deployment, completed live research, user benefit, or empirical effectiveness.
 
 Status key
-1. Solid blue boundary — IMPLEMENTED + LOCAL CHECKS. The repository contains implementation and local test or static-validation evidence for the named boundary. This does not imply production readiness.
-2. Dashed amber boundary — IMPLEMENTED / LIVE UNRUN. Guarded mechanics and fake, synthetic, or adversarial tests exist, but a live public-company execution is not claimed.
-3. Dotted red boundary — HELD / GATE CLOSED. Direct live use is not admitted under the current source policy.
-4. Grey compound-dashed boundary — EXPLICIT NON-GOAL. The capability is deliberately absent from the bounded dissertation prototype.
+1. IMPLEMENTED AND CHECKED. The repository contains implementation and local test or static-validation evidence for the named boundary. This does not imply production readiness.
+2. LIVE UNRUN. Guarded mechanics and fake, synthetic, or adversarial tests exist, but a live public-company execution is not claimed.
+3. HELD. Direct live use is not admitted under the current source policy.
+4. EXPLICIT NON-GOAL. The capability is deliberately absent from the bounded dissertation prototype.
 
 Reading order and architecture
 
-1. Local entry and container profile — loopback/single-user boundary.
-   - Loopback browser: the implemented local browser path provides review and approval pages. Local web tests exercise the page, Host/client, CSRF, approval, export, and integrity boundaries.
-   - CLI: import, run, review, export, evaluation, visualisation, and local serving use the same Runtime/service construction rather than a separate business-logic path.
-   - Docker Compose local profile: the implemented configuration publishes only `127.0.0.1:${PORTFOLIO_PORT:-8000}:8000`, uses a read-only root filesystem, drops Linux capabilities, and injects a private-container-client mode because Docker NAT replaces the browser's loopback address inside the container. At the recorded validation point, the Compose application hash matched the running container configuration, the container was healthy with read-only rootfs enabled, the named state volume was mounted read/write only at `/app/var`, the port was bound to `127.0.0.1:8000`, and the loopback health endpoint returned `status=ok`. The health response reported `external_llm=enabled`; this is configuration state only and is not evidence that any model, research stage, or public-source call ran. These checks verify the local profile, not a production deployment.
+1. Local entry and container set-up: local-machine and single-user boundary.
+   - The loopback browser enters the Next.js control room. A server-side route proxies requests to the private FastAPI service; the browser does not connect to FastAPI or hold its CSRF credential.
+   - The CLI covers database initialisation, import, workflow, review, export, evaluation and local serving through the same Runtime/service construction rather than a separate domain path.
+   - Docker Compose runs two services. Only the Next.js `app` service is published, at `127.0.0.1:${PORTFOLIO_PORT:-8000}:3000`; the `api` service is exposed only on the private Compose network. Both container roots are read-only and drop Linux capabilities. The API alone mounts `portfolio-state` read/write at `/app/var`. These are local configuration and test facts, not production-deployment evidence.
 
-2. FastAPI application and shared use-case boundary — implemented and locally tested.
-   - The loopback browser enters `web.create_app`.
-   - FastAPI serves server-rendered Jinja/static pages and a local JSON API projection. Host/client and CSRF controls reduce local-browser risk; the application has no production authentication claim.
-   - Browser routes and CLI commands call shared Runtime services: `PortfolioImporter`, `PortfolioWorkflow`, `ReportService`, `SourceRegistry`, `CompanyIntakeService`, and, only when cumulative gates pass, `CompanyResearchService`.
-   - The service boundary owns typed ingestion/identity, bounded workflow, independent verification, versioned reports, named approval, and export decisions. The optional company-research service is implemented, but a live public-company run is not claimed.
+2. Dashboard, private API and shared task boundary: built and locally tested.
+   - Next.js is the sole maintained dashboard. Its same-origin proxy calls FastAPI JSON endpoints and the approved-deck download surface through `PORTFOLIO_API_ORIGIN`.
+   - FastAPI checks the exact Host and client boundary, supplies security headers and validates its double-submit CSRF contract. The server-side proxy performs the handshake and attaches the private credentials; neither mechanism is production authentication.
+   - API routes and CLI commands delegate to shared Runtime services: `PortfolioImporter`, `PortfolioWorkflow`, `ReportService`, `SourceRegistry`, `CompanyIntakeService`, and, only when cumulative gates pass, `CompanyResearchService`.
+   - The service boundary owns typed ingestion and identity, bounded workflow, independent verification, versioned reports, named approval and export decisions. The optional company-research service is implemented, but a live public-company run is not claimed.
 
-3. Local persistence and immutable artifact boundary — implemented and locally tested.
+3. Local storage and write-once file boundary: built and locally tested.
    - SQLAlchemy sessions persist metadata, provenance, audit, task, verification, report, review, and export state in local SQLite.
    - Application startup runs Alembic to head; the migration schema is checked against the SQLAlchemy metadata model.
    - Create-once or manifest-bound local files live in ignored `var/raw`, `var/sources`, and `var/exports` directories. Hashes support integrity and provenance; they do not establish truth, authority, encryption, anonymisation, or lawful processing.
    - Docker Compose mounts the named `portfolio-state` volume at `/app/var`, providing persistent local state across container recreation. No managed cloud storage is implied.
 
-4. Optional untrusted public/external-provider boundary — implemented controls; live public-company execution unclaimed.
+4. Optional untrusted public and external-provider boundary: controls are built, but no live public-company result is claimed.
    - The external path is constructed only for a public case with a reviewed Companies House number, both explicit runtime flags, an API key, and a named reviewer.
    - OpenAI Responses web search may propose bounded HTTPS URL candidates. Search snippets and free-form model prose are not evidence.
    - Guarded capture checks HTTPS, public addresses, redirects, robots, MIME, time, and byte limits. An optional model route receives only admitted public content with `store=False`; exact-span/schema checks remain mandatory.
@@ -53,4 +53,4 @@ Academic design context
 - Pineau et al. (2021), local PDF pp. 1-4: reproducibility, versioned artefacts and transparent experimental reporting context. This is not a reproduction of the present system.
 
 Accessibility note
-The SVG carries a title, full description, explicit reading order, and text status labels. Colour is redundant: solid, dashed, dotted, and compound-dashed outlines encode the four status states. The PDF is vector and print-legible, but no claim of tagged-PDF accessibility is made; this complete text alternative is the accessible companion.
+The current visual is a monochrome PNG screenshot generated from the corresponding Mermaid source. Every status is written in the diagram rather than encoded by colour. This complete text alternative supplies the accessible linear reading order.

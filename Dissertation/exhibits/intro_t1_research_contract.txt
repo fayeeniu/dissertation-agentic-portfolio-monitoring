@@ -1,56 +1,48 @@
-INTRO-T1 - Research contract and current evidence boundary
+INTRO-T1 - Research questions and evaluation plan
 Author: Faye Niu
-Target section: 1.3 Aim and research questions
+Target section: 1.4 Research questions
 LaTeX label: tab:research-contract
 
 Columns
 
-Question; evaluand or comparison; observable measures; current evidence status; exclusion or interpretive boundary.
+Question; how it will be answered; main measures; current evidence and limit.
 
 Primary question
 
-Evaluand/comparison: The workflow comparison contains four explicit conditions under the same frozen input and source-access window. C0 is the authorised manual workflow. C1 is the deterministic/single-agent baseline without an independent verifier. C2 is the bounded multi-agent condition with independent verification. C3 is C2 followed by named human review.
+How it will be answered: Combine the findings for RQ1 to RQ3 across C0 manual work, C1 and C2 automation, and C3 named review.
 
-Observable measures: Extent of ingestion, validation and report-generation automation; claim and report quality; provenance; reliability; failures; and active and elapsed time.
+Main measures: Amount automated; quality; reliability; complete source records; failures; and active and elapsed time.
 
-Current evidence status: D0 provides C1/C2 mechanism evidence only. Human C0/C3 evidence and D1/D2 execution are EVIDENCE HELD / NO-GO.
+Current evidence and limit: D0 tests C1 and C2 mechanisms only. C0, C3, D1 and D2 are on hold, so the primary question is partly answered.
 
-Boundary: No manual or human comparative conclusion is permitted before authorised C0/C3 and D1/D2 evidence exist. Live public-web company-research evaluation is outside RQ1--RQ3. Investment outcomes, production claims and exhaustive-web claims are excluded.
+RQ1 - input-to-claim accuracy and reliability
 
-RQ1 - data and evidence fidelity
+How it will be answered: Apply fixed identity, date, missing-data and source rules to labelled cases, then compare the output with agreed reference answers.
 
-Evaluand/comparison: Accurate and reliable bounded transformation of heterogeneous portfolio inputs against a frozen field and claim reference.
+Main measures: Identity, value, period and missing-state accuracy; source completeness; and repeated-run agreement.
 
-Observable measures: Type and schema validity; field extraction and normalisation accuracy; missing-state classification, including blank versus zero; identity and time eligibility; provenance completeness; locator validity; transparent uncertainty; deterministic outcome-vector consistency; and repeat consistency across runs.
+Current evidence and limit: D0 provides labelled mechanism evidence. D1 and sealed D2 are held; no real-portfolio accuracy is established.
 
-Current evidence status: Synthetic labelled D0 mechanism and regression evidence is executable. The D1 pilot and sealed D2 evaluation are held.
+RQ2 - effect of independent verification
 
-Boundary: D0 does not estimate real-portfolio performance. Unlabelled layers remain null. It provides no live-source or production inference.
+How it will be answered: Compare C1 without a separate verifier with C2 on the same cases and with the same information access.
 
-RQ2 - independent verification
+Main measures: Precision; recall; unsupported-claim rate; conflicts; rejected claims; source completeness; and repeatability.
 
-Evaluand/comparison: C1 deterministic/single-agent baseline versus C2 multi-agent verification under the same information boundary.
+Current evidence and limit: C1 and C2 have been compared on D0. D1 and D2 are held; the result does not establish performance on new company data.
 
-Observable measures: Supported-claim precision and recall; unsupported-claim rate; contradiction handling; abstention; provenance completeness; and repeat consistency.
+RQ3 - manual reporting and named human review
 
-Current evidence status: C1 and C2 are executable on labelled D0 cases. D1 and D2 are held.
+How it will be answered: Compare manual C0, automated C1 and C2, and named-review C3 on the same tasks, sources and reference answers.
 
-Boundary: The evaluation estimates the verifier effect and must not presume a benefit. Precision/recall trade-offs, failures, negative findings and null outcomes remain reportable.
+Main measures: Correctness; completeness; active and elapsed time; edits; approval time; and reviewer usefulness.
 
-RQ3 - efficiency and human review
-
-Evaluand/comparison: Compare automated C1/C2 and named-review C3 with manual C0. C1 is deterministic and has no independent verifier; C2 adds bounded independent verification; C3 is C2 plus named review. The C2 pre-review versus C3 post-review comparison is a subordinate within-workflow comparison, not the complete RQ3 comparison.
-
-Observable measures: Report correctness and completeness; active and elapsed time; edit burden; approval time; and reviewer utility.
-
-Current evidence status: The C3 review workflow is implemented, but D0 deliberately records null C0/C3 human measures. Human C0/C3 evidence and D1/D2 execution remain EVIDENCE HELD / NO-GO.
-
-Boundary: Execute only with ethics and data authority, a frozen reference and authorised reviewers. Do not reconstruct timing retrospectively or invent participant evidence.
+Current evidence and limit: No C0 or C3 observations exist. The authorised human comparison is on hold, so RQ3 is unanswered.
 
 Contract-wide interpretive boundary
 
-Live public-web company-research evaluation is outside RQ1--RQ3 and outside the frozen research contract. The table does not evaluate investment outcomes and does not establish production readiness or exhaustive-web coverage. It contains no result values.
+Live public-web company-research evaluation is outside RQ1 to RQ3. The table does not evaluate investment outcomes and does not establish production readiness or complete web coverage. It adds no study result.
 
 Source note
 
-Author synthesis of frozen project contracts, not results. Evidence-status labels distinguish executable D0 mechanism evidence from held D1/D2, manual and human evidence.
+Developed by the author from the fixed evaluation plan and current evidence status. It does not add a study result.

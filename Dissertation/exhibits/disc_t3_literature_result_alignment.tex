@@ -1,0 +1,53 @@
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.25\textwidth}P{0.25\textwidth}Y@{}}
+    \toprule
+    \textbf{Question} & \textbf{Expectation from the literature} & \textbf{Observed evidence} & \textbf{Comparison} \\
+    \midrule
+    RQ1 &
+    Clear source records, data-quality rules and repeat controls make decisions easier to inspect,
+    but do not prove that a source is true or that the system is accurate in real use. &
+    Identity, time, source, verification and export controls ran; fourteen D0 cases repeated
+    exactly. &
+    \textbf{Compatible in direction}: this only shows that the controlled mechanism can run. It does
+    not conflict with the reviewed literature, but there is no real-world accuracy estimate. \\
+    \addlinespace
+    RQ2 &
+    Claim correctness, citation support and attribution should be assessed separately; a support gate
+    should withhold represented unsupported material. &
+    C2 removed six D0 false positives, retained all five supported cases and changed precision from
+    0.455 to 1.000 without D0 recall loss. &
+    \textbf{Compatible in how it works}: the direction matches the design drawn from the literature,
+    but the perfect values reflect the designed cases and cannot show a normal population effect. \\
+    \addlinespace
+    Future human pilot &
+    Human control may improve reflection and accountability, while also creating reliance, preference,
+    workload and delay trade-offs. &
+    Named review controls exist, but C0 and C3 each contain zero observations and every human outcome
+    is null. &
+    \textbf{No observed comparison}: the pilot design is prospective and no human effect is claimed. \\
+    \addlinespace
+    Generalisation &
+    Independent held-back evidence, protection against test leakage, complete records and clear
+    uncertainty are needed before making wider claims. &
+    D0 labels and rules were co-developed; D1 is protocol-only, D2 is sealed, and live/company
+    comparisons are unrun. &
+    \textbf{Expected evidence gap}: this agrees with the cautions in the methods literature, but it
+    cannot support a statistical judgement that the result is anomalous or non-anomalous. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{How the results compare with the literature (qualitative, not a non-anomaly test)}
+  \label{tab:disc-literature-result-alignment}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author comparison of the Chapter 5 results with Gao et al. (2023a, 2023b),
+    Pineau et al. (2021), Nikiforova et al. (2020), Gebru et al. (2021), Kapoor \& Narayanan (2023),
+    Amershi et al. (2019) and Bu\c{c}inca et al. (2021). The sources motivate expectations and
+    limits of the method. None provides a population distribution that can be compared directly with D0.}
+\end{table}
+\clearpage

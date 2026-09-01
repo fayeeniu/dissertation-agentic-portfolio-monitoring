@@ -1,9 +1,215 @@
 \chapter{Evaluation and Results}
 \section{Exact implementation and evidence snapshot}
+
+The engineering record was created on 28 August 2026 using macOS Darwin 25.6.0 on Arm64 and Python
+3.12.13. Git \texttt{HEAD} was \texttt{6356aa49cb3b}, but the working tree contained dissertation and
+implementation changes, so the commit is not a complete identifier.
+Table~\ref{tab:eval-implementation-snapshot}, in Appendix~\ref{app:reproducibility-build},
+records checksums for the dependency lock, protocol, test data and migrations, and its text alternative
+retains the full values, so another person can confirm they are working from the same inputs
+\citep{pineau2021reproducibility,gebru2021datasheets}.
+
+The three-repeat D0 output was regenerated and frozen on 1 September 2026 at
+\nolinkurl{audit/d0_evaluation_2026-09-01.json}. Its SHA-256 checksum is
+\nolinkurl{dcc2fbffab100dfcf034784002d63b610cd9f97a8d6e6f9218b6e7f900de9dcd}.
+The frozen output retains
+the evaluation-manifest and fixture checksums, the test-only namespace, all case decisions and every
+reported summary value. This resolves the earlier provenance gap without converting the designed
+cases into independent or real-company evidence
+\citep{pineau2021reproducibility,mitchell2019modelcards}.
+
+Evidence comprises the local system at migration 0009, 286 automated tests and fourteen fictional D0
+cases. Later interface and schema revisions described in Chapter~4 were not part of this dated snapshot
+and add no empirical result. D1 is planned, D2 sealed, and C0/C3 have no observations. The company-research route passed
+controlled tests but has never been run against a live company, a live public website or an external
+model. The only live external-model requests anywhere in the project were bounded development smoke
+runs on the portfolio extraction stage, described in Section~7.2, and they contribute no result here.
+What follows is therefore an engineering record and a set of designed mechanism cases. Sections 5.2 and
+5.5 supply the evidence for RQ1, which asks how the workflow preserves identity, time, missing states,
+provenance and approval boundaries from input to report; Section 5.4 addresses RQ2, which asks what a
+separately recorded verification stage does to claim admission. Conditions without observations are
+reported as null rather than estimated, and Section~7.5 states the boundary that applies to every
+number here \citep{hevner2004design,peffers2007dsrm,nist2023airmf}.
+
 \section{Engineering validation}
+
+The final engineering run used the full automated test set rather than choosing only successful
+cases. All 286 tests passed and executed 85.58\% of the source statements. Ruff found no lint errors,
+and strict MyPy found no type errors across 46 source files. A new SQLite database applied migrations
+0001-0009, reported 0009 as the snapshot version and needed no further Alembic changes. Together these results show that the
+paths the tests reach behave consistently \citep{pineau2021reproducibility,nist2023airmf}.
+
+The formatting check failed. Ruff found five files that it would change, made up of two source files
+and three test files. The dated snapshot retained those five findings; later code changes are not
+evaluated by this record. The test run also produced 22 warnings about features
+that Starlette and the SQLite date and time adapters may remove in future.
+Table~\ref{tab:eval-engineering-validation}, in Appendix~\ref{app:reproducibility-build},
+therefore reports a mixed result instead of calling the whole run a pass. The formatting failure
+matters for repeatability, but it does not cancel the 286 passing tests
+\citep{gebru2021datasheets,pineau2021reproducibility}.
+
+The suite covers migrations, identity, time, source policy and records, verification, review, export,
+research tasks and unsafe-network controls, all using fictional data, fake providers and local files.
+Coverage of 85.58 per cent counts source statements that ran, which is a weaker guarantee than
+covering every requirement, branch or fault; browser usability, concurrent users, backup recovery and
+live sources were not tested at all
+\citep{hevner2004design,peffers2007dsrm,nist2023airmf}.
+
 \section{D0 fixture and comparison design}
+
+D0 contains fourteen labelled and fictional engineering cases, accepted through a versioned
+evaluation record. The cases cover complete and limited records, blank values compared with zero,
+mixed data types, conflicting and old evidence, and unsupported claims. They also cover unclear
+identity, repeated evidence, inaccessible sources, evidence in prose, mixed currencies and prompt
+injection. The data
+loader checks the file checksum, the test-only split rule and the \texttt{benchmark:d0} name. It then
+places case and evidence identifiers in that test namespace, so the operational collector will refuse
+them and no fictional company can leak into a real run
+\citep{gebru2021datasheets,pineau2021reproducibility}.
+
+C1 and C2 use the same cases, data catalogue, cleaning rules and proposed values. C1 produces every
+eligible cleaned value unless the company identity is unclear. It keeps the available source details
+but has no separate verifier. C2 uses the same preparation and produces only values that a separate,
+fixed verifier marks as supported. The saved evaluator output labels these conditions
+\texttt{deterministic\_single\_agent} and \texttt{multi\_agent\_verification}, and records the
+unsupported-claim rate in a field named \texttt{hallucination\_rate}. This dissertation renames all
+three, because the one change between the conditions is the verification gate rather than the number
+of agents, and because a fixed pipeline that emits an unsupported value is not hallucinating in the
+sense that term usually carries. Each condition ran three times. The first run was scored, and the
+complete set of outcomes was compared across repeats. Table~\ref{tab:eval-d0-comparison-design}
+makes this one change between the conditions clear. Each comparison matches the same case in C1 and
+C2 \citep{guo2024multiagent,wu2024autogen}.
+
+One feature of this design needs stating before any result is read. The expected outputs and
+verification states live in the same visible development file that informed the rules, so D0 tests
+programmed gates against cases written alongside them. It carries no event-link labels, no human
+reference and no workload measures, which is why several rows in the results are null rather than
+zero. A pilot on real data and a sealed final set remain the precondition for any performance claim
+\citep{kapoor2023leakage,pineau2021reproducibility,peffers2007dsrm}.
+
+\input{exhibits/eval_t3_d0_comparison_design.tex}
 \section{D0 synthetic mechanism results}
+
+The repeated run produced fourteen scored cases for each automated condition. C1 produced eleven
+claims: five correct positive claims and six incorrect positive claims, with no required claim
+missing. C2 produced five claims, all correct, and returned no claim for the other nine cases as
+intended. C1 therefore had precision of 0.455, recall of 1.000 and F1 of 0.625. C2 recorded 1.000 for
+all three measures. This apparent improvement applies only to the designed D0 cases and comes from
+blocking the six candidates designed to be unsupported \citep{gao2023alce,gao2023rarr}.
+
+The unsupported-claim rate fell from 0.545 in C1 to 0.000 in C2, while the supported-claim rate rose
+from 0.455 to 1.000. Complete source records rose from 0.818 to 1.000 because two C1 claims did not
+have every required source detail and C2 did not produce them. All three rates use the number of
+claims produced as their total, and that total falls from eleven to five. The result therefore shows
+more selective output, not wider source discovery or a more complete report
+\citep{gao2023alce,gebru2021datasheets}.
+
+Both conditions followed the schema correctly, cleaned every value correctly and produced exactly
+the same outcomes across the three repeats, giving 1.000 on each measure. C1 was correct in 0.571 of
+verification and no-claim decisions, compared with 1.000 for C2. C1 missed both labelled
+contradictions and C2 found both, so their contradiction scores were 0.000 and 1.000. This result is
+based on just two contradictions. Table~\ref{tab:eval-d0-results} keeps that warning, and
+Figure~\ref{fig:eval-d0-metric-profile} shows the main rates without combining them into one score
+\citep{nikiforova2020quality,pineau2021reproducibility}.
+
+Mean time was recorded as zero milliseconds for both conditions because the evaluator cuts times
+below one millisecond down to the nearest whole number. It cannot support a speed comparison. The
+recorded LLM cost was USD 0 because both routes are fixed and run locally. Measures for identity,
+extraction, timing of evidence, source quality, event links, report correctness and reviewer value
+were blank because D0 has no suitable labels or observations. Keeping a blank result instead of
+changing it to zero avoids suggesting a measured failure or success
+\citep{gebru2021datasheets,nist2023airmf}.
+
+Looking at individual cases explains the overall change. C1 incorrectly produced claims for the
+conflict, old evidence, unsupported evidence, inaccessible source, mixed currency and prompt
+injection cases. C2 gave them cautious unsupported states and produced no claim, while keeping the
+complete case, the true zero, mixed data types, matching repeated evidence and claims supported by
+prose. Each category has only one case, so this shows the intended gates worked for the categories D0
+contains and cannot describe a wider distribution \citep{gao2023rarr,nist2023airmf}.
+
+Two individual cases from Table~\ref{tab:eval-d0-case-examples} show what these decisions look like in
+practice, and they are worth following in ordinary terms. In the first, the fictional company reports
+that it created no jobs in the period. The submitted figure is zero, the stored evidence also says
+zero, and the two agree, so the verifier marks the claim supported and it appears in the report with
+its source attached. This case matters because the obvious shortcut would be to treat a zero as an
+empty box and quietly drop it. Doing so would remove a real and possibly unwelcome fact from the
+report, so the system is designed to notice that somebody actually observed nothing and to say so
+\citep{bradley2024synfintabs,gebru2021datasheets}.
+
+The second case is a claim that was refused. A grant of one hundred thousand pounds is proposed for
+the period, but the stored register evidence for that same period records two hundred thousand. The
+two figures cannot both be right, and nothing in the evidence establishes which is. The verifier
+therefore marks the claim contradicted, the report omits it, and the disagreement is kept on record
+for a named person to resolve. What the system specifically does not do is choose the larger figure,
+the newer one or an average, because any of those would manufacture a number that no source states.
+For a reader, the useful contrast is that C1 published this claim while C2 withheld it: the six
+withheld claims are the whole of the measured difference between the two conditions, and they are
+withheld silences rather than corrections \citep{gao2023alce,gao2023rarr,huang2023hallucination}.
+
+These results answer RQ2 for the conditions tested. The separately recorded verification stage changed
+claim admission: it rejected every candidate D0 designed to be unsupported, conflicting, stale,
+inaccessible, mixed-currency or injected, kept all five designed to be supported, and raised
+source-record completeness by producing fewer claims rather than better-sourced ones. The perfect
+scores deserve suspicion rather than celebration, because the labels and the rules were written
+together; Section~7.5 sets out what that shared origin does and does not allow the reader to conclude
+\citep{kapoor2023leakage,hevner2004design,peffers2007dsrm}.
+
+\input{exhibits/eval_t4_d0_results.tex}
+\input{exhibits/eval_t4a_d0_case_examples.tex}
+\input{exhibits/eval_f1_d0_metric_profile.tex}
 \section{Company-research contract and adversarial results}
-\section{Held future public-company source-discovery comparison}
-\section{Manual and human-in-the-loop comparison}
+
+A focused run passed 37 company-research, migration and fixture tests. The controlled end-to-end case
+resolved a reviewed company number, admitted bounded search suggestions and content, accepted exact
+supporting passages, composed profile version three and required named review before download. Other
+cases covered run fingerprints, replay, budgets, cancellation, recovery, source ownership,
+contradictions and stale approval, and each behaved as its contract specified
+\citep{gao2023alce,nist2023airmf}.
+
+Hostile-input tests rejected credential-bearing or non-HTTPS URLs, blocked ports, private or changed
+network addresses, excessive redirects, robots exclusions, wrong file types and oversized responses.
+Controlled components checked connection to a public IP with HTTPS hostname verification. Downloaded
+text remained untrusted; suggested URLs had to appear in the bounded source list, retries consumed the
+run budget, and exact captured passages supported accepted values. These selected cases do not establish
+complete SSRF or prompt-injection protection \citep{greshake2023indirect,autio2024genai}.
+
+Table~\ref{tab:eval-company-adversarial-results} maps each control group to residual risk. Tests also
+covered publisher diversity, duplicate snapshots, identity passages, timeout failure, zero redirects
+and run-specific cleanup. Inputs were local fixtures, fake providers or controlled responses, with one
+Starlette deprecation warning. This test run contacted no OpenAI, Companies House, publisher or open
+website endpoint; the separate development smoke runs that did reach OpenAI are recorded in
+Section~7.2 and are not part of this snapshot. Consequently,
+delay, tokens, cost, paywalls, DNS change, source availability, open-web coverage and profile usefulness
+remain unmeasured \citep{openai2026websearch,pineau2021reproducibility,nist2023airmf}.
+
+A caution applies to all of these security results. Each is a stated example, and a pass means one
+specified input was refused as designed. There is no rate here for wrongly blocked requests, no
+measure of attacks missed, and no coverage figure; estimating resistance beyond these examples would
+need generated inputs, dependency checks and penetration testing designed by someone else
+\citep{greshake2023indirect,nist2023airmf}.
+
+The detailed adversarial-control matrix is provided in Appendix~\ref{app:supplementary-evaluation}.
+\section{Comparisons that produced no observations}
+
+Three planned comparisons produced nothing to report: the public-company source-discovery study, the
+manual baseline C0 and the participant-review condition C3. They are recorded here as absent rather
+than as weak findings, because each needed frozen companies, reference labels and stopping rules
+agreed before collection, and a comparison arranged after the data are seen cannot demonstrate equal
+information access \citep{kapoor2023leakage,pineau2021reproducibility,bucinca2021forcing}. The held
+protocols and null fields are in Appendix~\ref{app:supplementary-evaluation}, and Section~6.7 sets out
+the pilot that would fill them. Tables~\ref{tab:eval-held-company-comparison} and
+\ref{tab:eval-human-comparison-status} distinguish the two absent comparisons from executed results.
 \section{Negative, null, failed, and unavailable outcomes}
+
+Negative results were kept. Ruff's formatting check failed for five files, and the passing test set
+produced 22 warnings about future changes. C1 produced six incorrect positive claims in D0 and missed
+both labelled contradictions. Timings of zero milliseconds gave no useful information because the measure cut
+times below one millisecond down to a whole number. These results were not removed from the totals or
+presented as successful checks. They show the engineering and measurement work that remains
+\citep{pineau2021reproducibility,nist2023airmf}. The formatting failure is still present in the
+evaluated record.
+
+Blank outcomes were retained on the same principle. Where D0 has no label and where a condition never
+ran, the result field stays empty, and the distinct reasons for absence -- a blocked request, an
+unavailable source, no record, an unsupported claim, a contradiction and an outright failure -- are
+never merged into one \citep{gebru2021datasheets,gao2023rarr,hevner2004design}.

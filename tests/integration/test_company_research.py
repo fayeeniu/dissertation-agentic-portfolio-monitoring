@@ -439,13 +439,12 @@ def test_company_number_runs_search_capture_exact_span_deck_and_named_review(
             lock_version = profile.lock_version
 
         client = TestClient(create_app(runtime))
-        page = client.get(f"/companies/{company_id}")
+        page = client.get(f"/api/companies/{company_id}")
         assert page.status_code == 200
-        assert "Reviewable company-intelligence deck" in page.text
+        assert "company-intelligence-deck-v3" in page.text
         assert "£2 million" in page.text
-        assert "Potential contradictions requiring named resolution" in page.text
-        csrf = client.cookies.get("portfolio_csrf")
-        assert csrf
+        session_state = client.get("/api/session").json()
+        csrf = session_state["csrf_token"]
         with pytest.raises(CompanyResearchError, match="already final"):
             runtime.company_research.cancel(
                 run.id,
@@ -453,16 +452,15 @@ def test_company_number_runs_search_capture_exact_span_deck_and_named_review(
                 reason="Do not cancel a deck that is already pending review",
             )
         decision = client.post(
-            f"/profile-versions/{profile_id}/decide",
-            data={
+            f"/api/profile-versions/{profile_id}/decide",
+            json={
                 "csrf_token": csrf,
                 "decision": "approve",
                 "reason": "Reviewed the exact source evidence and coverage gaps",
                 "expected_lock_version": lock_version,
             },
-            follow_redirects=False,
         )
-        assert decision.status_code == 303
+        assert decision.status_code == 200
         deck = client.get(f"/profile-versions/{profile_id}/deck/html")
         assert deck.status_code == 200
         assert "attachment" in deck.headers["content-disposition"]
@@ -517,7 +515,7 @@ def test_interrupted_discovery_is_reconciled_without_a_second_model_call(tmp_pat
         company_research_client=fake_model,  # type: ignore[arg-type]
         public_fetcher=_FakeFetcher(),  # type: ignore[arg-type]
     )
-    company_id, case_id = _public_case(runtime)
+    _company_id, case_id = _public_case(runtime)
     assert runtime.company_research is not None
     run = runtime.company_research.start(
         case_id,
@@ -543,19 +541,18 @@ def test_interrupted_discovery_is_reconciled_without_a_second_model_call(tmp_pat
         with pytest.raises(CompanyResearchError, match="explicitly recovered"):
             resumed.company_research.advance(run.id)
         client = TestClient(create_app(resumed))
-        page = client.get(f"/companies/{company_id}")
-        assert "Recover interrupted stage" in page.text
-        csrf = client.cookies.get("portfolio_csrf")
-        assert csrf
+        state = client.get(f"/api/research-runs/{run.id}").json()
+        discovery = next(node for node in state["nodes"] if node["id"] == "discover_sources")
+        assert discovery["status"] == "running"
+        csrf = client.get("/api/session").json()["csrf_token"]
         recovered = client.post(
-            f"/company-research-runs/{run.id}/recover",
-            data={
+            f"/api/research-runs/{run.id}/recover",
+            json={
                 "csrf_token": csrf,
                 "reason": "The local process stopped after source discovery committed",
             },
-            follow_redirects=False,
         )
-        assert recovered.status_code == 303
+        assert recovered.status_code == 200
         assert fake_model.discovery_calls == 1
         assert resumed.company_research.advance(run.id).capability == "capture_sources"
         with resumed.session_factory() as session:
@@ -1131,7 +1128,7 @@ def test_interrupted_composition_requires_recovery_before_profile_review(tmp_pat
         public_fetcher=_FakeFetcher(),  # type: ignore[arg-type]
     )
     try:
-        company_id, case_id = _public_case(runtime)
+        _company_id, case_id = _public_case(runtime)
         assert runtime.company_research is not None
         run = runtime.company_research.start(
             case_id,
@@ -1149,10 +1146,16 @@ def test_interrupted_composition_requires_recovery_before_profile_review(tmp_pat
         )
 
         client = TestClient(create_app(runtime))
-        held = client.get(f"/companies/{company_id}")
-        assert "Recover interrupted stage" in held.text
-        assert "task finalization is incomplete" in held.text
-        assert "Record named deck decision" not in held.text
+        held = client.get(f"/api/research-runs/{run.id}")
+        assert held.status_code == 200
+        held_state = held.json()
+        composition = next(
+            node for node in held_state["nodes"] if node["id"] == "compose_deck"
+        )
+        review = next(node for node in held_state["nodes"] if node["id"] == "human_review")
+        assert composition["status"] == "running"
+        assert review["status"] == "pending"
+        assert "task finalization is incomplete" in review["detail"]
         with runtime.session_factory() as session:
             profile = session.scalar(
                 select(ProfileVersionModel).where(ProfileVersionModel.research_run_id == run.id)
@@ -1172,8 +1175,12 @@ def test_interrupted_composition_requires_recovery_before_profile_review(tmp_pat
             actor="Named Research Reviewer",
             reason="The local process stopped after composition committed",
         )
-        ready = client.get(f"/companies/{company_id}")
-        assert "Record named deck decision" in ready.text
+        ready = client.get(f"/api/research-runs/{run.id}")
+        assert ready.status_code == 200
+        ready_review = next(
+            node for node in ready.json()["nodes"] if node["id"] == "human_review"
+        )
+        assert ready_review["status"] == "awaiting"
     finally:
         runtime.engine.dispose()
 

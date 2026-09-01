@@ -27,7 +27,7 @@ from urllib.robotparser import RobotFileParser
 
 import httpcore
 import httpx
-from openai import APIConnectionError, APITimeoutError, OpenAI
+from openai import APIConnectionError, APIStatusError, APITimeoutError, OpenAI
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, sessionmaker
@@ -36,6 +36,8 @@ from .config import (
     APPROVED_OPENAI_ESCALATION_MODEL,
     APPROVED_OPENAI_MODEL,
     APPROVED_REASONING_EFFORTS,
+    COMPANY_RESEARCH_REPAIR_EFFORT,
+    COMPANY_RESEARCH_SELECTION_EFFORT,
     Settings,
 )
 from .enums import (
@@ -51,6 +53,7 @@ from .enums import (
 )
 from .identity import normalize_company_name
 from .ids import sha256_bytes, stable_hash
+from .hybrid_documents import document_text, extract_cbit_spans
 from .investment_metrics import build_investment_report, public_metric_prompt_roster
 from .models import (
     CompanyDomainModel,
@@ -61,12 +64,14 @@ from .models import (
     CompanyResearchSourceModel,
     CompanyResearchTaskAttemptModel,
     CompanyResearchTaskModel,
+    CompanyRelationshipModel,
+    IntakeArtifactModel,
     ProfileVersionModel,
     ResearchCaseModel,
 )
 
 SOURCE_POLICY_VERSION = "public-web-research-v1"
-PROMPT_VERSION = "company-research-web-v9"
+PROMPT_VERSION = "company-research-web-v10"
 #: Versions a persisted run may carry. A run pins its own versions, so historical
 #: runs stay readable and their approved decks stay downloadable after the current
 #: prompt or policy moves on. Executing a stage additionally requires the current
@@ -81,6 +86,7 @@ ADMITTED_PROMPT_VERSIONS = frozenset(
         "company-research-web-v6",
         "company-research-web-v7",
         "company-research-web-v8",
+        "company-research-web-v9",
         PROMPT_VERSION,
     }
 )
@@ -88,9 +94,9 @@ ADMITTED_SOURCE_POLICY_VERSIONS = frozenset({SOURCE_POLICY_VERSION})
 #: Discovery carries the open-web planning judgement. Extraction is the bounded
 #: selection pass over the captured corpus. Both use the approved Luna model at
 #: stage-specific effort, and deterministic code decides which claims enter the
-#: ledger. A repeat attempt uses a corrective brief at low effort.
+#: ledger. A repeat attempt uses a corrective brief at high effort.
 REASONING_CAPABILITIES = frozenset({"discover_sources"})
-ReasoningEffort = Literal["low", "medium", "high"]
+ReasoningEffort = Literal["low", "medium", "high", "xhigh", "max"]
 USER_AGENT = "AgenticPortfolioResearch/0.1 (+local evidence-first research)"
 TASKS: tuple[tuple[int, str], ...] = (
     (1, "discover_sources"),
@@ -213,7 +219,9 @@ class ExtractedResearchClaim(BaseModel):
     )
     amount: str | None = Field(default=None, max_length=100)
     currency: str | None = Field(default=None, max_length=8)
-    perspective: Literal["fact", "company_self_claim", "public_discourse"]
+    perspective: Literal[
+        "fact", "company_self_claim", "public_discourse", "internal_document"
+    ]
 
 
 class ResearchExtractionEnvelope(BaseModel):
@@ -507,7 +515,11 @@ def _is_company_house_page_for(url: str, company_number: str) -> bool:
 
 
 def _select_discovered_sources(
-    candidates: Iterable[DiscoveredSource], *, company_number: str, max_sources: int
+    candidates: Iterable[DiscoveredSource],
+    *,
+    company_number: str,
+    max_sources: int,
+    additional_company_numbers: tuple[str, ...] = (),
 ) -> tuple[DiscoveredSource, ...]:
     """Dedupe and round-robin sources by publisher without crossing identity scope."""
 
@@ -517,7 +529,10 @@ def _select_discovered_sources(
             url = canonical_public_url(candidate.url)
         except CompanyResearchError:
             continue
-        if not _is_company_house_page_for(url, company_number):
+        if not any(
+            _is_company_house_page_for(url, allowed_number)
+            for allowed_number in (company_number, *additional_company_numbers)
+        ):
             continue
         existing = by_url.get(url)
         if existing is None or (existing.title is None and candidate.title is not None):
@@ -595,7 +610,7 @@ def _balanced_source_order(
     groups: dict[str, list[CompanyResearchSourceModel]] = defaultdict(list)
     for source in unique:
         groups[source.publisher_domain].append(source)
-    tier_rank = {"official": 0, "first_party": 1, "secondary": 2}
+    tier_rank = {"internal_document": 0, "official": 1, "first_party": 2, "secondary": 3}
     for grouped in groups.values():
         grouped.sort(key=lambda source: source.url)
     domains = sorted(
@@ -641,7 +656,10 @@ def _claim_span_is_long_enough(
     short_official_identity = (
         category == ResearchClaimCategory.IDENTITY and source_tier == "official"
     )
-    min_chars, min_words = (12, 2) if short_official_identity else (40, 6)
+    short_local_metric = source_tier == "internal_document"
+    min_chars, min_words = (
+        (12, 2) if short_official_identity or short_local_metric else (40, 6)
+    )
     return len(evidence_span) >= min_chars and len(evidence_span.split()) >= min_words
 
 
@@ -705,6 +723,22 @@ def _source_tier(domain: str, verified_domains: set[str]) -> str:
     if domain in verified_domains or any(domain.endswith(f".{item}") for item in verified_domains):
         return "first_party"
     return "secondary"
+
+
+def _source_entity_scope(
+    source: DiscoveredSource,
+    group_identities: tuple[tuple[str, str], ...],
+) -> str:
+    """Assign group scope only from an explicit reviewed name or number match."""
+
+    haystack = f"{source.url} {source.title or ''}"
+    normalized_haystack = normalize_company_name(haystack)
+    for name, number in group_identities:
+        if number.casefold() in haystack.casefold() or normalize_company_name(
+            name
+        ) in normalized_haystack:
+            return "consolidated_group"
+    return "legal_entity"
 
 
 class _VisibleTextParser(HTMLParser):
@@ -904,20 +938,24 @@ def route_for(
 
     Discovery carries the open-web planning judgement and runs at the configured
     reasoning effort. Extraction is the bounded evidence-selection pass over the
-    captured corpus and runs at low effort. A repeat attempt is a mechanical
-    correction at low effort. Every route uses the approved Luna model, and no
+    captured corpus and runs at high effort. A repeat attempt is a constrained
+    correction at high effort. Every route uses the approved Luna model, and no
     model chooses this route.
     """
 
     if attempt > 1:
-        return settings.openai_model, "low"
+        return settings.openai_model, cast(
+            ReasoningEffort, COMPANY_RESEARCH_REPAIR_EFFORT
+        )
     if capability in REASONING_CAPABILITIES:
         # The effort value is validated against the approved set before use.
         effort = settings.openai_reasoning_effort
         if effort not in APPROVED_REASONING_EFFORTS:
             effort = "medium"
         return settings.openai_escalation_model, cast(ReasoningEffort, effort)
-    return settings.openai_model, "low"
+    return settings.openai_model, cast(
+        ReasoningEffort, COMPANY_RESEARCH_SELECTION_EFFORT
+    )
 
 
 _REPAIR_BRIEF = (
@@ -944,6 +982,8 @@ def _discovery_instructions(*, cutoff: date, max_sources: int, attempt: int) -> 
         "- The Companies House number is the only authoritative identity. The supplied name "
         "may be a generated placeholder and is never identity evidence.\n"
         "- Never return a source about a different organisation that merely shares a name.\n\n"
+        "- A supplied VERIFIED CONSOLIDATED GROUP stanza is a separately reviewed scope. Search "
+        "that exact group number as well, but do not merge group and legal-entity facts.\n\n"
         "COVERAGE\n"
         "Search for sources spanning every listed category rather than many pages on one "
         "topic: legal identity and status, corporate actions and filings, funding and "
@@ -1081,8 +1121,8 @@ class OpenAICompanyResearchClient:
 
     Routing is fixed, not model-selected. Discovery runs on the approved Luna
     model at the configured reasoning effort. Extraction and repeat attempts use
-    the same model at low effort because they are bounded selection or mechanical
-    correction passes against contracts the application enforces. Any configured
+    the same model at high effort while remaining bounded by strict schemas and
+    deterministic validators. Any configured
     route other than the approved one is rejected before the client is constructed.
     """
 
@@ -1121,6 +1161,39 @@ class OpenAICompanyResearchClient:
                 "The model service connection failed before returning a usable response.",
                 code="model_connection_failed",
             ) from exc
+        except APIStatusError as exc:
+            status_code = exc.status_code
+            if status_code == 401:
+                message = (
+                    "OpenAI rejected the configured API key. Replace OPENAI_API_KEY in the "
+                    "private .env file, then recreate the API container."
+                )
+                code = "model_authentication_failed"
+            elif status_code == 403:
+                message = (
+                    "The OpenAI project does not permit this model or Web Search. Check the "
+                    "project model and tool allowlists."
+                )
+                code = "model_access_denied"
+            elif status_code == 429:
+                message = (
+                    "OpenAI rate-limited the model request. Wait for project capacity before "
+                    "retrying the stage."
+                )
+                code = "model_rate_limited"
+            elif status_code >= 500:
+                message = (
+                    "OpenAI could not complete the model request because its service returned "
+                    "a temporary error."
+                )
+                code = "model_service_error"
+            else:
+                message = (
+                    "OpenAI rejected the model request. Check the configured project access "
+                    "and the pinned request contract."
+                )
+                code = "model_request_rejected"
+            raise CompanyResearchError(message, code=code) from exc
 
     def route(self, capability: str, attempt: int) -> tuple[str, ReasoningEffort]:
         """Return the ``(model, reasoning_effort)`` this stage attempt will use."""
@@ -1219,6 +1292,9 @@ class OpenAICompanyResearchClient:
             candidates,
             company_number=company_number,
             max_sources=max_sources,
+            additional_company_numbers=tuple(
+                re.findall(r"Companies House ([A-Z0-9]{6,12})", company_name)
+            ),
         )
         return ModelCallResult(
             output_text=result.output_text,
@@ -1436,6 +1512,7 @@ class CompanyResearchService:
         self._fetcher = fetcher
         root = settings.source_snapshot_dir or (settings.project_root / "var" / "sources")
         self._snapshot_root = (root / "company-research").resolve()
+        self._intake_snapshot_root = (settings.raw_data_dir / "company-intakes").resolve()
 
     def start(
         self,
@@ -1451,6 +1528,17 @@ class CompanyResearchService:
             raise CompanyResearchError("Research cutoff cannot be in the future.")
         with self._session_factory.begin() as session:
             case, company, identifier = self._eligible_case(session, research_case_id)
+            documents = list(
+                session.scalars(
+                    select(IntakeArtifactModel)
+                    .where(
+                        IntakeArtifactModel.research_case_id == case.id,
+                        IntakeArtifactModel.kind == "document",
+                    )
+                    .order_by(IntakeArtifactModel.created_at, IntakeArtifactModel.id)
+                )
+            )
+            group_identities = self._verified_group_identities(session, company.id)
             budgets = {
                 "max_sources": self._settings.company_research_max_sources,
                 "max_tool_calls": self._settings.company_research_max_tool_calls,
@@ -1472,6 +1560,20 @@ class CompanyResearchService:
                 "model": self._settings.openai_model,
                 "prompt": PROMPT_VERSION,
                 "budgets": budgets,
+                "documents": [
+                    {
+                        "artifact_id": item.id,
+                        "sha256": item.content_sha256,
+                        "scope": item.submitted_value_json.get(
+                            "evidence_scope", "legal_entity"
+                        ),
+                    }
+                    for item in documents
+                ],
+                "verified_group_identities": [
+                    {"name": name, "companies_house_number": number}
+                    for name, number in group_identities
+                ],
             }
             if restart_of_run_id is not None:
                 fingerprint_contract["restart_of_run_id"] = restart_of_run_id
@@ -1508,6 +1610,64 @@ class CompanyResearchService:
             )
             session.add(run)
             session.flush()
+            for artifact in documents:
+                if (
+                    artifact.snapshot_path is None
+                    or artifact.content_sha256 is None
+                    or artifact.original_filename is None
+                ):
+                    continue
+                path = Path(artifact.snapshot_path).resolve()
+                if not path.is_relative_to(self._intake_snapshot_root) or not path.is_file():
+                    raise CompanyResearchError(
+                        "Internal document path is outside the intake snapshot root.",
+                        code="snapshot_tamper",
+                    )
+                payload = path.read_bytes()
+                if sha256_bytes(payload) != artifact.content_sha256:
+                    raise CompanyResearchError(
+                        "Internal document checksum mismatch.", code="snapshot_tamper"
+                    )
+                text_value = document_text(payload, artifact.original_filename)
+                metadata = artifact.submitted_value_json.get("document", {})
+                media_type = (
+                    metadata.get("declared_mime")
+                    if isinstance(metadata, dict)
+                    else None
+                ) or "application/octet-stream"
+                session.add(
+                    CompanyResearchSourceModel(
+                        research_run_id=run.id,
+                        intake_artifact_id=artifact.id,
+                        origin="internal_document",
+                        entity_scope=artifact.submitted_value_json.get(
+                            "evidence_scope", "legal_entity"
+                        ),
+                        url=f"local-intake://{artifact.id}",
+                        final_url=f"local-intake://{artifact.id}",
+                        title=artifact.original_filename,
+                        publisher_domain="local-intake",
+                        source_tier="internal_document",
+                        status=(
+                            ResearchSourceStatus.FETCHED.value
+                            if text_value
+                            else ResearchSourceStatus.UNSUPPORTED.value
+                        ),
+                        media_type=media_type,
+                        byte_size=len(payload),
+                        raw_sha256=artifact.content_sha256,
+                        snapshot_path=str(path),
+                        snapshot_kind=("local_document_text" if text_value else None),
+                        text_sha256=(stable_hash(text_value) if text_value else None),
+                        retrieved_at=artifact.created_at,
+                        error_code=None if text_value else "unsupported_document_text",
+                        error_message=(
+                            None
+                            if text_value
+                            else "Document was retained but produced no deterministic local text."
+                        ),
+                    )
+                )
             for order, capability in TASKS:
                 session.add(
                     CompanyResearchTaskModel(
@@ -2003,6 +2163,31 @@ class CompanyResearchService:
                 }
         return None
 
+    @staticmethod
+    def _verified_group_identities(
+        session: Session, company_id: str
+    ) -> tuple[tuple[str, str], ...]:
+        rows: list[tuple[str, str]] = []
+        relationships = session.scalars(
+            select(CompanyRelationshipModel).where(
+                CompanyRelationshipModel.subject_company_id == company_id,
+                CompanyRelationshipModel.relationship_type == "consolidated_group",
+                CompanyRelationshipModel.status == "verified",
+            )
+        )
+        for relationship in relationships:
+            company = session.get(CompanyModel, relationship.related_company_id)
+            identifier = session.scalar(
+                select(CompanyIdentifierModel).where(
+                    CompanyIdentifierModel.company_id == relationship.related_company_id,
+                    CompanyIdentifierModel.scheme == "companies_house_number",
+                    CompanyIdentifierModel.reviewed.is_(True),
+                )
+            )
+            if company is not None and identifier is not None:
+                rows.append((company.canonical_name, identifier.normalized_value))
+        return tuple(sorted(rows))
+
     def _discover(
         self, run_id: str, *, attempt_number: int, input_hash: str
     ) -> tuple[dict[str, Any], ModelCallResult]:
@@ -2021,6 +2206,12 @@ class CompanyResearchService:
             }
             company_number = identifier.normalized_value
             company_name = company.canonical_name
+            group_identities = self._verified_group_identities(session, company.id)
+            if group_identities:
+                company_name += "\n" + "\n".join(
+                    f"VERIFIED CONSOLIDATED GROUP: {name} (Companies House {number})"
+                    for name, number in group_identities
+                )
             cutoff = run.reporting_cutoff
             max_sources = int(budgets["max_sources"])
             max_tool_calls = int(budgets["max_tool_calls"])
@@ -2101,6 +2292,7 @@ class CompanyResearchService:
                             title=item.title,
                             publisher_domain=domain,
                             source_tier=_source_tier(domain, verified_domains),
+                            entity_scope=_source_entity_scope(item, group_identities),
                             status=ResearchSourceStatus.DISCOVERED.value,
                         )
                     )
@@ -2277,7 +2469,12 @@ class CompanyResearchService:
             ):
                 continue
             path = Path(source.snapshot_path).resolve()
-            if not path.is_relative_to(self._snapshot_root) or not path.is_file():
+            allowed_root = (
+                self._intake_snapshot_root
+                if source.origin == "internal_document"
+                else self._snapshot_root
+            )
+            if not path.is_relative_to(allowed_root) or not path.is_file():
                 raise CompanyResearchError(
                     "Captured source path is outside the research snapshot root.",
                     code="snapshot_tamper",
@@ -2287,7 +2484,11 @@ class CompanyResearchService:
                 raise CompanyResearchError(
                     "Captured source checksum mismatch.", code="snapshot_tamper"
                 )
-            text_value = visible_text(payload, source.media_type)
+            text_value = (
+                document_text(payload, source.title or "document.bin")
+                if source.origin == "internal_document"
+                else visible_text(payload, source.media_type)
+            )
             if stable_hash(text_value) != source.text_sha256:
                 raise CompanyResearchError(
                     "Captured source text checksum mismatch.", code="snapshot_tamper"
@@ -2306,20 +2507,21 @@ class CompanyResearchService:
                 continue
             url = source.final_url or source.url
             texts[url] = bounded
-            model_safe_text = PERSONAL_CONTACT.sub("[personal contact redacted]", bounded)
-            packed.append(
-                {
-                    "url": url,
-                    "title": source.title or source.publisher_domain,
-                    "publisher_domain": source.publisher_domain,
-                    "source_tier": source.source_tier,
-                    "text": model_safe_text,
-                }
-            )
+            if source.origin != "internal_document":
+                model_safe_text = PERSONAL_CONTACT.sub("[personal contact redacted]", bounded)
+                packed.append(
+                    {
+                        "url": url,
+                        "title": source.title or source.publisher_domain,
+                        "publisher_domain": source.publisher_domain,
+                        "source_tier": source.source_tier,
+                        "text": model_safe_text,
+                    }
+                )
             corpus_chars += len(bounded)
-        if not packed:
+        if not texts:
             raise CompanyResearchError(
-                "Captured sources produced no model-safe text.", code="no_evidence"
+                "Captured sources produced no usable text.", code="no_evidence"
             )
         available_model_calls = int(budgets["model_calls"]) - int(
             run.usage_json.get("model_calls", 0)
@@ -2329,7 +2531,7 @@ class CompanyResearchService:
             if attempt_number == 1 and len(packed) >= 6 and available_model_calls >= 3
             else 1
         )
-        batches = _partition_extraction_sources(packed, batch_count)
+        batches = _partition_extraction_sources(packed, batch_count) if packed else []
         stage_timeout_seconds = self._model_timeout_for(
             run_id,
             "extract_claims",
@@ -2387,7 +2589,7 @@ class CompanyResearchService:
             output_text=json.dumps(
                 {"batch_count": len(batches), "returned_claims": len(envelope.claims)}
             ),
-            model=telemetries[-1].model,
+            model=telemetries[-1].model if telemetries else "deterministic-local",
             input_tokens=sum(item.input_tokens or 0 for item in telemetries),
             output_tokens=sum(item.output_tokens or 0 for item in telemetries),
             tool_calls=sum(item.tool_calls for item in telemetries),
@@ -2407,7 +2609,27 @@ class CompanyResearchService:
         proposed_claims: list[tuple[ExtractedResearchClaim, str, str]] = []
         for source_url, official_text in texts.items():
             matched_source = source_by_url.get(source_url)
-            if matched_source is None or matched_source.source_tier != "official":
+            if matched_source is None:
+                continue
+            if matched_source.origin == "internal_document":
+                for span in extract_cbit_spans(official_text):
+                    proposed_claims.append(
+                        (
+                            ExtractedResearchClaim(
+                                category=span.category,
+                                subject_key=span.subject_key,
+                                statement=span.evidence_span,
+                                source_url=source_url,
+                                evidence_span=span.evidence_span,
+                                amount=span.value,
+                                perspective="internal_document",
+                            ),
+                            "deterministic_local_document_exact_span",
+                            "deterministic",
+                        )
+                    )
+                continue
+            if matched_source.source_tier != "official":
                 continue
             proposed_claims.extend(
                 (
@@ -2427,10 +2649,12 @@ class CompanyResearchService:
         )
         seen_source_spans: set[tuple[str, str]] = set()
         for claim, extraction_method, claim_model in proposed_claims:
-            try:
-                source_url = canonical_public_url(claim.source_url)
-            except CompanyResearchError:
-                continue
+            source_url = claim.source_url
+            if not source_url.startswith("local-intake://"):
+                try:
+                    source_url = canonical_public_url(source_url)
+                except CompanyResearchError:
+                    continue
             source_text = texts.get(source_url)
             matched_source = source_by_url.get(source_url)
             if source_text is None or matched_source is None:
@@ -2467,6 +2691,10 @@ class CompanyResearchService:
             if (
                 claim.perspective == "public_discourse"
                 and claim.category != ResearchClaimCategory.PUBLIC_DISCOURSE
+            ):
+                continue
+            if (claim.perspective == "internal_document") != (
+                matched_source.origin == "internal_document"
             ):
                 continue
             claim_hash = stable_hash(
@@ -2522,7 +2750,10 @@ class CompanyResearchService:
                 extraction_method,
                 claim_model,
             ) in accepted:
-                source = source_by_url[canonical_public_url(claim.source_url)]
+                source_locator = claim.source_url
+                if not source_locator.startswith("local-intake://"):
+                    source_locator = canonical_public_url(source_locator)
+                source = source_by_url[source_locator]
                 existing = session.scalar(
                     select(CompanyResearchClaimModel).where(
                         CompanyResearchClaimModel.claim_hash == claim_hash
@@ -2534,12 +2765,13 @@ class CompanyResearchService:
                     CompanyResearchClaimModel(
                         research_run_id=run_id,
                         research_source_id=source.id,
+                        entity_scope=source.entity_scope,
                         claim_hash=claim_hash,
                         category=claim.category.value,
                         subject_key=claim.subject_key,
                         statement=" ".join(claim.evidence_span.split()),
                         evidence_span=" ".join(claim.evidence_span.split()),
-                        source_locator=canonical_public_url(claim.source_url),
+                        source_locator=source_locator,
                         event_date=event_date,
                         amount=amount,
                         currency=currency,
@@ -2583,10 +2815,11 @@ class CompanyResearchService:
                 )
             )
             grouped: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
-            by_subject: defaultdict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+            by_subject: defaultdict[tuple[str, str, str], list[dict[str, Any]]] = defaultdict(list)
             for claim in claims:
                 claim_content = {
                     "claim_id": claim.id,
+                    "entity_scope": claim.entity_scope,
                     "subject_key": claim.subject_key,
                     "statement": claim.statement,
                     "evidence_span": claim.evidence_span,
@@ -2598,14 +2831,19 @@ class CompanyResearchService:
                     "verification_status": claim.verification_status,
                 }
                 grouped[claim.category].append(claim_content)
-                by_subject[(claim.category, claim.subject_key)].append(claim_content)
+                by_subject[
+                    (claim.entity_scope, claim.category, claim.subject_key)
+                ].append(claim_content)
             contradiction_candidates = []
-            for (category, subject_key), subject_claims in sorted(by_subject.items()):
+            for (entity_scope, category, subject_key), subject_claims in sorted(
+                by_subject.items()
+            ):
                 distinct_statements = {item["statement"] for item in subject_claims}
                 distinct_sources = {item["source_url"] for item in subject_claims}
                 if len(distinct_statements) > 1 and len(distinct_sources) > 1:
                     contradiction_candidates.append(
                         {
+                            "entity_scope": entity_scope,
                             "category": category,
                             "subject_key": subject_key,
                             "status": "requires_named_resolution",
@@ -2661,6 +2899,14 @@ class CompanyResearchService:
                 "coverage": coverage,
                 "contradictions": contradiction_candidates,
                 "investment_report": build_investment_report(claims),
+                "investment_reports": {
+                    "legal_entity": build_investment_report(
+                        claims, entity_scope="legal_entity"
+                    ),
+                    "consolidated_group": build_investment_report(
+                        claims, entity_scope="consolidated_group"
+                    ),
+                },
                 "sections": [
                     {"key": category, "claims": grouped.get(category, [])}
                     for category in all_categories

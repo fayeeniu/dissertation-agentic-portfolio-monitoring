@@ -1,0 +1,61 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% Layout override only: this figure uses four ordered columns, and only the Dagre renderer honours
+%% `direction` inside a subgraph, so ELK would reorder I1-I4, F1-F4, C1-C6 and RQ1-RQ3.
+%%{init: {"flowchart": {"defaultRenderer": "dagre"}}}%%
+flowchart LR
+  subgraph I["Inputs"]
+    direction TB
+    I1["Legal identity<br/>and filings"]
+    I2["Funding and<br/>grant events"]
+    I3["Public sites<br/>and documents"]
+    I4["Submitted<br/>portfolio records"]
+  end
+
+  subgraph F["Failures"]
+    direction TB
+    F1["<b>F1 Identity collision</b><br/>Similar names can select<br/>the wrong legal company"]
+    F2["<b>F2 Ambiguous values</b><br/>Blank, zero, absent and<br/>unavailable are distinct"]
+    F3["<b>F3 Date mismatch</b><br/>Publication can be later<br/>than the reporting cut-off"]
+    F4["<b>F4 Unsafe report text</b><br/>Support can be lost;<br/>downloaded text is untrusted"]
+  end
+
+  subgraph C["Controls"]
+    direction TB
+    C1["<b>C1 Exact identity</b><br/>Companies House number<br/>plus named decision"]
+    C2["<b>C2 Clear missing states</b><br/>Keep each reason separate"]
+    C3["<b>C3 Date rules</b><br/>Fixed cut-off and<br/>availability time"]
+    C4["<b>C4 Saved evidence</b><br/>Checksum, publisher<br/>and exact location"]
+    C5["<b>C5 Independent verifier</b><br/>Support, contradiction<br/>or abstention"]
+    C6["<b>C6 Approval and export</b><br/>Named review bound<br/>to the content hash"]
+  end
+
+  subgraph R["Research questions"]
+    direction TB
+    R1["<b>RQ1 Reliable claims</b><br/>Clear states, right date<br/>and traceable support"]
+    R2["<b>RQ2 Verification</b><br/>Benefit and cost of the<br/>independent gate"]
+    R3["<b>RQ3 Human review</b><br/>Efficiency and reviewer<br/>value; evidence not available"]
+  end
+
+  I1 --> F1
+  I2 --> F2
+  I3 --> F3
+  I4 --> F4
+  F1 --> C1
+  F2 --> C2
+  F3 --> C3
+  F4 --> C4
+  F4 --> C5
+  F4 --> C6
+  C1 --> R1
+  C2 --> R1
+  C3 --> R1
+  C4 --> R1
+  C5 --> R2
+  C6 --> R3
+
+  class I1,I2,I3,I4 fx-input
+  class F1,F2,F3,F4 fx-hold
+  class C1,C2,C3,C4 fx-stage
+  class C5,C6 fx-key
+  class R1,R2 fx-banner
+  class R3 fx-hold

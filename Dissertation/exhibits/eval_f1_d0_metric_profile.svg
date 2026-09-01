@@ -1,0 +1,248 @@
+<svg id="my-svg" width="809.28125" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="480" viewBox="-5 -239.5 809.28125 479" role="graphics-document document" aria-roledescription="block" style="background-color: white;"><style>#my-svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#12232E;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#ECEEF1;}#my-svg .error-text{fill:#12232E;stroke:#12232E;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:none;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#274257;stroke:#274257;}#my-svg .marker.cross{stroke:#274257;}#my-svg svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;}#my-svg p{margin:0;}#my-svg .label{font-family:Arial,Helvetica,sans-serif;color:#12232E;}#my-svg .cluster-label text{fill:#12232E;}#my-svg .cluster-label span{color:#12232E;}#my-svg .label text,#my-svg span{fill:#12232E;color:#12232E;}#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path{fill:#DCE8F4;stroke:#12232E;stroke-width:1px;}#my-svg .flowchart-label text{text-anchor:middle;}#my-svg .node .label{text-align:center;}#my-svg .node.clickable{cursor:pointer;}#my-svg .arrowheadPath{fill:#000000;}#my-svg .edgePaths .path{stroke:#274257;stroke-width:2.0px;}#my-svg .flowchart-link{stroke:#274257;fill:none;}#my-svg .edgeLabel{background-color:#FFFFFF;text-align:center;}#my-svg .edgeLabel p{margin:0;padding:0;display:inline;}#my-svg .edgeLabel rect{opacity:0.5;background-color:#FFFFFF;fill:#FFFFFF;}#my-svg .labelBkg{background-color:#FFFFFF;}#my-svg .node .cluster{fill:rgba(244, 247, 251, 0.5);stroke:rgba(78, 111, 140, 0.2);box-shadow:rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;stroke-width:1px;}#my-svg .cluster text{fill:#12232E;}#my-svg .cluster span{color:#12232E;}#my-svg div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Arial,Helvetica,sans-serif;font-size:12px;background:#ECEEF1;border:1px solid #6B7280;border-radius:2px;pointer-events:none;z-index:100;}#my-svg .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12232E;}#my-svg .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#my-svg .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#my-svg .node .neo-node{stroke:#12232E;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:url(#my-svg-gradient);stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#12232E;filter:none;}#my-svg [data-look="neo"].node circle{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg :root{--mermaid-font-family:Arial,Helvetica,sans-serif;}</style><g/><marker id="my-svg_block-pointEnd" class="marker block" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart" class="marker block" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointEnd-margin" class="marker block" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart-margin" class="marker block" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd" class="marker block" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart" class="marker block" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd-margin" class="marker block" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart-margin" class="marker block" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd" class="marker cross block" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossStart" class="marker cross block" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd-margin" class="marker cross block" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="my-svg_block-crossStart-margin" class="marker cross block" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="block"><g class="node fx-banner flowchart-label" id="my-svg-H0" transform="translate(128.546875, -207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-36.5234375, -13.5)"><rect/><foreignObject width="73.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p><b>Measure</b></p></span></div></foreignObject></g></g><g class="node fx-banner flowchart-label" id="my-svg-H1" transform="translate(399.640625, -207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-60.5234375, -13.5)"><rect/><foreignObject width="121.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p><b>C1: no verifier</b></p></span></div></foreignObject></g></g><g class="node fx-banner flowchart-label" id="my-svg-H2" transform="translate(670.734375, -207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-47.0234375, -13.5)"><rect/><foreignObject width="94.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p><b>C2: verifier</b></p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-P" transform="translate(128.546875, -138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-37.015625, -13.5)"><rect/><foreignObject width="74.03125" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>Precision</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-P1" transform="translate(399.640625, -138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.455</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-P2" transform="translate(670.734375, -138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-R" transform="translate(128.546875, -69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-25.015625, -13.5)"><rect/><foreignObject width="50.03125" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>Recall</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-R1" transform="translate(399.640625, -69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-R2" transform="translate(670.734375, -69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-F" transform="translate(128.546875, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-10.5078125, -13.5)"><rect/><foreignObject width="21.015625" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>F1</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-F1" transform="translate(399.640625, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.625</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-F2" transform="translate(670.734375, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-S" transform="translate(128.546875, 69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-74.03125, -13.5)"><rect/><foreignObject width="148.0625" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>Claim-support rate</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-S1" transform="translate(399.640625, 69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.455</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-S2" transform="translate(670.734375, 69)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-V" transform="translate(128.546875, 138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-100.546875, -13.5)"><rect/><foreignObject width="201.09375" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>Complete source records</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-V1" transform="translate(399.640625, 138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.818</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-V2" transform="translate(670.734375, 138)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>1.000</p></span></div></foreignObject></g></g><g class="node fx-rowhead flowchart-label" id="my-svg-U" transform="translate(128.546875, 207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-100.546875, -13.5)"><rect/><foreignObject width="201.09375" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>Unsupported-claim rate ↓</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-U1" transform="translate(399.640625, 207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.545</p></span></div></foreignObject></g></g><g class="node fx-cell flowchart-label" id="my-svg-U2" transform="translate(670.734375, 207)"><rect class="basic label-container" style="" rx="0" ry="0" x="-128.546875" y="-27.5" width="257.09375" height="55"/><g class="label" style="" transform="translate(-22.5234375, -13.5)"><rect/><foreignObject width="45.046875" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 257.094px; text-align: center;"><span class="nodeLabel"><p>0.000</p></span></div></foreignObject></g></g></g><style>/* GENERATED FILE - do not edit.
+ * Source: exhibits/figure_palette.json
+ * Regenerate with: python3 scripts/build_figure_theme.py
+ */
+
+/* Typography and shared geometry */
+.root,
+.flowchart,
+.block,
+.stateDiagram,
+.erDiagram {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.node rect,
+.node polygon,
+.node path,
+.node circle,
+.node ellipse,
+.block rect,
+.cluster rect {
+  shape-rendering: geometricPrecision;
+}
+
+.node rect,
+.block rect {
+  rx: 5px;
+  ry: 5px;
+}
+
+.nodeLabel,
+.edgeLabel,
+.cluster-label,
+.label {
+  color: #12232E;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.node .label,
+.block .label {
+  line-height: 1.32;
+}
+
+.label foreignObject {
+  overflow: visible;
+}
+
+/* Connectors */
+.flowchart-link,
+.transition {
+  stroke: #274257 !important;
+  stroke-width: 1.7px !important;
+}
+
+.marker,
+.marker path {
+  fill: #274257 !important;
+  stroke: #274257 !important;
+}
+
+.edgeLabel {
+  background-color: #FFFFFF !important;
+  color: #274257 !important;
+  padding: 2px 6px !important;
+  font-size: 0.86em !important;
+}
+.edgeLabel rect,
+.edgeLabel foreignObject div {
+  fill: #FFFFFF !important;
+}
+
+/* Clusters */
+.cluster rect {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  rx: 8px;
+  ry: 8px;
+}
+.cluster-label,
+.cluster-label span {
+  color: #1B4965 !important;
+}
+
+/* Semantic node roles - one block per role in exhibits/figure_palette.json */
+/* Framing statement, evidence boundary or table header row. */
+.fx-banner &gt; rect,
+.fx-banner &gt; polygon,
+.fx-banner &gt; path,
+.fx-banner &gt; circle,
+.fx-banner &gt; ellipse {
+  fill: #1B4965 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.8px !important;
+  stroke-dasharray: none !important;
+}
+.fx-banner .nodeLabel,
+.fx-banner .nodeLabel *,
+.fx-banner .label,
+.fx-banner .label * {
+  color: #FFFFFF !important;
+}
+
+/* Emphasised gate, decision or verification point. */
+.fx-key &gt; rect,
+.fx-key &gt; polygon,
+.fx-key &gt; path,
+.fx-key &gt; circle,
+.fx-key &gt; ellipse {
+  fill: #B7CFE5 !important;
+  stroke: #12232E !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: none !important;
+}
+.fx-key .nodeLabel,
+.fx-key .nodeLabel *,
+.fx-key .label,
+.fx-key .label * {
+  color: #12232E !important;
+}
+
+/* Standard implemented process step. */
+.fx-stage &gt; rect,
+.fx-stage &gt; polygon,
+.fx-stage &gt; path,
+.fx-stage &gt; circle,
+.fx-stage &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+.fx-stage .nodeLabel,
+.fx-stage .nodeLabel *,
+.fx-stage .label,
+.fx-stage .label * {
+  color: #12232E !important;
+}
+
+/* Input or candidate material that is not yet evidence. */
+.fx-input &gt; rect,
+.fx-input &gt; polygon,
+.fx-input &gt; path,
+.fx-input &gt; circle,
+.fx-input &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: none !important;
+}
+.fx-input .nodeLabel,
+.fx-input .nodeLabel *,
+.fx-input .label,
+.fx-input .label * {
+  color: #12232E !important;
+}
+
+/* Control built and tested, but never run against a live external source. */
+.fx-live &gt; rect,
+.fx-live &gt; polygon,
+.fx-live &gt; path,
+.fx-live &gt; circle,
+.fx-live &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #1B4965 !important;
+  stroke-width: 1.9px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-live .nodeLabel,
+.fx-live .nodeLabel *,
+.fx-live .label,
+.fx-live .label * {
+  color: #12232E !important;
+}
+
+/* Held, blocked, rejected, failed or explicitly unmeasured. */
+.fx-hold &gt; rect,
+.fx-hold &gt; polygon,
+.fx-hold &gt; path,
+.fx-hold &gt; circle,
+.fx-hold &gt; ellipse {
+  fill: #FAE3C3 !important;
+  stroke: #96560F !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-hold .nodeLabel,
+.fx-hold .nodeLabel *,
+.fx-hold .label,
+.fx-hold .label * {
+  color: #12232E !important;
+}
+
+/* Side annotation or out-of-scope material. */
+.fx-note &gt; rect,
+.fx-note &gt; polygon,
+.fx-note &gt; path,
+.fx-note &gt; circle,
+.fx-note &gt; ellipse {
+  fill: #ECEEF1 !important;
+  stroke: #6B7280 !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: 3 3 !important;
+}
+.fx-note .nodeLabel,
+.fx-note .nodeLabel *,
+.fx-note .label,
+.fx-note .label * {
+  color: #12232E !important;
+}
+
+/* Table row label cell. */
+.fx-rowhead &gt; rect,
+.fx-rowhead &gt; polygon,
+.fx-rowhead &gt; path,
+.fx-rowhead &gt; circle,
+.fx-rowhead &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-rowhead .nodeLabel,
+.fx-rowhead .nodeLabel *,
+.fx-rowhead .label,
+.fx-rowhead .label * {
+  color: #12232E !important;
+}
+
+/* Table value cell. */
+.fx-cell &gt; rect,
+.fx-cell &gt; polygon,
+.fx-cell &gt; path,
+.fx-cell &gt; circle,
+.fx-cell &gt; ellipse {
+  fill: #FFFFFF !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-cell .nodeLabel,
+.fx-cell .nodeLabel *,
+.fx-cell .label,
+.fx-cell .label * {
+  color: #12232E !important;
+}
+
+</style></svg>

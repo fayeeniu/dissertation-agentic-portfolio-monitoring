@@ -28,8 +28,10 @@ data/*
 !data/README.md
 research
 
-# The control room is a separate host process; never ship its build output.
-dashboard
+# Build the control room from source without sending host dependencies or generated output.
+dashboard/node_modules
+dashboard/.next
+dashboard/.env.local
 
 .DS_Store
 ~$*

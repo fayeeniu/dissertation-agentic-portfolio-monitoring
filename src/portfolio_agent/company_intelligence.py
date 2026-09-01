@@ -23,9 +23,11 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from .enums import (
+    CompanyRelationshipType,
     CompanyEntityType,
     CompanyLifecycleStatus,
     DataClassification,
+    EvidenceScope,
     IdentifierScheme,
     IdentityCandidateStatus,
     IdentityDecisionType,
@@ -49,6 +51,8 @@ from .models import (
     CompanyIdentifierDecisionModel,
     CompanyIdentifierModel,
     CompanyModel,
+    CompanyRelationshipDecisionModel,
+    CompanyRelationshipModel,
     IntakeArtifactModel,
     ResearchCaseModel,
     ResearchTemplateModel,
@@ -65,6 +69,8 @@ MAX_BULK_COLUMNS = 32
 CORE_TEMPLATE_KEY = "core_company_profile"
 CORE_TEMPLATE_VERSION = "1.0.0"
 INTAKE_CONTRACT_VERSION = "company-intake-v1"
+HYBRID_DOCUMENT_CONTRACT_VERSION = "company-document-batch-v1"
+MAX_DOCUMENTS_PER_BATCH = 12
 
 _CORE_TEMPLATE_CONTRACT: dict[str, Any] = {
     "key": CORE_TEMPLATE_KEY,
@@ -129,6 +135,13 @@ class CompanyIntakeResult:
     research_case_id: str
     artifact_id: str
     reused_existing: bool
+
+
+@dataclass(frozen=True, slots=True)
+class CompanyDocumentUpload:
+    content: bytes
+    filename: str
+    declared_mime: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -311,6 +324,246 @@ class CompanyIntakeService:
             for snapshot_path, content_sha256 in created_snapshots:
                 self._remove_failed_snapshot(snapshot_path, content_sha256)
             raise
+
+    def attach_documents(
+        self,
+        research_case_id: str,
+        documents: tuple[CompanyDocumentUpload, ...],
+        *,
+        actor: str,
+        classification: DataClassification,
+        evidence_scope: EvidenceScope,
+    ) -> tuple[CompanyIntakeResult, ...]:
+        """Atomically attach one to twelve immutable documents to an existing case."""
+
+        clean_actor, _ = _clean_actor_and_purpose(
+            actor, "Attach internally sourced company evidence to the reviewed research case."
+        )
+        if not 1 <= len(documents) <= MAX_DOCUMENTS_PER_BATCH:
+            raise CompanyIntakeValidationError("Upload between 1 and 12 documents per batch.")
+        prepared: list[tuple[CompanyDocumentUpload, str, str | None, str, str]] = []
+        seen_hashes: set[str] = set()
+        for document in documents:
+            filename, mime = _validate_document(
+                document.content, document.filename, document.declared_mime
+            )
+            digest = sha256_bytes(document.content)
+            if digest in seen_hashes:
+                raise CompanyIntakeValidationError(
+                    "The same document content appears more than once in this batch."
+                )
+            seen_hashes.add(digest)
+            fingerprint = stable_hash(
+                {
+                    "contract": HYBRID_DOCUMENT_CONTRACT_VERSION,
+                    "research_case_id": research_case_id,
+                    "classification": classification.value,
+                    "evidence_scope": evidence_scope.value,
+                    "sha256": digest,
+                }
+            )
+            prepared.append((document, filename, mime, digest, fingerprint))
+
+        created_snapshots: list[tuple[Path, str]] = []
+        try:
+            with self._session_factory.begin() as session:
+                case = session.get(ResearchCaseModel, research_case_id)
+                if case is None:
+                    raise CompanyIntakeValidationError("Unknown research case.")
+                results: list[CompanyIntakeResult] = []
+                for document, filename, mime, digest, fingerprint in prepared:
+                    existing = session.scalar(
+                        select(IntakeArtifactModel).where(
+                            IntakeArtifactModel.fingerprint == fingerprint
+                        )
+                    )
+                    if existing is not None:
+                        results.append(
+                            CompanyIntakeResult(
+                                company_id=existing.company_id,
+                                research_case_id=existing.research_case_id,
+                                artifact_id=existing.id,
+                                reused_existing=True,
+                            )
+                        )
+                        continue
+                    snapshot_path, snapshot_created = self._write_snapshot(
+                        document.content, content_sha256=digest, filename=filename
+                    )
+                    if snapshot_created:
+                        created_snapshots.append((snapshot_path, digest))
+                    artifact = IntakeArtifactModel(
+                        research_case_id=case.id,
+                        company_id=case.company_id,
+                        kind=IntakeArtifactKind.DOCUMENT.value,
+                        fingerprint=fingerprint,
+                        normalized_value=filename,
+                        submitted_value_json={
+                            "document": {
+                                "filename": filename,
+                                "declared_mime": mime,
+                                "sha256": digest,
+                            },
+                            "trust_state": "untrusted",
+                            "processing_boundary": "local_only",
+                            "evidence_scope": evidence_scope.value,
+                            "contract": HYBRID_DOCUMENT_CONTRACT_VERSION,
+                        },
+                        content_sha256=digest,
+                        snapshot_path=str(snapshot_path),
+                        original_filename=filename,
+                        classification=classification.value,
+                        actor=clean_actor,
+                        purpose=case.purpose,
+                    )
+                    session.add(artifact)
+                    session.flush()
+                    results.append(
+                        CompanyIntakeResult(
+                            company_id=case.company_id,
+                            research_case_id=case.id,
+                            artifact_id=artifact.id,
+                            reused_existing=False,
+                        )
+                    )
+                return tuple(results)
+        except Exception:
+            for snapshot_path, digest in created_snapshots:
+                self._remove_failed_snapshot(snapshot_path, digest)
+            raise
+
+    def propose_group_scope(
+        self,
+        *,
+        company_id: str,
+        companies_house_number: str,
+        company_name: str | None,
+        actor: str,
+    ) -> CompanyRelationshipModel:
+        """Record a held consolidated-group relationship without merging identities."""
+
+        clean_actor, _ = _clean_actor_and_purpose(
+            actor, "Propose a separately reviewed consolidated corporate group scope."
+        )
+        number = normalize_identifier(
+            IdentifierScheme.COMPANIES_HOUSE_NUMBER, companies_house_number
+        )
+        if not is_valid_companies_house_number(number):
+            raise CompanyIntakeValidationError(
+                "Group Companies House number is not structurally valid."
+            )
+        clean_name = " ".join((company_name or "").split()) or f"Company {number}"
+        with self._session_factory.begin() as session:
+            subject = session.get(CompanyModel, company_id)
+            if subject is None:
+                raise CompanyIntakeValidationError("Unknown subject company.")
+            subject_number = session.scalar(
+                select(CompanyIdentifierModel).where(
+                    CompanyIdentifierModel.company_id == subject.id,
+                    CompanyIdentifierModel.scheme
+                    == IdentifierScheme.COMPANIES_HOUSE_NUMBER.value,
+                    CompanyIdentifierModel.normalized_value == number,
+                )
+            )
+            if subject_number is not None:
+                raise CompanyIntakeValidationError(
+                    "The group scope must use a different legal entity number."
+                )
+            identifier = session.scalar(
+                select(CompanyIdentifierModel).where(
+                    CompanyIdentifierModel.scheme
+                    == IdentifierScheme.COMPANIES_HOUSE_NUMBER.value,
+                    CompanyIdentifierModel.normalized_value == number,
+                )
+            )
+            if identifier is None:
+                related = CompanyModel(
+                    canonical_name=clean_name,
+                    normalized_name=normalize_company_name(clean_name),
+                    resolution_status=ResolutionStatus.UNRESOLVED.value,
+                    classification=subject.classification,
+                    entity_type=CompanyEntityType.REGISTERED.value,
+                    jurisdiction="GB",
+                    lifecycle_status=CompanyLifecycleStatus.CANDIDATE.value,
+                )
+                session.add(related)
+                session.flush()
+                identifier = CompanyIdentifierModel(
+                    company_id=related.id,
+                    scheme=IdentifierScheme.COMPANIES_HOUSE_NUMBER.value,
+                    value=number,
+                    normalized_value=number,
+                    source_key=identifier_source_key(IdentifierScheme.COMPANIES_HOUSE_NUMBER),
+                    reviewed=False,
+                )
+                session.add(identifier)
+                session.flush()
+            relationship = session.scalar(
+                select(CompanyRelationshipModel).where(
+                    CompanyRelationshipModel.subject_company_id == subject.id,
+                    CompanyRelationshipModel.related_company_id == identifier.company_id,
+                    CompanyRelationshipModel.relationship_type
+                    == CompanyRelationshipType.CONSOLIDATED_GROUP.value,
+                )
+            )
+            if relationship is None:
+                relationship = CompanyRelationshipModel(
+                    subject_company_id=subject.id,
+                    related_company_id=identifier.company_id,
+                    relationship_type=CompanyRelationshipType.CONSOLIDATED_GROUP.value,
+                    status=LinkReviewStatus.PENDING.value,
+                    proposed_by=clean_actor,
+                )
+                session.add(relationship)
+                session.flush()
+            return relationship
+
+    def decide_group_scope(
+        self,
+        *,
+        relationship_id: str,
+        decision: IdentityDecisionType,
+        actor: str,
+        reason: str,
+    ) -> CompanyRelationshipDecisionModel:
+        clean_actor, clean_reason = _clean_actor_and_purpose(actor, reason)
+        with self._session_factory.begin() as session:
+            relationship = session.get(CompanyRelationshipModel, relationship_id)
+            if relationship is None:
+                raise CompanyIntakeValidationError("Unknown company relationship.")
+            if relationship.status != LinkReviewStatus.PENDING.value:
+                raise CompanyIntakeValidationError(
+                    "Company relationship already has a final decision."
+                )
+            relationship.status = (
+                LinkReviewStatus.VERIFIED.value
+                if decision is IdentityDecisionType.ACCEPT
+                else LinkReviewStatus.REJECTED.value
+            )
+            if decision is IdentityDecisionType.ACCEPT:
+                related = session.get(CompanyModel, relationship.related_company_id)
+                identifier = session.scalar(
+                    select(CompanyIdentifierModel).where(
+                        CompanyIdentifierModel.company_id == relationship.related_company_id,
+                        CompanyIdentifierModel.scheme
+                        == IdentifierScheme.COMPANIES_HOUSE_NUMBER.value,
+                    )
+                )
+                if related is None or identifier is None:
+                    raise CompanyIntakeValidationError(
+                        "Related company identity is incomplete."
+                    )
+                identifier.reviewed = True
+                synchronize_company_identity_review_state(session, related, accepted=True)
+            record = CompanyRelationshipDecisionModel(
+                company_relationship_id=relationship.id,
+                decision=decision.value,
+                actor=clean_actor,
+                reason=clean_reason,
+            )
+            session.add(record)
+            session.flush()
+            return record
 
     def create_bulk(
         self,

@@ -432,6 +432,7 @@ def test_live_smoke_requires_command_acknowledgement() -> None:
 def test_live_smoke_reads_only_private_local_key_and_uses_ephemeral_state(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     env_path = tmp_path / ".env"
     env_path.write_text(
@@ -455,6 +456,7 @@ def test_live_smoke_reads_only_private_local_key_and_uses_ephemeral_state(
     )
 
     assert main(["openai-smoke", "--acknowledge-synthetic-only"]) == 0
+    output = json.loads(capsys.readouterr().out)
 
     settings = captured["settings"]
     assert settings.allow_external_llm is True
@@ -464,6 +466,11 @@ def test_live_smoke_reads_only_private_local_key_and_uses_ephemeral_state(
     assert str(tmp_path / "var" / "experiments" / "runtimes") in settings.database_url
     assert disposed == [True]
     assert "OPENAI_API_KEY" not in os.environ
+    assert "serve_command" not in output
+    assert output["api_command"].endswith(".venv/bin/portfolio-agent serve")
+    assert output["dashboard_command"] == (
+        "PORTFOLIO_API_ORIGIN='http://127.0.0.1:8000' npm --prefix dashboard run dev"
+    )
 
 
 def test_live_smoke_refuses_group_readable_local_env(

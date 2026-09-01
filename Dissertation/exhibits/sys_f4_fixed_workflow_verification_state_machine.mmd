@@ -1,0 +1,50 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+block-beta
+  columns 3
+  G["<b>CONTROLLED FAILURE PATHS</b><br/>Input, schema, trust, period, unit and currency failures<br/>keep their reason and held state."]:3
+  B["<b>1–5 · BUILD A POSSIBLE CLAIM</b><br/>Intake → extract → clean → evidence review → claim<br/><i>Good writing is never treated as support.</i>"]:3
+  V["<b>6 · VERIFY SEPARATELY</b><br/>Record the status and reason; never rewrite the claim."]:3
+  S["<b>SUPPORTED</b><br/>Exact support"]
+  K["<b>CONTRADICTED</b><br/>Conflict retained"]
+  H["<b>HELD</b><br/>Insufficient, stale<br/>or untrusted"]
+  P["<b>7 · WRITE REPORT</b><br/>Supported text plus clear exceptions."]:3
+  PR["<b>PENDING REVIEW</b><br/>Versioned content hash"]
+  D["<b>NAMED DECISION</b><br/>Person and reason"]
+  RV["<b>NEW PENDING VERSION</b><br/>Rejection or any edit"]
+  A["<b>APPROVED</b><br/>Decision bound to<br/>current hash"]
+  space:2
+  EX["<b>CONTROLLED EXPORT</b><br/>Stage, hash, check file list and finish safely"]:3
+  DONE["<b>EXPORTED</b><br/>Final files checked again"]
+  ER["<b>EXPORT FAILED</b><br/>Approved source retained;<br/>no partial final output"]
+  space
+
+  G -.-> B
+  B --> V
+  V --> S
+  V --> K
+  V --> H
+  S --> P
+  K --> P
+  H --> P
+  P --> PR
+  PR --> D
+  D --> A
+  D --> RV
+  A -.-> RV
+  A --> EX
+  EX --> DONE
+  EX --> ER
+
+  class G fx-hold
+  class B fx-stage
+  class V fx-key
+  class S fx-stage
+  class K,H fx-hold
+  class P fx-stage
+  class PR fx-stage
+  class D fx-key
+  class RV fx-hold
+  class A fx-key
+  class EX fx-stage
+  class DONE fx-stage
+  class ER fx-hold

@@ -1,18 +1,15 @@
 \clearpage
 \begin{table}[p]
   \centering
-  \caption{Data-semantics failure-prevention matrix}
-  \label{tab:data-semantics-matrix}
   \footnotesize
   \setlength{\tabcolsep}{2.2pt}
   \renewcommand{\arraystretch}{1.16}
   \begin{tabularx}{\textwidth}{@{}P{0.15\textwidth}P{0.24\textwidth}P{0.19\textwidth}Y>{\RaggedRight\arraybackslash\scriptsize}p{0.14\textwidth}@{}}
     \toprule
-    \rowcolor{WMGBlue!10}
-    \textbf{Semantic control} &
+    \textbf{Data control} &
     \textbf{Required distinction} &
-    \textbf{Unsafe collapse} &
-    \textbf{Reporting / evaluation consequence} &
+    \textbf{Unsafe combination} &
+    \textbf{Effect on reporting or evaluation} &
     {\footnotesize\textbf{Key local literature}} \\
     \midrule
     \textbf{Legal identity} &
@@ -21,9 +18,8 @@
     Evidence can attach to the wrong company, contaminating reports and identity accuracy or coverage measures. &
     thorne2026\allowbreak funding\par surak2026\allowbreak gateways\par galanakis2026\allowbreak chrt \\
     \addlinespace
-    \rowcolor{DraftPale}
     \textbf{Observed value / missing state} &
-    Separate typed value from semantic state. The project distinguishes observed, zero, blank, explicit none, not applicable, not reported, not found publicly and invalid. &
+    Separate a value from the reason it is missing. The project distinguishes observed, zero, blank, explicit none, not applicable, not reported, not found publicly and invalid. &
     Treating null, blank, no record, invalid and zero as equivalent. &
     False totals or absence claims follow; blank-zero and missing-state evaluation becomes invalid. &
     gebru2021\allowbreak datasheets\par bradley2024\allowbreak synfintabs\par nikiforova2020\allowbreak quality \\
@@ -31,28 +27,30 @@
     \textbf{Publication / effective / retrieval / cutoff time} &
     Retain value period, publication or effective availability, retrieval time and reporting cutoff separately. &
     One timestamp; retrieval treated as publication; later evidence used at an earlier cutoff. &
-    Temporal leakage, stale or future claims and inflated historical evaluation; ineligible evidence must be held. &
+    Leakage across time, old or future claims and an unfair historical evaluation. Evidence from the wrong date must be held. &
     hardman2023\allowbreak small\par galanakis2026\allowbreak chrt\par kapoor2023\allowbreak leakage \\
     \addlinespace
-    \rowcolor{DraftPale}
     \textbf{Correction / version / snapshot} &
-    Preserve immutable bytes and checksum, semantic/schema/source version, and each later correction as a new time-stamped version. &
+    Keep write-once source bytes and checksum, data meaning, schema and source versions, and each later correction as a new dated version. &
     Overwrite the earlier snapshot or silently backfill a correction into a past report. &
-    Claims and denominators cannot be reproduced; historical comparisons and approval bindings become invalid. &
+    Claims and calculation totals cannot be repeated. Historical comparisons and links to approval become invalid. &
     gebru2021\allowbreak datasheets\par hardman2023\allowbreak small\par kapoor2023\allowbreak leakage \\
     \addlinespace
     \textbf{Use-case data quality} &
     Assess explicit dimensions and executable rules against the named data object and reporting task. &
     One context-free quality score, or assuming open availability means fitness. &
-    Failure causes become opaque, eligibility is misapplied and results across tasks are not comparable. &
+    The cause of failure becomes unclear, eligibility rules are applied wrongly and results across tasks cannot be compared fairly. &
     nikiforova2020\allowbreak quality\par krasikov2020\allowbreak ready \\
     \bottomrule
   \end{tabularx}
+
+  \caption{Data meanings that must remain separate}
+  \label{tab:data-semantics-matrix}
   \vspace{3pt}
 
   \parbox{\textwidth}{\scriptsize
-    \textit{Interpretation:} Author synthesis; non-empirical and not results. The exact missing-state taxonomy is a project design choice, not a published or universal standard.\\
-    \textit{Source note:} Locally admitted keys thorne2026funding, surak2026gateways, galanakis2026chrt, gebru2021datasheets, bradley2024synfintabs, nikiforova2020quality, hardman2023small, kapoor2023leakage and krasikov2020ready; claim scope follows ledger rows 2.3-P1--2.3-P5.
+    \textit{Meaning:} Developed by the author and not a result. The exact list of missing states is a project choice, not a published or universal standard.\\
+    \textit{Source note:} The local sources are thorne2026funding, surak2026gateways, galanakis2026chrt, gebru2021datasheets, bradley2024synfintabs, nikiforova2020quality, hardman2023small, kapoor2023leakage and krasikov2020ready. Supporting pages are in claim-ledger rows 2.3-P1--2.3-P5.
   }
 \end{table}
 \clearpage

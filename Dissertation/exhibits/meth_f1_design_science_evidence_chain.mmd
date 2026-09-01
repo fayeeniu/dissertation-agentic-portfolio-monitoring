@@ -1,0 +1,21 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% Line breaks are deliberately short so that the staircase layout stays narrow enough for the
+%% text to remain legible at 0.88\textwidth on a portrait A4 page.
+flowchart TB
+  P["<b>1 FRAME</b><br/>Problem and objectives"] --> F["<b>2 FIX THE PLAN</b><br/>Questions, conditions<br/>and measures"]
+  F --> B["<b>3 BUILD</b><br/>Controlled<br/>reporting system"]
+  B --> E["<b>4 CHECK</b><br/>Implementation, tests<br/>and fictional cases"]
+  E --> N["<b>EVIDENCE BOUNDARY</b><br/>A working system is not<br/>measured practical value"]
+  N --> X["<b>5 RUN THE STUDY</b><br/>Authorised fixed<br/>C0–C3 comparison"]
+  X --> A["<b>6 ANALYSE</b><br/>Effects, uncertainty,<br/>failures and nulls"]
+  A --> C["<b>7 REPORT</b><br/>Careful RQ1–RQ3 answers"]
+
+  R1["<b>Researcher involvement</b><br/>Builder and evaluator"] -. confirmation-bias risk .-> E
+  R2["<b>Researcher involvement</b><br/>Protocol decisions<br/>and interpretation"] -. documented judgement .-> A
+
+  M1["<b>Bias controls</b><br/>Versioned evidence and<br/>complete case counts"] -.-> E
+  M2["<b>Bias controls</b><br/>Independent labels, fixed<br/>plan and claim limits"] -.-> X
+
+  class P,F,B,E,X,A,C fx-stage
+  class N fx-banner
+  class R1,R2,M1,M2 fx-note

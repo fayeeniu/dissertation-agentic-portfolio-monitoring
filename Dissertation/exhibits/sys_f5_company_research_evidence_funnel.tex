@@ -1,75 +1,18 @@
 \clearpage
 \begin{figure}[p]
   \centering
-  \caption{Bounded public-web evidence funnel}
+  \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{exhibits/sys_f5_company_research_evidence_funnel.png}
+  \caption{Limited public-web evidence process, built and tested on fictional inputs but never run
+  against a live company. Mermaid diagram developed by the author from the implemented controls.}
   \label{fig:sys-company-research-funnel}
-  \small
-  \setlength{\tabcolsep}{6pt}
-  \renewcommand{\arraystretch}{1.18}
-  \begin{tabularx}{0.96\textwidth}{@{}P{0.15\textwidth}P{0.235\textwidth}Y P{0.20\textwidth}@{}}
-    \toprule
-    \textbf{Persisted stage} &
-    \textbf{Input boundary} &
-    \textbf{Deterministic admission gate} &
-    \textbf{Persisted output / visible gap} \\
-    \midrule
 
-    \textbf{1 Discover} &
-    Reviewed Companies House number, public case, cutoff and category plan. &
-    Responses web search proposes URLs; accept only returned-source, canonical public HTTPS URLs.
-    Search snippets and model statements have no evidential authority. &
-    Bounded candidate inventory, source domains and model/tool usage. Missing categories remain
-    uncovered. \\
-
-    \addlinespace[3pt]
-    \multicolumn{4}{c}{\Large$\downarrow$} \\
-    \addlinespace[1pt]
-
-    \textbf{2 Capture} &
-    Candidate URL and pinned response, redirect, byte and elapsed budgets. &
-    Robots, scheme, port, credentials, DNS, public-IP connection, hostname TLS, redirect, status,
-    MIME and streaming-size checks. &
-    Owner-scoped redacted snapshot, URL, time, MIME and hashes; blocked, unsupported or failed
-    state with code. \\
-
-    \addlinespace[3pt]
-    \multicolumn{4}{c}{\Large$\downarrow$} \\
-    \addlinespace[1pt]
-
-    \textbf{3 Extract} &
-    Bounded visible text with personal contacts redacted; all page text is untrusted data. &
-    Exact captured URL; literal statement/span equality and containment; minimum span, cutoff,
-    personal-data, recommendation and prompt-injection checks. &
-    Admitted claim plus exact span and source locator, or explicit abstention. Returned model prose
-    alone is discarded. \\
-
-    \addlinespace[3pt]
-    \multicolumn{4}{c}{\Large$\downarrow$} \\
-    \addlinespace[1pt]
-
-    \textbf{4 Compose} &
-    Hash-ordered admitted claims and captured-source records. &
-    Group by claim category and subject; retain attribution; flag multi-source disagreement; never
-    infer recommendation or valuation. &
-    Hash-bound pending-review profile with citations, contradictions, coverage counts, uncovered
-    categories and limitations. \\
-    \bottomrule
-  \end{tabularx}
-
-  \vspace{8pt}
-  \fbox{\parbox{0.92\textwidth}{\centering\small
-    \textbf{Cross-cutting control:} one serial persisted task at a time; bounded retries,
-    cancellation, recovery, token/tool/model/byte/time telemetry and named approval before export.
-    \textbf{Evidence state: IMPLEMENTED + SYNTHETICALLY TESTED; LIVE COMPANY RESEARCH UNRUN.}}}
-
-  \vspace{6pt}
+  \vspace{4pt}
   \parbox{0.94\textwidth}{\scriptsize
-    \textit{Source note:} Faye Niu's author synthesis of the current repository implementation and
-    local synthetic tests. OpenAI (2026b, PDF pp.~1--3, 6) documents Responses web search and source
+    \textit{Source note:} OpenAI (n.d.-b, PDF pp.~1--3, 6) documents Responses web search and source
     URLs; Gao et al. (2023a, PDF pp.~1--3, 8--9) shows that citation quality and factual correctness
-    require separate assessment; Greshake et al. (2023, PDF pp.~1--5, 25) and NIST (2024, PDF
-    pp.~15--16, 44, 48) motivate treating retrieved content as untrusted and retaining risk controls,
-    provenance and human review. These sources do not certify this implementation or establish live
+    require separate assessment. Greshake et al. (2023, PDF pp.~1--5, 25) and NIST (2024, PDF
+    pp.~15--16, 44, 48) support treating downloaded content as untrusted and keeping risk controls,
+    source records and human review. These sources do not certify this implementation or establish live
     performance.}
 \end{figure}
 \clearpage

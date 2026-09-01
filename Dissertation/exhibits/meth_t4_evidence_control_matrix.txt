@@ -168,7 +168,7 @@ from retained configuration. Retain stable run and agent IDs and analysis/table/
 Retained evidence
 Retain a reproducibility manifest; immutable input and result hashes; environment and migration
 record; attempts, timings, failures and authorised human decisions; a deviation log; scoring and
-analysis code; and generated-artifact hashes.
+analysis code; and hashes for generated files.
 
 Stop or escalation
 A missing or mismatched hash or version, secret in the bundle, unexplained deviation or failed

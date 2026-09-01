@@ -8,26 +8,21 @@
   \setlength{\LTcapwidth}{\textwidth}
   \hyphenpenalty=2500
   \exhyphenpenalty=2500
-  \captionsetup{hypcap=false}
-  \captionof{table}{Ethics, leakage and reproducibility evidence-control matrix}
-  \label{tab:meth-evidence-control-matrix}
-  \vspace{-3pt}
   \begin{longtable}{@{}P{0.145\textwidth}P{0.245\textwidth}P{0.19\textwidth}P{0.205\textwidth}P{0.17\textwidth}@{}}
     \toprule
-    \textbf{Risk / boundary} &
-    \textbf{Preventive control} &
-    \textbf{Retained evidence} &
-    \textbf{Stop / escalation} &
+    \textbf{Risk} &
+    \textbf{Control} &
+    \textbf{Record kept} &
+    \textbf{When to stop or ask for help} &
     \textbf{Current status} \\
     \midrule
     \endfirsthead
 
-    \multicolumn{5}{@{}l}{\scriptsize\textit{Table~\ref{tab:meth-evidence-control-matrix} continued: ethics, leakage and reproducibility controls}} \\
     \toprule
-    \textbf{Risk / boundary} &
-    \textbf{Preventive control} &
-    \textbf{Retained evidence} &
-    \textbf{Stop / escalation} &
+    \textbf{Risk} &
+    \textbf{Control} &
+    \textbf{Record kept} &
+    \textbf{When to stop or ask for help} &
     \textbf{Current status} \\
     \midrule
     \endhead
@@ -39,69 +34,73 @@
     \bottomrule
     \endlastfoot
 
-    \textbf{Restricted, personal or secret data leaves its authority boundary} &
-    Classify at intake and again at the provider boundary. Keep restricted and internal material local and ignored; use mode ``0600'' snapshot and export files; trace IDs, counts and hashes rather than raw values; forbid external processing. &
-    Classification, purpose and actor; snapshot and export checksum and manifest; review decision; content-free trace; security-gate record. &
+    \textbf{Restricted, personal or secret data is sent without permission} &
+    Classify data at intake and again before an external provider. Keep restricted and internal material local and out of external processing. Use private file permissions and record IDs, counts and hashes rather than raw values. &
+    Data class, purpose and person responsible; source-copy and export checksum and file list; review decision; record without content; security check. &
     Unclear authority, unexpected personal data, an exposed credential or an unapproved processor: stop collection, isolate and record the event, then seek supervisor, ethics or security direction. &
-    \textbf{CONTROL IMPLEMENTED / TESTED.}\par Real-data authority, retention and deletion schedule, and credential-rotation confirmation are \textbf{NOT VERIFIED}; no restricted external execution is claimed. \\
+    \textbf{CONTROL BUILT / TESTED.}\par Permission for real data, retention and deletion times, and confirmation that exposed keys were changed are \textbf{NOT VERIFIED}. No restricted external run is claimed. \\
 
     \addlinespace[1.5pt]
     \textbf{Unauthorised C0 or C3 observation or reviewer feedback} &
-    Require recorded ethics/data authority, consent and withdrawal, approved participant information and instrument, pseudonymised IDs, data minimisation and predeclared quotation use. &
-    Approval or waiver; dated information and consent versions; separate ID linkage; task, review and withdrawal records; pre- and post-review version hashes. &
-    Missing or unclear approval, consent or withdrawal handling: do not recruit, observe or collect; retain the outcome as null/unavailable and escalate. &
-    \textbf{APPROVAL EVIDENCE NOT VERIFIED / NO-GO.}\par Human C0 and C3 execution and qualitative feedback are unavailable; no participant result is claimed. \\
+    Require recorded ethics and data permission, consent and withdrawal rules, approved participant information and questionnaire, coded IDs, minimum data and a quotation plan set in advance. &
+    Approval or waiver; dated information and consent versions; separate ID link; task, review and withdrawal records; hashes before and after review. &
+    If approval, consent or withdrawal handling is missing or unclear, do not recruit, observe or collect. Keep the result blank and ask for guidance. &
+    \textbf{APPROVAL NOT VERIFIED / ON HOLD.}\par Human C0 and C3 work and feedback are unavailable. No participant result is claimed. \\
 
     \addlinespace[1.5pt]
-    \textbf{D0, D1 or D2 leakage and holdout contamination} &
-    Admit D0 by hash and namespace; admit D1 only after authority; keep D2 pathless and sealed until the evaluation bundle freezes; preserve group and period separation; make any D2-informed change exploratory. &
-    Dataset manifest, hash and source version; group and period split; code, rule, prompt, model and analysis versions; loader outcome; access and deviation log. &
-    Broken seal, checksum or group failure, D2 inspection or post-access tuning: halt confirmatory work, record the deviation and seek supervisor review; any resumed run is exploratory. &
-    \textbf{D0 CONTROL IMPLEMENTED / TESTED.}\par D1 is protocol-only and unavailable. D2 is sealed and loader-blocked. No D1 or D2 result is claimed. \\
+    \textbf{D0, D1 or D2 information leaks across study stages} &
+    Accept D0 by hash and test name. Use D1 only after permission. Keep D2 sealed with no visible path until the evaluation choices are fixed. Keep company and period groups separate. A change based on D2 makes the run exploratory. &
+    Dataset list, hash and source version; group and period split; code, rule, prompt, model and analysis versions; loader result; access log and changes from the plan. &
+    If the seal, checksum or group split fails, or D2 is viewed or used for tuning, stop the final study. Record the change and ask the supervisor to review it. Any later run is exploratory. &
+    \textbf{D0 CONTROL BUILT / TESTED.}\par D1 has not run. D2 is sealed and blocked by the loader. No D1 or D2 result is claimed. \\
 
     \addlinespace[1.5pt]
-    \textbf{Unlawful, unavailable or after-cutoff public-source use} &
-    Use versioned source admission, reviewed identity and cutoff, bounded GET-only access, robots and access checks, and no form, login, paywall or CAPTCHA bypass; review licence and redistribution per source. &
-    Capability and terms state with review date; request fingerprint; availability, retrieval and cutoff times; capture hash and locator; inaccessible or held state. &
+    \textbf{Public source is used unlawfully, is unavailable or is too late} &
+    Use versioned source rules, reviewed identity and cut-off, GET-only access with clear limits, robots and access checks. Do not bypass forms, sign-in, paywalls or CAPTCHAs. Review licence and sharing rules for each source. &
+    Source ability and terms with review date; request fingerprint; availability, collection and cut-off times; copy hash and exact location; inaccessible or held state. &
     Unknown or changed terms, forbidden access, after-cutoff support or redistribution uncertainty: hold the source or claim; do not fetch or export; require named review. &
-    \textbf{BOUNDED CONTROLS IMPLEMENTED.}\par Local public-web use is conditional; direct registry evaluation and redistribution remain held or unavailable. \\
+    \textbf{LIMITED CONTROLS BUILT.}\par Local public-web use is conditional. Direct live registry evaluation and sharing remain on hold or unavailable. \\
     \pagebreak
 
     \addlinespace[1.5pt]
     \textbf{Prompt injection or unauthorised model use} &
-    Treat retrieved text as data, reject instruction-like content, allow opt-in public or synthetic input only, set ``store=False'', require strict schema and exact span, bound models and attempts, and deny approval or export authority. &
-    Classification; provider, model and schema versions; attempt, token and error telemetry; exact span and verification; rejection or abstention reason; content-free manifest. &
+    Treat downloaded text as data and reject content that looks like instructions. Allow only chosen public or synthetic input, set ``store=False'', require a strict schema and exact passage, limit models and attempts, and never give the model approval or export rights. &
+    Data class; provider, model and schema versions; attempt, token and error logs; exact passage and verification; reason for rejection or no claim; file list without content. &
     Injection, personal or restricted content, arbitrary routing, unclear processor authority or failed span validation: reject or abstain before claim support; stop model use and export. &
-    \textbf{CONTROL IMPLEMENTED / TESTED.}\par No D1, D2 or participant processing is claimed; no model quality, provider retention or superiority result is asserted. \\
+    \textbf{CONTROL BUILT / TESTED.}\par D1, D2 and participant processing have not run. There is no result for model quality, provider retention or better performance. \\
 
     \addlinespace[1.5pt]
-    \textbf{Version or configuration drift; incomplete audit} &
-    Pin revision and diff, dependencies, migration, manifests and cutoff, catalogue, codebook, prompts, schemas, connectors and models; remove secrets; retain run and agent IDs and analysis and exhibit hashes. &
-    Reproducibility manifest; immutable input and result hashes; environment and migration record; attempts, failures and human decisions; deviation log; generated-artifact hashes. &
-    Missing or mismatched hash or version, secret in the bundle, unexplained deviation or non-repeat: fail or hold the comparison, preserve the failure and resolve before making a claim. &
-    \textbf{MECHANISMS IMPLEMENTED / TESTED.}\par D0 repeat evidence exists; a final empirical run bundle is unavailable because held conditions have not executed. \\
+    \textbf{Version or setting changes; incomplete record} &
+    Fix the code revision and changes, dependencies, database version, source and dataset lists, cut-off, catalogue, labelling guide, prompts, schemas, connectors and models. Remove secrets. Keep run and agent IDs and hashes for analysis and exhibits. &
+    Repeatability record; write-once input and result hashes; environment and database version; attempts, failures and human decisions; changes from the plan; hashes for generated files. &
+    A missing or mismatched hash or version, secret in the set, unexplained change or failed repeat stops the comparison. Keep the failure and resolve it before making a claim. &
+    \textbf{MECHANISMS BUILT / TESTED.}\par D0 repeat evidence exists. There is no final study record because the held conditions have not run. \\
 
     \addlinespace[1.5pt]
     \textbf{Reference bias; builder and evaluator bias; selective reporting} &
-    Plan a versioned codebook, two authorised independent labels and adjudication; blind scoring where practicable; predefine outcomes and denominators; retain exclusions, failures, null and negative results and narrow conclusions. &
-    Separate labels; agreement and adjudication and codebook versions; reference and scorer hash; eligibility flow; analysis and deviation log; limitations. &
-    No authorised frozen reference, outcome-driven rule change, unavailable denominator or unresolved disagreement: no confirmatory score; label exploratory or held and seek supervisor and statistical review. &
-    \textbf{DOCUMENTED PLAN.}\par Gold reference and final protocol are not frozen; C0, C3, D1 or D2 empirical or inferential execution is unavailable. \\
+    Plan a versioned labelling guide, two authorised people working independently and a recorded final decision. Keep scoring blind where practical. Set outcomes and calculation totals in advance. Keep exclusions, failures, blank and negative results, and limit conclusions. &
+    Separate labels; agreement, final decisions and labelling-guide versions; reference and scorer hash; case flow; analysis, changes from the plan and limits. &
+    No authorised fixed reference, a rule changed after seeing outcomes, an unavailable calculation total or an unresolved disagreement means no final score. Mark the run exploratory or held and seek supervisor and statistical review. &
+    \textbf{DOCUMENTED PLAN.}\par Reference answers and the final study plan are not fixed. C0, C3, D1 and D2 have no study results. \\
 
     \addlinespace[3pt]
     \multicolumn{5}{@{}P{0.98\textwidth}@{}}{\RaggedRight\scriptsize
-      \textbf{Status key:} \textbf{implemented/tested} means repository code plus selected local
-      checks exercise the stated mechanism; \textbf{documented plan} does not imply execution;
-      \textbf{approval evidence not verified} means no claim of approval or refusal is made;
+      \textbf{Status key:} \textbf{built/tested} means repository code plus selected local
+      checks run the stated mechanism; \textbf{documented plan} does not mean it was run;
+      \textbf{approval not verified} means no claim of approval or refusal is made;
       \textbf{unavailable/sealed} cannot supply a result.
-      \textit{Source note:} Faye Niu's author synthesis of the current draft evaluation protocol,
-      governance and repository contracts, with locally admitted NIST (2023, PDF pp.~32--35),
-      Gebru et al. (2021, pp.~2, 4--10), Greshake et al. (2023, pp.~1, 3--5), Kapoor and
+      \textit{Source note:} Developed by Faye Niu from the current draft evaluation plan,
+      governance rules and repository contracts, using local NIST (2023, PDF pp.~32--35),
+      Gebru et al. (2021, pp.~2, 4--10), Greshake et al. (2023, pp.~1, 3--5), Kapoor \&
       Narayanan (2023, pp.~1--7, 17--21) and Pineau et al. (2021, pp.~1--5, 9--13).
-      Conceptual and non-empirical; controls reduce risk but do not prove ethics compliance,
-      source lawfulness, security, reproducibility, validity or effectiveness.} \\
+      This is a plan, not a result. The controls reduce risk but do not prove ethics compliance,
+      lawful source use, security, repeatability, correctness or effectiveness.} \\
   \end{longtable}
-  % longtable reserves a table number even without its own caption; retain the captionof number only.
+  \par\nopagebreak[4]
+  \captionsetup{hypcap=false}
+  % longtable reserves a table number even without its own caption; reuse that number below.
   \addtocounter{table}{-1}
+  \captionof{table}{Ethics, leakage and repeatability controls}
+  \label{tab:meth-evidence-control-matrix}
 \endgroup
 \clearpage

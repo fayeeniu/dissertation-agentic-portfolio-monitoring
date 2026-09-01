@@ -13,10 +13,12 @@ import argparse
 import csv
 import hashlib
 import re
+import shutil
+import subprocess
 import sys
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = ROOT / "sources"
@@ -27,6 +29,7 @@ CITATION_RE = re.compile(
     r"(?:\s*\[[^\]]*\]){0,2}\s*\{([^}]+)\}"
 )
 BIBITEM_RE = re.compile(r"\\bibitem(?:\[[^\]]*\])?\{([^}]+)\}")
+BIBITEM_WITH_LABEL_RE = re.compile(r"\\bibitem\[([^\]]+)\]\{([^}]+)\}")
 BEGIN_END_RE = re.compile(r"\\(?:begin|end)\{[^}]+\}")
 COMMAND_ONLY_RE = re.compile(
     r"^\s*\\(?:chapter|section|subsection|subsubsection|paragraph|label|"
@@ -106,9 +109,7 @@ def load_manifest(errors: list[str]) -> dict[str, dict[str, str]]:
         reader = csv.DictReader(handle)
         missing_fields = required.difference(reader.fieldnames or [])
         if missing_fields:
-            errors.append(
-                "manifest is missing fields: " + ", ".join(sorted(missing_fields))
-            )
+            errors.append("manifest is missing fields: " + ", ".join(sorted(missing_fields)))
         for row_number, row in enumerate(reader, start=2):
             key = (row.get("citation_key") or "").strip()
             if not key:
@@ -156,6 +157,10 @@ def validate_sources(
     checksums: dict[str, str],
     errors: list[str],
 ) -> None:
+    pdfinfo = shutil.which("pdfinfo")
+    if pdfinfo is None:
+        errors.append("pdfinfo is required to verify local PDF page counts")
+
     manifest_paths: set[str] = set()
     for key, row in manifest.items():
         relative = row.get("pdf_file", "").strip()
@@ -194,6 +199,23 @@ def validate_sources(
                 raise ValueError
         except ValueError:
             errors.append(f"{key}: manifest page count is not a positive integer")
+        else:
+            if pdfinfo is not None:
+                result = subprocess.run(
+                    [pdfinfo, str(path)],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                )
+                match = re.search(r"^Pages:\s+(\d+)\s*$", result.stdout, re.MULTILINE)
+                if result.returncode != 0 or match is None:
+                    detail = result.stderr.strip() or "no Pages field returned"
+                    errors.append(f"{key}: pdfinfo failed for {relative}: {detail}")
+                elif int(match.group(1)) != page_count:
+                    errors.append(
+                        f"{key}: manifest page count mismatch for {relative}: "
+                        f"expected {page_count}, got {match.group(1)}"
+                    )
         if not row.get("origin_url", "").startswith(("https://", "http://")):
             errors.append(f"{key}: manifest origin URL is not HTTP(S)")
 
@@ -202,9 +224,7 @@ def validate_sources(
         errors.append(f"checksum has no manifest row: {relative}")
 
 
-def validate_web_captures(
-    manifest: dict[str, dict[str, str]], errors: list[str]
-) -> int:
+def validate_web_captures(manifest: dict[str, dict[str, str]], errors: list[str]) -> int:
     capture_path = SOURCE_ROOT / "WEB_CAPTURES.csv"
     if not capture_path.is_file():
         return 0
@@ -229,8 +249,7 @@ def validate_web_captures(
         missing_fields = required.difference(reader.fieldnames or [])
         if missing_fields:
             errors.append(
-                "web-capture manifest is missing fields: "
-                + ", ".join(sorted(missing_fields))
+                "web-capture manifest is missing fields: " + ", ".join(sorted(missing_fields))
             )
         for row_number, row in enumerate(reader, start=2):
             key = (row.get("citation_key") or "").strip()
@@ -290,15 +309,50 @@ def validate_web_captures(
     return len(seen_keys)
 
 
+def bibliography_sort_key(label: str) -> str:
+    """Return a stable A--Z key for a rendered natbib author-year label."""
+
+    without_accents = re.sub(r"\\(?:['`\"^~]|c|v)\{?([A-Za-z])\}?", r"\1", label)
+    without_commands = re.sub(r"\\[A-Za-z]+", "", without_accents)
+    without_braces = without_commands.translate(str.maketrans("", "", "{}"))
+    return (
+        unicodedata.normalize("NFKD", without_braces)
+        .encode("ascii", "ignore")
+        .decode("ascii")
+        .casefold()
+    )
+
+
 def bibliography_keys(errors: list[str]) -> set[str]:
     bibliography = ROOT / "references.tex"
     if not bibliography.is_file():
         errors.append(f"missing bibliography: {bibliography}")
         return set()
-    keys = BIBITEM_RE.findall(bibliography.read_text(encoding="utf-8"))
+    bibliography_text = bibliography.read_text(encoding="utf-8")
+    keys = BIBITEM_RE.findall(bibliography_text)
     if len(keys) != len(set(keys)):
         duplicates = sorted({key for key in keys if keys.count(key) > 1})
         errors.append("duplicate bibliography keys: " + ", ".join(duplicates))
+
+    labelled_entries = BIBITEM_WITH_LABEL_RE.findall(bibliography_text)
+    if len(labelled_entries) != len(keys):
+        errors.append("every bibliography item must have an author-year display label")
+    else:
+        labels = [label for label, _ in labelled_entries]
+        expected_labels = sorted(labels, key=bibliography_sort_key)
+        if labels != expected_labels:
+            first_mismatch = next(
+                index
+                for index, (actual, expected) in enumerate(
+                    zip(labels, expected_labels, strict=True), start=1
+                )
+                if actual != expected
+            )
+            errors.append(
+                "bibliography is not A--Z at item "
+                f"{first_mismatch}: found {labels[first_mismatch - 1]!r}, "
+                f"expected {expected_labels[first_mismatch - 1]!r}"
+            )
     return set(keys)
 
 
@@ -320,9 +374,7 @@ def iter_prose_paragraphs(path: Path) -> list[Paragraph]:
             return
         paragraphs.append(Paragraph(path=path, line=start_line, text=text))
 
-    for line_number, raw_line in enumerate(
-        path.read_text(encoding="utf-8").splitlines(), start=1
-    ):
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         line = strip_comment(raw_line).rstrip()
         begins = re.findall(r"\\begin\{([^}]+)\}", line)
         ends = re.findall(r"\\end\{([^}]+)\}", line)
@@ -449,8 +501,7 @@ def main() -> int:
     orphan_bib = bib_keys.difference(manifest)
     if orphan_bib:
         errors.append(
-            "bibliography entries without admitted local PDFs: "
-            + ", ".join(sorted(orphan_bib))
+            "bibliography entries without admitted local PDFs: " + ", ".join(sorted(orphan_bib))
         )
 
     paragraph_count, citation_count, _ = validate_citations(
@@ -470,7 +521,7 @@ def main() -> int:
         return 1
 
     print(
-        f"PASS: {len(manifest)} local PDFs and hashes verified; "
+        f"PASS: {len(manifest)} local PDFs, page counts and hashes verified; "
         f"{web_capture_count} immutable web capture(s); "
         f"{paragraph_count} substantive body paragraph(s); "
         f"{citation_count} distinct cited source(s)"

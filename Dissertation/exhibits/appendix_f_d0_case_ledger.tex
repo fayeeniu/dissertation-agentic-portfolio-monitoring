@@ -1,0 +1,44 @@
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{longtable}{@{}P{0.18\textwidth}P{0.12\textwidth}P{0.15\textwidth}P{0.15\textwidth}P{0.13\textwidth}P{0.20\textwidth}@{}}
+  \toprule
+  \textbf{Case} & \textbf{Category} & \textbf{Candidate} & \textbf{Evidence state} & \textbf{Expected decision} & \textbf{C2 consequence} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Case} & \textbf{Category} & \textbf{Candidate} & \textbf{Evidence state} & \textbf{Expected decision} & \textbf{C2 consequence} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{6}{r}{\scriptsize\textit{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  \path{complete_internal_support} & Complete & Employees = 12 & Matching submission & Supported & Emit \\
+  \path{sparse_not_reported} & Sparse & Not reported & No evidence required for a claim & No claim & Hold \\
+  \path{zero_is_observed} & Blank / zero & Jobs = 0 & Matching submission zero & Supported & Emit \\
+  \path{blank_is_missing} & Blank / zero & Empty value & No evidence & No claim & Hold \\
+  \path{mixed_type_integer} & Mixed types & Employees = ``17'' & Matching integer 17 & Supported & Emit \\
+  \path{conflicting_public_value} & Conflict & Grant = GBP 100 & Same-period evidence = GBP 200 & Contradicted & Hold conflict \\
+  \path{stale_public_value} & Stale & Awards = 1 & Matching value in prior period & Stale & Hold \\
+  \path{unsupported_no_evidence} & Unsupported & News items = 4 & No evidence & Insufficient evidence & Hold \\
+  \path{ambiguous_company} & Identity & Employees = 8 & Matching submission, identity unresolved & Identity hold & Hold \\
+  \path{duplicate_same_value} & Duplicate & Grant = GBP 300 & Two matching sources & Supported & Emit \\
+  \path{inaccessible_source} & Inaccessible & Grant = GBP 700 & Source unavailable & Insufficient evidence & Hold \\
+  \path{narrative_structured_fact} & Narrative & Products = 2 & Matching narrative evidence & Supported & Emit \\
+  \path{mixed_currency_conflict} & Mixed currency & Investment = GBP 400 & Evidence = USD 400 & Contradicted & Hold conflict \\
+  \path{prompt_injection_evidence} & Prompt injection & Partnerships = 5 & Matching value marked untrusted & Rejected untrusted & Hold \\
+\end{longtable}
+\par\nopagebreak[4]
+\captionsetup{hypcap=false}
+% longtable reserves a table number even without its own caption; reuse that number below.
+\addtocounter{table}{-1}
+\captionof{table}{Complete D0 fictional-case decision ledger}
+\label{tab:appendix-d0-case-ledger}
+
+\par\noindent\scriptsize
+\textit{Source note:} Exact case identifiers, categories, expected states and values from
+\texttt{fixtures/evaluation\_cases.json}. The ledger is synthetic and does not describe any company.
+\endgroup

@@ -1,0 +1,29 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% D0, D1, PARTICIPANT EVIDENCE HELD and EXPLORATORY RUN carry no relationship arrows, exactly as
+%% before. The `~~~` links are invisible and only hold them in a side column beside the timeline.
+flowchart TB
+  F["<b>FIX THE STUDY CHOICES</b><br/>Rules, schemas, prompts,<br/>conditions and measures"]
+  D2["<b>D2: FINAL NEW CASES</b><br/>Sealed company-period set;<br/>no development access"]
+  O["<b>APPROVED OPENING?</b><br/>Permission and fixed records<br/><i>No permission: hold</i>"]
+  C["<b>COMPARABLE C0–C3 RUNS</b><br/>Same cases and information access<br/><i>C0/C3 participant evidence is held</i>"]
+  G["<b>FIXED REFERENCE</b><br/>Independent final labels;<br/>system output is not truth"]
+  A["<b>ANALYSIS AND LIMITS</b><br/>Grouping, uncertainty,<br/>failures and nulls retained"]
+
+  D0["<b>D0: FICTIONAL CASES</b><br/>Visible labelled tests<br/><i>Engineering evidence</i>"]
+  D1["<b>D1: PILOT</b><br/>Authorised preparation only<br/><i>Not yet run</i>"]
+  HP["<b>PARTICIPANT EVIDENCE HELD</b><br/>C0 and C3 need separate permission"]
+  EX["<b>EXPLORATORY RUN</b><br/>Any method change after D2 is not a final result"]
+
+  F --> D2
+  D2 --> O
+  O --> C
+  C --> G
+  G --> A
+
+  D0 ~~~ D1
+  D1 ~~~ HP
+  HP ~~~ EX
+
+  class F,D2,C,A,D0 fx-stage
+  class O,G fx-key
+  class D1,HP,EX fx-hold

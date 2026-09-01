@@ -1,0 +1,35 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.30\textwidth}P{0.17\textwidth}P{0.17\textwidth}Y@{}}
+    \toprule
+    \textbf{Measure} & \textbf{C1 baseline} & \textbf{C2 verifier} & \textbf{Total or meaning} \\
+    \midrule
+    Cases; emitted claims & 14; 11 & 14; 5 & The same fourteen paired fictional cases. \\
+    Confusion counts (TP / FP / FN / TN) & 5 / 6 / 0 / 3 & 5 / 0 / 0 / 9 & Expected-emission labels in visible D0 fixture. \\
+    Precision / recall / F1 & 0.455 / 1.000 / 0.625 & 1.000 / 1.000 / 1.000 & Emitted and expected claims; evidence from designed cases only. \\
+    Unsupported / support rate & 0.545 / 0.455 & 0.000 / 1.000 & Each uses emitted claims: 11 for C1, 5 for C2. \\
+    Source-record completeness & 0.818 & 1.000 & Complete source records among emitted claims. \\
+    Schema / normalisation accuracy & 1.000 / 1.000 & 1.000 / 1.000 & Fourteen labelled cases per condition. \\
+    Verification / abstention accuracy & 0.571 / 0.571 & 1.000 / 1.000 & Fourteen labelled cases per condition. \\
+    Contradiction accuracy & 0.000 & 1.000 & Two applicable conflict cases only. \\
+    Exact repeat consistency & 1.000 & 1.000 & Three fixed result lists. \\
+    Mean duration; LLM cost & 0 ms; USD 0 & 0 ms; USD 0 & Values below one millisecond are shown as zero; both routes were local and fixed. \\
+    Other outcome layers & \multicolumn{2}{c}{\textbf{NULL}} & No applicable identity, extraction, temporal, quality, event, report or reviewer labels. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{D0 fictional-case results by automated condition}
+  \label{tab:eval-d0-results}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Three-repeat D0 evaluator output frozen on 1 September 2026, SHA-256
+    \textnormal{dcc2fbff...de9dcd} (full value retained in the text alternative and Chapter 5).
+    Values come from fictional cases. They do not support a confidence interval or a claim about
+    performance in real use.}
+\end{table}
+\clearpage

@@ -1,8 +1,6 @@
 \clearpage
 \begin{table}[p]
   \centering
-  \caption{Review and local source-admission protocol}
-  \label{tab:review-source-admission}
   \footnotesize
   \setlength{\tabcolsep}{3pt}
   \renewcommand{\arraystretch}{1.18}
@@ -10,51 +8,50 @@
   \exhyphenpenalty=4000
   \begin{tabularx}{\textwidth}{@{}P{0.17\textwidth}Y P{0.25\textwidth}P{0.24\textwidth}@{}}
     \toprule
-    \rowcolor{WMGBlue!10}
     \textbf{Stage} &
     \textbf{Decision and action} &
     \textbf{Required local record} &
     \textbf{Reject or hold} \\
     \midrule
-    \textbf{1. Problem-led discovery} &
-    Search from the reporting problem, research questions and explicit evidence gaps; classify each candidate by intended source role. &
-    Candidate title, origin and proposed use. Discovery alone does not admit a source. &
-    Off-scope, duplicate or snippet-only candidates remain unadmitted. \\
+    \textbf{1. Search from the problem} &
+    Search from the reporting problem, research questions and clear evidence gaps. Give each possible source a planned purpose. &
+    Possible title, origin and planned use. Finding a source does not make it acceptable. &
+    Sources outside scope, duplicates and search snippets are not accepted. \\
     \addlinespace
-    \rowcolor{DraftPale}
-    \textbf{2. Stable local full text} &
-    Obtain a complete, readable local PDF or an immutable permitted capture before claim use. &
+    \textbf{2. Complete local copy} &
+    Obtain a complete, readable local PDF or a permitted write-once capture before using it for a claim. &
     Stable local path plus origin and capture details where applicable. &
-    Inaccessible, partial, snippet-only or no-stable-capture sources are held or rejected. \\
+    Inaccessible, partial, snippet-only sources, or sources with no stable copy, are held or rejected. \\
     \addlinespace
-    \textbf{3. Manifest, checksum and bibliography binding} &
-    Bind one citation key to bibliographic metadata, origin, local path, page count and SHA-256. &
-    Manifest, checksum and bibliography agree; web-capture records agree when used. &
-    Missing or duplicate key, absent row/hash, path reuse or any metadata/hash mismatch blocks admission. \\
+    \textbf{3. Link the source records} &
+    Link one citation key to its reference details, origin, local path, page count and SHA-256 checksum. &
+    The source list, checksum list and bibliography agree. Web-capture records also agree when used. &
+    A missing or repeated key, missing row or hash, reused path, or any mismatch blocks the source. \\
     \addlinespace
-    \rowcolor{DraftPale}
-    \textbf{4. Page-level claim verification} &
-    Inspect the local full text for the exact claim scope and record the supporting page locator. &
-    Claim-ledger or section-evidence entry with source role, pages and verification state. &
-    Unsupported, mis-scoped or unlocatable claims are rejected; citation presence does not prove truth. \\
+    \textbf{4. Check each claim and page} &
+    Read the local full text for the exact claim and record the supporting page. &
+    A claim-ledger row with the source purpose, pages and check result. &
+    Claims without support, outside the source's scope or with no exact location are rejected. A citation alone does not prove truth. \\
     \addlinespace
-    \textbf{5. Contradiction and limitation retention} &
-    Preserve conflicts, unknowns, source hierarchy, reconstruction limits and non-applicable fields in synthesis. &
-    Limitation and contradiction notes remain attached to the claim and source role. &
-    Suppressed conflict, omitted caveat, source-tier equivalence or overclaim is held for repair. \\
+    \textbf{5. Keep conflicts and limits} &
+    Keep conflicts, unknowns, source strength, limits of reconstructed data and fields that do not apply. &
+    Notes about limits and conflicts stay linked to the claim and source purpose. &
+    A hidden conflict, missing warning, false equality between sources or claim that goes too far must be repaired. \\
     \addlinespace
-    \rowcolor{DraftPale}
-    \textbf{6. Strict freeze validation} &
-    Run the strict local validator, then freeze the cited files and their bindings for the section. &
+    \textbf{6. Final source check} &
+    Run the strict local check, then fix the cited files and their links for the section. &
     Readable files; matching manifest, checksums, bibliography and capture records; resolvable claim locators. &
-    Missing/unreadable file, unresolved citation, mutable-only reference or any binding mismatch blocks freeze. \\
+    A missing or unreadable file, unresolved citation, changeable-only reference or any mismatch blocks the final check. \\
     \bottomrule
   \end{tabularx}
+
+  \caption{How sources were found, saved and checked}
+  \label{tab:review-source-admission}
   \vspace{3pt}
 
   \parbox{\textwidth}{\scriptsize
-    \textit{Method status:} Purposive, problem-led, non-systematic and non-exhaustive; not PRISMA.\\
-    \textit{Source note:} Author synthesis of frozen local source-admission contracts, not results. Local storage, hashing and citation presence establish traceability controls, not source truth.
+    \textit{Method status:} A targeted review based on the project problem. It is not systematic, exhaustive or a PRISMA review.\\
+    \textit{Source note:} Developed by the author from the local source rules, not from results. Local copies, checksums and citations make sources traceable but do not prove that they are true.
   }
 \end{table}
 \clearpage

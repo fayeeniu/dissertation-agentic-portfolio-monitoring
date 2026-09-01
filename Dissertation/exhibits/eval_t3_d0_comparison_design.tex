@@ -1,0 +1,34 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.19\textwidth}P{0.26\textwidth}P{0.24\textwidth}Y@{}}
+    \toprule
+    \textbf{Design element} & \textbf{Shared input} & \textbf{C1 fixed baseline} & \textbf{C2 verification condition} \\
+    \midrule
+    Fixture & 14 fictional labelled cases; manifest and fixture hashes; test-only \textnormal{benchmark:d0} namespace & Same cases and order & Same cases and order \\
+    \addlinespace
+    Edge-case coverage & Complete, sparse, blank/zero, mixed type, conflict, stale, unsupported, ambiguous identity, duplicate, inaccessible, narrative, mixed currency, prompt injection & Same labelled inputs & Same labelled inputs \\
+    \addlinespace
+    Preparation & Catalogue, whether the source can be found, candidate value and currency, normaliser and expected states & Shared & Shared \\
+    \addlinespace
+    Changed mechanism & The separately recorded verification step is the only planned difference & Emits eligible standardised candidates; unclear identity is held & Emits only candidates supported by the verifier; unclear identity is held \\
+    \addlinespace
+    Repeats and scoring & Three fixed repeats; the first run is scored; equal result lists show repeat consistency & Three repeats & Three repeats \\
+    \addlinespace
+    What cannot be concluded & The visible development labels and rules were designed together & No independent or real-company baseline estimate & No estimate of the verification effect on new cases \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{D0 fictional cases and C1--C2 comparison design}
+  \label{tab:eval-d0-comparison-design}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author summary of the runnable evaluation list, D0 cases, evaluator and
+    fixed study plan. The table shows the implemented difference between the conditions. It does not
+    prove that one condition is better in real use or that people would benefit.}
+\end{table}
+\clearpage

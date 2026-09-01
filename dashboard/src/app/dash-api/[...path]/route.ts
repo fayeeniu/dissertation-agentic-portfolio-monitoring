@@ -32,47 +32,51 @@ async function call(
   method: string,
   path: string,
   search: string,
-  body: unknown,
+  body: BodyInit | undefined,
   token: string,
+  contentType: string | null,
 ): Promise<Response> {
+  const headers: Record<string, string> = {
+    "x-csrf-token": token,
+    cookie: `${COOKIE_NAME}=${token}`,
+  };
+  if (contentType) headers["content-type"] = contentType;
   return fetch(`${ORIGIN}/api/${path}${search}`, {
     method,
     cache: "no-store",
-    headers: {
-      "content-type": "application/json",
-      "x-csrf-token": token,
-      cookie: `${COOKIE_NAME}=${token}`,
-    },
-    body: method === "GET" ? undefined : JSON.stringify(body ?? {}),
+    headers,
+    body,
   });
 }
 
 async function proxy(request: NextRequest, segments: string[], method: string) {
   const path = segments.map(encodeURIComponent).join("/");
   const search = request.nextUrl.search;
-  let body: unknown = undefined;
+  let body: BodyInit | undefined;
+  let contentType: string | null = null;
+  const multipart = request.headers.get("content-type")?.startsWith("multipart/form-data");
   if (method !== "GET") {
-    try {
-      body = await request.json();
-    } catch {
-      body = {};
+    if (multipart) {
+      body = await request.formData();
+    } else {
+      let payload: Record<string, unknown> = {};
+      try {
+        payload = (await request.json()) as Record<string, unknown>;
+      } catch {
+        payload = {};
+      }
+      body = JSON.stringify(payload);
+      contentType = "application/json";
     }
   }
 
   try {
     let token = await readToken();
-    let payload: Record<string, unknown> | undefined;
-    if (method !== "GET") {
-      payload = { ...(body as Record<string, unknown>), csrf_token: token };
-    }
-    let upstream = await call(method, path, search, payload, token);
+    let upstream = await call(method, path, search, body, token, contentType);
     if (upstream.status === 403) {
       // The research service restarts with a new process token; re-handshake once.
       token = await readToken(true);
-      if (method !== "GET") {
-        payload = { ...(body as Record<string, unknown>), csrf_token: token };
-      }
-      upstream = await call(method, path, search, payload, token);
+      upstream = await call(method, path, search, body, token, contentType);
     }
     const text = await upstream.text();
     return new NextResponse(text, {

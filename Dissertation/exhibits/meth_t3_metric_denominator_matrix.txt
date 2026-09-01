@@ -212,7 +212,7 @@ Local academic basis
 
 Exact repository inputs
 - docs/EVALUATION_PROTOCOL.md: headings "Units of analysis", "Primary and secondary measures",
-  "Claim quality", "Extraction and normalization", "Provenance and report quality", "Efficiency
+  "Claim quality", "Extraction and normalisation", "Source and report quality", "Efficiency
   and resource use", "Reliability", "Usability (C3 only)", "Automated synthetic harness", "Manual
   baseline capture", "HITL capture", "Analysis plan" and "Error taxonomy".
 - docs/DATA_DICTIONARY.md: canonical value, missing-state, period, sourceability, claim, verification

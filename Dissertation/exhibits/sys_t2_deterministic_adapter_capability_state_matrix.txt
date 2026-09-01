@@ -1,4 +1,4 @@
-SYS-T2 — Deterministic adapter and capability-state matrix
+SYS-T2: Fixed source connector and state matrix
 
 Author: Faye Niu
 Target section: 4.6 Deterministic source adapters, time, and quality
@@ -18,7 +18,7 @@ State vocabulary
 - Invalid: identifier, company binding, cutoff/window, manifest, response, fact, locator, schema or semantic contract failed validation. It is not silently repaired.
 - Failure: collection or persistence ended in a terminal error. The quality contract holds it for review rather than reporting a pass or zero.
 
-Row 1 — Registry capability gate
+Row 1: Connector ability check
 --------------------------------
 Adapter/source:
 SourceRegistry and the admitted-source policy.
@@ -38,7 +38,7 @@ A missing/unconfigured source, non-admitted key, incompatible manifest/mode, unr
 Current status/limitation:
 Implemented and tested for repository-owned offline synthetic replays. The checks establish deterministic contract handling and traceability within exercised cases. They do not establish publisher authority, source truth, live availability, complete coverage or production behaviour.
 
-Row 2 — Companies House offline replay
+Row 2: Companies House offline replay
 ----------------------------------------
 Adapter/source:
 Companies House synthetic snapshot connector.
@@ -58,7 +58,7 @@ A unique exact-number match produces a record. No match produces no_record with 
 Current status/limitation:
 Implemented and locally tested using repository-owned synthetic data. It does not prove live/current Companies House truth, legal identity authority beyond named review, complete register coverage, source quality, valuation, live availability or production readiness.
 
-Row 3 — UKRI offline replay
+Row 3: UKRI offline replay
 ----------------------------
 Adapter/source:
 UKRI Gateway to Research synthetic snapshot connector.
@@ -78,7 +78,7 @@ A unique exact organisation match produces a record; no exact match produces no_
 Current status/limitation:
 Implemented and locally tested using repository-owned synthetic replay. It does not establish live UKRI interface access, exhaustive award/project coverage, source truth, current availability, publisher permission, programme causation or production reliability.
 
-Row 4 — Companies House read-only API mode
+Row 4: Companies House read-only API mode
 --------------------------------------------
 Adapter/source:
 Declared Companies House read_only_api capability.
@@ -98,7 +98,7 @@ The registry blocks the live mode before connector invocation because live_retri
 Current status/limitation:
 Held and live-unrun. Code presence and synthetic transport tests do not constitute permission, live official retrieval evidence, source availability, complete coverage or production readiness.
 
-Row 5 — Public-web discovery and capture boundary
+Row 5: Public-web search and collection boundary
 --------------------------------------------------
 Adapter/source:
 The separately conditioned public-web company-research path. It is not a SourceRegistry Companies House/UKRI adapter and cannot silently substitute for one.

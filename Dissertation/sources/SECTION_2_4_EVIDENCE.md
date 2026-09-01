@@ -2,10 +2,13 @@
 
 Scope: `2.4 Provenance, source admission, contradiction, and auditable synthesis` only. Page
 numbers are PDF page numbers in the hash-pinned local files. These claims were checked against
-locally extracted text on 27 August 2026.
+locally extracted text on 27 August 2026 and the foundational provenance source on 31 August 2026.
 
 ## Paragraph 1: provenance as traceability, not truth
 
+- `buneman2001provenance`, PDF pp. 1--3: for database-query results, why-provenance concerns source
+  data influencing a result's existence and where-provenance concerns source locations from which
+  values were extracted. The paper does not address free-form report truth.
 - `gebru2021datasheets`, PDF pp. 2--6 and 9--10: useful documentation records motivation,
   composition, collection, processing, missing information, known errors, external dependencies,
   distribution, maintenance and correction practices.

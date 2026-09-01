@@ -317,6 +317,44 @@ class CompanyDomainDecisionModel(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 
+class CompanyRelationshipModel(Base):
+    __tablename__ = "company_relationships"
+    __table_args__ = (
+        UniqueConstraint(
+            "subject_company_id",
+            "related_company_id",
+            "relationship_type",
+            name="uq_company_relationship_scope",
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("rel"))
+    subject_company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="CASCADE"), index=True
+    )
+    related_company_id: Mapped[str] = mapped_column(
+        ForeignKey("companies.id", ondelete="RESTRICT"), index=True
+    )
+    relationship_type: Mapped[str] = mapped_column(String(40), index=True)
+    status: Mapped[str] = mapped_column(String(32), index=True)
+    proposed_by: Mapped[str] = mapped_column(String(255))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CompanyRelationshipDecisionModel(Base):
+    __tablename__ = "company_relationship_decisions"
+    __table_args__ = (UniqueConstraint("company_relationship_id"),)
+
+    id: Mapped[str] = mapped_column(String(48), primary_key=True, default=lambda: new_id("reld"))
+    company_relationship_id: Mapped[str] = mapped_column(
+        ForeignKey("company_relationships.id", ondelete="CASCADE"), index=True
+    )
+    decision: Mapped[str] = mapped_column(String(32))
+    actor: Mapped[str] = mapped_column(String(255))
+    reason: Mapped[str] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
 class CompanyIdentifierDecisionModel(Base):
     __tablename__ = "company_identifier_decisions"
 
@@ -455,6 +493,11 @@ class CompanyResearchSourceModel(Base):
     research_run_id: Mapped[str] = mapped_column(
         ForeignKey("company_research_runs.id", ondelete="CASCADE"), index=True
     )
+    intake_artifact_id: Mapped[str | None] = mapped_column(
+        ForeignKey("intake_artifacts.id", ondelete="RESTRICT"), index=True
+    )
+    origin: Mapped[str] = mapped_column(String(40), default="public_web", index=True)
+    entity_scope: Mapped[str] = mapped_column(String(40), default="legal_entity", index=True)
     url: Mapped[str] = mapped_column(Text)
     final_url: Mapped[str | None] = mapped_column(Text)
     title: Mapped[str | None] = mapped_column(String(500))
@@ -488,6 +531,7 @@ class CompanyResearchClaimModel(Base):
     research_source_id: Mapped[str] = mapped_column(
         ForeignKey("company_research_sources.id", ondelete="CASCADE"), index=True
     )
+    entity_scope: Mapped[str] = mapped_column(String(40), default="legal_entity", index=True)
     claim_hash: Mapped[str] = mapped_column(String(64), index=True)
     category: Mapped[str] = mapped_column(String(40), index=True)
     subject_key: Mapped[str] = mapped_column(String(100), index=True)

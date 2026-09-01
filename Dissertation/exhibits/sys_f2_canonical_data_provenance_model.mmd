@@ -1,0 +1,15 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% COMPANY RESEARCH is a parallel lane rather than a stage of the portfolio chain, so it carries no
+%% relationship arrow and renders as its own column beside the portfolio sequence.
+flowchart TB
+  O["<b>SHARED OBSERVATIONS</b><br/><br/><b>Company</b> + <b>measure definition</b><br/>+ <b>reporting period</b><br/>↓<br/><b>Observation</b><br/>Original and cleaned values ·<br/>clear missing state"]
+  E["<b>SOURCE-TO-CLAIM RECORD</b><br/><br/>Source definition → saved source copy<br/>→ evidence fact<br/>↓<br/>Evidence item → claim → verification<br/><i>Exact locations, trust states<br/>and content hashes retained</i>"]
+  R["<b>REPORT LIFECYCLE</b><br/><br/>Report vN → named review decision<br/>→ manifest-bound export<br/><br/>Current content hash · actor ·<br/>rationale · decision<br/>JSON, Markdown and HTML output hashes"]
+  L["<b>COMPANY RESEARCH · LIVE UNRUN</b><br/><br/>Research run → captured source<br/>→ exact-span claim → profile version<br/><br/>Final URL · fetch state ·<br/>snapshot hash · verbatim span<br/>conflicts, gaps and named review retained"]
+
+  O --> E
+  E --> R
+
+  class O,E fx-stage
+  class R fx-key
+  class L fx-live

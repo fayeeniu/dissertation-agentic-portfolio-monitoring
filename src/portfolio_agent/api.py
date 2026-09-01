@@ -1,10 +1,9 @@
-"""JSON projection layer for the agent control-room dashboard.
+"""JSON projection layer for the Next.js agent control room.
 
-This module adds no business logic. It reads the same persisted records the Jinja
-surfaces read and projects them into stable JSON view models so a separate
-front-end can render the bounded multi-agent workflow. Every status, hash, count,
-and timing value shown to a user originates from a persisted row; nothing here
-derives, guesses, or smooths over a missing value.
+This module adds no business logic. It projects persisted records into stable
+JSON view models for the frontend. Every status, hash, count, and timing value
+shown to a user originates from a persisted row; nothing here guesses or smooths
+over a missing value.
 """
 
 from __future__ import annotations
@@ -15,12 +14,17 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Body, HTTPException, Request
+from fastapi import APIRouter, Body, File, Form, HTTPException, Request, UploadFile
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .bootstrap import Runtime
-from .company_intelligence import CompanyIntakeRequest, CompanyIntakeValidationError
+from .company_intelligence import (
+    MAX_DOCUMENTS_PER_BATCH,
+    CompanyDocumentUpload,
+    CompanyIntakeRequest,
+    CompanyIntakeValidationError,
+)
 from .company_research import (
     REASONING_CAPABILITIES,
     TASKS,
@@ -28,11 +32,12 @@ from .company_research import (
     route_for,
     validated_profile_content,
 )
-from .dashboard import humanize
+from .config import COMPANY_RESEARCH_REPAIR_EFFORT, COMPANY_RESEARCH_SELECTION_EFFORT
 from .enums import (
     CompanyResearchRunStatus,
     CompanyResearchTaskStatus,
     DataClassification,
+    EvidenceScope,
     IdentityCandidateStatus,
     IdentityDecisionType,
     ProfileVersionStatus,
@@ -45,6 +50,7 @@ from .models import (
     CompanyDomainModel,
     CompanyIdentifierModel,
     CompanyModel,
+    CompanyRelationshipModel,
     CompanyResearchClaimModel,
     CompanyResearchRunModel,
     CompanyResearchSourceModel,
@@ -56,6 +62,10 @@ from .models import (
 )
 
 JsonDict = dict[str, Any]
+
+
+def humanize(value: str) -> str:
+    return value.replace("_", " ").strip().capitalize()
 
 #: Bounded roles that actually execute inside a company research run. The
 #: capability keys match :data:`portfolio_agent.company_research.TASKS`; the gate
@@ -156,12 +166,14 @@ _PERSPECTIVE_LABELS: dict[str, str] = {
     "fact": "Independent source",
     "company_self_claim": "Company self-claim",
     "public_discourse": "Public discourse",
+    "internal_document": "Internal document",
 }
 
 _SOURCE_TIER_LABELS: dict[str, str] = {
     "official": "Official register",
     "first_party": "Verified first-party",
     "secondary": "Secondary public",
+    "internal_document": "Internal document",
 }
 
 _AUTOMATIC_RETRY_CODES = frozenset(
@@ -169,6 +181,8 @@ _AUTOMATIC_RETRY_CODES = frozenset(
         "model_schema_invalid",
         "model_timeout",
         "model_connection_failed",
+        "model_rate_limited",
+        "model_service_error",
         "no_sources",
         "no_valid_claims",
         "task_failed",
@@ -247,12 +261,12 @@ def system_state(runtime: Runtime) -> JsonDict:
             },
             "selection": {
                 "model": settings.openai_model,
-                "effort": "low",
+                "effort": COMPANY_RESEARCH_SELECTION_EFFORT,
                 "stages": ["extract_claims"],
             },
             "repair": {
                 "model": settings.openai_model,
-                "effort": "low",
+                "effort": COMPANY_RESEARCH_REPAIR_EFFORT,
                 "when": "any repeat attempt after a rejected result",
             },
         },
@@ -858,6 +872,8 @@ def _lane_rows(
             "publisher_domain": source.publisher_domain,
             "source_tier": source.source_tier,
             "source_tier_label": _tier_label(source.source_tier),
+            "origin": source.origin,
+            "entity_scope": source.entity_scope,
             "status": source.status,
             "http_status": source.http_status,
             "media_type": source.media_type,
@@ -881,6 +897,7 @@ def _claim_rows(claims: list[CompanyResearchClaimModel]) -> list[JsonDict]:
             "source_id": claim.research_source_id,
             "category": claim.category,
             "category_label": _CLAIM_CATEGORY_LABELS.get(claim.category, humanize(claim.category)),
+            "entity_scope": claim.entity_scope,
             "subject_key": claim.subject_key,
             "statement": claim.statement,
             "evidence_span": claim.evidence_span,
@@ -1103,10 +1120,23 @@ def run_view(runtime: Runtime, run_id: str) -> JsonDict:
             )
         review_status = "pending"
         review_detail = "Composition has not produced a profile version yet."
+        composition_complete = any(
+            task.capability == "compose_deck"
+            and task.status == CompanyResearchTaskStatus.SUCCEEDED.value
+            for task in tasks
+        )
         if profile is not None:
-            if profile.status == ProfileVersionStatus.PENDING_REVIEW.value:
+            if (
+                profile.status == ProfileVersionStatus.PENDING_REVIEW.value
+                and composition_complete
+            ):
                 review_status = "awaiting"
                 review_detail = "Version awaits the named reviewer. Nothing exports before that."
+            elif profile.status == ProfileVersionStatus.PENDING_REVIEW.value:
+                review_detail = (
+                    "A profile version exists, but task finalization is incomplete. "
+                    "Recover the interrupted stage before review."
+                )
             elif profile.status == ProfileVersionStatus.APPROVED.value:
                 review_status = "succeeded"
                 review_detail = f"Approved by {profile.reviewed_by or 'a named reviewer'}."
@@ -1323,6 +1353,36 @@ def company_view(runtime: Runtime, company_id: str) -> JsonDict:
             }
             for item in domains
         ]
+        relationships = list(
+            session.scalars(
+                select(CompanyRelationshipModel)
+                .where(CompanyRelationshipModel.subject_company_id == company_id)
+                .order_by(CompanyRelationshipModel.created_at)
+            ).all()
+        )
+        relationship_rows = []
+        for item in relationships:
+            related = session.get(CompanyModel, item.related_company_id)
+            related_identifier = session.scalar(
+                select(CompanyIdentifierModel).where(
+                    CompanyIdentifierModel.company_id == item.related_company_id,
+                    CompanyIdentifierModel.scheme == "companies_house_number",
+                )
+            )
+            relationship_rows.append(
+                {
+                    "id": item.id,
+                    "relationship_type": item.relationship_type,
+                    "status": item.status,
+                    "related_company_id": item.related_company_id,
+                    "related_company_name": related.canonical_name if related else "Unavailable",
+                    "companies_house_number": (
+                        related_identifier.normalized_value if related_identifier else None
+                    ),
+                    "proposed_by": item.proposed_by,
+                    "created_at": _iso(item.created_at),
+                }
+            )
         cases = list(
             session.scalars(
                 select(ResearchCaseModel)
@@ -1335,6 +1395,10 @@ def company_view(runtime: Runtime, company_id: str) -> JsonDict:
                 "id": item.id,
                 "purpose": item.purpose,
                 "classification": item.classification,
+                "evidence_scope": item.submitted_value_json.get(
+                    "evidence_scope", EvidenceScope.LEGAL_ENTITY.value
+                ),
+                "processing_boundary": item.submitted_value_json.get("processing_boundary"),
                 "status": item.status,
                 "created_at": _iso(item.created_at),
                 "created_by": item.created_by,
@@ -1488,11 +1552,20 @@ def company_view(runtime: Runtime, company_id: str) -> JsonDict:
             },
             "identifiers": identifier_rows,
             "domains": domain_rows,
+            "relationships": relationship_rows,
             "cases": case_rows,
             "artifacts": artifact_rows,
             "runs": run_rows,
             "sections": sections,
             "investment_report": build_investment_report(latest_claims),
+            "investment_reports": {
+                "legal_entity": build_investment_report(
+                    latest_claims, entity_scope="legal_entity"
+                ),
+                "consolidated_group": build_investment_report(
+                    latest_claims, entity_scope="consolidated_group"
+                ),
+            },
             "lanes": _lane_rows(
                 latest_sources,
                 {
@@ -1528,8 +1601,8 @@ def create_api_router(
 ) -> APIRouter:
     """Build the JSON router used by the control-room front end.
 
-    Mutations reuse the existing double-submit CSRF contract: the token must
-    match both the cookie and the process token. The reviewer identity still
+    Mutations use a double-submit CSRF contract: the token must match both the
+    cookie and the process token. The reviewer identity still
     comes from local configuration and is never accepted from the request.
     """
 
@@ -1641,6 +1714,98 @@ def create_api_router(
             "research_case_id": result.research_case_id,
             "company": company_view(runtime, result.company_id),
         }
+
+    @router.post("/research-cases/{research_case_id}/documents", status_code=201)
+    async def attach_documents(
+        request: Request,
+        research_case_id: str,
+        files: Annotated[list[UploadFile], File()],
+        classification: Annotated[str, Form()] = DataClassification.INTERNAL.value,
+        evidence_scope: Annotated[str, Form()] = EvidenceScope.LEGAL_ENTITY.value,
+    ) -> JsonDict:
+        require_csrf(request, request.headers.get("x-csrf-token"))
+        if not 1 <= len(files) <= MAX_DOCUMENTS_PER_BATCH:
+            raise domain_error(
+                CompanyIntakeValidationError("Upload between 1 and 12 documents per batch.")
+            )
+        try:
+            selected_classification = DataClassification(classification)
+            selected_scope = EvidenceScope(evidence_scope)
+        except ValueError as exc:
+            raise domain_error(
+                CompanyIntakeValidationError("Unsupported document classification or scope.")
+            ) from exc
+        uploads: list[CompanyDocumentUpload] = []
+        for uploaded in files:
+            uploads.append(
+                CompanyDocumentUpload(
+                    content=await uploaded.read(),
+                    filename=uploaded.filename or "document.bin",
+                    declared_mime=uploaded.content_type,
+                )
+            )
+        try:
+            results = runtime.intakes.attach_documents(
+                research_case_id,
+                tuple(uploads),
+                actor=reviewer_identity(),
+                classification=selected_classification,
+                evidence_scope=selected_scope,
+            )
+        except CompanyIntakeValidationError as exc:
+            raise domain_error(exc) from exc
+        company_id = results[0].company_id
+        return {
+            "uploaded": len(results),
+            "reused": sum(item.reused_existing for item in results),
+            "company": company_view(runtime, company_id),
+        }
+
+    @router.post("/companies/{company_id}/group-scopes", status_code=201)
+    def propose_group_scope(
+        request: Request,
+        company_id: str,
+        payload: Annotated[JsonDict, Body()],
+    ) -> JsonDict:
+        require_csrf(request, str(payload.get("csrf_token") or "") or None)
+        try:
+            runtime.intakes.propose_group_scope(
+                company_id=company_id,
+                companies_house_number=str(payload.get("companies_house_number") or ""),
+                company_name=str(payload.get("company_name") or "") or None,
+                actor=reviewer_identity(),
+            )
+        except CompanyIntakeValidationError as exc:
+            raise domain_error(exc) from exc
+        return company_view(runtime, company_id)
+
+    @router.post("/company-relationships/{relationship_id}/decide")
+    def decide_group_scope(
+        request: Request,
+        relationship_id: str,
+        payload: Annotated[JsonDict, Body()],
+    ) -> JsonDict:
+        require_csrf(request, str(payload.get("csrf_token") or "") or None)
+        with runtime.session_factory() as session:
+            relationship = session.get(CompanyRelationshipModel, relationship_id)
+            if relationship is None:
+                raise HTTPException(status_code=404, detail="Unknown company relationship.")
+            company_id = relationship.subject_company_id
+        try:
+            decision = IdentityDecisionType(str(payload.get("decision")))
+            runtime.intakes.decide_group_scope(
+                relationship_id=relationship_id,
+                decision=decision,
+                actor=reviewer_identity(),
+                reason=str(payload.get("reason") or ""),
+            )
+        except (ValueError, CompanyIntakeValidationError) as exc:
+            raise domain_error(
+                exc
+                if isinstance(exc, CompanyIntakeValidationError)
+                else CompanyIntakeValidationError("Unknown relationship decision.")
+            ) from exc
+        return company_view(runtime, company_id)
 
     @router.post("/company-identifiers/{identifier_id}/decide")
     def decide_identifier(

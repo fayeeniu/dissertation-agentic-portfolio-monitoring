@@ -1,8 +1,6 @@
 \clearpage
 \begin{table}[p]
   \centering
-  \caption{C0--C3 evaluation-condition matrix}
-  \label{tab:meth-condition-matrix}
   \scriptsize
   \setlength{\tabcolsep}{0.8pt}
   \renewcommand{\arraystretch}{1.18}
@@ -11,38 +9,38 @@
   \begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.155\textwidth}P{0.125\textwidth}P{0.10\textwidth}P{0.115\textwidth}Y P{0.172\textwidth}@{}}
     \toprule
     \textbf{Condition} &
-    \textbf{Operational workflow} &
+    \textbf{Workflow} &
     \textbf{Independent}\par\textbf{verifier} &
     \textbf{Human involvement} &
     \textbf{Scoring point} &
-    \textbf{Parity controls} &
+    \textbf{Fair-comparison controls} &
     \textbf{Current evidence state} \\
     \midrule
 
     \textbf{C0}\par Manual &
-    Authorised practitioner completes the existing workflow in the frozen information window; every tool or model aid is logged. &
+    An authorised practitioner completes the current workflow in the fixed information window. Every tool or model used is logged. &
     No condition-level verifier. &
     Practitioner produces the report; there is no later C3 review stage. &
     Completed manual report; timing and corrections only if authorised. &
-    Same metric definitions, period, eligible input and source-access window, and frozen gold reference. &
-    \textbf{PROTOCOL-ONLY / NO-GO}\par Pending authority, gold construction and freeze. \\
+    Same measure definitions, period, eligible input, source-access window and agreed reference answers. &
+    \textbf{PLANNED / ON HOLD}\par Waiting for permission, reference answers and a fixed study plan. \\
 
     \addlinespace[2pt]
-    \textbf{C1}\par Deterministic\par single-agent &
-    One extraction-and-composition path uses the common catalogue and normaliser; provenance is retained. &
+    \textbf{C1}\par Fixed\par single-agent &
+    One extraction and report-writing route uses the shared catalogue and cleaning rules. Source records are kept. &
     No. &
     No human edits before scoring. &
     Automated C1 report before any review. &
-    Common controls at left, plus frozen schemas, prompts, code, environment and stop rules. &
+    Shared controls at left, plus fixed schemas, prompts, code, environment and stop rules. &
     \textbf{IMPLEMENTED}\par Synthetic labelled D0 cases; mechanism evidence only. \\
 
     \addlinespace[2pt]
-    \textbf{C2}\par Bounded\par multi-agent &
-    Bounded roles collect, extract and normalise; the verifier gates support before deterministic composition. &
+    \textbf{C2}\par Controlled\par multi-agent &
+    Separate roles collect, extract and clean data. The verifier checks support before fixed report writing. &
     Yes: separate from extraction and composition. &
     No human edits before scoring. &
     Verifier-gated C2 report before human review. &
-    Same common and frozen technical controls as C1. &
+    Same shared and fixed technical controls as C1. &
     \textbf{IMPLEMENTED}\par Synthetic labelled D0 cases; mechanism evidence only. \\
 
     \addlinespace[2pt]
@@ -51,18 +49,20 @@
     Yes: inherited from C2. &
     Named reviewer may edit, approve or reject under the authorised protocol. &
     Approved post-review version, scored separately from pre-review C2. &
-    Same common controls and C2 configuration, plus the frozen review protocol. &
-    \textbf{WORKFLOW IMPLEMENTED}\par Human results PROTOCOL-ONLY / NO-GO. \\
+    Same shared controls and C2 set-up, plus the fixed review plan. &
+    \textbf{WORKFLOW BUILT}\par Human results are planned and on hold. \\
     \bottomrule
   \end{tabularx}
 
+  \caption{C0--C3 evaluation-condition matrix}
+  \label{tab:meth-condition-matrix}
+
   \vspace{5pt}
   \parbox{\textwidth}{\scriptsize
-    \textit{Parity rule:} comparable conditions use the same canonical metric definitions,
-    reporting period, eligible input and source-access window, and frozen gold reference; C0 tool
-    or model assistance must be recorded. \textit{Exclusion:} the live-unrun bounded public-web
-    company-research path is not a C0--C3 condition and supplies engineering evidence only.
-    \textit{Status:} author synthesis of frozen project contracts; conceptual and non-empirical,
-    with no result values or decision thresholds.}
+    \textit{Fair-comparison rule:} conditions use the same measure definitions, reporting period,
+    eligible input, source-access window and agreed reference answers. Any tool or model used in C0
+    must be recorded. \textit{Exclusion:} the public-web company-research route has not run live. It
+    is not a C0-C3 condition and provides engineering evidence only. \textit{Status:} developed by
+    the author from the fixed project rules, with no study results or pass thresholds.}
 \end{table}
 \clearpage

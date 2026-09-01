@@ -1,0 +1,7 @@
+EVAL-T5: Controlled company-research rules and hostile-input results
+
+Fresh focused suite: 37 tests passed with one Starlette deprecation warning.
+
+PASS control families: controlled end-to-end reviewed identity through v3 composition and named download; immutable task fingerprints, retry-inclusive and elapsed budgets, cancellation and recovery; HTTPS, credentials, ports, DNS/rebinding, redirects, robots, MIME, byte limits, connection pinning and TLS; bounded source-list URLs, owner-scoped snapshots, deduplication, exact spans and grounded values; publisher balancing, contradictions and gaps; stale/tampered review decisions and cross-run cleanup isolation.
+
+Residual: every input was a fixture, fake or controlled response. There was no OpenAI, registry, publisher or arbitrary-web call, no live latency/token/cost/rate-limit observation, no real-company accuracy or recall estimate, no complete SSRF/prompt-injection proof, no authorised reviewer-benefit result and no production-security result.

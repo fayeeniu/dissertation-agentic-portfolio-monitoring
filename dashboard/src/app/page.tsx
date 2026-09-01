@@ -204,13 +204,13 @@ export default function ControlRoomPage() {
               <dt>Repair model</dt>
               <dd className="mono">
                 {system.external_model_enabled
-                  ? modelRouteLabel(system.model_route?.repair, system.model, "low")
+                  ? modelRouteLabel(system.model_route?.repair, system.model, "high")
                   : "Closed by default"}
               </dd>
               <dt>Selection model</dt>
               <dd className="mono">
                 {system.external_model_enabled || system.research_mode === "fixture"
-                  ? modelRouteLabel(system.model_route?.selection, system.model, "low")
+                  ? modelRouteLabel(system.model_route?.selection, system.model, "high")
                   : "Closed by default"}
               </dd>
               <dt>Live retrieval</dt>

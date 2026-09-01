@@ -14,7 +14,8 @@
 \usepackage[dvipsnames,table]{xcolor}
 \usepackage{caption}
 \usepackage{xurl}
-\usepackage[authoryear,round]{natbib}
+\usepackage[authoryear,round,sort]{natbib}
+\setcitestyle{authoryear,round,semicolon,aysep={,},yysep={;}}
 \usepackage[hypertexnames=false]{hyperref}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
@@ -24,17 +25,17 @@
 \renewcommand{\listfigurename}{List of figures}
 \renewcommand{\bibname}{References}
 
-\definecolor{WMGBlue}{HTML}{0072B2}
-\definecolor{WMGTeal}{HTML}{007F73}
+\definecolor{WMGBlue}{HTML}{000000}
+\definecolor{WMGTeal}{HTML}{000000}
 \definecolor{WMGGrey}{HTML}{666666}
 \definecolor{DraftYellow}{HTML}{FFF2A8}
 \definecolor{DraftPale}{HTML}{F2F4F7}
 
 \hypersetup{
   colorlinks=true,
-  linkcolor=WMGBlue,
-  citecolor=WMGTeal,
-  urlcolor=WMGBlue
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
 }
 
 \setstretch{1.08}
@@ -44,17 +45,17 @@
 \raggedbottom
 
 \titleformat{\chapter}[display]
-  {\normalfont\bfseries\color{WMGBlue}}
+  {\normalfont\bfseries\color{black}}
   {\filleft\Large Chapter \thechapter}
   {4pt}
   {\titlerule\vspace{5pt}\Huge}
 \titleformat{name=\chapter,numberless}[display]
-  {\normalfont\bfseries\color{WMGBlue}}
+  {\normalfont\bfseries\color{black}}
   {}
   {0pt}
   {\titlerule\vspace{5pt}\Huge}
-\titleformat{\section}{\Large\bfseries\color{WMGBlue}}{\thesection}{0.7em}{}
-\titleformat{\subsection}{\large\bfseries\color{WMGTeal}}{\thesubsection}{0.7em}{}
+\titleformat{\section}{\Large\bfseries\color{black}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{black}}{\thesubsection}{0.7em}{}
 
 \pagestyle{fancy}
 \fancyhf{}

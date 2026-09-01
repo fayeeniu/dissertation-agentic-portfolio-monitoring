@@ -1,0 +1,120 @@
+{
+  "schema": "dissertation-exhibit-provenance-v1",
+  "exhibit_id": "LIT-T5",
+  "title": "Alternative portfolio-reporting approaches and unresolved evidence",
+  "author": "Faye Niu",
+  "target_section": "2.7 Main findings from the literature and research gap",
+  "latex_label": "tab:lit-solution-landscape",
+  "purpose": "Compare material reporting approaches against the same workflow, evidence-control and unresolved-evidence criteria without scoring products or claiming superiority.",
+  "generated_at_utc": "2026-08-30T23:56:10Z",
+  "status": {
+    "non_empirical": true,
+    "contains_result_values": false,
+    "contains_product_scores": false,
+    "contains_product_recommendations": false,
+    "vendor_claims_independently_validated": false,
+    "interpretation": "Literature and official vendor-page synthesis; named product capabilities are vendor-stated and unknown properties remain unknown."
+  },
+  "placement": {
+    "float_specifier": "p",
+    "boundary_before": "clearpage",
+    "boundary_after": "clearpage",
+    "purpose": "Place the comparison after the RQ-by-RQ synthesis and before Chapter 3."
+  },
+  "inputs": [
+    {
+      "path": "Dissertation/sources/SECTION_2_7_EVIDENCE.md",
+      "sha256": "5774bd3137aa16a67eea1dc46f607bb0ed20f304869d69e83f146209d318c9aa",
+      "role": "Current paragraph-level synthesis, exact source locators, safe claims and prohibited overreach."
+    },
+    {
+      "path": "Dissertation/sources/CLAIM_LEDGER.md",
+      "sha256": "cb77e24739b26dbb7efa80bad6f1ce80bfaad8f5f90dd6548f94c4ea74d03f80",
+      "role": "Current Section 2.7 citation and local-page bindings."
+    },
+    {
+      "path": "Dissertation/sources/MANIFEST.csv",
+      "sha256": "8ea1817ecab67c8644901f9f8ea5ff26c357bc9c9d8728abc7b774ec37a20ec4",
+      "role": "Academic and vendor citation-key, origin, local-file, page-count and source-role bindings."
+    },
+    {
+      "path": "Dissertation/sources/SHA256SUMS",
+      "sha256": "e7972f6092425b71a45de3c4380ea3887a297148eb71e07ad3afe3a49fdaa3eb",
+      "role": "Independent checksums for all admitted local PDFs."
+    },
+    {
+      "path": "Dissertation/sources/WEB_CAPTURES.csv",
+      "sha256": "0eeff066ebdbc45ef03df173a8b574c98be6a8732f6e08777b28a9b03cab44fa",
+      "role": "Capture dates, source URLs and immutable HTML/PDF bindings for the three official vendor pages."
+    },
+    {
+      "path": "Dissertation/sources/WEB_CAPTURE_SHA256SUMS",
+      "sha256": "13bc77ea3289180f52c58121cc24ff7ab17d6e20e82ac64ad5f1de610e5cd3a6",
+      "role": "Independent checksums for captured vendor HTML and PDF files."
+    }
+  ],
+  "row_traceability": [
+    {
+      "approach": "Manual documents or spreadsheets",
+      "citation_keys": ["kaplan2016vcdata", "nikiforova2020quality"],
+      "boundary": "The admitted corpus contains no measured baseline for the project's manual workflow."
+    },
+    {
+      "approach": "Deterministic pipeline",
+      "citation_keys": ["buneman2001provenance", "nikiforova2020quality"],
+      "boundary": "Lineage and repeatable rules do not prevent wrong specifications or schema drift."
+    },
+    {
+      "approach": "Single grounded process and RAG",
+      "citation_keys": ["gao2023ragsurvey", "gao2023alce", "gao2023rarr"],
+      "boundary": "Retrieval, support, truth and completeness remain separate; no superiority claim is made."
+    },
+    {
+      "approach": "Bounded independent verification",
+      "rq_link": "RQ2",
+      "citation_keys": ["guo2024multiagent", "cemri2025masfailures", "gao2023rarr"],
+      "boundary": "Coordination, false rejection, time, cost and any improvement in support require empirical testing."
+    },
+    {
+      "approach": "Named human review",
+      "rq_link": "RQ3",
+      "citation_keys": ["amershi2019guidelines", "bucinca2021forcing"],
+      "boundary": "Reviewer burden, editing effort, usefulness, decision quality and benefit over manual work require authorised empirical testing."
+    },
+    {
+      "approach": "Visible",
+      "citation_keys": ["visible2026investors"],
+      "boundary": "Official vendor-stated capability only; no independent effectiveness evidence."
+    },
+    {
+      "approach": "Zapflow",
+      "citation_keys": ["zapflow2026portfolio"],
+      "boundary": "Official vendor-stated capability only; no independent effectiveness evidence."
+    },
+    {
+      "approach": "Affinity",
+      "citation_keys": ["affinity2026portfolio"],
+      "boundary": "Official vendor-stated capability only; no independent effectiveness evidence."
+    }
+  ],
+  "limitations": [
+    "The comparison is purposive and non-exhaustive; it is not a systematic market review.",
+    "Product descriptions are current official vendor statements captured on 31 August 2026, not independent tests.",
+    "The table contains no product score, price, ranking, recommendation or superiority claim.",
+    "Unknown accuracy, coverage, reviewer effort, time, cost, human benefit and UK early-stage suitability remain unknown.",
+    "The dissertation prototype is represented as a research design and not as a commercially validated alternative."
+  ],
+  "outputs": [
+    {
+      "path": "Dissertation/exhibits/lit_t5_solution_landscape.tex",
+      "sha256": "3da57f8c27034f4ed04b73658ad60a7fc2855be21fb01c35692725916b4dd56e",
+      "role": "Portrait LaTeX comparison table."
+    },
+    {
+      "path": "Dissertation/exhibits/lit_t5_solution_landscape.txt",
+      "sha256": "710f17e164fc06314741ffdeb5950152d4b4b69e23a3b751fdc3814319cd5b4e",
+      "role": "Complete plain-text interpretation and source alternative."
+    }
+  ],
+  "self_hash_policy": "The provenance file's own SHA-256 is reported externally because embedding it would create a self-referential hash."
+}

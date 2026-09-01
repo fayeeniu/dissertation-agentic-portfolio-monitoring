@@ -1,0 +1,13 @@
+SYS-T3: Failure, recovery and implementation status
+
+Identity and intake: invalid, ambiguous or conflicting identifiers and incompatible duplicates are retained. Named resolution and exact compatible reuse are implemented and tested with controlled inputs; no live registry truth is claimed.
+
+Deterministic sources: policy block, no record, unavailable source, invalid contract and terminal failure remain distinct. Offline checksum replay and fail-closed capability, identity, cutoff and version checks are implemented on synthetic data; direct live sources are held.
+
+Public-web research: search, capture, extraction or composition can be blocked, cancelled, exhausted or failed. Bounded retries, budgets, kill switches, immutable task fingerprints and interrupted-task recovery are implemented in controlled tests; the live smoke and frozen comparison are unrun.
+
+Claims and conflicts: unsupported, stale, untrusted, insufficient and contradictory evidence is not promoted. Exact-span/source validation, independent states and named conflict resolution are implemented in synthetic or controlled tests; real-company effectiveness is unmeasured.
+
+Review and export: stale versions or hashes, incomplete verification, tampering and partial staged output block release. Named decisions, approval revocation, optimistic locks and manifest/hash checks are implemented in controlled tests; there is no autonomous or remote publication.
+
+Evaluation and operation: C0/C3 observations, live-company results, production availability and disaster recovery are absent. These states remain null, protocol-only or outside scope until separately authorised and executed.

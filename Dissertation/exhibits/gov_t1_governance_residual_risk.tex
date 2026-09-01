@@ -1,0 +1,31 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.17\textwidth}P{0.26\textwidth}P{0.24\textwidth}Y@{}}
+    \toprule
+    \textbf{Risk area} & \textbf{Current control} & \textbf{Current evidence} & \textbf{What is still required} \\
+    \midrule
+    Data and privacy & Classification, purpose declaration, local restricted/internal boundary, public-text redaction & Policies, schemas and controlled tests & Approved lawful-purpose, retention, deletion, backup and incident responsibilities. \\
+    External model & Public or fictional data only, reviewed route, strict schema, budgets and \textnormal{store=False} & Code and fake-provider tests; five bounded synthetic smoke runs, 26 August 2026 (Section~7.2) & Eligible account settings, retention and deletion evidence, and a current provider review. \\
+    Untrusted content & URL candidates only, protected collection, instruction filtering and exact-passage checks & Controlled malformed-content and grounding cases & Independent hostile-input testing and continuing maintenance of source rules. \\
+    Network transport & HTTPS, DNS, redirect, port, file type and size checks with public-IP pinning & Controlled SSRF, rebinding and redirect cases & Separate production network access, sign-in and separation between users. \\
+    Resource and recovery & Budgets, retries, cancellation, fixed fingerprints, checksums and staged export & Task and export recovery tests & Backup, service targets, monitoring, recovery after a forced stop, and incident exercises. \\
+    Decision and persons & No recommendation, valuation, suitability, profiling or reputation scoring & Requirements and output contracts & Separate authority for any changed purpose, audience or regulated decision use. \\
+    Research validity & Fixed rules, explicit missing results, source and dataset lists, and D0 repeats & Fourteen designed cases; D1/D2 and C0/C3 absent & Independent references, a sealed future evaluation and authorised human observations. \\
+    Operation and access & Local single-user deployment and meaningful printable output & Local tests and visual PDF inspection & Full accessibility audit, assistive-technology study and evaluation of a production design. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Governance controls, evidence and remaining requirements}
+  \label{tab:gov-residual-risk}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author summary of the implemented controls, Chapter 5 evidence and
+    declared holds. This table records the dissertation's evaluated state; it is not legal advice,
+    a compliance assessment, a penetration test or deployment approval.}
+\end{table}
+\clearpage

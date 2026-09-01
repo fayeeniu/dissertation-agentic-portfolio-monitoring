@@ -1,0 +1,32 @@
+LIT-T5 - Alternative portfolio-reporting approaches and unresolved evidence
+Target section: 2.7 Main findings from the literature and research gap
+LaTeX label: tab:lit-solution-landscape
+
+Purpose
+
+The matrix compares each material alternative against the same criteria: its primary workflow and
+inputs, its documented evidence or control position, and the evidence that remains unresolved for this
+study. It is a literature and vendor-documentation synthesis, not a score, benchmark result or product
+recommendation.
+
+Interpretation boundary
+
+Manual work, deterministic processing, a single grounded process, RAG, bounded independent
+verification and named human review are distinct methodological alternatives. The verifier row maps
+to RQ2; the human-review row maps to RQ3. Visible, Zapflow and Affinity are named only to establish the current
+commercial categories described on their official pages. Their capabilities are vendor-stated; the
+captured pages do not independently establish accuracy, completeness, time savings, reviewer benefit,
+UK early-stage suitability or superiority. Unknown properties remain unknown.
+
+Source basis
+
+- `buneman2001provenance`, PDF pp. 1--3: why- and where-provenance for database-query results; not
+  proof of claim truth or a full reporting workflow.
+- `nikiforova2020quality`, PDF pp. 1--3 and 15--17: use-case-specific data-quality dimensions.
+- `gao2023ragsurvey`, PDF pp. 1--5 and 15--18: RAG structure, limitations and evaluation needs.
+- `guo2024multiagent`, PDF pp. 3--5 and 10--11: role and communication structures plus challenges.
+- `cemri2025masfailures`, PDF pp. 1--3: 1,642-trace failure analysis and its task/annotation limits.
+- `amershi2019guidelines`, PDF pp. 2--8, and `bucinca2021forcing`, PDF pp. 1--4 and 16--18:
+  human-control rationale and over-reliance/usability trade-offs.
+- `visible2026investors`, captured PDF pp. 1--4; `zapflow2026portfolio`, captured PDF pp. 1--4;
+  `affinity2026portfolio`, captured PDF pp. 1--3: official vendor descriptions only.

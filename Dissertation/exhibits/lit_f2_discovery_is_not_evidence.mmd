@@ -1,0 +1,49 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% Reading order snakes left-to-right, then right-to-left, on alternating rows; the step numbers
+%% carry the sequence.
+%% Block diagrams give every cell the width of the widest cell, so the line breaks below are kept
+%% short on purpose: four narrow columns keep the text legible once the figure is scaled to
+%% \textwidth on a portrait A4 page.
+block-beta
+  columns 4
+  D1["<b>1 TOPIC PLAN</b><br/>Cut-off and budgets"]
+  D2["<b>2 SEARCH<br/>QUERIES</b><br/>Fixed permissions"]
+  D3["<b>3 SEARCH<br/>RESPONSE</b><br/>URLs and snippets;<br/>not evidence"]
+  D4["<b>4 POSSIBLE<br/>SOURCES</b><br/>Origin details;<br/>no support decision"]
+  C["<b>7 CONTROLLED<br/>CAPTURE</b><br/>Network, redirect,<br/>file type and<br/>size limits"]
+  A["<b>6 SOURCE RULES</b><br/>Policy and<br/>identity check"]
+  Q["<b>5 CANDIDATE<br/>QUEUE</b><br/>URLs or<br/>identifiers only"]
+  O["<b>OFFICIAL<br/>CONNECTORS</b><br/>Reviewed source<br/>functions"]
+  S["<b>8A STRUCTURED<br/>ROUTE</b><br/>Fixed extraction<br/>first"]
+  M["<b>8B OPTIONAL<br/>MODEL ROUTE</b><br/>Public or fictional<br/>evidence only"]
+  G["<b>9 PASSAGE AND<br/>SCHEMA CHECK</b><br/>Fixed validation<br/>and data cleaning"]
+  V["<b>10 SEPARATE<br/>VERIFICATION</b><br/>Support, date,<br/>source and conflict"]
+  OUT["<b>VERIFICATION OUTCOMES</b><br/>Only supported claims can move to approval"]:4
+  AE["<b>APPROVE AND<br/>EXPORT</b><br/>Named decision on<br/>the current report"]
+  SUP["<b>SUPPORTED</b><br/>Report-eligible<br/>claim"]
+  CON["<b>CONFLICT</b><br/>Competing evidence<br/>retained"]
+  HELD["<b>HELD</b><br/>Unsupported, stale<br/>or rejected"]
+
+  D1 --> D2
+  D2 --> D3
+  D3 --> D4
+  D4 --> Q
+  O --> Q
+  Q --> A
+  A --> C
+  C --> S
+  C --> M
+  S --> G
+  M --> G
+  G --> V
+  V --> OUT
+  SUP --> AE
+
+  class D1,D2 fx-stage
+  class D3,D4,Q,O fx-input
+  class A,C,G,V fx-key
+  class S,M fx-stage
+  class OUT fx-banner
+  class SUP fx-stage
+  class AE fx-key
+  class CON,HELD fx-hold

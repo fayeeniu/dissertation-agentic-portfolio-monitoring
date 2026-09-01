@@ -16,12 +16,15 @@ export async function GET(
     { cache: "no-store" },
   );
   const body = await upstream.text();
+  const headers = new Headers({
+    "content-type": upstream.headers.get("content-type") ?? "text/plain",
+    "cache-control": "no-store",
+  });
+  const disposition = upstream.headers.get("content-disposition");
+  if (disposition) headers.set("content-disposition", disposition);
   return new NextResponse(body, {
     status: upstream.status,
-    headers: {
-      "content-type": upstream.headers.get("content-type") ?? "text/plain",
-      "cache-control": "no-store",
-    },
+    headers,
   });
 }
 

@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{2.5pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.14\textwidth}P{0.17\textwidth}P{0.20\textwidth}P{0.16\textwidth}Y@{}}
+    \toprule
+    \textbf{Case and proposed claim} & \textbf{Evidence} & \textbf{Verification rule} & \textbf{Decision} & \textbf{Report consequence} \\
+    \midrule
+    Observed zero: jobs created = 0 & Portfolio submission records 0 for \texttt{SYN-PERIOD}; locator: submission synthetic B2 & Zero is a value when the typed observation and evidence agree & \textbf{Supported} & Claim is emitted with its source record \\
+    Contradiction: grant funding = GBP 100 & Synthetic register records GBP 200 for the same period; locator: fixture conflict & Candidate value and currency must agree with eligible evidence & \textbf{Contradicted} & Claim is withheld and the conflict is retained \\
+    Stale period: awards received = 1 & Matching value exists only for \texttt{PRIOR-PERIOD}; locator: fixture stale & Evidence period must match the report period & \textbf{Stale} & Claim is withheld; the old evidence remains visible \\
+    Prompt injection: new partnerships = 5 & Matching value appears in the fixture injection record, but it is marked untrusted & Instruction-like untrusted evidence cannot support a claim & \textbf{Rejected untrusted} & Claim is withheld and no instruction is followed \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Examples of accepted and held D0 claims}
+  \label{tab:eval-d0-case-examples}
+  \vspace{3pt}
+
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Exact fields from \texttt{fixtures/evaluation\_cases.json}. All values,
+    publishers and locators are fictional and were created for the D0 engineering evaluation.}
+\end{table}

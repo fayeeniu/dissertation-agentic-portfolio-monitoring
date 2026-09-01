@@ -9,7 +9,9 @@ APPROVED_OPENAI_MODEL = "gpt-5.6-luna"
 # repair now use the same cost-efficient model, with reasoning effort differentiating
 # the work instead of a second model family.
 APPROVED_OPENAI_ESCALATION_MODEL = "gpt-5.6-luna"
-APPROVED_REASONING_EFFORTS = ("low", "medium", "high")
+APPROVED_REASONING_EFFORTS = ("low", "medium", "high", "xhigh", "max")
+COMPANY_RESEARCH_SELECTION_EFFORT = "high"
+COMPANY_RESEARCH_REPAIR_EFFORT = "high"
 
 
 def _as_bool(value: str | None, *, default: bool = False) -> bool:
@@ -33,8 +35,8 @@ class Settings:
     http_max_response_bytes: int = 5 * 1024 * 1024
     http_max_attempts: int = 3
     openai_timeout_seconds: float = 120.0
-    #: Reasoning effort for research planning. The repair pass on a retry always
-    #: runs at ``low`` because it is a mechanical correction.
+    #: Reasoning effort for research planning. Selection and correction have
+    #: separate pinned efforts so discovery can remain independently configurable.
     openai_reasoning_effort: str = "medium"
     company_research_max_sources: int = 24
     company_research_max_tool_calls: int = 12

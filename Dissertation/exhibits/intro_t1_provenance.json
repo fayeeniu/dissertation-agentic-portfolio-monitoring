@@ -1,18 +1,18 @@
 {
   "schema": "dissertation-exhibit-provenance-v1",
   "exhibit_id": "INTRO-T1",
-  "title": "Research contract and current evidence boundary",
+  "title": "Research questions and evaluation plan",
   "author": "Faye Niu",
-  "target_section": "1.3 Aim and research questions",
+  "target_section": "1.4 Research questions",
   "latex_label": "tab:research-contract",
   "format": "portrait-width LaTeX table with plain-text alternative",
   "hash_algorithm": "SHA-256",
-  "source_note": "Author synthesis of frozen project contracts, not results.",
+  "source_note": "Developed by the author from the fixed evaluation plan and current evidence status. It does not add a study result.",
   "result_values_included": false,
   "condition_map": {
     "C0": "Authorised practitioner completes the manual workflow under the frozen input and source-access window.",
-    "C1": "Deterministic/single-agent baseline with the same catalogue and normaliser but no independent verifier.",
-    "C2": "Bounded multi-agent workflow in which an independent verifier controls claim-support eligibility.",
+    "C1": "Fixed automated workflow using the same cases and information access but without a separate verifier.",
+    "C2": "The same fixed workflow with a separate verifier controlling claim-support eligibility.",
     "C3": "C2 output followed by named human review, edit, approval or rejection."
   },
   "evidence_boundary": {
@@ -30,14 +30,14 @@
   "inputs": [
     {
       "path": "Dissertation/REPORT_STRUCTURE.md",
-      "sha256": "22c82b8aaa228949daf8007de4878e6d3806ceea79bfb0110c3521b908d4f57e",
+      "sha256": "841b9200c8311c9f321b7679a46d22130ee3be85f595418005e6fe445ce8fe15",
       "locators": [
         "Research contract > Primary research question",
         "Research contract > Operational sub-questions",
         "Implemented case study and held future evaluation",
         "Current go/no-go state"
       ],
-      "role": "approved primary question, RQ1-RQ3 wording and exclusion of live public-web evaluation"
+      "role": "current primary question, RQ1-RQ3 wording and exclusion of live public-web evaluation"
     },
     {
       "path": "docs/PROJECT_CHARTER.md",
@@ -77,7 +77,7 @@
     },
     {
       "path": "docs/REQUIREMENTS.md",
-      "sha256": "9a8ede531e941b7f65cc3be801a6d6bbb2c935b79f6ed29e5a65fda40c057b17",
+      "sha256": "0c0e1d7e7b96afd5bcbc582d043cfb39788aa8b9e6826653bebbf1bea50469fc",
       "locators": [
         "FR-VER-001--FR-VER-007",
         "FR-REP-001--FR-REP-009",
@@ -93,30 +93,30 @@
   "row_traceability": [
     {
       "row": "Primary question",
-      "evaluand": "C0 manual, C1 deterministic without an independent verifier, C2 bounded independent verification, and C3 equal to C2 plus named review under a frozen information window",
-      "measures": ["automation extent", "quality", "provenance", "reliability", "failures", "active and elapsed time"],
-      "status": "D0 C1/C2 mechanism evidence only; human C0/C3 and D1/D2 EVIDENCE HELD / NO-GO",
+      "evaluand": "The combined findings for RQ1 to RQ3 across C0 manual work, C1 and C2 automation, and C3 named review",
+      "measures": ["automation extent", "quality", "reliability", "complete source records", "failures", "active and elapsed time"],
+      "status": "D0 tests C1/C2 mechanisms only; C0, C3, D1 and D2 are on hold, so the primary question is partly answered",
       "source_locators": ["REPORT_STRUCTURE Research contract", "PROJECT_CHARTER Research question", "EVALUATION_PROTOCOL Research question and evaluand"]
     },
     {
       "row": "RQ1",
-      "evaluand": "accurate and reliable bounded transformation of heterogeneous inputs into typed, temporally eligible and provenance-complete claims against a frozen reference",
-      "measures": ["schema/type validity", "extraction and normalisation accuracy", "missing-state accuracy", "identity", "time eligibility", "provenance completeness", "locator validity", "deterministic outcome-vector consistency", "repeat consistency across runs"],
-      "status": "D0 synthetic mechanism/regression evidence; D1/D2 held",
+      "evaluand": "Apply fixed identity, date, missing-data and source rules to labelled cases and compare the output with agreed reference answers",
+      "measures": ["identity accuracy", "value accuracy", "period accuracy", "missing-state accuracy", "source completeness", "repeated-run agreement"],
+      "status": "D0 provides labelled mechanism evidence; D1 and sealed D2 are held, so no real-portfolio accuracy is established",
       "source_locators": ["REPORT_STRUCTURE RQ1", "EVALUATION_PROTOCOL Extraction and normalization", "EVALUATION_PROTOCOL Provenance and report quality", "EVALUATION_PROTOCOL Reliability", "DATA_DICTIONARY Missing-state taxonomy and Period semantics"]
     },
     {
       "row": "RQ2",
-      "evaluand": "C1 deterministic/single-agent baseline versus C2 multi-agent verification under the same information boundary",
-      "measures": ["supported-claim precision", "supported-claim recall", "unsupported-claim rate", "contradiction handling", "abstention", "provenance completeness", "repeat consistency"],
-      "status": "C1/C2 executable on D0 labelled cases; D1/D2 held",
+      "evaluand": "Compare C1 without a separate verifier with C2 on the same cases and with the same information access",
+      "measures": ["precision", "recall", "unsupported-claim rate", "conflicts", "rejected claims", "source completeness", "repeatability"],
+      "status": "C1 and C2 have been compared on D0; D1 and D2 are held, so the result does not establish performance on new company data",
       "source_locators": ["REPORT_STRUCTURE RQ2", "EVALUATION_PROTOCOL Experimental conditions", "EVALUATION_PROTOCOL Claim quality", "REQUIREMENTS FR-VER-001--FR-VER-007"]
     },
     {
       "row": "RQ3",
-      "evaluand": "automated C1/C2 and named-review C3 compared with manual C0; C2 pre-review versus C3 post-review is a subordinate within-workflow comparison",
-      "measures": ["report correctness", "report completeness", "active time", "elapsed time", "edit burden", "approval time", "reviewer utility"],
-      "status": "D0 C0/C3 human measures null; human C0/C3 and D1/D2 EVIDENCE HELD / NO-GO",
+      "evaluand": "Compare manual C0, automated C1 and C2, and named-review C3 on the same tasks, sources and reference answers",
+      "measures": ["correctness", "completeness", "active time", "elapsed time", "editing effort", "approval time", "reviewer usefulness"],
+      "status": "No C0 or C3 observations exist; the authorised human comparison is on hold, so RQ3 is unanswered",
       "source_locators": ["REPORT_STRUCTURE RQ3", "EVALUATION_PROTOCOL Experimental conditions C0-C3", "EVALUATION_PROTOCOL Research propositions", "EVALUATION_PROTOCOL Efficiency and resource use", "EVALUATION_PROTOCOL Usability", "REQUIREMENTS FR-REP-001--FR-REP-009"]
     }
   ],
@@ -124,12 +124,12 @@
     {
       "path": "Dissertation/exhibits/intro_t1_research_contract.tex",
       "media_type": "application/x-tex",
-      "sha256": "690c97bcd5782683050f947dc8bede7c43c94a1189e634260ea085d16ffe28fc"
+      "sha256": "47d34b72128d2ffd721527b08aa22f54d164be15fe1fb9d68fbecc87f3008cf5"
     },
     {
       "path": "Dissertation/exhibits/intro_t1_research_contract.txt",
       "media_type": "text/plain",
-      "sha256": "98b3214094f0efcc4fa608093f0a59929495fa79aa2172ecf3366f8cd0208d52"
+      "sha256": "9ad3ae6cdebb97c64243b24875a88e5dd8cb78ff05fd47f07b72f3639031ddc1"
     }
   ],
   "manifest_self_hash": "Intentionally omitted because embedding a file's own digest is self-referential; hash this JSON externally when packaging."

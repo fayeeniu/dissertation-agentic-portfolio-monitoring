@@ -1,0 +1,30 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.27\textwidth}P{0.20\textwidth}Y@{}}
+    \toprule
+    \textbf{Area checked} & \textbf{Cases exercised} & \textbf{Result} & \textbf{Limit} \\
+    \midrule
+    Full research route & Reviewed identity, limited discovery, capture, exact passage, v3 report, named review and download & \textbf{PASS} & Fake or local evidence; no result for live accuracy, coverage or usefulness. \\
+    Task and budget rules & Fixed fingerprints, call budget including retries, time limit, zero redirects, cancellation and recovery after interruption & \textbf{PASS} & No live result for delay, tokens, provider limits or cost. \\
+    Network protection & HTTPS, credential and port checks; DNS changes; redirects; robots rules; file type and size limits; connection pinning and TLS & \textbf{PASS} & Selected threats only; not a complete server-side request forgery or production security test. \\
+    Evidence checks & URL matches the source list, run ownership, duplicate removal, exact passage and supported-value checks & \textbf{PASS} & A supporting passage does not prove publisher truth or complete discovery. \\
+    Source mix and conflict & Sources rotated by publisher, balanced batches, and preserved contradictions and gaps & \textbf{PASS} & No estimate for real publisher coverage or recall. \\
+    Review and cleanup & Old or changed decisions rejected, source ownership checked, and one run cannot clear another & \textbf{PASS} & No result for reviewer benefit or several users working at once. \\
+    Focused suite total & 37 tests; one dependency deprecation warning & \textbf{37 PASS} & Controlled local execution only; all external calls absent. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Controlled company-research and hostile-input results}
+  \label{tab:eval-company-adversarial-results}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Fresh local execution of company-research integration, database update
+    and fictional-case tests. PASS means that the named check passed. It does not approve a source,
+    model, company profile, human process, network boundary or production deployment.}
+\end{table}
+\clearpage

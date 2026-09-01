@@ -18,6 +18,7 @@ dependencies = [
   "openai==2.54.0",
   "openpyxl==3.1.5",
   "pydantic==2.13.4",
+  "pypdf==6.16.2",
   "python-multipart==0.0.32",
   "sqlalchemy==2.0.52",
   "uvicorn==0.52.4",
@@ -38,7 +39,7 @@ portfolio-agent = "portfolio_agent.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-portfolio_agent = ["templates/*.html", "static/*.css", "static/*.js"]
+portfolio_agent = ["static/company-deck.css"]
 
 [tool.pytest.ini_options]
 addopts = "--strict-config --strict-markers -q"

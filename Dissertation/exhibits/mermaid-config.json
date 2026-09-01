@@ -1,0 +1,54 @@
+{
+  "theme": "base",
+  "securityLevel": "strict",
+  "deterministicIds": true,
+  "deterministicIDSeed": "wmg-agentic-portfolio-dissertation",
+  "fontFamily": "Arial, Helvetica, sans-serif",
+  "themeVariables": {
+    "fontFamily": "Arial, Helvetica, sans-serif",
+    "fontSize": "18px",
+    "primaryColor": "#DCE8F4",
+    "primaryTextColor": "#12232E",
+    "primaryBorderColor": "#12232E",
+    "secondaryColor": "#F4F7FB",
+    "secondaryTextColor": "#12232E",
+    "secondaryBorderColor": "#4E6F8C",
+    "tertiaryColor": "#ECEEF1",
+    "tertiaryTextColor": "#12232E",
+    "tertiaryBorderColor": "#6B7280",
+    "background": "#FFFFFF",
+    "lineColor": "#274257",
+    "textColor": "#12232E",
+    "mainBkg": "#DCE8F4",
+    "nodeBorder": "#12232E",
+    "nodeTextColor": "#12232E",
+    "clusterBkg": "#F4F7FB",
+    "clusterBorder": "#4E6F8C",
+    "edgeLabelBackground": "#FFFFFF",
+    "titleColor": "#12232E",
+    "noteBkgColor": "#ECEEF1",
+    "noteBorderColor": "#6B7280",
+    "noteTextColor": "#12232E",
+    "labelBoxBkgColor": "#DCE8F4",
+    "labelBoxBorderColor": "#12232E",
+    "labelTextColor": "#12232E"
+  },
+  "flowchart": {
+    "defaultRenderer": "elk",
+    "curve": "basis",
+    "htmlLabels": true,
+    "nodeSpacing": 36,
+    "rankSpacing": 54,
+    "padding": 15,
+    "diagramPadding": 20,
+    "wrappingWidth": 560,
+    "useMaxWidth": false
+  },
+  "block": {
+    "padding": 14,
+    "useMaxWidth": false
+  },
+  "state": {
+    "useMaxWidth": false
+  }
+}

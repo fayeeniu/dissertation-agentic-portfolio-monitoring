@@ -1,0 +1,11 @@
+EVAL-T4: D0 fictional mechanism results by automated condition
+
+C1: 14 cases, 11 emitted claims; TP/FP/FN/TN = 5/6/0/3. Precision 0.455, recall 1.000, F1 0.625, unsupported rate 0.545, support rate 0.455, provenance completeness 0.818, schema validity 1.000, normalisation 1.000, verification accuracy 0.571, abstention accuracy 0.571, contradiction accuracy 0.000 on two conflict cases, repeat consistency 1.000.
+
+C2: 14 cases, 5 emitted claims; TP/FP/FN/TN = 5/0/0/9. Precision, recall and F1 1.000; unsupported rate 0.000; support rate, provenance completeness, schema validity, normalisation, verification accuracy, abstention accuracy and contradiction accuracy all 1.000; contradiction accuracy uses two conflict cases; repeat consistency 1.000.
+
+Both conditions record mean duration 0 ms because sub-millisecond durations are truncated, and USD 0 LLM cost because they are deterministic local paths. Identity, extraction, temporal, quality, event, report and reviewer layers are null because D0 has no applicable labels or observations.
+
+Frozen output: audit/d0_evaluation_2026-09-01.json, generated 1 September 2026, SHA-256 dcc2fbffab100dfcf034784002d63b610cd9f97a8d6e6f9218b6e7f900de9dcd.
+
+These are visible-development-fixture mechanism results, not independent field-performance estimates.

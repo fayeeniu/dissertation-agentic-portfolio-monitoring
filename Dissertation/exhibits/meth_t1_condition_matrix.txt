@@ -1,4 +1,4 @@
-METH-T1 — C0–C3 evaluation-condition matrix
+METH-T1: C0-C3 evaluation-condition matrix
 Target section: 3.2 Evaluand and experimental conditions
 Suggested LaTeX label: tab:meth-condition-matrix
 
@@ -27,7 +27,7 @@ Columns
 6. Parity controls.
 7. Current evidence state.
 
-C0 — Manual
+C0: Manual
 - Operational workflow: An authorised practitioner completes the existing reporting workflow
   within the same frozen input and source-access window used by comparable conditions. Every tool
   or model aid is logged.
@@ -41,7 +41,7 @@ C0 — Manual
 - Current evidence state: PROTOCOL-ONLY and currently NO-GO. Execution is held pending verified
   ethics/data authority, gold-reference construction and protocol freeze.
 
-C1 — Deterministic/single-agent baseline
+C1: Fixed single-agent baseline
 - Operational workflow: One extraction-and-composition path applies the common catalogue and
   normaliser, emits eligible normalised candidates and retains available provenance. It has no
   independent verification stage.
@@ -53,7 +53,7 @@ C1 — Deterministic/single-agent baseline
 - Current evidence state: IMPLEMENTED on synthetic labelled D0 cases. This is engineering and
   mechanism evidence only, not evidence of real portfolio or practitioner performance.
 
-C2 — Bounded multi-agent verification
+C2: Controlled multi-agent verification
 - Operational workflow: Bounded planner, resolver, collector, extractor, normaliser, verifier and
   composer roles are used. The separate verifier controls support eligibility before deterministic
   composition.
@@ -64,7 +64,7 @@ C2 — Bounded multi-agent verification
 - Current evidence state: IMPLEMENTED on synthetic labelled D0 cases. This is engineering and
   mechanism evidence only, not evidence of real portfolio or practitioner performance.
 
-C3 — C2 plus human-in-the-loop named review
+C3: C2 plus named human review
 - Operational workflow: The C2 output enters the versioned named-review workflow.
 - Independent verifier: Yes, inherited from C2.
 - Human involvement: Under an authorised protocol, a named reviewer may edit, approve or reject

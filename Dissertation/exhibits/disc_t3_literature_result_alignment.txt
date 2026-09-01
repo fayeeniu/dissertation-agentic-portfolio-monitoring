@@ -1,0 +1,35 @@
+DISC-T3: Literature and result compatibility check
+
+Purpose: compare the reported evidence with the admitted literature without treating qualitative
+agreement as a statistical anomaly test.
+
+RQ1
+Literature expectation: traceability, typed data-quality rules and reproducibility controls make
+decisions inspectable but do not establish source truth or field accuracy.
+Observed: identity, time, provenance, verification and export controls executed; fourteen D0 cases
+repeated exactly.
+Judgement: directionally compatible controlled mechanism feasibility; no field-accuracy estimate.
+
+RQ2
+Literature expectation: claim correctness, citation support and attribution are separate; a support
+gate should withhold represented unsupported material.
+Observed: C2 removed six D0 false positives, retained all five supported cases and changed precision
+from 0.455 to 1.000 without D0 recall loss.
+Judgement: mechanistically compatible, but the perfect values are construction-aligned and do not
+establish a normal population effect.
+
+RQ3
+Literature expectation: human control may improve reflection and accountability while creating
+reliance, preference, workload and delay trade-offs.
+Observed: named review controls exist, but C0 and C3 each have zero observations.
+Judgement: neither supportive nor anomalous; RQ3 is unanswered.
+
+Generalisation
+Literature expectation: independent holdout evidence, leakage control, complete accounting and
+explicit uncertainty are required before external claims.
+Observed: D0 labels and rules were co-developed; D1 is protocol-only, D2 is sealed, and live/company
+comparisons are unrun.
+Judgement: this is an expected evidence gap, not a statistical anomaly or non-anomaly finding.
+
+Sources: Gao et al. (2023a, 2023b), Pineau et al. (2021), Nikiforova et al. (2020), Gebru et al.
+(2021), Kapoor and Narayanan (2023), Amershi et al. (2019) and Buçinca et al. (2021).

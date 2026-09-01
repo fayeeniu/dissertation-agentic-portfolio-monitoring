@@ -1,208 +1,248 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1180" viewBox="0 0 900 1180"
-     role="img" aria-labelledby="sys-f4-title sys-f4-desc">
-  <title id="sys-f4-title">Fixed workflow and verification state machine</title>
-  <desc id="sys-f4-desc">Author-synthesised, non-empirical state diagram for the local evidence-first portfolio workflow. A fixed sequence moves from validated plan and intake through typed extraction, normalisation, source and evidence eligibility review, typed claim construction, and a separate independent verifier. The verifier writes one of five explicit states: supported, contradicted, insufficient evidence, stale, or rejected untrusted. Only supported claims enter the supported narrative; every other state remains visible as an exception or hold. WorkflowRun and AgentRun records retain stage, role, status, hashes, attempts, timings, contract versions and errors. Fail-closed preconditions and explicit termination prevent open-ended agents. Deterministic report assembly leads to a named human review gate, approval of the current version and persisted content hash, and manifest-backed JSON, Markdown and HTML export. Editing creates a new section and report version, changes the content hash, clears approval and returns the report to review. The implementation and local engineering tests do not establish source truth, autonomous publication, human-review benefit, production safety or empirical performance.</desc>
-  <defs>
-    <style><![CDATA[
-      .title { font: 700 29px Helvetica, Arial, sans-serif; fill: #17384a; }
-      .subtitle { font: 16px Helvetica, Arial, sans-serif; fill: #526b79; }
-      .badge { fill: #eef4f6; stroke: #7892a0; stroke-width: 1.5; }
-      .badge-text { font: 700 10px Helvetica, Arial, sans-serif; fill: #355567; text-anchor: middle; }
-      .legend-tested { fill: #e9f4f8; stroke: #0072b2; stroke-width: 2; }
-      .legend-protocol { fill: #fff5dd; stroke: #b66f00; stroke-width: 2; stroke-dasharray: 9 6; }
-      .legend-stop { fill: #fff0f1; stroke: #b53a48; stroke-width: 2; stroke-dasharray: 2 6; }
-      .legend-text { font: 700 11px Helvetica, Arial, sans-serif; fill: #355567; text-anchor: middle; }
-      .rule { stroke: #9ab0bc; stroke-width: 1.2; }
-      .zone { fill: #f8fbfc; stroke: #0072b2; stroke-width: 2; }
-      .zone-title { font: 700 14px Helvetica, Arial, sans-serif; fill: #284b5e; }
-      .zone-status { font: 700 10px Helvetica, Arial, sans-serif; fill: #607783; text-anchor: end; }
-      .box-tested { fill: #e9f4f8; stroke: #0072b2; stroke-width: 2; }
-      .box-neutral { fill: #ffffff; stroke: #718894; stroke-width: 1.6; }
-      .box-protocol { fill: #fff5dd; stroke: #b66f00; stroke-width: 1.8; stroke-dasharray: 8 5; }
-      .box-stop { fill: #fff0f1; stroke: #b53a48; stroke-width: 1.8; }
-      .box-title { font: 700 13px Helvetica, Arial, sans-serif; fill: #173f53; }
-      .box-body { font: 10.5px Helvetica, Arial, sans-serif; fill: #496472; }
-      .box-small { font: 9.6px Helvetica, Arial, sans-serif; fill: #4d6674; }
-      .status-tested { font: 700 9.5px Helvetica, Arial, sans-serif; fill: #006a9f; }
-      .status-protocol { font: 700 9.5px Helvetica, Arial, sans-serif; fill: #945900; }
-      .status-stop { font: 700 9.5px Helvetica, Arial, sans-serif; fill: #a33240; }
-      .control { fill: #edf2f4; stroke: #6e8490; stroke-width: 1.5; stroke-dasharray: 12 5 2 5; }
-      .control-title { font: 700 11.5px Helvetica, Arial, sans-serif; fill: #355566; }
-      .control-body { font: 10px Helvetica, Arial, sans-serif; fill: #4d6674; }
-      .guard { fill: #fff8e8; stroke: #b66f00; stroke-width: 1.5; stroke-dasharray: 7 4; }
-      .guard-text { font: 700 10px Helvetica, Arial, sans-serif; fill: #7b4b00; text-anchor: middle; }
-      .stop-strip { fill: #fff0f1; stroke: #b53a48; stroke-width: 1.5; }
-      .stop-text { font: 700 9.7px Helvetica, Arial, sans-serif; fill: #9f3340; text-anchor: middle; }
-      .out-supported { fill: #e9f4f8; stroke: #0072b2; stroke-width: 1.7; }
-      .out-hold { fill: #fff0f1; stroke: #b53a48; stroke-width: 1.5; }
-      .out-neutral { fill: #f2f5f6; stroke: #6f838e; stroke-width: 1.5; }
-      .out-text { font: 700 10px Helvetica, Arial, sans-serif; fill: #284b5e; text-anchor: middle; }
-      .arrow { fill: none; stroke: #617684; stroke-width: 2; marker-end: url(#arrowhead); }
-      .arrow-tested { fill: none; stroke: #0072b2; stroke-width: 2; marker-end: url(#arrowhead-blue); }
-      .arrow-stop { fill: none; stroke: #b53a48; stroke-width: 1.8; stroke-dasharray: 6 4; marker-end: url(#arrowhead-red); }
-      .source { font: 9px Helvetica, Arial, sans-serif; fill: #5c717d; }
-      .nongoal { fill: #f2f5f6; stroke: #6f838e; stroke-width: 1.5; stroke-dasharray: 12 5 2 5; }
-      .nongoal-head { font: 700 10px Helvetica, Arial, sans-serif; fill: #3b5665; }
-      .nongoal-body { font: 9.5px Helvetica, Arial, sans-serif; fill: #4e6673; }
-    ]]></style>
-    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#617684"/>
-    </marker>
-    <marker id="arrowhead-blue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#0072b2"/>
-    </marker>
-    <marker id="arrowhead-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#b53a48"/>
-    </marker>
-  </defs>
+<svg id="my-svg" width="851.09375" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="1104" viewBox="-5 -551.5 851.09375 1103" role="graphics-document document" aria-roledescription="block" style="background-color: white;"><style>#my-svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#12232E;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#ECEEF1;}#my-svg .error-text{fill:#12232E;stroke:#12232E;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:none;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#274257;stroke:#274257;}#my-svg .marker.cross{stroke:#274257;}#my-svg svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;}#my-svg p{margin:0;}#my-svg .label{font-family:Arial,Helvetica,sans-serif;color:#12232E;}#my-svg .cluster-label text{fill:#12232E;}#my-svg .cluster-label span{color:#12232E;}#my-svg .label text,#my-svg span{fill:#12232E;color:#12232E;}#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path{fill:#DCE8F4;stroke:#12232E;stroke-width:1px;}#my-svg .flowchart-label text{text-anchor:middle;}#my-svg .node .label{text-align:center;}#my-svg .node.clickable{cursor:pointer;}#my-svg .arrowheadPath{fill:#000000;}#my-svg .edgePaths .path{stroke:#274257;stroke-width:2.0px;}#my-svg .flowchart-link{stroke:#274257;fill:none;}#my-svg .edgeLabel{background-color:#FFFFFF;text-align:center;}#my-svg .edgeLabel p{margin:0;padding:0;display:inline;}#my-svg .edgeLabel rect{opacity:0.5;background-color:#FFFFFF;fill:#FFFFFF;}#my-svg .labelBkg{background-color:#FFFFFF;}#my-svg .node .cluster{fill:rgba(244, 247, 251, 0.5);stroke:rgba(78, 111, 140, 0.2);box-shadow:rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;stroke-width:1px;}#my-svg .cluster text{fill:#12232E;}#my-svg .cluster span{color:#12232E;}#my-svg div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Arial,Helvetica,sans-serif;font-size:12px;background:#ECEEF1;border:1px solid #6B7280;border-radius:2px;pointer-events:none;z-index:100;}#my-svg .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12232E;}#my-svg .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#my-svg .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#my-svg .node .neo-node{stroke:#12232E;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:url(#my-svg-gradient);stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#12232E;filter:none;}#my-svg [data-look="neo"].node circle{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg :root{--mermaid-font-family:Arial,Helvetica,sans-serif;}</style><g/><marker id="my-svg_block-pointEnd" class="marker block" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart" class="marker block" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointEnd-margin" class="marker block" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart-margin" class="marker block" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd" class="marker block" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart" class="marker block" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd-margin" class="marker block" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart-margin" class="marker block" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd" class="marker cross block" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossStart" class="marker cross block" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd-margin" class="marker cross block" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="my-svg_block-crossStart-margin" class="marker cross block" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="block"><g class="node fx-hold flowchart-label" id="my-svg-G" transform="translate(420.546875, -492)"><rect class="basic label-container" style="" rx="0" ry="0" x="-420.546875" y="-54.5" width="841.09375" height="109"/><g class="label" style="" transform="translate(-214.609375, -40.5)"><rect/><foreignObject width="429.21875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 841.094px; text-align: center;"><span class="nodeLabel"><p><b>CONTROLLED FAILURE PATHS</b><br />Input, schema, trust, period, unit and currency failures<br />keep their reason and held state.</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-B" transform="translate(420.546875, -369)"><rect class="basic label-container" style="" rx="0" ry="0" x="-420.546875" y="-54.5" width="841.09375" height="109"/><g class="label" style="" transform="translate(-214.5859375, -40.5)"><rect/><foreignObject width="429.171875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 841.094px; text-align: center;"><span class="nodeLabel"><p><b>1–5 · BUILD A POSSIBLE CLAIM</b><br />Intake → extract → clean → evidence review → claim<br /><i>Good writing is never treated as support.</i></p></span></div></foreignObject></g></g><g class="node fx-key flowchart-label" id="my-svg-V" transform="translate(420.546875, -246)"><rect class="basic label-container" style="" rx="0" ry="0" x="-420.546875" y="-54.5" width="841.09375" height="109"/><g class="label" style="" transform="translate(-216.109375, -27)"><rect/><foreignObject width="432.21875" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 841.094px; text-align: center;"><span class="nodeLabel"><p><b>6 · VERIFY SEPARATELY</b><br />Record the status and reason; never rewrite the claim.</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-S" transform="translate(135.515625, -123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-56.015625, -27)"><rect/><foreignObject width="112.03125" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>SUPPORTED</b><br />Exact support</p></span></div></foreignObject></g></g><g class="node fx-hold flowchart-label" id="my-svg-K" transform="translate(420.546875, -123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-72, -27)"><rect/><foreignObject width="144" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>CONTRADICTED</b><br />Conflict retained</p></span></div></foreignObject></g></g><g class="node fx-hold flowchart-label" id="my-svg-H" transform="translate(705.578125, -123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-66.875, -40.5)"><rect/><foreignObject width="133.75" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>HELD</b><br />Insufficient, stale<br />or untrusted</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-P" transform="translate(420.546875, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-420.546875" y="-54.5" width="841.09375" height="109"/><g class="label" style="" transform="translate(-147.5859375, -27)"><rect/><foreignObject width="295.171875" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 841.094px; text-align: center;"><span class="nodeLabel"><p><b>7 · WRITE REPORT</b><br />Supported text plus clear exceptions.</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-PR" transform="translate(135.515625, 123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-94.0703125, -27)"><rect/><foreignObject width="188.140625" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>PENDING REVIEW</b><br />Versioned content hash</p></span></div></foreignObject></g></g><g class="node fx-key flowchart-label" id="my-svg-D" transform="translate(420.546875, 123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-79.0078125, -27)"><rect/><foreignObject width="158.015625" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>NAMED DECISION</b><br />Person and reason</p></span></div></foreignObject></g></g><g class="node fx-hold flowchart-label" id="my-svg-RV" transform="translate(705.578125, 123)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-107.515625, -27)"><rect/><foreignObject width="215.03125" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>NEW PENDING VERSION</b><br />Rejection or any edit</p></span></div></foreignObject></g></g><g class="node fx-key flowchart-label" id="my-svg-A" transform="translate(135.515625, 246)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-72.0546875, -40.5)"><rect/><foreignObject width="144.109375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>APPROVED</b><br />Decision bound to<br />current hash</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-EX" transform="translate(420.546875, 369)"><rect class="basic label-container" style="" rx="0" ry="0" x="-420.546875" y="-54.5" width="841.09375" height="109"/><g class="label" style="" transform="translate(-171.09375, -27)"><rect/><foreignObject width="342.1875" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 841.094px; text-align: center;"><span class="nodeLabel"><p><b>CONTROLLED EXPORT</b><br />Stage, hash, check file list and finish safely</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-DONE" transform="translate(135.515625, 492)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-98.5625, -27)"><rect/><foreignObject width="197.125" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>EXPORTED</b><br />Final files checked again</p></span></div></foreignObject></g></g><g class="node fx-hold flowchart-label" id="my-svg-ER" transform="translate(420.546875, 492)"><rect class="basic label-container" style="" rx="0" ry="0" x="-135.515625" y="-54.5" width="271.03125" height="109"/><g class="label" style="" transform="translate(-105.5703125, -40.5)"><rect/><foreignObject width="211.140625" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 271.031px; text-align: center;"><span class="nodeLabel"><p><b>EXPORT FAILED</b><br />Approved source retained;<br />no partial final output</p></span></div></foreignObject></g></g><path d="M420.547,-437.5L420.547,-436.333C420.547,-435.167,420.547,-432.833,420.547,-431.167C420.547,-429.5,420.547,-428.5,420.547,-428L420.547,-427.5" id="my-svg-my-svg-1-G-B" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-dotted flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-G-B" data-points="W3sieCI6NDIwLjU0Njg3NSwieSI6LTQzNy41fSx7IngiOjQyMC41NDY4NzUsInkiOi00MzAuNX0seyJ4Ijo0MjAuNTQ2ODc1LCJ5IjotNDIzLjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M420.547,-314.5L420.547,-313.333C420.547,-312.167,420.547,-309.833,420.547,-308.167C420.547,-306.5,420.547,-305.5,420.547,-305L420.547,-304.5" id="my-svg-my-svg-1-B-V" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-B-V" data-points="W3sieCI6NDIwLjU0Njg3NSwieSI6LTMxNC41fSx7IngiOjQyMC41NDY4NzUsInkiOi0zMDcuNX0seyJ4Ijo0MjAuNTQ2ODc1LCJ5IjotMzAwLjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M294.253,-191.5L291.549,-190.333C288.845,-189.167,283.438,-186.833,278.643,-184.764C273.848,-182.695,269.665,-180.89,267.574,-179.987L265.483,-179.085" id="my-svg-my-svg-1-V-S" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-V-S" data-points="W3sieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOi0xOTEuNX0seyJ4IjoyNzguMDMxMjUsInkiOi0xODQuNX0seyJ4IjoyNjEuODA5OTU5MzQ5NTkzNSwieSI6LTE3Ny41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M420.547,-191.5L420.547,-190.333C420.547,-189.167,420.547,-186.833,420.547,-185.167C420.547,-183.5,420.547,-182.5,420.547,-182L420.547,-181.5" id="my-svg-my-svg-1-V-K" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-V-K" data-points="W3sieCI6NDIwLjU0Njg3NSwieSI6LTE5MS41fSx7IngiOjQyMC41NDY4NzUsInkiOi0xODQuNX0seyJ4Ijo0MjAuNTQ2ODc1LCJ5IjotMTc3LjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M546.841,-191.5L549.545,-190.333C552.248,-189.167,557.655,-186.833,562.45,-184.764C567.245,-182.695,571.428,-180.89,573.52,-179.987L575.611,-179.085" id="my-svg-my-svg-1-V-H" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-V-H" data-points="W3sieCI6NTQ2Ljg0MTIwOTM0OTU5MzYsInkiOi0xOTEuNX0seyJ4Ijo1NjMuMDYyNSwieSI6LTE4NC41fSx7IngiOjU3OS4yODM3OTA2NTA0MDY0LCJ5IjotMTc3LjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M261.81,-68.5L264.514,-67.333C267.217,-66.167,272.624,-63.833,277.419,-61.764C282.214,-59.695,286.397,-57.89,288.488,-56.987L290.58,-56.085" id="my-svg-my-svg-1-S-P" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-S-P" data-points="W3sieCI6MjYxLjgwOTk1OTM0OTU5MzUsInkiOi02OC41fSx7IngiOjI3OC4wMzEyNSwieSI6LTYxLjV9LHsieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOi01NC41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M420.547,-68.5L420.547,-67.333C420.547,-66.167,420.547,-63.833,420.547,-62.167C420.547,-60.5,420.547,-59.5,420.547,-59L420.547,-58.5" id="my-svg-my-svg-1-K-P" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-K-P" data-points="W3sieCI6NDIwLjU0Njg3NSwieSI6LTY4LjV9LHsieCI6NDIwLjU0Njg3NSwieSI6LTYxLjV9LHsieCI6NDIwLjU0Njg3NSwieSI6LTU0LjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M579.284,-68.5L576.58,-67.333C573.877,-66.167,568.47,-63.833,563.675,-61.764C558.88,-59.695,554.697,-57.89,552.605,-56.987L550.514,-56.085" id="my-svg-my-svg-1-H-P" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-H-P" data-points="W3sieCI6NTc5LjI4Mzc5MDY1MDQwNjQsInkiOi02OC41fSx7IngiOjU2My4wNjI1LCJ5IjotNjEuNX0seyJ4Ijo1NDYuODQxMjA5MzQ5NTkzNiwieSI6LTU0LjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M294.253,54.5L291.549,55.667C288.845,56.833,283.438,59.167,278.643,61.236C273.848,63.305,269.665,65.11,267.574,66.013L265.483,66.915" id="my-svg-my-svg-1-P-PR" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-P-PR" data-points="W3sieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOjU0LjV9LHsieCI6Mjc4LjAzMTI1LCJ5Ijo2MS41fSx7IngiOjI2MS44MDk5NTkzNDk1OTM1LCJ5Ijo2OC41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M271.031,123L272.198,123C273.365,123,275.698,123,277.365,123C279.031,123,280.031,123,280.531,123L281.031,123" id="my-svg-my-svg-1-PR-D" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-PR-D" data-points="W3sieCI6MjcxLjAzMTI1LCJ5IjoxMjN9LHsieCI6Mjc4LjAzMTI1LCJ5IjoxMjN9LHsieCI6Mjg1LjAzMTI1LCJ5IjoxMjN9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M294.253,177.5L291.549,178.667C288.845,179.833,283.438,182.167,278.643,184.236C273.848,186.305,269.665,188.11,267.574,189.013L265.483,189.915" id="my-svg-my-svg-1-D-A" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-D-A" data-points="W3sieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOjE3Ny41fSx7IngiOjI3OC4wMzEyNSwieSI6MTg0LjV9LHsieCI6MjYxLjgwOTk1OTM0OTU5MzUsInkiOjE5MS41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M556.063,123L557.229,123C558.396,123,560.729,123,562.396,123C564.063,123,565.063,123,565.563,123L566.063,123" id="my-svg-my-svg-1-D-RV" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-D-RV" data-points="W3sieCI6NTU2LjA2MjUsInkiOjEyM30seyJ4Ijo1NjMuMDYyNSwieSI6MTIzfSx7IngiOjU3MC4wNjI1LCJ5IjoxMjN9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M271.031,216.76L295.951,211.384C320.87,206.007,370.708,195.253,419.895,184.641C469.082,174.028,517.617,163.556,541.885,158.319L566.152,153.083" id="my-svg-my-svg-1-A-RV" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-dotted flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-A-RV" data-points="W3sieCI6MjcxLjAzMTI1LCJ5IjoyMTYuNzYwMzYwNzA2MDYyOTN9LHsieCI6NDIwLjU0Njg3NSwieSI6MTg0LjV9LHsieCI6NTcwLjA2MjUsInkiOjE1Mi4yMzk2MzkyOTM5MzcwN31d" marker-end="url(#my-svg_block-pointEnd)"/><path d="M261.81,300.5L264.514,301.667C267.217,302.833,272.624,305.167,277.419,307.236C282.214,309.305,286.397,311.11,288.488,312.013L290.58,312.915" id="my-svg-my-svg-1-A-EX" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-A-EX" data-points="W3sieCI6MjYxLjgwOTk1OTM0OTU5MzUsInkiOjMwMC41fSx7IngiOjI3OC4wMzEyNSwieSI6MzA3LjV9LHsieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOjMxNC41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M294.253,423.5L291.549,424.667C288.845,425.833,283.438,428.167,278.643,430.236C273.848,432.305,269.665,434.11,267.574,435.013L265.483,435.915" id="my-svg-my-svg-1-EX-DONE" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-EX-DONE" data-points="W3sieCI6Mjk0LjI1MjU0MDY1MDQwNjUsInkiOjQyMy41fSx7IngiOjI3OC4wMzEyNSwieSI6NDMwLjV9LHsieCI6MjYxLjgwOTk1OTM0OTU5MzUsInkiOjQzNy41fV0=" marker-end="url(#my-svg_block-pointEnd)"/><path d="M420.547,423.5L420.547,424.667C420.547,425.833,420.547,428.167,420.547,429.833C420.547,431.5,420.547,432.5,420.547,433L420.547,433.5" id="my-svg-my-svg-1-EX-ER" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-EX-ER" data-points="W3sieCI6NDIwLjU0Njg3NSwieSI6NDIzLjV9LHsieCI6NDIwLjU0Njg3NSwieSI6NDMwLjV9LHsieCI6NDIwLjU0Njg3NSwieSI6NDM3LjV9XQ==" marker-end="url(#my-svg_block-pointEnd)"/></g><style>/* GENERATED FILE - do not edit.
+ * Source: exhibits/figure_palette.json
+ * Regenerate with: python3 scripts/build_figure_theme.py
+ */
 
-  <text class="title" x="40" y="48">Fixed workflow and verification state machine</text>
-  <text class="subtitle" x="42" y="79">Bounded roles produce auditable records; only named review can authorise controlled export.</text>
-  <rect class="badge" x="708" y="24" width="152" height="31" rx="15"/>
-  <text class="badge-text" x="784" y="44">CONCEPTUAL / NO RESULTS</text>
-  <line class="rule" x1="40" y1="99" x2="860" y2="99"/>
+/* Typography and shared geometry */
+.root,
+.flowchart,
+.block,
+.stateDiagram,
+.erDiagram {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="legend-tested" x="45" y="115" width="252" height="37" rx="9"/>
-  <text class="legend-text" x="171" y="138">IMPLEMENTED + LOCAL TESTS</text>
-  <rect class="legend-protocol" x="324" y="115" width="252" height="37" rx="9"/>
-  <text class="legend-text" x="450" y="138">EVALUATION / HUMAN OUTCOMES UNRUN</text>
-  <rect class="legend-stop" x="603" y="115" width="252" height="37" rx="9"/>
-  <text class="legend-text" x="729" y="138">FAIL CLOSED / RETAIN STATE</text>
+.node rect,
+.node polygon,
+.node path,
+.node circle,
+.node ellipse,
+.block rect,
+.cluster rect {
+  shape-rendering: geometricPrecision;
+}
 
-  <rect class="zone" x="40" y="170" width="820" height="375" rx="14"/>
-  <text class="zone-title" x="58" y="199">1  FIXED, TYPED EXECUTION PATH</text>
-  <text class="zone-status" x="842" y="199">SERIAL / EXPLICIT TERMINATION</text>
+.node rect,
+.block rect {
+  rx: 5px;
+  ry: 5px;
+}
 
-  <path class="arrow" d="M 205 266 L 218 266"/>
-  <path class="arrow" d="M 348 266 L 361 266"/>
-  <path class="arrow" d="M 511 266 L 524 266"/>
-  <path class="arrow" d="M 679 266 L 692 266"/>
+.nodeLabel,
+.edgeLabel,
+.cluster-label,
+.label {
+  color: #12232E;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="box-tested" x="55" y="222" width="150" height="88" rx="9"/>
-  <text class="box-title" x="70" y="245">Plan + intake</text>
-  <text class="box-body" x="70" y="265">period / cutoff / class</text>
-  <text class="box-body" x="70" y="282">identity and source gates</text>
-  <text class="status-tested" x="70" y="302">PRECONDITIONS FIRST</text>
+.node .label,
+.block .label {
+  line-height: 1.32;
+}
 
-  <rect class="box-tested" x="218" y="222" width="130" height="88" rx="9"/>
-  <text class="box-title" x="233" y="245">Extract</text>
-  <text class="box-body" x="233" y="265">strict typed schema</text>
-  <text class="box-body" x="233" y="282">exact value or abstain</text>
-  <text class="status-tested" x="233" y="302">NO FREE TEXT FACTS</text>
+.label foreignObject {
+  overflow: visible;
+}
 
-  <rect class="box-tested" x="361" y="222" width="150" height="88" rx="9"/>
-  <text class="box-title" x="376" y="245">Normalise</text>
-  <text class="box-body" x="376" y="265">value / missing state</text>
-  <text class="box-body" x="376" y="282">unit / currency / period</text>
-  <text class="status-tested" x="376" y="302">NO SILENT REPAIR</text>
+/* Connectors */
+.flowchart-link,
+.transition {
+  stroke: #274257 !important;
+  stroke-width: 1.7px !important;
+}
 
-  <rect class="box-tested" x="524" y="222" width="155" height="88" rx="9"/>
-  <text class="box-title" x="539" y="245">Evidence review</text>
-  <text class="box-body" x="539" y="265">admission + locator</text>
-  <text class="box-body" x="539" y="282">time + provenance state</text>
-  <text class="status-tested" x="539" y="302">INELIGIBLE IS HELD</text>
+.marker,
+.marker path {
+  fill: #274257 !important;
+  stroke: #274257 !important;
+}
 
-  <rect class="box-tested" x="692" y="222" width="153" height="88" rx="9"/>
-  <text class="box-title" x="707" y="245">Claim build</text>
-  <text class="box-body" x="707" y="265">typed proposition</text>
-  <text class="box-body" x="707" y="282">evidence links retained</text>
-  <text class="status-tested" x="707" y="302">CANDIDATE, NOT TRUTH</text>
+.edgeLabel {
+  background-color: #FFFFFF !important;
+  color: #274257 !important;
+  padding: 2px 6px !important;
+  font-size: 0.86em !important;
+}
+.edgeLabel rect,
+.edgeLabel foreignObject div {
+  fill: #FFFFFF !important;
+}
 
-  <rect class="control" x="55" y="330" width="790" height="72" rx="9"/>
-  <text class="control-title" x="72" y="352">Persisted stage/run records</text>
-  <text class="control-body" x="72" y="371">WorkflowRun: stage, status, cutoff, evidence/quality contract versions, start/end/error.</text>
-  <text class="control-body" x="72" y="388">AgentRun: role, stage, status, input/output hashes, attempts, timings, provider/model metadata and error.</text>
-  <text class="status-tested" x="825" y="352" text-anchor="end">TYPED AUDIT, NOT HIDDEN REASONING</text>
+/* Clusters */
+.cluster rect {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  rx: 8px;
+  ry: 8px;
+}
+.cluster-label,
+.cluster-label span {
+  color: #1B4965 !important;
+}
 
-  <rect class="box-stop" x="55" y="420" width="245" height="92" rx="9"/>
-  <text class="box-title" x="70" y="443">Fail-closed preconditions</text>
-  <text class="box-small" x="70" y="463">unknown dataset / ambiguous identity /</text>
-  <text class="box-small" x="70" y="479">missing cutoff or unadmitted source</text>
-  <text class="status-stop" x="70" y="501">STOP BEFORE DOWNSTREAM WORK</text>
+/* Semantic node roles - one block per role in exhibits/figure_palette.json */
+/* Framing statement, evidence boundary or table header row. */
+.fx-banner &gt; rect,
+.fx-banner &gt; polygon,
+.fx-banner &gt; path,
+.fx-banner &gt; circle,
+.fx-banner &gt; ellipse {
+  fill: #1B4965 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.8px !important;
+  stroke-dasharray: none !important;
+}
+.fx-banner .nodeLabel,
+.fx-banner .nodeLabel *,
+.fx-banner .label,
+.fx-banner .label * {
+  color: #FFFFFF !important;
+}
 
-  <rect class="box-stop" x="327" y="420" width="245" height="92" rx="9"/>
-  <text class="box-title" x="342" y="443">Validation stop</text>
-  <text class="box-small" x="342" y="463">untrusted instructions / schema mismatch /</text>
-  <text class="box-small" x="342" y="479">period, value, unit or currency conflict</text>
-  <text class="status-stop" x="342" y="501">ABSTAIN, CONTRADICT OR HOLD</text>
+/* Emphasised gate, decision or verification point. */
+.fx-key &gt; rect,
+.fx-key &gt; polygon,
+.fx-key &gt; path,
+.fx-key &gt; circle,
+.fx-key &gt; ellipse {
+  fill: #B7CFE5 !important;
+  stroke: #12232E !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: none !important;
+}
+.fx-key .nodeLabel,
+.fx-key .nodeLabel *,
+.fx-key .label,
+.fx-key .label * {
+  color: #12232E !important;
+}
 
-  <rect class="box-neutral" x="599" y="420" width="246" height="92" rx="9"/>
-  <text class="box-title" x="614" y="443">Retry + idempotency boundary</text>
-  <text class="box-small" x="614" y="463">path-specific bounded attempts only;</text>
-  <text class="box-small" x="614" y="479">failed stage recorded; verified reuse where defined</text>
-  <text class="status-tested" x="614" y="501">NO OPEN-ENDED AGENT LOOP</text>
+/* Standard implemented process step. */
+.fx-stage &gt; rect,
+.fx-stage &gt; polygon,
+.fx-stage &gt; path,
+.fx-stage &gt; circle,
+.fx-stage &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+.fx-stage .nodeLabel,
+.fx-stage .nodeLabel *,
+.fx-stage .label,
+.fx-stage .label * {
+  color: #12232E !important;
+}
 
-  <path class="arrow-tested" d="M 845 266 L 872 266 L 872 552 L 180 552 L 180 634"/>
-  <rect class="zone" x="40" y="570" width="820" height="267" rx="14"/>
-  <text class="zone-title" x="58" y="599">2  INDEPENDENT VERIFICATION AND EXPLICIT OUTCOMES</text>
-  <text class="zone-status" x="842" y="599">IMPLEMENTED + LOCALLY TESTED</text>
+/* Input or candidate material that is not yet evidence. */
+.fx-input &gt; rect,
+.fx-input &gt; polygon,
+.fx-input &gt; path,
+.fx-input &gt; circle,
+.fx-input &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: none !important;
+}
+.fx-input .nodeLabel,
+.fx-input .nodeLabel *,
+.fx-input .label,
+.fx-input .label * {
+  color: #12232E !important;
+}
 
-  <rect class="box-tested" x="55" y="634" width="250" height="104" rx="10"/>
-  <text class="box-title" x="72" y="658">Independent verifier</text>
-  <text class="box-body" x="72" y="678">separate role checks exact value, period,</text>
-  <text class="box-body" x="72" y="695">sourceability, provenance and conflict</text>
-  <text class="box-small" x="72" y="714">writes Verification status + rationale;</text>
-  <text class="status-tested" x="72" y="731">DOES NOT REWRITE CLAIM OR EVIDENCE</text>
-  <path class="arrow" d="M 305 686 L 337 686"/>
+/* Control built and tested, but never run against a live external source. */
+.fx-live &gt; rect,
+.fx-live &gt; polygon,
+.fx-live &gt; path,
+.fx-live &gt; circle,
+.fx-live &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #1B4965 !important;
+  stroke-width: 1.9px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-live .nodeLabel,
+.fx-live .nodeLabel *,
+.fx-live .label,
+.fx-live .label * {
+  color: #12232E !important;
+}
 
-  <rect class="out-supported" x="337" y="634" width="148" height="45" rx="8"/>
-  <text class="out-text" x="411" y="661">SUPPORTED</text>
-  <rect class="out-hold" x="500" y="634" width="148" height="45" rx="8"/>
-  <text class="out-text" x="574" y="661">CONTRADICTED</text>
-  <rect class="out-neutral" x="663" y="634" width="167" height="45" rx="8"/>
-  <text class="out-text" x="746" y="655">INSUFFICIENT</text>
-  <text class="out-text" x="746" y="669">EVIDENCE</text>
-  <rect class="out-neutral" x="420" y="697" width="148" height="45" rx="8"/>
-  <text class="out-text" x="494" y="724">STALE</text>
-  <rect class="out-hold" x="585" y="697" width="195" height="45" rx="8"/>
-  <text class="out-text" x="682" y="717">REJECTED</text>
-  <text class="out-text" x="682" y="731">UNTRUSTED</text>
+/* Held, blocked, rejected, failed or explicitly unmeasured. */
+.fx-hold &gt; rect,
+.fx-hold &gt; polygon,
+.fx-hold &gt; path,
+.fx-hold &gt; circle,
+.fx-hold &gt; ellipse {
+  fill: #FAE3C3 !important;
+  stroke: #96560F !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-hold .nodeLabel,
+.fx-hold .nodeLabel *,
+.fx-hold .label,
+.fx-hold .label * {
+  color: #12232E !important;
+}
 
-  <rect class="guard" x="70" y="766" width="760" height="48" rx="8"/>
-  <text class="guard-text" x="450" y="786">ONLY SUPPORTED CLAIMS ENTER THE SUPPORTED NARRATIVE; EVERY OTHER STATE REMAINS AN EXCEPTION OR HOLD.</text>
-  <text class="guard-text" x="450" y="802">A LOCATOR, CHECKSUM OR CITATION SUPPORTS TRACEABILITY - IT DOES NOT ESTABLISH SOURCE TRUTH.</text>
+/* Side annotation or out-of-scope material. */
+.fx-note &gt; rect,
+.fx-note &gt; polygon,
+.fx-note &gt; path,
+.fx-note &gt; circle,
+.fx-note &gt; ellipse {
+  fill: #ECEEF1 !important;
+  stroke: #6B7280 !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: 3 3 !important;
+}
+.fx-note .nodeLabel,
+.fx-note .nodeLabel *,
+.fx-note .label,
+.fx-note .label * {
+  color: #12232E !important;
+}
 
-  <rect class="zone" x="40" y="860" width="820" height="233" rx="14"/>
-  <text class="zone-title" x="58" y="889">3  REPORT, HUMAN AUTHORITY AND CONTROLLED EXPORT</text>
-  <text class="zone-status" x="842" y="889">NO AUTONOMOUS PUBLICATION</text>
+/* Table row label cell. */
+.fx-rowhead &gt; rect,
+.fx-rowhead &gt; polygon,
+.fx-rowhead &gt; path,
+.fx-rowhead &gt; circle,
+.fx-rowhead &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-rowhead .nodeLabel,
+.fx-rowhead .nodeLabel *,
+.fx-rowhead .label,
+.fx-rowhead .label * {
+  color: #12232E !important;
+}
 
-  <path class="arrow" d="M 240 955 L 257 955"/>
-  <path class="arrow" d="M 435 955 L 452 955"/>
-  <path class="arrow" d="M 647 955 L 664 955"/>
-  <rect class="box-tested" x="55" y="914" width="185" height="82" rx="9"/>
-  <text class="box-title" x="70" y="938">Report assembly</text>
-  <text class="box-body" x="70" y="958">deterministic sections</text>
-  <text class="box-body" x="70" y="975">supported narrative + exceptions</text>
-  <text class="status-tested" x="70" y="989">PENDING_REVIEW</text>
+/* Table value cell. */
+.fx-cell &gt; rect,
+.fx-cell &gt; polygon,
+.fx-cell &gt; path,
+.fx-cell &gt; circle,
+.fx-cell &gt; ellipse {
+  fill: #FFFFFF !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-cell .nodeLabel,
+.fx-cell .nodeLabel *,
+.fx-cell .label,
+.fx-cell .label * {
+  color: #12232E !important;
+}
 
-  <rect class="box-tested" x="257" y="914" width="178" height="82" rx="9"/>
-  <text class="box-title" x="272" y="938">Named human review</text>
-  <text class="box-body" x="272" y="958">approve / reject / request edit</text>
-  <text class="box-small" x="272" y="975">actor + reason + report version</text>
-  <text class="status-protocol" x="272" y="989">HUMAN BENEFIT UNMEASURED</text>
-
-  <rect class="box-tested" x="452" y="914" width="195" height="82" rx="9"/>
-  <text class="box-title" x="467" y="938">Current-version approval</text>
-  <text class="box-body" x="467" y="958">all claims have verifier records</text>
-  <text class="box-small" x="467" y="975">version + persisted content hash</text>
-  <text class="status-tested" x="467" y="989">OPTIMISTIC LOCK REQUIRED</text>
-
-  <rect class="box-tested" x="664" y="914" width="181" height="82" rx="9"/>
-  <text class="box-title" x="679" y="938">Controlled export</text>
-  <text class="box-body" x="679" y="958">JSON / Markdown / HTML</text>
-  <text class="box-small" x="679" y="975">pending manifest -> atomic final</text>
-  <text class="status-tested" x="679" y="989">HASHES REVERIFIED</text>
-
-  <rect class="stop-strip" x="158" y="1020" width="630" height="48" rx="8"/>
-  <text class="stop-text" x="473" y="1040">EDIT -> NEW SECTION + REPORT VERSION, NEW CONTENT HASH, APPROVAL CLEARED</text>
-  <text class="stop-text" x="473" y="1056">RETURN TO NAMED REVIEW; STALE MUTATIONS AND EXPORTS FAIL CLOSED</text>
-  <path class="arrow-stop" d="M 474 1020 L 474 1007 L 346 1007 L 346 997"/>
-
-  <rect class="nongoal" x="40" y="1105" width="820" height="36" rx="8"/>
-  <text class="nongoal-head" x="58" y="1128">BOUNDARY:</text>
-  <text class="nongoal-body" x="126" y="1128">no guaranteed truth, unconstrained agents, autonomous publication, production safety or measured reviewer benefit.</text>
-
-  <text class="source" x="40" y="1157">Source note: author synthesis of stable repository workflow, verifier, report, approval/export and local-test contracts; conceptual and non-empirical.</text>
-  <text class="source" x="40" y="1174">Design context: Gao et al. (2023a), PDF pp. 3-4, 10; NIST AI RMF (2023), pp. 33-35; Amershi et al. (2019), pp. 3-5.</text>
-</svg>
+</style></svg>

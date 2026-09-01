@@ -2,7 +2,7 @@
 
 Scope: `2.6 Bounded multi-agent systems and human review` only. Page numbers are PDF page numbers
 in the hash-pinned local files. These claims were checked against locally extracted text on
-27 August 2026.
+27 August 2026 and the added empirical failure study on 31 August 2026.
 
 ## Paragraph 1: decomposition requires programmed roles and interfaces
 
@@ -24,6 +24,11 @@ competence or benefit.
 - `guo2024multiagent`, PDF pp. 4--5 and 10--11: communication structures and orchestration govern
   information flow; hallucinations can cascade between agents, while more agents increase
   coordination, communication and resource complexity.
+- `cemri2025masfailures`, PDF pp. 1--3: 1,642 traces from seven selected multi-agent systems were
+  classified into fourteen failure modes across system design, inter-agent alignment and task
+  verification. Reported failure rates varied substantially. The tasks were coding, mathematics and
+  general-agent benchmarks, and much of the larger dataset used model-assisted annotation, so the
+  results do not transfer directly to portfolio reporting.
 - `wu2024autogen`, PDF pp. 2--5: multi-agent workflows require programmed control flow, role-specific
   computations, termination conditions, human-input modes and tool-execution rules.
 - `nist2023airmf`, PDF pp. 33--35: rigorous testing should document uncertainty and evaluated

@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-28
+- Updated: 2026-08-30
 - Supersedes the active model identity in ADRs [0004](0004-deterministic-first-model-routing.md),
   [0006](0006-uk-public-evidence-boundaries.md), and
   [0010](0010-two-tier-research-model-routing.md)
@@ -20,14 +21,19 @@ efforts used here.
    `PORTFOLIO_OPENAI_ESCALATION_MODEL` name remains temporarily for environment and persisted API
    compatibility; it no longer denotes a different model family.
 2. Preserve stage-specific effort: discovery uses `PORTFOLIO_OPENAI_REASONING_EFFORT` (`medium` by
-   default), company claim selection and company-research repair use `low`, and scalar portfolio
-   extraction uses `none`.
-3. Preserve the bounded repair contract. Portfolio extraction may call Luna once more after a
-   parsing or strict-validation failure; using the same model must not deduplicate that attempt.
-4. Continue to reject any configured model outside the pinned route before constructing an
+   default), company claim selection and company-research repair use `high`, and scalar portfolio
+   extraction uses `none`. Discovery accepts Luna's supported `low`, `medium`, `high`, `xhigh`, and
+   `max` efforts; `max` is an explicit quality-first experiment rather than the default.
+3. Preserve the bounded repair contract. Company-research correction remains capped by the
+   persisted attempt and model-call budgets even at `high`. Portfolio extraction may call Luna
+   once more after a parsing or strict-validation failure; using the same model must not
+   deduplicate that attempt.
+4. Advance the company-research route contract to `company-research-web-v10`. Runs pinned to v9
+   remain readable, but they cannot execute another stage under the changed effort semantics.
+5. Continue to reject any configured model outside the pinned route before constructing an
    external client. Keep `store=False`, strict schemas, source capture, exact-span validation,
    deterministic admission, and named review unchanged.
-5. Keep historical runs and migration fixtures with their recorded GPT-5.4 model identities
+6. Keep historical runs and migration fixtures with their recorded GPT-5.4 model identities
    readable. A new run records Luna through the existing model and attempt fields.
 
 ## Consequences

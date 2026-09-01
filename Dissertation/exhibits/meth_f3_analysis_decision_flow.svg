@@ -1,166 +1,248 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1280" viewBox="0 0 900 1280"
-     role="img" aria-labelledby="meth-f3-title meth-f3-desc">
-  <title id="meth-f3-title">Analysis decision flow</title>
-  <desc id="meth-f3-desc">A shared flow-accounting gate records eligible, excluded, failed and scored units with reasons. The diagram then divides into a quantitative branch and a qualitative branch. The quantitative branch requires denominators and distributions, checks dependence and units, permits exact paired binary or conditional Wilcoxon-style analysis only when assumptions and sample support them, reports effect sizes and uncertainty, and preserves multiplicity, strata, sensitivity, failures, negative, null and regressive outcomes. The qualitative branch admits only the predefined nine-family error taxonomy and consented reviewer feedback, creates a case-by-code framework matrix, versions coding and disagreement records, and retains patterns and negative cases. Both branches meet at integrated limitations. A final stop states that the exact statistical method and sample size remain TO FREEZE after D1 variance and annotation evidence plus supervisor and statistical review. The figure is conceptual and contains no inferential result.</desc>
-  <defs>
-    <style><![CDATA[
-      .page { fill:#FFFFFF; }
-      .divider { stroke:#9FB2BD; stroke-width:1.5; }
-      .title { font:700 34px Helvetica,Arial,sans-serif; fill:#173444; }
-      .subtitle { font:17px Helvetica,Arial,sans-serif; fill:#526875; }
-      .badgebox { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
-      .badge { font:700 12.5px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
-      .intake { fill:#F3F6F8; stroke:#607B89; stroke-width:2.2; }
-      .intake-title { font:700 16px Helvetica,Arial,sans-serif; fill:#284A5A; text-anchor:middle; }
-      .intake-body { font:13.5px Helvetica,Arial,sans-serif; fill:#425B68; text-anchor:middle; }
-      .branch-quant { fill:#EAF3F8; stroke:#0072B2; stroke-width:2.2; }
-      .branch-qual { fill:#E8F4F2; stroke:#007F73; stroke-width:2.2; }
-      .branch-title { font:700 15px Helvetica,Arial,sans-serif; fill:#204A5D; text-anchor:middle; }
-      .qbox { fill:#F5FAFC; stroke:#1674A7; stroke-width:1.7; }
-      .kbox { fill:#F3F9F7; stroke:#218071; stroke-width:1.7; }
-      .box-title { font:700 13.5px Helvetica,Arial,sans-serif; fill:#274C5D; }
-      .box-body { font:12.2px Helvetica,Arial,sans-serif; fill:#405965; }
-      .pill { fill:#FFFFFF; stroke:#5C8F86; stroke-width:1.1; }
-      .pill-text { font:700 10.5px Helvetica,Arial,sans-serif; fill:#315E56; text-anchor:middle; }
-      .arrow { fill:none; stroke:#617684; stroke-width:2.1; marker-end:url(#arrowhead); }
-      .split { fill:none; stroke:#7B909B; stroke-width:1.7; }
-      .integrate { fill:#EEF3F5; stroke:#516F7E; stroke-width:2.3; }
-      .integrate-title { font:700 15px Helvetica,Arial,sans-serif; fill:#294B5C; text-anchor:middle; }
-      .integrate-body { font:12.5px Helvetica,Arial,sans-serif; fill:#405965; text-anchor:middle; }
-      .stop { fill:#FBEAEC; stroke:#B23A48; stroke-width:3; }
-      .stop-label { font:700 14px Helvetica,Arial,sans-serif; fill:#8E2736; text-anchor:middle; }
-      .stop-title { font:700 16px Helvetica,Arial,sans-serif; fill:#6E2030; text-anchor:middle; }
-      .stop-body { font:12.5px Helvetica,Arial,sans-serif; fill:#4C3940; text-anchor:middle; }
-      .source { font:10.8px Helvetica,Arial,sans-serif; fill:#5A6C76; }
-      .status { font:700 11.5px Helvetica,Arial,sans-serif; fill:#455D69; }
-    ]]></style>
-    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
-      <path d="M 0 0 L 10 4 L 0 8 Z" fill="#617684"/>
-    </marker>
-  </defs>
+<svg id="my-svg" width="804.3724365234375" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" height="1264" viewBox="-8 -8 804.3724365234375 1264" role="graphics-document document" aria-roledescription="flowchart-elk" style="background-color: white;"><style>#my-svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#12232E;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#ECEEF1;}#my-svg .error-text{fill:#12232E;stroke:#12232E;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:none;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#274257;stroke:#274257;}#my-svg .marker.cross{stroke:#274257;}#my-svg svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;}#my-svg p{margin:0;}#my-svg .label{font-family:Arial,Helvetica,sans-serif;color:#12232E;}#my-svg .cluster-label text{fill:#12232E;}#my-svg .cluster-label span{color:#12232E;}#my-svg .cluster-label span p{background-color:transparent;}#my-svg .label text,#my-svg span{fill:#12232E;color:#12232E;}#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path{fill:#DCE8F4;stroke:#12232E;stroke-width:1px;}#my-svg .rough-node .label text,#my-svg .node .label text,#my-svg .image-shape .label,#my-svg .icon-shape .label{text-anchor:middle;}#my-svg .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#my-svg .rough-node .label,#my-svg .node .label,#my-svg .image-shape .label,#my-svg .icon-shape .label{text-align:center;}#my-svg .node.clickable{cursor:pointer;}#my-svg .root .anchor path{fill:#274257!important;stroke-width:0;stroke:#274257;}#my-svg .arrowheadPath{fill:#000000;}#my-svg .edgePaths .path{stroke:#274257;stroke-width:1px;}#my-svg .flowchart-link{stroke:#274257;fill:none;}#my-svg .edgeLabel{background-color:#FFFFFF;text-align:center;}#my-svg .edgeLabel p{background-color:#FFFFFF;}#my-svg .edgeLabel rect{opacity:0.5;background-color:#FFFFFF;fill:#FFFFFF;}#my-svg .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#my-svg .cluster rect{fill:#F4F7FB;stroke:#4E6F8C;stroke-width:1px;}#my-svg .cluster text{fill:#12232E;}#my-svg .cluster span{color:#12232E;}#my-svg .node .collapsed-indicator{fill:#4E6F8C;stroke:none;opacity:0.6;}#my-svg .node .collapsed-separator{stroke:#4E6F8C;stroke-width:0.75px;}#my-svg div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Arial,Helvetica,sans-serif;font-size:12px;background:#ECEEF1;border:1px solid #6B7280;border-radius:2px;pointer-events:none;z-index:100;}#my-svg .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12232E;}#my-svg rect.text{fill:none;stroke-width:0;}#my-svg .icon-shape,#my-svg .image-shape{background-color:#FFFFFF;text-align:center;}#my-svg .icon-shape p,#my-svg .image-shape p{background-color:#FFFFFF;padding:2px;}#my-svg .icon-shape .label rect,#my-svg .image-shape .label rect{opacity:0.5;background-color:#FFFFFF;fill:#FFFFFF;}#my-svg .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#my-svg .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#my-svg .node .neo-node{stroke:#12232E;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:url(#my-svg-gradient);stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#12232E;filter:none;}#my-svg [data-look="neo"].node circle{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg :root{--mermaid-font-family:Arial,Helvetica,sans-serif;}</style><g><marker id="my-svg_flowchart-elk-pointEnd" class="marker flowchart-elk" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-pointStart" class="marker flowchart-elk" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-pointEnd-margin" class="marker flowchart-elk" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-pointStart-margin" class="marker flowchart-elk" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-circleEnd" class="marker flowchart-elk" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-circleStart" class="marker flowchart-elk" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-circleEnd-margin" class="marker flowchart-elk" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-circleStart-margin" class="marker flowchart-elk" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-crossEnd" class="marker cross flowchart-elk" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-crossStart" class="marker cross flowchart-elk" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_flowchart-elk-crossEnd-margin" class="marker cross flowchart-elk" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="my-svg_flowchart-elk-crossStart-margin" class="marker cross flowchart-elk" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="root"><g class="clusters"><g class="cluster" id="my-svg-K" data-look="classic"><rect style="" x="449.32552083333326" y="197.5" width="327.046875" height="729"/><g class="cluster-label" transform="translate(540.3020833333333, 197.5)"><foreignObject width="145.09375" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>Qualitative branch</p></span></div></foreignObject></g></g><g class="cluster" id="my-svg-Q" data-look="classic"><rect style="" x="69.24739583333331" y="206.5" width="340.078125" height="702"/><g class="cluster-label" transform="translate(161.23958333333331, 206.5)"><foreignObject width="156.09375" height="27"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5;"><span class="nodeLabel"><p>Quantitative branch</p></span></div></foreignObject></g></g></g><g class="edges edgePath"><path d="M276.625,332.5L276.625,358.5" id="my-svg-L_Q1_Q2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q1_Q2_0" data-points="W3sieCI6Mjc2LjYyNSwieSI6MzMyLjV9LHsieCI6Mjc2LjYyNSwieSI6MzYyLjV9XQ==" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M276.625,473.5L276.625,499.5" id="my-svg-L_Q2_Q3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q2_Q3_0" data-points="W3sieCI6Mjc2LjYyNSwieSI6NDczLjV9LHsieCI6Mjc2LjYyNSwieSI6NTAzLjV9XQ==" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M239.28645833333331,614.5L239.28645833333331,640.5" id="my-svg-L_Q3_Q4_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q3_Q4_0" data-points="W3sieCI6MjM5LjI4NjQ1ODMzMzMzMzMxLCJ5Ijo2MTQuNX0seyJ4IjoyMzkuMjg2NDU4MzMzMzMzMzEsInkiOjY0NC41fV0=" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M239.28645833333331,755.5L239.28645833333331,781.5" id="my-svg-L_Q4_Q5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q4_Q5_0" data-points="W3sieCI6MjM5LjI4NjQ1ODMzMzMzMzMxLCJ5Ijo3NTUuNX0seyJ4IjoyMzkuMjg2NDU4MzMzMzMzMzEsInkiOjc4NS41fV0=" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,350.5L612.8489583333333,376.5" id="my-svg-L_K1_K2_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K1_K2_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjM1MC41fSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5IjozODAuNX1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,491.5L612.8489583333333,517.5" id="my-svg-L_K2_K3_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K2_K3_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjQ5MS41fSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5Ijo1MjEuNX1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,632.5L612.8489583333333,658.5" id="my-svg-L_K3_K4_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K3_K4_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjYzMi41fSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5Ijo2NjIuNX1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,773.5L612.8489583333333,799.5" id="my-svg-L_K4_K5_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K4_K5_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjc3My41fSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5Ijo4MDMuNX1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M478.109375,150L478.109375,162.92893218813452Q478.109375,170 471.0383071881345,170L283.6960678118655,170Q276.625,170 276.625,177.07106781186548L276.625,199L276.625,244.5" id="my-svg-L_S_Q1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_S_Q1_0" data-points="W3sieCI6NDc4LjEwOTM3NSwieSI6MTUwfSx7IngiOjQ3OC4xMDkzNzUsInkiOjE3MH0seyJ4IjoyNzYuNjI1LCJ5IjoxNzB9LHsieCI6Mjc2LjYyNSwieSI6MTk5fSx7IngiOjI3Ni42MjUsInkiOjI0OC41fV0=" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,150L612.8489583333333,190L612.8489583333333,235.5" id="my-svg-L_S_K1_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_S_K1_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjE1MH0seyJ4Ijo2MTIuODQ4OTU4MzMzMzMzMywieSI6MTkwfSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5IjoyMzkuNX1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M239.28645833333331,896.5L239.28645833333331,916L239.28645833333331,970" id="my-svg-L_Q5_I_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q5_I_0" data-points="W3sieCI6MjM5LjI4NjQ1ODMzMzMzMzMxLCJ5Ijo4OTYuNX0seyJ4IjoyMzkuMjg2NDU4MzMzMzMzMzEsInkiOjkxNn0seyJ4IjoyMzkuMjg2NDU4MzMzMzMzMzEsInkiOjk3NH1d" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M612.8489583333333,914.5L612.8489583333333,934L612.8489583333333,946.9289321881345Q612.8489583333333,954 605.7778905214677,954L336.0294011451988,954Q328.9583333333333,954 328.9583333333333,961.0710678118655L328.9583333333333,970" id="my-svg-L_K5_I_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K5_I_0" data-points="W3sieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjkxNC41fSx7IngiOjYxMi44NDg5NTgzMzMzMzMzLCJ5Ijo5MzR9LHsieCI6NjEyLjg0ODk1ODMzMzMzMzMsInkiOjk1NH0seyJ4IjozMjguOTU4MzMzMzMzMzMzMywieSI6OTU0fSx7IngiOjMyOC45NTgzMzMzMzMzMzMzLCJ5Ijo5NzR9XQ==" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M284.1223958333333,1085L284.1223958333333,1121" id="my-svg-L_I_L_0" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_L_0" data-points="W3sieCI6Mjg0LjEyMjM5NTgzMzMzMzMsInkiOjEwODV9LHsieCI6Mjg0LjEyMjM5NTgzMzMzMzMsInkiOjExMjV9XQ==" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/><path d="M146.0625,150L146.0625,199L146.0625,481.4289321881345Q146.0625,488.5 153.13356781186548,488.5L196.44791666666666,488.5Q201.94791666666666,488.5 201.94791666666666,494L201.94791666666666,499.5" id="my-svg-L_T_Q3_0" class="edge-thickness-normal edge-pattern-dotted edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_T_Q3_0" data-points="W3sieCI6MTQ2LjA2MjUsInkiOjE1MH0seyJ4IjoxNDYuMDYyNSwieSI6MTk5fSx7IngiOjE0Ni4wNjI1LCJ5Ijo0ODguNX0seyJ4IjoyMDEuOTQ3OTE2NjY2NjY2NjYsInkiOjQ4OC41fSx7IngiOjIwMS45NDc5MTY2NjY2NjY2NiwieSI6NTAzLjV9XQ==" data-look="classic" marker-end="url(#my-svg_flowchart-elk-pointEnd)"/></g><g class="edgeLabels"/><g class="nodes"><g class="node default fx-stage" id="my-svg-flowchart-S-0" data-look="classic" transform="translate(545.4791666666667, 94.5)"><rect class="basic label-container" style="" x="-202.109375" y="-55.5" width="404.21875" height="111"/><g class="label" style="" transform="translate(-172.109375, -40.5)"><rect/><foreignObject width="344.21875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Count every case first</b><br />Eligible, excluded, failed and scored cases;<br />totals, spread and missing information</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-Q1-1" data-look="classic" transform="translate(276.625, 290.5)"><rect class="basic label-container" style="" x="-105.015625" y="-42" width="210.03125" height="84"/><g class="label" style="" transform="translate(-75.015625, -27)"><rect/><foreignObject width="150.03125" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Q1 Denominators</b><br />Null is not zero</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-Q2-2" data-look="classic" transform="translate(276.625, 418)"><rect class="basic label-container" style="" x="-114.5625" y="-55.5" width="229.125" height="111"/><g class="label" style="" transform="translate(-84.5625, -40.5)"><rect/><foreignObject width="169.125" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Q2 Related cases</b><br />Match units;<br />group repeated fields</p></span></div></foreignObject></g></g><g class="node default fx-key" id="my-svg-flowchart-Q3-3" data-look="classic" transform="translate(239.28645833333331, 559)"><rect class="basic label-container" style="" x="-112.015625" y="-55.5" width="224.03125" height="111"/><g class="label" style="" transform="translate(-82.015625, -40.5)"><rect/><foreignObject width="164.03125" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Q3 Choose the test</b><br />Check design<br />and assumptions</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-Q4-4" data-look="classic" transform="translate(239.28645833333331, 700)"><rect class="basic label-container" style="" x="-158.0390625" y="-55.5" width="316.078125" height="111"/><g class="label" style="" transform="translate(-128.0390625, -40.5)"><rect/><foreignObject width="256.078125" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Q4 Difference and uncertainty</b><br />Estimate, interval<br />and sampling unit</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-Q5-5" data-look="classic" transform="translate(239.28645833333331, 841)"><rect class="basic label-container" style="" x="-121.0546875" y="-55.5" width="242.109375" height="111"/><g class="label" style="" transform="translate(-91.0546875, -40.5)"><rect/><foreignObject width="182.109375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Q5 Check stability</b><br />Several tests, groups,<br />failures and exclusions</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-K1-11" data-look="classic" transform="translate(612.8489583333333, 295)"><rect class="basic label-container" style="" x="-129.578125" y="-55.5" width="259.15625" height="111"/><g class="label" style="" transform="translate(-99.578125, -40.5)"><rect/><foreignObject width="199.15625" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>K1 Authorised inputs</b><br />Error records and<br />consented feedback only</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-K2-12" data-look="classic" transform="translate(612.8489583333333, 436)"><rect class="basic label-container" style="" x="-151.5234375" y="-55.5" width="303.046875" height="111"/><g class="label" style="" transform="translate(-121.5234375, -40.5)"><rect/><foreignObject width="243.046875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>K2 Codes set in advance</b><br />ID, EXT, NORM, TIME, PROV,<br />VER, REP, SEC and HITL</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-K3-13" data-look="classic" transform="translate(612.8489583333333, 577)"><rect class="basic label-container" style="" x="-132.5390625" y="-55.5" width="265.078125" height="111"/><g class="label" style="" transform="translate(-102.5390625, -40.5)"><rect/><foreignObject width="205.078125" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>K3 Case-by-code matrix</b><br />Every code keeps<br />an exact locator</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-K4-14" data-look="classic" transform="translate(612.8489583333333, 718)"><rect class="basic label-container" style="" x="-105.5078125" y="-55.5" width="211.015625" height="111"/><g class="label" style="" transform="translate(-75.5078125, -40.5)"><rect/><foreignObject width="151.015625" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>K4 Coding record</b><br />Reviewer, reason<br />and disagreement</p></span></div></foreignObject></g></g><g class="node default fx-stage" id="my-svg-flowchart-K5-15" data-look="classic" transform="translate(612.8489583333333, 859)"><rect class="basic label-container" style="" x="-109.0546875" y="-55.5" width="218.109375" height="111"/><g class="label" style="" transform="translate(-79.0546875, -40.5)"><rect/><foreignObject width="158.109375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>K5 Negative cases</b><br />Exceptions and<br />limitations retained</p></span></div></foreignObject></g></g><g class="node default fx-key" id="my-svg-flowchart-I-26" data-look="classic" transform="translate(284.1223958333333, 1029.5)"><rect class="basic label-container" style="" x="-134.5078125" y="-55.5" width="269.015625" height="111"/><g class="label" style="" transform="translate(-104.5078125, -40.5)"><rect/><foreignObject width="209.015625" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Combined interpretation</b><br />Differences, patterns<br />and contrary evidence</p></span></div></foreignObject></g></g><g class="node default fx-banner" id="my-svg-flowchart-L-30" data-look="classic" transform="translate(284.1223958333333, 1180.5)"><rect class="basic label-container" style="" x="-134.0625" y="-55.5" width="268.125" height="111"/><g class="label" style="" transform="translate(-104.0625, -40.5)"><rect/><foreignObject width="208.125" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>Explicit limitations</b><br />Evidence class, holds and<br />deviations remain visible</p></span></div></foreignObject></g></g><g class="node default fx-hold" id="my-svg-flowchart-T-31" data-look="classic" transform="translate(146.0625, 81)"><rect class="basic label-container" style="" x="-134.0625" y="-69" width="268.125" height="138"/><g class="label" style="" transform="translate(-104.0625, -54)"><rect/><foreignObject width="208.125" height="108"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 560px; text-align: center;"><span class="nodeLabel"><p><b>TO DECIDE</b><br />Exact method and sample<br />size follow D1, supervisor<br />and statistical review</p></span></div></foreignObject></g></g></g></g></g><defs><filter id="my-svg-drop-shadow" height="130%" width="130%"><feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><defs><filter id="my-svg-drop-shadow-small" height="150%" width="150%"><feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000"/></filter></defs><linearGradient id="my-svg-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#12232E" stop-opacity="1"/><stop offset="100%" stop-color="#4E6F8C" stop-opacity="1"/></linearGradient><style>/* GENERATED FILE - do not edit.
+ * Source: exhibits/figure_palette.json
+ * Regenerate with: python3 scripts/build_figure_theme.py
+ */
 
-  <rect class="page" x="0" y="0" width="900" height="1280"/>
-  <text class="title" x="38" y="56">Analysis decision flow</text>
-  <text class="subtitle" x="40" y="91">Dependence-aware quantitative analysis and auditable qualitative interpretation.</text>
-  <rect class="badgebox" x="690" y="30" width="174" height="38" rx="19"/>
-  <text class="badge" x="777" y="54">CONCEPTUAL / NO RESULTS</text>
-  <line class="divider" x1="38" y1="120" x2="864" y2="120"/>
+/* Typography and shared geometry */
+.root,
+.flowchart,
+.block,
+.stateDiagram,
+.erDiagram {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="intake" x="104" y="140" width="692" height="92" rx="14"/>
-  <text class="intake-title" x="450" y="168">FLOW ACCOUNTING BEFORE ANALYSIS</text>
-  <text class="intake-body" x="450" y="194">Eligible | excluded | failed | scored units - each with denominator and reason.</text>
-  <text class="intake-body" x="450" y="216">Publish descriptive distributions before any inferential choice.</text>
+.node rect,
+.node polygon,
+.node path,
+.node circle,
+.node ellipse,
+.block rect,
+.cluster rect {
+  shape-rendering: geometricPrecision;
+}
 
-  <path class="split" d="M 450 232 L 450 252 L 240 252 L 240 270"/>
-  <path class="split" d="M 450 252 L 660 252 L 660 270"/>
-  <path class="arrow" d="M 240 252 L 240 270"/>
-  <path class="arrow" d="M 660 252 L 660 270"/>
+.node rect,
+.block rect {
+  rx: 5px;
+  ry: 5px;
+}
 
-  <rect class="branch-quant" x="44" y="270" width="392" height="42" rx="10"/>
-  <text class="branch-title" x="240" y="296">QUANTITATIVE BRANCH</text>
-  <rect class="branch-qual" x="464" y="270" width="392" height="42" rx="10"/>
-  <text class="branch-title" x="660" y="296">QUALITATIVE BRANCH</text>
+.nodeLabel,
+.edgeLabel,
+.cluster-label,
+.label {
+  color: #12232E;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="qbox" x="44" y="328" width="392" height="82" rx="11"/>
-  <text class="box-title" x="60" y="350">Q1 | DENOMINATORS + DESCRIPTIVES</text>
-  <text class="box-body" x="60" y="374">Per-condition denominators, distributions and missingness.</text>
-  <text class="box-body" x="60" y="394">No test precedes flow accounting.</text>
-  <path class="arrow" d="M 240 410 L 240 426"/>
+.node .label,
+.block .label {
+  line-height: 1.32;
+}
 
-  <rect class="qbox" x="44" y="426" width="392" height="104" rx="11"/>
-  <text class="box-title" x="60" y="448">Q2 | DEPENDENCE / UNIT CHECK</text>
-  <text class="box-body" x="60" y="472">Pair the same company-period or claim.</text>
-  <text class="box-body" x="60" y="492">Repeated fields and claims are not independent.</text>
-  <text class="box-body" x="60" y="512">Aggregate by report/company or use cluster-aware CI.</text>
-  <path class="arrow" d="M 240 530 L 240 546"/>
+.label foreignObject {
+  overflow: visible;
+}
 
-  <rect class="qbox" x="44" y="546" width="392" height="140" rx="11"/>
-  <text class="box-title" x="60" y="568">Q3 | METHOD FAMILY - ONLY IF SUPPORTED</text>
-  <text class="box-body" x="60" y="594">Binary paired outcomes: an exact paired method may fit.</text>
-  <text class="box-body" x="60" y="618">Non-normal paired time/edit outcomes: Wilcoxon-style</text>
-  <text class="box-body" x="60" y="638">analysis only if assumptions and sample support it.</text>
-  <text class="box-body" x="60" y="658">The exact method is not selected here.</text>
-  <path class="arrow" d="M 240 686 L 240 702"/>
+/* Connectors */
+.flowchart-link,
+.transition {
+  stroke: #274257 !important;
+  stroke-width: 1.7px !important;
+}
 
-  <rect class="qbox" x="44" y="702" width="392" height="82" rx="11"/>
-  <text class="box-title" x="60" y="724">Q4 | EFFECT + UNCERTAINTY</text>
-  <text class="box-body" x="60" y="748">Report effect size and interval, not p-values alone.</text>
-  <text class="box-body" x="60" y="768">Name unit, estimator, assumptions and failures.</text>
-  <path class="arrow" d="M 240 784 L 240 800"/>
+.marker,
+.marker path {
+  fill: #274257 !important;
+  stroke: #274257 !important;
+}
 
-  <rect class="qbox" x="44" y="800" width="392" height="144" rx="11"/>
-  <text class="box-title" x="60" y="822">Q5 | MULTIPLICITY, STRATA + SENSITIVITY</text>
-  <text class="box-body" x="60" y="846">Predeclare multiplicity handling or label exploratory.</text>
-  <text class="box-body" x="60" y="868">Stratify only where the sample supports interpretation.</text>
-  <text class="box-body" x="60" y="890">Repeat with failures and justified exclusions included.</text>
-  <text class="box-body" x="60" y="912">Preserve negative, null and unexpected regressions.</text>
+.edgeLabel {
+  background-color: #FFFFFF !important;
+  color: #274257 !important;
+  padding: 2px 6px !important;
+  font-size: 0.86em !important;
+}
+.edgeLabel rect,
+.edgeLabel foreignObject div {
+  fill: #FFFFFF !important;
+}
 
-  <rect class="kbox" x="464" y="328" width="392" height="82" rx="11"/>
-  <text class="box-title" x="480" y="350">K1 | AUTHORISED INPUTS ONLY</text>
-  <text class="box-body" x="480" y="374">Pre-defined error taxonomy + consented reviewer feedback.</text>
-  <text class="box-body" x="480" y="394">No feedback without authority and consent.</text>
-  <path class="arrow" d="M 660 410 L 660 426"/>
+/* Clusters */
+.cluster rect {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  rx: 8px;
+  ry: 8px;
+}
+.cluster-label,
+.cluster-label span {
+  color: #1B4965 !important;
+}
 
-  <rect class="kbox" x="464" y="426" width="392" height="128" rx="11"/>
-  <text class="box-title" x="480" y="448">K2 | PRE-DEFINED CODE FAMILIES</text>
-  <rect class="pill" x="486" y="466" width="96" height="25" rx="6"/>
-  <rect class="pill" x="612" y="466" width="96" height="25" rx="6"/>
-  <rect class="pill" x="738" y="466" width="96" height="25" rx="6"/>
-  <text class="pill-text" x="534" y="482">ID</text>
-  <text class="pill-text" x="660" y="482">EXT</text>
-  <text class="pill-text" x="786" y="482">NORM</text>
-  <rect class="pill" x="486" y="496" width="96" height="25" rx="6"/>
-  <rect class="pill" x="612" y="496" width="96" height="25" rx="6"/>
-  <rect class="pill" x="738" y="496" width="96" height="25" rx="6"/>
-  <text class="pill-text" x="534" y="512">TIME</text>
-  <text class="pill-text" x="660" y="512">PROV</text>
-  <text class="pill-text" x="786" y="512">VER</text>
-  <rect class="pill" x="486" y="526" width="96" height="25" rx="6"/>
-  <rect class="pill" x="612" y="526" width="96" height="25" rx="6"/>
-  <rect class="pill" x="738" y="526" width="96" height="25" rx="6"/>
-  <text class="pill-text" x="534" y="542">REP</text>
-  <text class="pill-text" x="660" y="542">SEC</text>
-  <text class="pill-text" x="786" y="542">HITL</text>
-  <path class="arrow" d="M 660 554 L 660 570"/>
+/* Semantic node roles - one block per role in exhibits/figure_palette.json */
+/* Framing statement, evidence boundary or table header row. */
+.fx-banner &gt; rect,
+.fx-banner &gt; polygon,
+.fx-banner &gt; path,
+.fx-banner &gt; circle,
+.fx-banner &gt; ellipse {
+  fill: #1B4965 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.8px !important;
+  stroke-dasharray: none !important;
+}
+.fx-banner .nodeLabel,
+.fx-banner .nodeLabel *,
+.fx-banner .label,
+.fx-banner .label * {
+  color: #FFFFFF !important;
+}
 
-  <rect class="kbox" x="464" y="570" width="392" height="94" rx="11"/>
-  <text class="box-title" x="480" y="592">K3 | CASE-BY-CODE FRAMEWORK MATRIX</text>
-  <text class="box-body" x="480" y="616">Rows = cases; columns = code families and additions.</text>
-  <text class="box-body" x="480" y="638">Retain exact report, claim, event and feedback locator.</text>
-  <path class="arrow" d="M 660 664 L 660 680"/>
+/* Emphasised gate, decision or verification point. */
+.fx-key &gt; rect,
+.fx-key &gt; polygon,
+.fx-key &gt; path,
+.fx-key &gt; circle,
+.fx-key &gt; ellipse {
+  fill: #B7CFE5 !important;
+  stroke: #12232E !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: none !important;
+}
+.fx-key .nodeLabel,
+.fx-key .nodeLabel *,
+.fx-key .label,
+.fx-key .label * {
+  color: #12232E !important;
+}
 
-  <rect class="kbox" x="464" y="680" width="392" height="94" rx="11"/>
-  <text class="box-title" x="480" y="702">K4 | VERSIONED CODING + DISAGREEMENT</text>
-  <text class="box-body" x="480" y="726">Record coder, codebook/version, reason and resolution.</text>
-  <text class="box-body" x="480" y="748">No silent overwrite; agreement is not source truth.</text>
-  <path class="arrow" d="M 660 774 L 660 790"/>
+/* Standard implemented process step. */
+.fx-stage &gt; rect,
+.fx-stage &gt; polygon,
+.fx-stage &gt; path,
+.fx-stage &gt; circle,
+.fx-stage &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+.fx-stage .nodeLabel,
+.fx-stage .nodeLabel *,
+.fx-stage .label,
+.fx-stage .label * {
+  color: #12232E !important;
+}
 
-  <rect class="kbox" x="464" y="790" width="392" height="154" rx="11"/>
-  <text class="box-title" x="480" y="812">K5 | PATTERNS, NEGATIVE CASES + LIMITS</text>
-  <text class="box-body" x="480" y="836">Compare patterns within and across cases.</text>
-  <text class="box-body" x="480" y="858">Retain contradictions, minority patterns and exceptions.</text>
-  <text class="box-body" x="480" y="880">Report consent, coverage and researcher influence.</text>
-  <text class="box-body" x="480" y="902">Do not turn purposive feedback counts into population</text>
-  <text class="box-body" x="480" y="922">frequencies or generalised prevalence.</text>
+/* Input or candidate material that is not yet evidence. */
+.fx-input &gt; rect,
+.fx-input &gt; polygon,
+.fx-input &gt; path,
+.fx-input &gt; circle,
+.fx-input &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: none !important;
+}
+.fx-input .nodeLabel,
+.fx-input .nodeLabel *,
+.fx-input .label,
+.fx-input .label * {
+  color: #12232E !important;
+}
 
-  <path class="arrow" d="M 240 944 L 240 966 L 450 966 L 450 982"/>
-  <path class="arrow" d="M 660 944 L 660 966 L 450 966 L 450 982"/>
-  <rect class="integrate" x="104" y="982" width="692" height="78" rx="13"/>
-  <text class="integrate-title" x="450" y="1008">INTEGRATED INTERPRETATION</text>
-  <text class="integrate-body" x="450" y="1032">Effect and uncertainty + patterns and negative cases -&gt; explicit limitations.</text>
-  <text class="integrate-body" x="450" y="1050">Keep executed evidence, evidence class and unresolved holds visible.</text>
+/* Control built and tested, but never run against a live external source. */
+.fx-live &gt; rect,
+.fx-live &gt; polygon,
+.fx-live &gt; path,
+.fx-live &gt; circle,
+.fx-live &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #1B4965 !important;
+  stroke-width: 1.9px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-live .nodeLabel,
+.fx-live .nodeLabel *,
+.fx-live .label,
+.fx-live .label * {
+  color: #12232E !important;
+}
 
-  <path class="arrow" d="M 450 1060 L 450 1076"/>
-  <rect class="stop" x="84" y="1076" width="732" height="94" rx="14"/>
-  <text class="stop-label" x="450" y="1100">STOP / TO FREEZE</text>
-  <text class="stop-title" x="450" y="1125">Exact statistical method and sample size are not selected now</text>
-  <text class="stop-body" x="450" y="1148">Wait for D1 variance/annotation evidence + supervisor/statistical review.</text>
-  <text class="stop-body" x="450" y="1165">No inferential result is asserted.</text>
+/* Held, blocked, rejected, failed or explicitly unmeasured. */
+.fx-hold &gt; rect,
+.fx-hold &gt; polygon,
+.fx-hold &gt; path,
+.fx-hold &gt; circle,
+.fx-hold &gt; ellipse {
+  fill: #FAE3C3 !important;
+  stroke: #96560F !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-hold .nodeLabel,
+.fx-hold .nodeLabel *,
+.fx-hold .label,
+.fx-hold .label * {
+  color: #12232E !important;
+}
 
-  <line class="divider" x1="38" y1="1190" x2="864" y2="1190"/>
-  <text class="source" x="40" y="1210">Source: Demsar (2006, PDF pp. 5-9); DiCiccio &amp; Efron (1996, pp. 1-4); Gale et al. (2013, pp. 3-7);</text>
-  <text class="source" x="40" y="1228">Artstein &amp; Poesio (2008, pp. 2-8, 26-28); Kapoor &amp; Narayanan (2023, pp. 1-7); Pineau et al. (2021, pp. 1-5);</text>
-  <text class="source" x="40" y="1246">NIST (2023, pp. 33-35) and the current draft evaluation protocol. Exact local files/hashes: TXT + provenance.</text>
-  <text class="status" x="40" y="1268">Faye Niu | METH-F3 | author synthesis; conceptual and non-empirical; preserve negative, null and regressive outcomes.</text>
-</svg>
+/* Side annotation or out-of-scope material. */
+.fx-note &gt; rect,
+.fx-note &gt; polygon,
+.fx-note &gt; path,
+.fx-note &gt; circle,
+.fx-note &gt; ellipse {
+  fill: #ECEEF1 !important;
+  stroke: #6B7280 !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: 3 3 !important;
+}
+.fx-note .nodeLabel,
+.fx-note .nodeLabel *,
+.fx-note .label,
+.fx-note .label * {
+  color: #12232E !important;
+}
+
+/* Table row label cell. */
+.fx-rowhead &gt; rect,
+.fx-rowhead &gt; polygon,
+.fx-rowhead &gt; path,
+.fx-rowhead &gt; circle,
+.fx-rowhead &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-rowhead .nodeLabel,
+.fx-rowhead .nodeLabel *,
+.fx-rowhead .label,
+.fx-rowhead .label * {
+  color: #12232E !important;
+}
+
+/* Table value cell. */
+.fx-cell &gt; rect,
+.fx-cell &gt; polygon,
+.fx-cell &gt; path,
+.fx-cell &gt; circle,
+.fx-cell &gt; ellipse {
+  fill: #FFFFFF !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-cell .nodeLabel,
+.fx-cell .nodeLabel *,
+.fx-cell .label,
+.fx-cell .label * {
+  color: #12232E !important;
+}
+
+</style></svg>

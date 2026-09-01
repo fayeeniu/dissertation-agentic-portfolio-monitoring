@@ -22,14 +22,15 @@ Boundary or requirement
 NFR-SEC-001 and FR-UI-003--004 define a local, single-user runtime and accountable review actor.
 
 In-scope actor, data and action
-One locally configured researcher or reviewer uses the FastAPI/Jinja interface. SQLite and
-ignored local snapshot/export directories hold the permitted local state.
+One locally configured researcher or reviewer uses the loopback Next.js dashboard. A private
+FastAPI service, SQLite and ignored local snapshot/export directories hold the permitted state.
 
 Current implemented control
-The CLI refuses a non-loopback host outside the documented Docker-local mode. HTTP middleware
-checks client and Host values, applies security headers, and requires a double-submit CSRF value
-for mutations. Reviewer identity comes from local configuration rather than a form field. Docker
-mode accepts private container-network clients only when the published host port remains bound to
+Next.js is the only host-published browser surface. Its same-origin server-side proxy obtains and
+holds the FastAPI CSRF credential, so the browser neither receives that credential nor connects to
+FastAPI directly. FastAPI checks client and Host values and applies security headers. Reviewer
+identity comes from local configuration rather than a browser field. Docker mode accepts private
+container-network clients only for the private API while the dashboard host port remains bound to
 loopback.
 
 Approved outstanding work
@@ -42,11 +43,10 @@ unexpected Host, missing CSRF value or missing configured reviewer. Loopback and
 substitute for production authentication, authorisation or tenant isolation.
 
 Evidence locator and status
-src/portfolio_agent/cli.py, function main, serve branch; src/portfolio_agent/web.py, create_app
-security middleware, require_csrf and reviewer_identity; tests/integration/test_web.py,
-test_web_rejects_csrf_host_forgery_and_form_actor and
-test_container_local_mode_accepts_only_private_container_clients. Status: IMPLEMENTED LOCAL-ONLY;
-not production authentication.
+src/portfolio_agent/web.py, create_app security middleware; src/portfolio_agent/api.py, mutation
+routes; dashboard/src/app/dash-api/[...path]/route.ts, server-side proxy; compose.yaml, private API
+and loopback-published app; focused API, proxy and Docker-contract tests. Status: IMPLEMENTED
+LOCAL-ONLY; not production authentication.
 
 2. Legal identity first
 

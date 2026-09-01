@@ -259,11 +259,15 @@ def main(argv: list[str] | None = None) -> int:
             finally:
                 experiment_runtime.engine.dispose()
             result["runtime_directory"] = str(runtime_root)
-            result["serve_command"] = (
+            result["api_command"] = (
                 f"PORTFOLIO_DATABASE_URL='{settings.database_url}' "
                 f"PORTFOLIO_RAW_DATA_DIR='{settings.raw_data_dir}' "
                 f"PORTFOLIO_SOURCE_SNAPSHOT_DIR='{settings.source_snapshot_dir}' "
                 ".venv/bin/portfolio-agent serve"
+            )
+            result["dashboard_command"] = (
+                "PORTFOLIO_API_ORIGIN='http://127.0.0.1:8000' "
+                "npm --prefix dashboard run dev"
             )
             _json(result)
         finally:

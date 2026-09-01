@@ -1,0 +1,33 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.31\textwidth}Y@{}}
+    \toprule
+    \textbf{Record item} & \textbf{Recorded value} & \textbf{Meaning} \\
+    \midrule
+    Host/runtime & Darwin 25.6.0 arm64; Python 3.12.13 & Local execution environment; not a portability result. \\
+    Git state & HEAD \textnormal{6356aa49cb3b}; dirty working tree recorded & The commit is a base reference, not a complete content seal. \\
+    Python dependencies & \textnormal{pyproject.toml} SHA-256 \textnormal{d8ed0555...}; runtime lock \textnormal{5cce8f8e...}; development lock \textnormal{5e2469bc...} & The declared and installed dependencies are recorded with checksums. \\
+    Database & Alembic revisions 0001--0009; current head 0009 & Fresh SQLite upgrade and schema-drift check executed. \\
+    Evaluation list & SHA-256 \textnormal{1c16234a...}; schema \textnormal{evaluation-manifest-v2} & D0 was run; D1 is only planned; D2 remains sealed. \\
+    D0 cases & 14 cases; fixture SHA-256 \textnormal{f403d59e...}; namespace \textnormal{benchmark:d0} & Fictional, labelled cases used only for engineering tests. \\
+    D0 output & 3 repeats; frozen 1 September 2026; output SHA-256 \textnormal{dcc2fbff...} & The frozen result shows how the mechanism behaves. \\
+    Evidence not collected & C0 and C3: zero observations; live company/model/web: not run & There is no evidence yet about people, live sources, usefulness or production use. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Implementation and evidence record at 28 August 2026}
+  \label{tab:eval-implementation-snapshot}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Local commands, repository checksums, database update output and D0
+    evaluator output recorded by the author. The D0 output is preserved as
+    \textnormal{audit/d0\_evaluation\_2026-09-01.json}; shortened checksums are shown in full in the chapter
+    and repository records. This information helps repeat the work, but it does not prove that the
+    sources are true, that the findings apply elsewhere, or that the system benefits users.}
+\end{table}
+\clearpage

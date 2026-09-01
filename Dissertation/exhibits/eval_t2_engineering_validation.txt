@@ -1,0 +1,9 @@
+EVAL-T2: Engineering check results recorded on 28 August 2026
+
+Full automated suite: PASS, 286 tests passed with 22 warnings and 85.58% statement coverage. Inputs are synthetic, fake and local; coverage is not completeness or defect absence.
+
+Ruff lint: PASS across src and tests. Ruff format check: FAIL; api.py, company_research.py, test_control_room_api.py, test_investment_metrics.py and test_model_routing.py would be reformatted. This is a dated result; later code changes were not evaluated by this record.
+
+Strict MyPy: PASS, no issues in 46 source files. Database migration: PASS, fresh SQLite upgrade from 0001 through 0009, snapshot head 0009, no pending operations. Git diff whitespace check: PASS.
+
+External/live actions: NOT RUN. No company, model, registry or public-web call was made, so live availability, coverage, latency and cost remain unknown.

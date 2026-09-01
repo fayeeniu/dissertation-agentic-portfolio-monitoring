@@ -153,7 +153,7 @@ Limitations and excluded claims
 - A bounded search is not called exhaustive.
 - Documented API features are not presented as executed behaviour in this artefact.
 - The figure does not report current evaluation results, user benefit, investment outcomes, deployment safety or production readiness.
-- The PDF is vector but is not claimed to be tagged. This complete text alternative supplies the accessible linear reading order.
+- The current visual is a monochrome PNG screenshot generated from the corresponding Mermaid source. This complete text alternative supplies the accessible linear reading order.
 
 Short caption source note
 -------------------------

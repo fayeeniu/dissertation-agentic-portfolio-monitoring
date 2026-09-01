@@ -1,0 +1,35 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.18\textwidth}P{0.24\textwidth}P{0.24\textwidth}Y@{}}
+    \toprule
+    \textbf{Area} & \textbf{Failure kept visible} & \textbf{Recovery or control} & \textbf{Evidence available} \\
+    \midrule
+    Identity and intake & Invalid, ambiguous or conflicting identifier; duplicate contract disagreement. & Named resolution; exact compatible repeats reuse the existing case. & \textbf{Implemented; controlled tests}. No live registry truth. \\
+    \addlinespace
+    Fixed sources & Policy block, no record, unavailable source, invalid rules and final failure remain separate. & Offline checksum replay; stop on an unsupported function, identity, cut-off or version change. & \textbf{Built; fictional replay}. Direct live sources held. \\
+    \addlinespace
+    Public-web research & Search, collection, extraction or report writing may be blocked, cancelled, reach its limit or fail. & Limited retries and use, stop controls, fixed task fingerprint and recovery of interrupted work. & \textbf{Built; controlled tests}. Live check and fixed comparison not run. \\
+    \addlinespace
+    Claims and conflicts & Unsupported, old, untrusted, insufficient or conflicting evidence is not accepted. & Exact passage and source check; separate status; named decision on conflicts. & \textbf{Built; fictional and controlled tests}. Real-company effectiveness not measured. \\
+    \addlinespace
+    Review and export & Old version or hash, incomplete verification, changed content or partly written output blocks release. & Named decision, removal of approval after an edit, version lock, file-list and hash checks. & \textbf{Built; controlled tests}. No automatic or remote publication. \\
+    \addlinespace
+    Evaluation and operation & C0 and C3 observations, live company results, production availability and disaster recovery are absent. & Keep blank and held states. Require separate permission and a fixed study plan before running them. & \textbf{Planned or outside scope}. No outcome claim. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Failures, recovery controls and current status}
+  \label{tab:sys-failure-recovery-status}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Developed by Faye Niu from the repository requirements, design,
+    evaluation plan, source register and controlled test evidence at the Section 5
+    snapshot. Status describes executed engineering evidence only; it is not a production,
+    availability, source-truth, user-benefit or investment-performance result.}
+\end{table}
+\clearpage

@@ -1,173 +1,248 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1180" viewBox="0 0 900 1180"
-     role="img" aria-labelledby="sys-f3-title sys-f3-desc">
-  <title id="sys-f3-title">Legal-identity intake and decision flow</title>
-  <desc id="sys-f3-desc">A status-coded flow starts with either a portfolio file import or a Companies House-number-only company case. Both paths create checksum- or fingerprint-bound intake records and reuse identical submissions. Exact Companies House numbers, names, domains and documents become separate identity claims. Only an exact, structurally normalised number can enter the named legal-identity decision gate; names only order candidates, domains remain separately reviewed links, and documents remain untrusted local evidence. Named decisions produce resolved, conflicted or unresolved outcomes, with no fuzzy or name-only automatic merge. Downstream public-web company research is available only to a public, identity-ready case with a resolved company and reviewed Companies House number. That research path is implemented but has no completed live run. Direct live Companies House registry retrieval remains held, while synthetic replay is implementation evidence only. The figure does not claim authoritative live resolution, perfect deduplication, an external identity API, or production concurrency.</desc>
-  <defs>
-    <style><![CDATA[
-      .page { fill:#FFFFFF; }
-      .divider { stroke:#9FB2BD; stroke-width:1.5; }
-      .title { font:700 29px Helvetica,Arial,sans-serif; fill:#173444; }
-      .subtitle { font:16.5px Helvetica,Arial,sans-serif; fill:#526875; }
-      .concept { fill:#EAF3F8; stroke:#7C99AA; stroke-width:1.5; }
-      .concept-text { font:700 11px Helvetica,Arial,sans-serif; fill:#355466; text-anchor:middle; }
-      .legend-label { font:700 11.5px Helvetica,Arial,sans-serif; fill:#314E5D; text-anchor:middle; }
-      .legend-tested { fill:#E8F3F8; stroke:#0072B2; stroke-width:2.2; }
-      .legend-live { fill:#FFF5DD; stroke:#A86700; stroke-width:2.2; stroke-dasharray:9 6; }
-      .legend-held { fill:#FBEAEC; stroke:#A83443; stroke-width:2.2; stroke-dasharray:2 5; }
-      .zone { fill:#F7FBFC; stroke:#0072B2; stroke-width:2.1; }
-      .zone-title { font:700 14px Helvetica,Arial,sans-serif; fill:#284A5A; }
-      .zone-status { font:700 11.5px Helvetica,Arial,sans-serif; fill:#536975; text-anchor:end; }
-      .box { fill:#FFFFFF; stroke:#718894; stroke-width:1.5; }
-      .box-tested { fill:#EAF4F8; stroke:#0072B2; stroke-width:1.9; }
-      .box-live { fill:#FFF7E5; stroke:#A86700; stroke-width:2; stroke-dasharray:8 5; }
-      .box-held { fill:#FBECEF; stroke:#A83443; stroke-width:2; stroke-dasharray:2 5; }
-      .box-conflict { fill:#FFF1F1; stroke:#A83443; stroke-width:1.9; }
-      .box-unresolved { fill:#F1F3F4; stroke:#687983; stroke-width:1.9; }
-      .box-title { font:700 14.2px Helvetica,Arial,sans-serif; fill:#173F51; }
-      .box-body { font:12.1px Helvetica,Arial,sans-serif; fill:#405965; }
-      .box-small { font:11.2px Helvetica,Arial,sans-serif; fill:#465E69; }
-      .status-tested { font:700 10.5px Helvetica,Arial,sans-serif; fill:#00629A; }
-      .status-live { font:700 10.5px Helvetica,Arial,sans-serif; fill:#8C5700; }
-      .status-held { font:700 10.5px Helvetica,Arial,sans-serif; fill:#912D3A; }
-      .status-neutral { font:700 10.5px Helvetica,Arial,sans-serif; fill:#53646D; }
-      .arrow { fill:none; stroke:#617684; stroke-width:2.1; marker-end:url(#arrowhead); }
-      .arrow-support { fill:none; stroke:#7E8F98; stroke-width:1.8; stroke-dasharray:5 5; marker-end:url(#arrowhead); }
-      .arrow-live { fill:none; stroke:#A86700; stroke-width:2.1; stroke-dasharray:8 5; marker-end:url(#arrowhead-live); }
-      .arrow-held { fill:none; stroke:#A83443; stroke-width:2; stroke-dasharray:2 5; marker-end:url(#arrowhead-held); }
-      .guard { fill:#ECEFF0; stroke:#687983; stroke-width:1.5; stroke-dasharray:10 5 2 5; }
-      .guard-text { font:700 11.2px Helvetica,Arial,sans-serif; fill:#455B66; text-anchor:middle; }
-      .stop { fill:#FFF1F1; stroke:#A83443; stroke-width:1.4; }
-      .stop-text { font:700 11.3px Helvetica,Arial,sans-serif; fill:#812C38; text-anchor:middle; }
-      .nongoal { fill:#ECEFF0; stroke:#687983; stroke-width:2; stroke-dasharray:12 5 2 5; }
-      .nongoal-head { font:700 11.5px Helvetica,Arial,sans-serif; fill:#455B66; }
-      .nongoal-body { font:11.5px Helvetica,Arial,sans-serif; fill:#455B66; }
-      .source { font:10.7px Helvetica,Arial,sans-serif; fill:#5A6C76; }
-    ]]></style>
-    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#617684"/></marker>
-    <marker id="arrowhead-live" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#A86700"/></marker>
-    <marker id="arrowhead-held" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 4 L 0 8 Z" fill="#A83443"/></marker>
-  </defs>
+<svg id="my-svg" width="798.71875" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="747" viewBox="-5 -373 798.71875 746" role="graphics-document document" aria-roledescription="block" style="background-color: white;"><style>#my-svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#12232E;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#ECEEF1;}#my-svg .error-text{fill:#12232E;stroke:#12232E;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:none;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#274257;stroke:#274257;}#my-svg .marker.cross{stroke:#274257;}#my-svg svg{font-family:Arial,Helvetica,sans-serif;font-size:18px;}#my-svg p{margin:0;}#my-svg .label{font-family:Arial,Helvetica,sans-serif;color:#12232E;}#my-svg .cluster-label text{fill:#12232E;}#my-svg .cluster-label span{color:#12232E;}#my-svg .label text,#my-svg span{fill:#12232E;color:#12232E;}#my-svg .node rect,#my-svg .node circle,#my-svg .node ellipse,#my-svg .node polygon,#my-svg .node path{fill:#DCE8F4;stroke:#12232E;stroke-width:1px;}#my-svg .flowchart-label text{text-anchor:middle;}#my-svg .node .label{text-align:center;}#my-svg .node.clickable{cursor:pointer;}#my-svg .arrowheadPath{fill:#000000;}#my-svg .edgePaths .path{stroke:#274257;stroke-width:2.0px;}#my-svg .flowchart-link{stroke:#274257;fill:none;}#my-svg .edgeLabel{background-color:#FFFFFF;text-align:center;}#my-svg .edgeLabel p{margin:0;padding:0;display:inline;}#my-svg .edgeLabel rect{opacity:0.5;background-color:#FFFFFF;fill:#FFFFFF;}#my-svg .labelBkg{background-color:#FFFFFF;}#my-svg .node .cluster{fill:rgba(244, 247, 251, 0.5);stroke:rgba(78, 111, 140, 0.2);box-shadow:rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;stroke-width:1px;}#my-svg .cluster text{fill:#12232E;}#my-svg .cluster span{color:#12232E;}#my-svg div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:Arial,Helvetica,sans-serif;font-size:12px;background:#ECEEF1;border:1px solid #6B7280;border-radius:2px;pointer-events:none;z-index:100;}#my-svg .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#12232E;}#my-svg .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#my-svg .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#my-svg .node .neo-node{stroke:#12232E;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:url(#my-svg-gradient);stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#12232E;filter:none;}#my-svg [data-look="neo"].node circle{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:url(#my-svg-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#my-svg :root{--mermaid-font-family:Arial,Helvetica,sans-serif;}</style><g/><marker id="my-svg_block-pointEnd" class="marker block" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart" class="marker block" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointEnd-margin" class="marker block" viewBox="0 0 11.5 14" refX="11.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="10.5" markerHeight="14" orient="auto"><path d="M 0 0 L 11.5 7 L 0 14 z" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-pointStart-margin" class="marker block" viewBox="0 0 11.5 14" refX="1" refY="7" markerUnits="userSpaceOnUse" markerWidth="11.5" markerHeight="14" orient="auto"><polygon points="0,7 11.5,14 11.5,0" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd" class="marker block" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart" class="marker block" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleEnd-margin" class="marker block" viewBox="0 0 10 10" refY="5" refX="12.25" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-circleStart-margin" class="marker block" viewBox="0 0 10 10" refX="-2" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 0; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd" class="marker cross block" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossStart" class="marker cross block" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"/></marker><marker id="my-svg_block-crossEnd-margin" class="marker cross block" viewBox="0 0 15 15" refX="17.7" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5;"/></marker><marker id="my-svg_block-crossStart-margin" class="marker cross block" viewBox="0 0 15 15" refX="-3.5" refY="7.5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 1,1 L 14,14 M 1,14 L 14,1" class="arrowMarkerPath" style="stroke-width: 2.5; stroke-dasharray: 1, 0;"/></marker><g class="block"><g class="node fx-banner flowchart-label" id="my-svg-I" transform="translate(394.359375, -300)"><rect class="basic label-container" style="" rx="0" ry="0" x="-394.359375" y="-68" width="788.71875" height="136"/><g class="label" style="" transform="translate(-169.59375, -27)"><rect/><foreignObject width="339.1875" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 788.719px; text-align: center;"><span class="nodeLabel"><p><b>WRITE-ONCE INTAKE</b><br />Input, rule version, purpose and checksum</p></span></div></foreignObject></g></g><g class="node fx-input flowchart-label" id="my-svg-IN" transform="translate(193.6796875, -150)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-165.6796875, -40.5)"><rect/><foreignObject width="331.359375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>PORTFOLIO FILE OR COMPANY CASE</b><br />XLSX, CSV, JSON, number,<br />website, name or document</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-A" transform="translate(595.0390625, -150)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-109.046875, -40.5)"><rect/><foreignObject width="218.09375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>INTAKE RECORD</b><br />Rule fingerprint, checksum,<br />data class and purpose</p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-N" transform="translate(193.6796875, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-147.09375, -40.5)"><rect/><foreignObject width="294.1875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>CLEAN IDENTITY CLAIMS</b><br />Exact number for its source;<br />names and domains are suggestions</p></span></div></foreignObject></g></g><g class="node fx-key flowchart-label" id="my-svg-D" transform="translate(595.0390625, 0)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-148.59375, -40.5)"><rect/><foreignObject width="297.1875" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>NAMED IDENTITY DECISION</b><br />Exact number, ownership and reason<br /><i>Conflict or rejection: held</i></p></span></div></foreignObject></g></g><g class="node fx-stage flowchart-label" id="my-svg-R" transform="translate(193.6796875, 150)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-136.578125, -27)"><rect/><foreignObject width="273.15625" height="54"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>RESOLVED</b><br />Reviewed number and case ready</p></span></div></foreignObject></g></g><g class="node fx-key flowchart-label" id="my-svg-G" transform="translate(595.0390625, 150)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-105.0078125, -54)"><rect/><foreignObject width="210.015625" height="108"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>RESEARCH ELIGIBILITY</b><br />Public data, ready case<br />and reviewed number<br /><i>Any failure: unresolved</i></p></span></div></foreignObject></g></g><g class="node fx-live flowchart-label" id="my-svg-W" transform="translate(193.6796875, 300)"><rect class="basic label-container" style="" rx="0" ry="0" x="-193.6796875" y="-68" width="387.359375" height="136"/><g class="label" style="" transform="translate(-129.9921875, -40.5)"><rect/><foreignObject width="259.984375" height="81"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 387.359px; text-align: center;"><span class="nodeLabel"><p><b>LIMITED PUBLIC-WEB ROUTE</b><br />Controls are built;<br />no live company run</p></span></div></foreignObject></g></g><path d="M485.334,-232L486.895,-230.833C488.456,-229.667,491.578,-227.333,494.165,-225.399C496.753,-223.465,498.807,-221.93,499.834,-221.162L500.86,-220.395" id="my-svg-my-svg-1-I-A" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-I-A" data-points="W3sieCI6NDg1LjMzNDE2NjY2NjY2NjY1LCJ5IjotMjMyfSx7IngiOjQ5NC42OTkyMTg3NSwieSI6LTIyNX0seyJ4Ijo1MDQuMDY0MjcwODMzMzMzMzUsInkiOi0yMTh9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M387.359,-150L388.526,-150C389.693,-150,392.026,-150,393.693,-150C395.359,-150,396.359,-150,396.859,-150L397.359,-150" id="my-svg-my-svg-1-IN-A" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-IN-A" data-points="W3sieCI6Mzg3LjM1OTM3NSwieSI6LTE1MH0seyJ4IjozOTQuMzU5Mzc1LCJ5IjotMTUwfSx7IngiOjQwMS4zNTkzNzUsInkiOi0xNTB9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M413.089,-82L409.968,-80.833C406.846,-79.667,400.603,-77.333,394.984,-75.233C389.365,-73.133,384.371,-71.267,381.873,-70.334L379.376,-69.4" id="my-svg-my-svg-1-A-N" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-A-N" data-points="W3sieCI6NDEzLjA4OTQ3OTE2NjY2NjcsInkiOi04Mn0seyJ4IjozOTQuMzU5Mzc1LCJ5IjotNzV9LHsieCI6Mzc1LjYyOTI3MDgzMzMzMzMsInkiOi02OH1d" marker-end="url(#my-svg_block-pointEnd)"/><path d="M387.359,0L388.526,0C389.693,0,392.026,0,393.693,0C395.359,0,396.359,0,396.859,0L397.359,0" id="my-svg-my-svg-1-N-D" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-N-D" data-points="W3sieCI6Mzg3LjM1OTM3NSwieSI6MH0seyJ4IjozOTQuMzU5Mzc1LCJ5IjowfSx7IngiOjQwMS4zNTkzNzUsInkiOjB9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M413.089,68L409.968,69.167C406.846,70.333,400.603,72.667,394.984,74.767C389.365,76.867,384.371,78.733,381.873,79.666L379.376,80.6" id="my-svg-my-svg-1-D-R" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-D-R" data-points="W3sieCI6NDEzLjA4OTQ3OTE2NjY2NjcsInkiOjY4fSx7IngiOjM5NC4zNTkzNzUsInkiOjc1fSx7IngiOjM3NS42MjkyNzA4MzMzMzMzLCJ5Ijo4Mn1d" marker-end="url(#my-svg_block-pointEnd)"/><path d="M387.359,150L388.526,150C389.693,150,392.026,150,393.693,150C395.359,150,396.359,150,396.859,150L397.359,150" id="my-svg-my-svg-1-R-G" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-R-G" data-points="W3sieCI6Mzg3LjM1OTM3NSwieSI6MTUwfSx7IngiOjM5NC4zNTkzNzUsInkiOjE1MH0seyJ4Ijo0MDEuMzU5Mzc1LCJ5IjoxNTB9XQ==" marker-end="url(#my-svg_block-pointEnd)"/><path d="M413.089,218L409.968,219.167C406.846,220.333,400.603,222.667,394.984,224.767C389.365,226.867,384.371,228.733,381.873,229.666L379.376,230.6" id="my-svg-my-svg-1-G-W" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link LS-a1 LE-b1" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="my-svg-1-G-W" data-points="W3sieCI6NDEzLjA4OTQ3OTE2NjY2NjcsInkiOjIxOH0seyJ4IjozOTQuMzU5Mzc1LCJ5IjoyMjV9LHsieCI6Mzc1LjYyOTI3MDgzMzMzMzMsInkiOjIzMn1d" marker-end="url(#my-svg_block-pointEnd)"/></g><style>/* GENERATED FILE - do not edit.
+ * Source: exhibits/figure_palette.json
+ * Regenerate with: python3 scripts/build_figure_theme.py
+ */
 
-  <rect class="page" x="0" y="0" width="900" height="1180"/>
-  <text class="title" x="38" y="52">Legal-identity intake and decision flow</text>
-  <text class="subtitle" x="40" y="82">A reviewed exact company number gates research; alternate inputs remain supporting claims.</text>
-  <rect class="concept" x="697" y="26" width="168" height="34" rx="17"/>
-  <text class="concept-text" x="781" y="48">CONCEPTUAL / NO RESULTS</text>
-  <line class="divider" x1="38" y1="105" x2="864" y2="105"/>
+/* Typography and shared geometry */
+.root,
+.flowchart,
+.block,
+.stateDiagram,
+.erDiagram {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="legend-tested" x="40" y="121" width="252" height="38" rx="9"/>
-  <text class="legend-label" x="166" y="145">IMPLEMENTED + LOCAL TESTS</text>
-  <rect class="legend-live" x="324" y="121" width="252" height="38" rx="9"/>
-  <text class="legend-label" x="450" y="145">IMPLEMENTED / LIVE UNRUN</text>
-  <rect class="legend-held" x="608" y="121" width="252" height="38" rx="9"/>
-  <text class="legend-label" x="734" y="145">HELD / GATE CLOSED</text>
+.node rect,
+.node polygon,
+.node path,
+.node circle,
+.node ellipse,
+.block rect,
+.cluster rect {
+  shape-rendering: geometricPrecision;
+}
 
-  <rect class="zone" x="40" y="178" width="820" height="262" rx="14"/>
-  <text class="zone-title" x="58" y="204">1  TWO INTAKE ROUTES, ONE CREATE-ONCE / IDEMPOTENT BOUNDARY</text>
-  <text class="zone-status" x="840" y="204">IMPLEMENTED + LOCALLY TESTED</text>
-  <path class="arrow" d="M 235 305 L 235 328"/>
-  <path class="arrow" d="M 665 305 L 665 328"/>
-  <path class="arrow" d="M 235 403 L 235 451 L 362 451 L 362 500"/>
-  <path class="arrow" d="M 665 403 L 665 451 L 538 451 L 538 500"/>
-  <rect class="box-tested" x="60" y="222" width="350" height="83" rx="10"/>
-  <text class="box-title" x="78" y="246">Portfolio file import</text>
-  <text class="box-body" x="78" y="267">XLSX / CSV / JSON + reporting period + classification</text>
-  <text class="box-small" x="78" y="285">company name and supplied external ID are submitted claims</text>
-  <text class="status-tested" x="78" y="299">PORTFOLIO IMPORT PATH</text>
-  <rect class="box-tested" x="490" y="222" width="350" height="83" rx="10"/>
-  <text class="box-title" x="508" y="246">Company research case intake</text>
-  <text class="box-body" x="508" y="267">Companies House number alone is sufficient input</text>
-  <text class="box-small" x="508" y="285">website / name + jurisdiction / document are optional claims</text>
-  <text class="status-tested" x="508" y="299">IDENTITY STARTS ON HOLD</text>
+.node rect,
+.block rect {
+  rx: 5px;
+  ry: 5px;
+}
 
-  <rect class="box-tested" x="60" y="328" width="350" height="75" rx="10"/>
-  <text class="box-title" x="78" y="351">RawSubmission integrity</text>
-  <text class="box-small" x="78" y="371">bytes SHA-256 + period-bound dataset ID + local 0600 file</text>
-  <text class="status-tested" x="78" y="393">SAME HASH + PERIOD REUSED</text>
-  <rect class="box-tested" x="490" y="328" width="350" height="75" rx="10"/>
-  <text class="box-title" x="508" y="351">IntakeArtifact integrity</text>
-  <text class="box-small" x="508" y="371">contract/purpose/classification fingerprint; document SHA/file</text>
-  <text class="status-tested" x="508" y="393">IDENTICAL FINGERPRINT REUSED</text>
+.nodeLabel,
+.edgeLabel,
+.cluster-label,
+.label {
+  color: #12232E;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 
-  <rect class="zone" x="40" y="466" width="820" height="342" rx="14"/>
-  <text class="zone-title" x="58" y="492">2  CLAIMS FEED AN EXACT-NUMBER, NAMED DECISION GATE</text>
-  <text class="zone-status" x="840" y="492">NO SILENT MERGE</text>
-  <path class="arrow" d="M 145 574 L 145 598 L 344 598 L 344 621"/>
-  <path class="arrow-support" d="M 348 574 L 348 603 L 414 603 L 414 621"/>
-  <path class="arrow-support" d="M 552 574 L 552 603 L 486 603 L 486 621"/>
-  <path class="arrow-support" d="M 755 574 L 755 598 L 556 598 L 556 621"/>
-  <rect class="box-tested" x="55" y="510" width="180" height="64" rx="9"/>
-  <text class="box-title" x="70" y="533">Exact CH number claim</text>
-  <text class="box-small" x="70" y="552">uppercase compact form</text>
-  <text class="status-tested" x="70" y="568">STRUCTURAL CHECK ONLY</text>
-  <rect class="box" x="258" y="510" width="180" height="64" rx="9"/>
-  <text class="box-title" x="273" y="533">Name claim</text>
-  <text class="box-small" x="273" y="552">normalized candidate-order hint</text>
-  <text class="status-neutral" x="273" y="568">NOT LEGAL AUTHORITY</text>
-  <rect class="box" x="462" y="510" width="180" height="64" rx="9"/>
-  <text class="box-title" x="477" y="533">Domain claim</text>
-  <text class="box-small" x="477" y="552">canonical HTTPS; separate review</text>
-  <text class="status-neutral" x="477" y="568">DOES NOT RESOLVE IDENTITY</text>
-  <rect class="box" x="665" y="510" width="180" height="64" rx="9"/>
-  <text class="box-title" x="680" y="533">Document claim</text>
-  <text class="box-small" x="680" y="552">checksum-bound local bytes</text>
-  <text class="status-neutral" x="680" y="568">UNTRUSTED / NOT EXECUTED</text>
+.node .label,
+.block .label {
+  line-height: 1.32;
+}
 
-  <rect class="guard" x="278" y="584" width="344" height="25" rx="7"/>
-  <text class="guard-text" x="450" y="601">NO FUZZY OR NAME-ONLY AUTOMATIC MERGE</text>
-  <rect class="box-tested" x="170" y="621" width="560" height="80" rx="11"/>
-  <text class="box-title" x="190" y="646">Exact identifier authority review</text>
-  <text class="box-body" x="190" y="666">global scheme+number uniqueness; classification boundary; candidate/conflict check</text>
-  <text class="box-small" x="190" y="684">named actor + substantive rationale -> append-only accept/reject decision</text>
-  <text class="status-tested" x="592" y="646">NUMBER REVIEW, NOT LIVE LOOKUP</text>
+.label foreignObject {
+  overflow: visible;
+}
 
-  <path class="arrow" d="M 450 701 L 450 715 L 178 715 L 178 728"/>
-  <path class="arrow" d="M 450 701 L 450 728"/>
-  <path class="arrow" d="M 450 701 L 450 715 L 723 715 L 723 728"/>
-  <rect class="box-tested" x="55" y="728" width="246" height="65" rx="9"/>
-  <text class="box-title" x="70" y="750">RESOLVED / ACCEPTED</text>
-  <text class="box-small" x="70" y="768">number reviewed; company/case ready</text>
-  <text class="status-tested" x="70" y="786">DOWNSTREAM GATE MAY OPEN</text>
-  <rect class="box-conflict" x="327" y="728" width="246" height="65" rx="9"/>
-  <text class="box-title" x="342" y="750">CONFLICT / AMBIGUITY HOLD</text>
-  <text class="box-small" x="342" y="768">identifier/name/classification mismatch</text>
-  <text class="status-held" x="342" y="786">RETAIN DATA; REVIEW REQUIRED</text>
-  <rect class="box-unresolved" x="600" y="728" width="245" height="65" rx="9"/>
-  <text class="box-title" x="615" y="750">UNRESOLVED / REJECTED</text>
-  <text class="box-small" x="615" y="768">missing / invalid / pending / rejected authority</text>
-  <text class="status-neutral" x="615" y="786">CASE REMAINS IDENTITY_HOLD</text>
+/* Connectors */
+.flowchart-link,
+.transition {
+  stroke: #274257 !important;
+  stroke-width: 1.7px !important;
+}
 
-  <path class="arrow" d="M 178 793 L 178 868"/>
-  <rect class="zone" x="40" y="831" width="820" height="201" rx="14"/>
-  <text class="zone-title" x="58" y="857">3  DOWNSTREAM RESEARCH REQUIRES REVIEWED LEGAL IDENTITY</text>
-  <text class="zone-status" x="840" y="857">FAIL CLOSED</text>
-  <path class="arrow-live" d="M 310 920 L 337 920"/>
-  <path class="arrow-held" d="M 310 892 L 320 892 L 320 866 L 739 866 L 739 875"/>
-  <rect class="box-tested" x="55" y="875" width="255" height="91" rx="10"/>
-  <text class="box-title" x="72" y="899">Research eligibility gate</text>
-  <text class="box-small" x="72" y="919">public case + case READY</text>
-  <text class="box-small" x="72" y="936">company RESOLVED + reviewed CH number</text>
-  <text class="status-tested" x="72" y="957">ALL CONDITIONS REQUIRED</text>
-  <rect class="box-live" x="337" y="875" width="269" height="91" rx="10"/>
-  <text class="box-title" x="354" y="899">Bounded public-web research</text>
-  <text class="box-small" x="354" y="919">URL discovery -> guarded capture -> exact spans</text>
-  <text class="box-small" x="354" y="936">fake/synthetic/adversarial engineering checks</text>
-  <text class="status-live" x="354" y="957">LIVE COMPANY RUN UNCLAIMED</text>
-  <rect class="box-held" x="633" y="875" width="212" height="91" rx="10"/>
-  <text class="box-title" x="650" y="899">Direct registry retrieval</text>
-  <text class="box-small" x="650" y="919">Companies House source adapter</text>
-  <text class="box-small" x="650" y="936">synthetic replay is not admission</text>
-  <text class="status-held" x="650" y="957">G2 HELD / NO LIVE CLAIM</text>
-  <rect class="stop" x="84" y="985" width="732" height="29" rx="8"/>
-  <text class="stop-text" x="450" y="1004">ANY CONFLICTED, UNRESOLVED, PENDING OR REJECTED IDENTITY -> NO COLLECTION OR RESEARCH</text>
+.marker,
+.marker path {
+  fill: #274257 !important;
+  stroke: #274257 !important;
+}
 
-  <rect class="nongoal" x="40" y="1050" width="820" height="62" rx="10"/>
-  <text class="nongoal-head" x="58" y="1073">EXPLICIT LIMIT / NON-GOAL:</text>
-  <text class="nongoal-body" x="236" y="1073">no authoritative live resolution; perfect deduplication; name/domain auto-merge;</text>
-  <text class="nongoal-body" x="236" y="1092">external identity API; or production concurrency. Local uniqueness/create-once controls are not a multi-user guarantee.</text>
+.edgeLabel {
+  background-color: #FFFFFF !important;
+  color: #274257 !important;
+  padding: 2px 6px !important;
+  font-size: 0.86em !important;
+}
+.edgeLabel rect,
+.edgeLabel foreignObject div {
+  fill: #FFFFFF !important;
+}
 
-  <text class="source" x="40" y="1138">Source note: author synthesis of repository intake, identity, research-gate and local-test contracts; conceptual and non-empirical.</text>
-  <text class="source" x="40" y="1157">Design context: Galanakis et al. (2026), pp. 1-3, 6; Thorne et al. (2026), pp. 5-6; Nikiforova et al. (2020), pp. 15-17.</text>
-  <text class="source" x="40" y="1175">A Companies House number anchors legal identity; it does not prove current operations, source completeness, economic activity or live registry authority.</text>
-</svg>
+/* Clusters */
+.cluster rect {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  rx: 8px;
+  ry: 8px;
+}
+.cluster-label,
+.cluster-label span {
+  color: #1B4965 !important;
+}
+
+/* Semantic node roles - one block per role in exhibits/figure_palette.json */
+/* Framing statement, evidence boundary or table header row. */
+.fx-banner &gt; rect,
+.fx-banner &gt; polygon,
+.fx-banner &gt; path,
+.fx-banner &gt; circle,
+.fx-banner &gt; ellipse {
+  fill: #1B4965 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.8px !important;
+  stroke-dasharray: none !important;
+}
+.fx-banner .nodeLabel,
+.fx-banner .nodeLabel *,
+.fx-banner .label,
+.fx-banner .label * {
+  color: #FFFFFF !important;
+}
+
+/* Emphasised gate, decision or verification point. */
+.fx-key &gt; rect,
+.fx-key &gt; polygon,
+.fx-key &gt; path,
+.fx-key &gt; circle,
+.fx-key &gt; ellipse {
+  fill: #B7CFE5 !important;
+  stroke: #12232E !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: none !important;
+}
+.fx-key .nodeLabel,
+.fx-key .nodeLabel *,
+.fx-key .label,
+.fx-key .label * {
+  color: #12232E !important;
+}
+
+/* Standard implemented process step. */
+.fx-stage &gt; rect,
+.fx-stage &gt; polygon,
+.fx-stage &gt; path,
+.fx-stage &gt; circle,
+.fx-stage &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+.fx-stage .nodeLabel,
+.fx-stage .nodeLabel *,
+.fx-stage .label,
+.fx-stage .label * {
+  color: #12232E !important;
+}
+
+/* Input or candidate material that is not yet evidence. */
+.fx-input &gt; rect,
+.fx-input &gt; polygon,
+.fx-input &gt; path,
+.fx-input &gt; circle,
+.fx-input &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: none !important;
+}
+.fx-input .nodeLabel,
+.fx-input .nodeLabel *,
+.fx-input .label,
+.fx-input .label * {
+  color: #12232E !important;
+}
+
+/* Control built and tested, but never run against a live external source. */
+.fx-live &gt; rect,
+.fx-live &gt; polygon,
+.fx-live &gt; path,
+.fx-live &gt; circle,
+.fx-live &gt; ellipse {
+  fill: #F4F7FB !important;
+  stroke: #1B4965 !important;
+  stroke-width: 1.9px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-live .nodeLabel,
+.fx-live .nodeLabel *,
+.fx-live .label,
+.fx-live .label * {
+  color: #12232E !important;
+}
+
+/* Held, blocked, rejected, failed or explicitly unmeasured. */
+.fx-hold &gt; rect,
+.fx-hold &gt; polygon,
+.fx-hold &gt; path,
+.fx-hold &gt; circle,
+.fx-hold &gt; ellipse {
+  fill: #FAE3C3 !important;
+  stroke: #96560F !important;
+  stroke-width: 2.0px !important;
+  stroke-dasharray: 7 4 !important;
+}
+.fx-hold .nodeLabel,
+.fx-hold .nodeLabel *,
+.fx-hold .label,
+.fx-hold .label * {
+  color: #12232E !important;
+}
+
+/* Side annotation or out-of-scope material. */
+.fx-note &gt; rect,
+.fx-note &gt; polygon,
+.fx-note &gt; path,
+.fx-note &gt; circle,
+.fx-note &gt; ellipse {
+  fill: #ECEEF1 !important;
+  stroke: #6B7280 !important;
+  stroke-width: 1.4px !important;
+  stroke-dasharray: 3 3 !important;
+}
+.fx-note .nodeLabel,
+.fx-note .nodeLabel *,
+.fx-note .label,
+.fx-note .label * {
+  color: #12232E !important;
+}
+
+/* Table row label cell. */
+.fx-rowhead &gt; rect,
+.fx-rowhead &gt; polygon,
+.fx-rowhead &gt; path,
+.fx-rowhead &gt; circle,
+.fx-rowhead &gt; ellipse {
+  fill: #DCE8F4 !important;
+  stroke: #12232E !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-rowhead .nodeLabel,
+.fx-rowhead .nodeLabel *,
+.fx-rowhead .label,
+.fx-rowhead .label * {
+  color: #12232E !important;
+}
+
+/* Table value cell. */
+.fx-cell &gt; rect,
+.fx-cell &gt; polygon,
+.fx-cell &gt; path,
+.fx-cell &gt; circle,
+.fx-cell &gt; ellipse {
+  fill: #FFFFFF !important;
+  stroke: #4E6F8C !important;
+  stroke-width: 1.3px !important;
+  stroke-dasharray: none !important;
+}
+.fx-cell .nodeLabel,
+.fx-cell .nodeLabel *,
+.fx-cell .label,
+.fx-cell .label * {
+  color: #12232E !important;
+}
+
+</style></svg>

@@ -1,0 +1,30 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.21\textwidth}P{0.29\textwidth}P{0.19\textwidth}Y@{}}
+    \toprule
+    \textbf{Comparison element} & \textbf{Required fixed evidence} & \textbf{Current state} & \textbf{What can be reported} \\
+    \midrule
+    Units and identity & Authorised public-company list; reviewed Companies House number; company cut-off date & \textbf{HELD} & No sample size, company result or wider claim. \\
+    Equal source access & Eligible-source list, availability states and the same cut-off window & \textbf{HELD} & No fair comparison between official-only and assisted routes. \\
+    Official-only condition & Approved live official connectors and write-once captures & \textbf{HELD} & Fictional replay cannot replace live official evidence. \\
+    Assisted condition & Authorised count, checksum and locator check; fixed query, model, prompt and budget; protected capture & \textbf{BUILT; NOT RUN LIVE} & No live discovery, delay, token or cost value. \\
+    Independent reference & Relevant claims, exact passages, conflicts, gaps and unavailable sources, fixed before scoring & \textbf{NOT CREATED} & Precision, recall and category coverage remain unavailable. \\
+    Planned measures & Support rates, source records, conflicts, source and category coverage, gaps, time, retries, tokens and cost & \textbf{PLANNED} & No value is reported because no suitable total exists. \\
+    Interpretation & Paired comparison for the same company and cut-off, with stated budgets, missing data and failures & \textbf{FUTURE} & It could show limited added discovery, but not a complete web search or investment quality. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Planned public-company source-discovery comparison}
+  \label{tab:eval-held-company-comparison}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author summary of the fixed study plan, approved-source list and current
+    implementation. This table describes future work. It contains no result for a company, model,
+    source search, cost, time or usefulness.}
+\end{table}
+\clearpage

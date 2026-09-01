@@ -70,7 +70,7 @@ built a production investment platform. It consists of:
 - Bounded stages: plan → resolve → collect → extract → normalize → verify → compose →
   human review → approve/export.
 - Independent verifier, claim status, provenance, and contradiction handling.
-- Accessible server-rendered local interface, section versions, and review audit.
+- Accessible local Next.js control room, versioned profiles, and review audit.
 - JSON, Markdown, and accessible HTML reports after approval.
 - Synthetic baselines, adversarial fixtures, metrics, repeat runs, tests, and migrations.
 
@@ -144,4 +144,3 @@ P0 changes require a requirement ID, affected invariant, relevant test, and docu
 update. P1/P2 work begins only after P0 evidence is frozen and the dissertation timeline
 permits it. Data access, participant recruitment, external model processing, deployment,
 or publication requires separate explicit authority.
-

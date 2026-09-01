@@ -45,3 +45,15 @@ export async function apiPost<T>(
   if (!response.ok) throw describe(payload, response.status);
   return payload as T;
 }
+
+export async function apiUpload<T>(path: string, body: FormData, signal?: AbortSignal): Promise<T> {
+  const response = await fetch(`/dash-api/${path}`, {
+    method: "POST",
+    signal,
+    cache: "no-store",
+    body,
+  });
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) throw describe(payload, response.status);
+  return payload as T;
+}

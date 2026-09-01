@@ -13,7 +13,8 @@ the final publication decision.
 flowchart TB
     subgraph R[Restricted local boundary]
         U[Researcher / reviewer]
-        UI[FastAPI + server-rendered UI]
+        UI[Next.js control room]
+        API[Private FastAPI service]
         IMP[Importer and identity resolver]
         DB[(SQLite metadata and audit)]
         RAW[(Ignored immutable raw snapshots)]
@@ -21,15 +22,16 @@ flowchart TB
         VER[Independent verifier]
         REP[Versioned report service]
         U --> UI
-        UI --> IMP
+        UI --> API
+        API --> IMP
         IMP --> RAW
         IMP --> DB
-        UI --> WF
+        API --> WF
         WF --> DB
         WF --> VER
         VER --> DB
         WF --> REP
-        UI --> REP
+        API --> REP
         REP --> DB
     end
 
@@ -59,16 +61,17 @@ test/evaluation harness. Restricted/internal evidence cannot cross that boundary
 
 ## Runtime deployment
 
-- One Python 3.12 process.
-- FastAPI and Jinja templates bound to `127.0.0.1`/`localhost`/`::1` only.
+- One Next.js dashboard process and one private Python 3.12 API process under Docker Compose.
+- Compose publishes only Next.js on host loopback; FastAPI accepts only loopback or the exact
+  private Compose client/Host boundary.
 - SQLite with foreign keys enabled; Alembic controls schema creation.
 - Imported bytes and generated exports live below ignored `var/` storage with local file
   permissions.
 - No queue, scheduler, cloud store, background crawler, authentication provider, or API key
   is required for P0.
-- An optional Next.js control room runs as a second local process and reaches the service only
-  through its own server-side proxy, so the loopback and CSRF boundaries are unchanged. The
-  Python service remains fully usable without it.
+- The Next.js server-side proxy is the only dashboard path. The browser never receives the FastAPI
+  CSRF token or connects to FastAPI directly. Native development may run the same two processes
+  separately; the Python process is not a fallback dashboard.
 
 This is suitable for controlled dissertation experimentation, not concurrent production use.
 
@@ -89,10 +92,10 @@ This is suitable for controlled dissertation experimentation, not concurrent pro
 | `verification.py` | Pure conservative support/contradiction/stale/trust decision | Source collection, text generation, human judgement |
 | `reporting.py` | Optimistic versions, decisions, approval gate, staged manifest-backed export | Changing verification status or publishing autonomously |
 | `evaluation.py` / `evaluation_datasets.py` | Namespaced D0 execution, D1 protocol, sealed D2, null-aware layer outcomes | Real manual/HITL findings or holdout access |
-| `web.py` | Accessible loopback UI, Host/client enforcement, CSRF, configured reviewer identity | Production authentication, tenant isolation, remote exposure |
-| `api.py` | Read-only JSON projection of persisted runs, tasks, sources, claims, and profiles; CSRF-checked mutation pass-through to the same services the Jinja routes call | Business logic, derived values, or any state the database does not hold |
+| `web.py` | Private FastAPI assembly, health/deck routes, Host/client enforcement, and security headers | Dashboard rendering, production authentication, tenant isolation, remote exposure |
+| `api.py` | JSON projection of persisted runs, tasks, sources, claims, and profiles; CSRF-checked mutations delegated to domain services | Dashboard rendering, business logic, derived values, or any state the database does not hold |
 | `company_research_fixtures.py` | Recorded source map and recorded candidate sentences for the offline rehearsal mode | Weakening any acquisition, validation, contradiction, or approval control |
-| `dashboard/` (Next.js) | Operator control room: execution graph rendered from persisted rows, state-bound motion, evidence inspector, review gate | Reaching the research service directly from the browser, holding the CSRF token, or displaying unpersisted state |
+| `dashboard/` (Next.js) | Default operator dashboard: execution graph rendered from persisted rows, state-bound motion, evidence inspector, review gate, and server-side API proxy | Reaching the research service directly from the browser, holding the CSRF token, or displaying unpersisted state |
 
 ## End-to-end state machine
 

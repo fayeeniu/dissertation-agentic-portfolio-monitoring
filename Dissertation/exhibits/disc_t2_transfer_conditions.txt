@@ -1,0 +1,13 @@
+DISC-T2: Conditions for use elsewhere and current limits
+
+Data and semantics: redefine metrics, periods, missing states, sourceability, currencies and cutoffs. Current evidence is versioned local contracts and fourteen D0 cases; no unseen-company, document, sector or period accuracy.
+
+Identity and sources: re-establish authoritative IDs, licences, availability, tiers and locators. Offline replay and controlled fakes do not show current truth, live coverage or stable access.
+
+Model/search: re-establish provider, model, prompt, ranking, budgets, retention and failure behaviour. The guarded route is live-unrun, so future quality, latency and cost are unknown.
+
+Human context: re-establish reviewer authority, task, accessibility, workload and consequences. Named mechanisms have zero C0/C3 observations; no time, error, usefulness or decision benefit.
+
+Operation/security: design authentication, tenancy, storage, egress, monitoring, backup, incidents and recovery. Local controls do not support hosted or production claims.
+
+Decision use: define permitted purpose and professional accountability. The artefact provides no investment merit, prediction, advice or replacement for judgement.

@@ -7,29 +7,24 @@
   \setlength{\LTright}{0pt}
   \hyphenpenalty=3500
   \exhyphenpenalty=3500
-  \captionsetup{hypcap=false}
-  \captionof{table}{Metric, denominator and interpretation contract}
-  \label{tab:meth-metric-denominator-matrix}
-  \vspace{-3pt}
   \begin{longtable}{@{}P{0.14\textwidth}P{0.10\textwidth}P{0.19\textwidth}P{0.195\textwidth}P{0.15\textwidth}P{0.175\textwidth}@{}}
     \toprule
     \textbf{Measure / group} &
     \textbf{Unit} &
-    \textbf{Numerator or observation} &
-    \textbf{Denominator or comparator} &
+    \textbf{Value counted} &
+    \textbf{Total or comparison} &
     \textbf{Null / zero rule} &
-    \textbf{Clustering / interpretation} \\
+    \textbf{Grouping and meaning} \\
     \midrule
     \endfirsthead
 
-    \multicolumn{6}{@{}l}{\scriptsize\textit{Table~\ref{tab:meth-metric-denominator-matrix} continued: metric, denominator and interpretation contract}} \\
     \toprule
     \textbf{Measure / group} &
     \textbf{Unit} &
-    \textbf{Numerator or observation} &
-    \textbf{Denominator or comparator} &
+    \textbf{Value counted} &
+    \textbf{Total or comparison} &
     \textbf{Null / zero rule} &
-    \textbf{Clustering / interpretation} \\
+    \textbf{Grouping and meaning} \\
     \midrule
     \endhead
 
@@ -45,125 +40,125 @@
     Supported emitted claims. &
     All emitted claims eligible for scoring. &
     No eligible emitted claims: \textbf{NULL / N/A} with reason, never zero. &
-    Treat claims within each company and report as clustered; interpret alongside recall. \\
+    Treat claims from the same company or report as related; interpret with recall. \\
 
     \addlinespace[1.5pt]
     \textbf{Claim recall} &
-    Required gold claim &
-    Correctly emitted gold claims. &
-    All gold claims required by the frozen scope. &
-    No required labelled gold claims: \textbf{NULL / N/A}, never zero. &
-    Company/report clustering applies; omissions remain visible. \\
+    Required reference claim &
+    Required reference claims produced correctly. &
+    All reference claims required by the fixed scope. &
+    No required labelled reference claims: \textbf{NULL / N/A}, never zero. &
+    Group by company and report; missing claims remain visible. \\
 
     \addlinespace[1.5pt]
     \textbf{F1} &
-    Condition + frozen claim set &
+    Condition + fixed claim set &
     \(2PR/(P+R)\), using the precision and recall above. &
-    Same frozen scoring set; no separate denominator. &
+    Same fixed scoring set; no separate total. &
     \textbf{NULL} unless \(P\) and \(R\) are defined and \(P+R>0\). &
     Report \(P\) and \(R\) separately; F1 is not an acceptance threshold. \\
 
     \addlinespace[1.5pt]
     \textbf{Unsupported-claim rate} &
     Emitted claim &
-    Emitted claims without gold/evidence support. &
+    Produced claims without reference or evidence support. &
     All emitted claims. &
     No emitted claims: \textbf{NULL / N/A}, never zero. &
-    Freeze support eligibility; do not infer support from fluency or citation presence. \\
+    Fix the support rules before scoring. Good writing or a citation does not prove support. \\
 
     \addlinespace[1.5pt]
     \textbf{Claim-support rate} &
     Emitted claim &
-    Emitted claims satisfying the frozen support rule. &
+    Produced claims that meet the fixed support rule. &
     All emitted claims. &
     No emitted claims: \textbf{NULL / N/A}, never zero. &
-    Keep distinct from answer correctness and provenance completeness. \\
+    Keep separate from answer correctness and complete source records. \\
 
     \addlinespace[1.5pt]
     \textbf{Contradiction}\par\textbf{recall} &
-    Gold conflict &
-    Correctly flagged gold conflicts. &
-    All gold conflicts. &
-    No labelled gold conflicts: \textbf{NULL / N/A}, never zero. &
-    Cluster linked conflicts; report false conflict flags separately. \\
+    Reference conflict &
+    Reference conflicts flagged correctly. &
+    All reference conflicts. &
+    No labelled reference conflicts: \textbf{NULL / N/A}, never zero. &
+    Group linked conflicts; report false conflict flags separately. \\
 
     \addlinespace[1.5pt]
     \textbf{Identity, acquisition, temporal + source quality} &
     Company--source--period layer &
     Correct identity, acquisition state, temporal eligibility and source-quality outcomes, each separate. &
-    \textbf{TO FREEZE:} label-eligible units for each layer. &
+    \textbf{TO DECIDE BEFORE STUDY:} units with labels for each layer. &
     A layer with no labels is \textbf{NULL}; event outcomes are \textbf{NULL} in current D0. &
-    No composite quality score; group by company/report and sourceability. \\
+    No single quality score; group by company, report and whether a source can be found. \\
 
     \addlinespace[1.5pt]
     \textbf{Schema + extraction} &
     Extraction record / field &
-    Schema-valid output; exact or field-level match to the frozen label. &
-    \textbf{TO FREEZE:} attempted versus eligible records, and record- versus field-level scope. &
+    Output that follows the schema; exact or field-level match to the fixed label. &
+    \textbf{TO DECIDE BEFORE STUDY:} attempted and eligible records, and record-level or field-level scope. &
     No labelled eligible records: \textbf{NULL}, never zero. &
-    Stratify by format, metric type and sourceability; fields in one report are dependent. \\
+    Report by format, measure type and whether a source can be found. Fields in one report are related. \\
 
     \addlinespace[1.5pt]
     \textbf{Normalisation}\par\textbf{+ missing state} &
     Company--metric--period field &
     Correct type, value, unit or currency and correct missing-state label; retain blank--zero matrix. &
-    \textbf{TO FREEZE:} labelled in-scope fields by task and data type. &
+    \textbf{TO DECIDE BEFORE STUDY:} labelled fields in scope by task and data type. &
     No labels: \textbf{NULL}. Zero is a valid observation, not missing; zero accuracy requires a positive denominator. &
     Report by data type/missing class; do not pool repeated company fields as independent. \\
 
     \addlinespace[1.5pt]
-    \textbf{Provenance completeness} &
+    \textbf{Complete source records} &
     Eligible emitted claim &
     Claims with source ID, locator, applicable publisher, retrieval time, checksum and period. &
     All eligible emitted claims. &
     No eligible emitted claims: \textbf{NULL / N/A}, never zero. &
-    Completeness is traceability, not proof that a source or claim is true. \\
+    Completeness makes a claim traceable. It does not prove that the source or claim is true. \\
 
     \addlinespace[1.5pt]
-    \textbf{Locator validity} &
-    Claim--locator at frozen snapshot &
-    Exact locator resolves to the admitted frozen retrieval snapshot. &
-    \textbf{TO FREEZE:} eligible locators/claims and treatment of multiple locators. &
+    \textbf{Source-location validity} &
+    Claim and location in a fixed source copy &
+    Exact location opens the accepted fixed source copy. &
+    \textbf{TO DECIDE BEFORE STUDY:} eligible locations and claims, and how several locations are handled. &
     No eligible inspected locators: \textbf{NULL}; a broken inspected locator is a failure, not missing data. &
     Keep resolution separate from passage support and source truth. \\
 
     \addlinespace[1.5pt]
     \textbf{Report-section completeness} &
     Report + required section &
-    Required section status against the frozen reference template. &
-    \textbf{TO FREEZE:} required-section set and treatment of explicit held/empty sections. &
-    No frozen template/scored report: \textbf{NULL}. &
+    Required section status against the fixed reference template. &
+    \textbf{TO DECIDE BEFORE STUDY:} required sections and how held or empty sections are handled. &
+    No fixed template or scored report: \textbf{NULL}. &
     Aggregate at report/company level; presence does not establish factual correctness. \\
 
     \addlinespace[1.5pt]
     \textbf{Factual errors + severity} &
     Scored claim / report &
-    Error count by pre-specified taxonomy; severity label per error. &
-    Count per report; severity aggregation is \textbf{TO FREEZE} before scoring. &
+    Error count using categories set in advance; seriousness label for each error. &
+    Count per report; the rule for combining seriousness is \textbf{TO DECIDE BEFORE STUDY}. &
     No scored report: \textbf{NULL}. Zero only after an eligible report is checked and no error is found. &
-    Freeze severity definitions before condition identity/outcomes are inspected. \\
+    Fix seriousness definitions before the scorer sees the condition or outcomes. \\
 
     \addlinespace[1.5pt]
     \textbf{Transparency rate} &
     Missing, conflicted or stale item &
     Eligible items surfaced with their state and reason. &
-    \textbf{TO FREEZE:} exact eligible item set and report-level aggregation. &
+    \textbf{TO DECIDE BEFORE STUDY:} exact eligible items and how report-level results are combined. &
     No eligible labelled items: \textbf{NULL / N/A}, never zero. &
-    Report missing/conflict/stale strata separately; no context-free quality score. \\
+    Report missing, conflict and old-information groups separately. Do not use one score without context. \\
 
     \addlinespace[1.5pt]
     \textbf{Human time} &
     Authorised human + report &
     Active human minutes and elapsed wall-clock minutes, recorded separately with common start/stop rules. &
-    Pair the same company, period and report under one ``review-ready'' definition; aggregation is \textbf{TO FREEZE}. &
+    Match the same company, period and report under one ``review-ready'' definition. How results are combined is \textbf{TO DECIDE BEFORE STUDY}. &
     Current D0 and unauthorised C0/C3: \textbf{NULL}; never reconstruct missing time as zero. &
-    Cluster repeated tasks by reviewer and report; record tools, interruptions and waiting. \\
+    Group repeated tasks by reviewer and report. Record tools, interruptions and waiting. \\
 
     \addlinespace[1.5pt]
     \textbf{Machine stages + retries} &
     Stage, attempt and run &
     Stage duration, attempt/retry and failure/re-run events. &
-    Executed stage/run; summary aggregation and failure-inclusive comparator are \textbf{TO FREEZE}. &
+    Executed stage or run; summary method and a comparison that includes failures are \textbf{TO DECIDE BEFORE STUDY}. &
     Unexecuted stage: \textbf{N/A} with reason, not zero. &
     Pair same company-period; retain failures and stage boundaries. \\
 
@@ -172,36 +167,41 @@
     Model, attempt and run &
     Input/output tokens by model/run; cost from official execution-date price, recorded formula and currency. &
     Same executed workflow unit and model/version; do not estimate an absent price. &
-    Missing telemetry/price: \textbf{NULL}. Zero only when logs prove no billable usage. &
+    Missing logs or price: \textbf{NULL}. Zero only when logs prove there was no billable use. &
     Report tokens separately from cost; version and date bind the comparison. \\
 
     \addlinespace[1.5pt]
     \textbf{Repeat reliability} &
     Fixed configuration + repeated unit &
-    Deterministic outcome-vector equality; stochastic field/claim agreement; completion, schema validity and failure categories. &
-    \textbf{TO FREEZE:} repeat set, vector scope, pair/denominator and stochastic agreement statistic. &
+    Complete equality for fixed outputs; field or claim agreement for settings that can vary; completion, schema validity and failure categories. &
+    \textbf{TO DECIDE BEFORE STUDY:} repeat set, output scope, matched total and agreement measure for settings that can vary. &
     No qualifying repeats or denominator zero: \textbf{NULL}, never zero. &
-    Cluster by company/report; report failures and configuration hash; no universal threshold. \\
+    Group by company and report. Show failures and configuration hash. There is no universal pass level. \\
 
     \addlinespace[1.5pt]
     \textbf{C3 usability + edit burden} &
     Authorised reviewer + task/report &
-    Ethics-approved task success, time, reversals, confidence calibration or licensed scale; edit events/sections and optional character/semantic distance. &
-    \textbf{TO FREEZE} in the authorised instrument/task protocol; retain C2 pre-review and C3 post-review versions. &
-    Current D0/no participant observation: \textbf{NULL}; do not synthesize reviewer utility. &
-    Cluster by reviewer/report. Log order and expertise; choose no scale after outcomes. \\
+    Ethics-approved task success, time, changed decisions, whether confidence matches correctness, or a licensed scale; edit events and optional text or meaning-based distance. &
+    \textbf{TO DECIDE BEFORE STUDY} in the authorised questionnaire and task plan. Keep C2 before review and C3 after review. &
+    Current D0 with no participant observation: \textbf{NULL}. Do not invent reviewer value. &
+    Group by reviewer and report. Record order and experience. Do not choose a scale after seeing outcomes. \\
 
     \addlinespace[3pt]
     \multicolumn{6}{@{}P{\textwidth}@{}}{\RaggedRight\scriptsize
-      \textbf{CURRENT STATUS: CONCEPTUAL / NON-EMPIRICAL. NO ACCEPTANCE THRESHOLD OR RESULT IS ASSERTED.}
+      \textbf{CURRENT STATUS: PLANNED. THERE IS NO STUDY RESULT OR PASS THRESHOLD.}
       Universal rule: no eligible labelled cases or a zero denominator yields \textbf{NULL / N/A with a reason}, never a measured zero.
-      \textit{Source note:} Author synthesis of the current evaluation protocol and data dictionary, with locally admitted
+      \textit{Source note:} Developed by the author from the current evaluation plan and data dictionary, using local
       Gao et al. (2023a, ALCE, PDF pp. 3--4, 10), Nikiforova et al. (2020, pp. 1--3, 15--17),
-      Pineau et al. (2021, pp. 1--5, 9--13), Artstein and Poesio (2008, pp. 2--8, 16--23, 36--37),
+      Pineau et al. (2021, pp. 1--5, 9--13), Artstein \& Poesio (2008, pp. 2--8, 16--23, 36--37),
       NIST (2023, pp. 32--35) and Amershi et al. (2019, pp. 3--5, 16--19). These sources motivate
-      separated, documented and human-aware measurement; they do not validate this artefact or supply its thresholds.} \\
+      separate and documented measures that include human work. They do not validate this system or supply its thresholds.} \\
   \end{longtable}
-  % longtable reserves a table number even without its own caption; retain the captionof number only.
+  \enlargethispage{3\baselineskip}
+  \par\nopagebreak[4]
+  \captionsetup{hypcap=false}
+  % longtable reserves a table number even without its own caption; reuse that number below.
   \addtocounter{table}{-1}
+  \captionof{table}{Measures, calculation totals and interpretation rules}
+  \label{tab:meth-metric-denominator-matrix}
 \endgroup
 \clearpage

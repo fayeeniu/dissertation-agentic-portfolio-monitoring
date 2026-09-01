@@ -1,0 +1,5 @@
+EVAL-F1: D0 measure profile for C1 and C2
+
+Scale 0.0 to 1.0. C1 versus C2: precision 0.455 versus 1.000; F1 0.625 versus 1.000; claim-support rate 0.455 versus 1.000; provenance completeness 0.818 versus 1.000; unsupported-claim rate 0.545 versus 0.000, where lower is preferable.
+
+All values come from fourteen visible synthetic cases. Emitted-claim denominators differ: C1 emitted eleven claims and C2 emitted five. The visual is not a coverage, utility or field-performance score.

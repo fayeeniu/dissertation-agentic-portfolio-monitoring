@@ -1,6 +1,6 @@
 # ADR 0009: Separate Next.js control room over a read-only JSON projection
 
-- Status: Accepted
+- Status: Superseded by [ADR 0013](0013-nextjs-dashboard-docker-default.md)
 - Date: 2026-08-27
 - Extends ADRs [0001](0001-python-fastapi-stack.md), [0002](0002-bounded-functional-agents.md),
   and [0008](0008-bounded-live-company-research.md)

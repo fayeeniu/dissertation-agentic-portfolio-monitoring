@@ -135,10 +135,9 @@ Exact repository inputs
   role, limitation and checksum bindings for every academic source named above.
 
 Accessibility and limitations
-The SVG has a programmatic title and full description. The PDF and SVG are vector-only and the
-meaning of every branch, method family, code family, stop and limitation is written in text, so
-colour is supplementary and the figure remains interpretable in greyscale. The PDF is not claimed
-to be tagged; this file is the complete linear reading-order alternative.
+The current visual is a monochrome PNG screenshot generated from the corresponding Mermaid source.
+The meaning of every branch, method family, code family, stop and limitation is written in text, so
+the figure does not depend on colour; this file is the complete linear reading-order alternative.
 
 This exhibit is an analysis decision contract, not an empirical result. It does not establish that
 D1 has run, that the final gold reference exists, that the D2 holdout has opened, that C0-C3 have

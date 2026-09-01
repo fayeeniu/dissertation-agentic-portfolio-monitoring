@@ -1,6 +1,16 @@
 # Dissertation expert/reviewer audit trail
 
-## Scope
+## Current-candidate status notice - 1 September 2026
+
+`FINAL_SUPERVISOR_FEEDBACK_REVIEW_2026-09-01.md` is the current whole-report gate: `HOLD` /
+`EVIDENCE_REQUIRED`. Ten of the eleven selected findings are resolved. `AI-DISC-001` is partially
+resolved because the declaration, Appendix I and seven content confirmations are complete, while
+candidate-controlled ethics evidence, metadata and confirmation of the complete material prompt
+inventory remain pending. The academic content, evidence mechanics, word count, captions and compiled
+PDF passed the stated final checks. All earlier section and whole-report PASS records below remain
+historical evidence only.
+
+## Historical audit scope for entries below
 
 The review covers the full 15,000-word report structure and the populated Abstract. It does not
 approve the unpopulated chapter bodies, future empirical results, candidate attestations, ethics
@@ -100,25 +110,26 @@ and a final metadata confirmation.
 
 The approval is scoped to Section 1.2 and INTRO-F1 and does not pre-approve Section 1.3.
 
-## Section 1.3 - independent reviewer gate: PASS
+## Section 1.3 - current independent reviewer gate: PASS
 
-Round one failed because RQ1 and RQ3 narrowed the frozen research contract. The dissertation expert
-restored reliability, bounded heterogeneous transformation and the complete C0--C3 comparison; the
-AI engineer applied the same corrections to INTRO-T1, removed the misleading `RQ4` label and improved
-the table typography. Round two passed with every finding resolved.
+The current Section 1.3 is the separate 72-word research aim introduced on 29 August 2026. It was
+reviewed from first principles on 31 August 2026 rather than inheriting the approval for the earlier
+combined aim-and-questions section. The aim matches the project charter, keeps implementation distinct
+from demonstrated usefulness and is supported by the two admitted design-science sources.
 
 | Review property | Result |
 |---|---|
-| Final round | 2 |
-| Evidence confidence | High |
+| Final round | 1 |
+| Evidence confidence | Medium; no authenticated course-specific marking rubric was available |
 | Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
-| Local citation coverage | 2, 2, and 2 distinct sources across paragraphs P1--P3 |
-| Contract fidelity | Primary question and RQ1--RQ3 match the frozen C0--C3 protocol |
-| Figure evidence | INTRO-T1 one-page portrait table, text alternative and provenance hashes verified |
-| Boundary control | C0/C3, D1/D2 and live public-web evaluation remain held or outside RQ1--RQ3 |
+| Word and citation contract | 72 citation-stripped words; one paragraph; two admitted local sources |
+| Contract fidelity | Aim matches the current project charter and Section 1.4 research contract |
+| Boundary control | Complete workflow is the evaluand; implementation is not treated as proof of usefulness |
 | Gate | **PASS** |
 
-The approval is scoped to Section 1.3 and INTRO-T1 and does not pre-approve Section 1.4.
+The approval is scoped to the current Section 1.3 and does not pre-approve Section 1.4. The earlier
+two-round review of the superseded combined section and INTRO-T1 remains preserved in
+`SECTION_1_3_REVIEW.md` as historical evidence.
 
 ## Section 1.4 - independent reviewer gate: PASS
 
@@ -891,3 +902,379 @@ cases, and the v3 deck schema agrees between implementation and test. This resol
 | Gate | **PASS** |
 
 The approval is scoped to Section 4.7 and SYS-F5. Section 4.8 was not drafted or reviewed.
+
+## Section 4.8 - independent reviewer gate: PASS
+
+Section 4.8 accurately separates the portfolio-report approval/export path from company-profile
+review and download, and keeps human-benefit, publication and production claims outside the
+implemented evidence.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 200 citation-stripped words; three paragraphs; 2/2/3 distinct admitted local citations |
+| Technical boundary | Named rationale, optimistic locks, verification/hash/run-contract gates, approval revocation, output-format distinction, local staging, manifests and reuse checks match current implementation |
+| Focused controls | 9 approval, stale-write, tamper, recovery and export cases pass; no live or external action |
+| Source gate | PASS: 38 local PDFs/hashes, 2 immutable captures, 107 substantive body paragraphs and 35 cited sources |
+| Build and placement | Fresh 78-page A4 build passes; physical page 62 is complete, legible and followed by the untouched Section 4.9 heading |
+| Visual decision | No new exhibit: adjacent Figures 4.4 and 4.5 already carry the relevant approval/export and company-research state transitions |
+| Gate | **PASS** |
+
+The approval is scoped to Section 4.8. Section 4.9 was not drafted or reviewed.
+
+## Section 4.9 - independent reviewer gate: PASS
+
+The dissertation expert drafted a 150-word closure and SYS-T3. The reviewer verified that typed
+failure and recovery mechanisms match the repository while live, human and production outcomes stay
+held, null or outside scope.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Local citation coverage | 2 and 2 distinct sources across paragraphs P1--P2 |
+| Table evidence | Native SYS-T3 status ledger with complete text alternative |
+| Boundary control | No distributed-recovery, availability, source-truth, user-benefit or empirical-effectiveness claim |
+| Gate | **PASS** |
+
+The approval completes the section-level gate for Chapter 4 but does not pre-approve Chapter 5.
+
+## Section 5.1 - independent reviewer gate: PASS
+
+Section 5.1 and EVAL-T1 pin the exact local evidence state and explicitly disclose that Git HEAD does
+not seal the dirty working tree. Runtime, migration and evaluation hashes agree with fresh commands.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 200 words; two paragraphs; 2/3 admitted local citations |
+| Snapshot boundary | Executed, synthetic, protocol-only, sealed and unrun states remain distinct |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.1 and EVAL-T1. Section 5.2 was not reviewed.
+
+## Section 5.2 - independent reviewer gate: PASS
+
+Section 5.2 preserves the complete engineering result, including the Ruff-format failure and
+warnings, while bounding coverage and passing gates to the paths and rules actually exercised.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 250 words; three paragraphs; 2/2/3 admitted sources |
+| Executed evidence | 286 tests, 85.58% coverage, 22 warnings, lint/type/migration/diff passes and format failure |
+| Boundary control | No live, production, completeness, defect-absence or utility inference |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.2 and EVAL-T2. Section 5.3 was not reviewed.
+
+## Section 5.3 - independent reviewer gate: PASS
+
+Section 5.3 and EVAL-T3 reproduce the executable D0 design and isolate independent verification as
+the C1--C2 difference while keeping visible-label, synthetic and non-OOS limits explicit.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 250 words; three paragraphs; 2/2/3 admitted sources |
+| Design fidelity | 14 cases, shared preparation, one changed mechanism, three repeats and paired cases |
+| Boundary control | No causal-superiority, field, human or generalisation claim |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.3 and EVAL-T3. Section 5.4 was not reviewed.
+
+## Section 5.4 - independent reviewer gate: PASS
+
+Section 5.4, EVAL-T4 and EVAL-F1 exactly reproduce the fresh D0 output. Denominators, null layers,
+timing truncation and visible-development construction alignment prevent unsupported generalisation.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 450 words; six paragraphs; 2/2/2/2/2/3 admitted sources |
+| Quantitative closure | Confusion counts, rates, repeats, costs, timing and nulls reproduce D0 output |
+| Visual evidence | EVAL-T4 complete results table; EVAL-F1 non-composite rate profile; text alternatives complete |
+| Boundary control | No independent-OOS, real-company, speed, human-benefit or superiority claim |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.4, EVAL-T4 and EVAL-F1. Section 5.5 was not reviewed.
+
+## Section 5.5 - independent reviewer gate: PASS
+
+Section 5.5 and EVAL-T5 reproduce the 37-case controlled company-research result and retain the
+distinction between represented assertions and unmeasured attack, live-source and production outcomes.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 300 words; four paragraphs; 2/2/3/2 admitted sources |
+| Executed evidence | 37 focused tests passed; one dependency deprecation warning |
+| Visual evidence | EVAL-T5 control-family/result/residual matrix with complete text alternative |
+| Boundary control | No exploit-coverage, rate, live, company-accuracy, user-benefit or production claim |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.5 and EVAL-T5. Section 5.6 was not reviewed.
+
+## Section 5.6 - independent reviewer gate: PASS
+
+Section 5.6 and EVAL-T6 define the held paired company-discovery comparison without substituting
+controlled tests or synthetic replay for absent live, reference or authorised empirical evidence.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 350 words; four paragraphs; 2/2/3/3 admitted sources |
+| Protocol fidelity | Identity, source parity, freeze, reference, paired metrics, denominators and failures specified |
+| Evidence boundary | Every company/live/model/cost/timing/utility value remains held or null |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.6 and EVAL-T6. Section 5.7 was not reviewed.
+
+## Section 5.7 - independent reviewer gate: PASS
+
+Section 5.7 and EVAL-T7 retain zero C0/C3 observations and null outcomes, describe the authorised
+future protocol, and do not infer user benefit from the implemented interface.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 250 words; three paragraphs; 2/2/3 admitted sources |
+| Current result | C0/C3 zero cases; quality, time, cost, edits and utility null |
+| Boundary control | No participants, ethics/reference/sample or benefit inference; RQ3 empirically unanswered |
+| Gate | **PASS** |
+
+The approval is scoped to Section 5.7 and EVAL-T7. Section 5.8 was not reviewed.
+
+## Section 5.8 - independent reviewer gate: PASS
+
+Section 5.8 retains every material negative, null, held, sealed, unavailable and unrun state and
+closes Chapter 5 without widening its evidence boundary.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 150 words; two paragraphs; 2/3 admitted sources |
+| Evidence-status fidelity | Format failure, warnings, D0 errors/nulls and all held/unrun conditions preserved |
+| Gate | **PASS** |
+
+The approval completes the section-level gate for Chapter 5. Chapter 6 was not drafted or reviewed.
+
+## Chapter 5 - final cross-section reviewer gate: PASS
+
+The final audit reconciled all eight subsection reviews, seven tables, one quantitative figure,
+executed evidence, held states and the fresh 94-page PDF.
+
+| Review property | Result |
+|---|---|
+| Evidence confidence | High |
+| Final blocker / major / minor / optional findings | 0 / 0 / 0 / 1 |
+| Chapter body | Exactly 2,200 citation-stripped words across Sections 5.1--5.8 |
+| Source gate | PASS: 38 local PDFs/hashes, 2 immutable captures, 136 substantive paragraphs, 35 cited sources |
+| Engineering evidence | 286 tests PASS, 85.58% coverage, 22 warnings, lint/MyPy/migration/diff PASS, format FAIL retained |
+| D0 evidence | Fresh three-repeat output reproduced; all rates, denominators, timing limits and nulls agree |
+| Company-research evidence | Fresh 37-case controlled suite PASS; live and attack-coverage limits explicit |
+| Human/live evidence | C0/C3 zero and null; D1 protocol-only; D2 sealed; live company comparison held |
+| Visual/PDF gate | Seven Chapter 5 tables and one figure; text alternatives complete; physical pages 64--79 clean in a 94-page A4 PDF |
+| Gate | **PASS** |
+
+The sole optional task is to archive complete raw D0, environment, Git-diff and final artefact
+provenance at the eventual whole-dissertation freeze. Chapter 6 remains untouched.
+
+## Section 6.1 - independent reviewer gate: PASS
+
+Section 6.1 answers RQ1 only for controlled local mechanism feasibility and auditability. It keeps
+source truth, unseen-data accuracy, completeness and practical utility outside the available evidence.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 300 words; four paragraphs; 2/2/2/3 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 6.1. Section 6.2 was not reviewed.
+
+## Section 6.2 - independent reviewer gate: PASS
+
+Section 6.2 interprets the D0 C1--C2 difference as a synthetic admission/selectivity result and
+retains false-rejection, construction-alignment, architectural-overhead and cost gaps.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 300 words; four paragraphs; 2/2/2/3 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 6.2. Section 6.3 was not reviewed.
+
+## Section 6.3 - independent reviewer gate: PASS
+
+Section 6.3 leaves RQ3 empirically unanswered, balances possible accountability benefits against
+human costs, and uses DISC-T1 to reconcile the complete RQ evidence boundary.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 200 words; three paragraphs; 2/2/2 admitted sources |
+| Exhibit | DISC-T1 primary-question/RQ status matrix and complete text alternative |
+| Gate | **PASS** |
+
+The approval is scoped to Section 6.3 and DISC-T1. Section 6.4 was not reviewed.
+
+## Section 6.4 - independent reviewer gate: PASS
+
+Section 6.4 treats public-web research as a bounded engineering case study, separates candidate
+discovery from evidence and source truth, and keeps the paired company benchmark held.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 300 words; four paragraphs; 2/2/3/3 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 6.4. Section 6.5 was not reviewed.
+
+## Section 6.5 - independent reviewer gate: PASS
+
+Section 6.5 critically links the implemented design to attribution, reproducibility, data-quality,
+multi-agent and human-AI literature without treating any design pattern as inherently superior.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 300 words; four paragraphs; 2/3/2/3 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 6.5. Section 6.6 was not reviewed.
+
+## Section 6.6 - independent reviewer gate: PASS
+
+Section 6.6 and DISC-T2 restrict generalisation to the local evaluated configuration and state what
+must be re-established before transfer without implying deployment success.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 200 words; three paragraphs; 2/2/3 admitted sources |
+| Exhibit | DISC-T2 transfer-condition matrix and complete text alternative |
+| Gate | **PASS** |
+
+The approval completes Chapter 6 section gates. Chapter 7 was not reviewed.
+
+## Section 7.1 - independent reviewer gate: PASS
+
+Section 7.1 ties classification, minimisation, storage and redaction to current controls and retains
+the authority, privacy, licence, retention and operational gaps.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 180 words; three paragraphs; 2/2/2 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 7.1. Section 7.2 was not reviewed.
+
+## Section 7.2 - independent reviewer gate: PASS
+
+Section 7.2 accurately separates project-side minimisation from provider-side retention and states
+that `store=False` is not Zero Data Retention.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 140 words; two paragraphs; 2/2 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 7.2. Section 7.3 was not reviewed.
+
+## Section 7.3 - independent reviewer gate: PASS
+
+Section 7.3 ties concrete threat families to current controls and controlled tests while withholding
+attack-coverage, penetration, hosted-security, availability and disaster-recovery conclusions.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 180 words; three paragraphs; 2/2/2 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 7.3. Section 7.4 was not reviewed.
+
+## Section 7.4 - independent reviewer gate: PASS
+
+Section 7.4 defines the investment-decision and person-profiling exclusions and retains attributed
+public discourse only within the company-level evidence purpose.
+
+| Review property | Result |
+|---|---|
+| Round | 1 |
+| Evidence confidence | High |
+| Blocker / major / minor / optional findings | 0 / 0 / 0 / 0 |
+| Word and citation contract | Exactly 120 words; two paragraphs; 2/2 admitted sources |
+| Gate | **PASS** |
+
+The approval is scoped to Section 7.4. Section 7.5 was not reviewed.
+
+## Sections 7.5 and 8.1--8.3 - sequential reviewer gates: PASS
+
+Each remaining section was reviewed only after its predecessor passed. Section 7.5 records validity
+and operational limits; Sections 8.1--8.3 answer the questions, state the demonstrated contribution
+and sequence future evidence without introducing new results.
+
+| Section | Words | Paragraph citations | Gate |
+|---|---:|---|---|
+| 7.5 | 180 | 2 / 2 / 3 | **PASS** |
+| 8.1 | 200 | 2 / 3 / 2 | **PASS** |
+| 8.2 | 120 | 2 / 2 | **PASS** |
+| 8.3 | 130 | 2 / 2 | **PASS** |
+
+GOV-T1 and CONC-T1 have text alternatives and explicitly describe current versus future evidence.
+No blocker, major, minor or optional finding remains within these four section scopes.
+
+## Chapters 6--8 and full report - cross-section reviewer gates: PASS
+
+The final reconciliation confirms stable research questions, matching D0 values, consistent evidence
+states, no new conclusion evidence, complete text alternatives and readable rendering. Chapter 6 is
+1,600 words, Chapter 7 is 800 words and Chapter 8 is 450 words. The report closes at Section 8.3.
+
+The 104-page A4 PDF has Faye Niu metadata, no overfull or unresolved-reference warning, and passed
+visual inspection of Chapters 6--8. Strict source admission, Ruff lint, strict MyPy, 286 tests at
+85.58% coverage and Git diff-check pass. Ruff format-check still fails for five recorded source files;
+22 dependency warnings remain. These residuals are retained rather than repaired outside report scope.
+Final PDF SHA-256: `985e8d67913153cfc846af256141d6abc1f7fb6ee44f97f10ad10392498642df`.

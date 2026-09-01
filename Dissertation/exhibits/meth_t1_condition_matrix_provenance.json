@@ -28,7 +28,7 @@
       "path": "docs/EVALUATION_PROTOCOL.md",
       "sha256": "01ee3431682deecf3930beea1f3f56850bbdfe96907111d2520e7aeb5cde8dbe",
       "role": "Binding evaluand, C0-C3 operational definitions, parity rule, executable-state wording and D0-D2 evidence boundary.",
-      "locator": "Headings 'Protocol status', 'Research question and evaluand', 'Experimental conditions', 'Research propositions', 'Dataset partitions and leakage control', 'D0 — synthetic development/evaluation fixtures', 'D1 — authorised pilot/calibration set', and 'D2 — final out-of-sample set'."
+      "locator": "Headings 'Protocol status', 'Research question and system under test', 'Experimental conditions', 'Research propositions', 'Dataset partitions and leakage control', 'D0: fictional development and evaluation cases', 'D1: authorised pilot set', and 'D2: final new-case set'."
     },
     {
       "path": "Dissertation/REPORT_STRUCTURE.md",

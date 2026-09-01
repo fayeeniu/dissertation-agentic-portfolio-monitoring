@@ -28,7 +28,7 @@ Reading order
    - Optional model assistance remains separately opt-in, public/synthetic only and bounded. It does not control the workflow or export.
 
    Normalise:
-   - Extracted and normalized values are retained separately.
+   - Extracted and normalised values are kept separately.
    - Missing state, unit, currency, period, provider and schema version remain explicit.
    - Schema, period, unit and currency conflicts are not silently repaired, averaged or converted.
 
@@ -38,7 +38,7 @@ Reading order
    - Ineligible, stale, conflicting or incomplete evidence remains visible as a state or hold.
 
    Claim build:
-   - A Claim is a typed candidate proposition with company, metric, reporting period, text, normalized value, verification status and evidence links.
+   - A Claim is a structured possible statement with its company, measure, reporting period, text, normalised value, verification status and evidence links.
    - Building a fluent sentence does not establish support or truth.
    - Every claim must receive at least one independent Verification record before approval can pass.
 
@@ -66,7 +66,7 @@ Reading order
    - A stage exception writes the AgentRun failure, marks the WorkflowRun failed and stops the bounded pipeline.
    - Retries are path-specific and bounded. The optional extraction provider has a fixed attempt policy; company-research recovery is a separate persisted workflow and is not represented as part of this base portfolio pipeline.
    - Import, source snapshot, extraction and export paths use stable identifiers, uniqueness or checksum/manifest verification where their contracts define reuse. This does not imply that every operation is globally idempotent or safe under distributed production concurrency.
-   - A rerun or retry cannot silently overwrite an approved report, a finalized manifest or a conflicting source snapshot.
+   - A rerun or retry cannot silently overwrite an approved report, a finalised file list or a conflicting source copy.
 
 4. Independent verifier and explicit outcomes - implemented and locally tested.
 
@@ -107,10 +107,10 @@ Reading order
    Controlled export:
    - Export refuses any report that is not currently approved.
    - The service builds deterministic JSON, Markdown and accessible HTML documents for the current report version.
-   - It computes file hashes, a bundle content hash and a version-bound manifest. A pending ReportExport record precedes filesystem finalization.
-   - Files are written into a private staging directory and atomically renamed. Only after manifest/database finalization does the report become exported and the workflow complete.
-   - A write failure returns the report to approved, records a failed export and removes only the unfinalized target. A finalized export is checksum- and manifest-reverified before reuse.
-   - Controlled export is a local artifact transition. It is not autonomous publication, hosted distribution or a production release process.
+   - It computes file hashes, a bundle content hash and a version-bound manifest. A pending ReportExport record precedes filesystem finalisation.
+   - Files are written into a private staging directory and atomically renamed. Only after manifest/database finalisation does the report become exported and the workflow complete.
+   - A write failure returns the report to approved, records a failed export and removes only the unfinished target. A finalised export is checked against its checksum and file list before reuse.
+   - Controlled export is a local file change. It is not automatic publication, hosted distribution or a production release process.
 
 Explicit limitations and non-goals
 - No guaranteed truth, source completeness, citation correctness, hallucination elimination or error-free report is asserted.

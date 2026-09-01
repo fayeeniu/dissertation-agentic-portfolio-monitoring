@@ -1,0 +1,35 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+flowchart TB
+  S["<b>Count every case first</b><br/>Eligible, excluded, failed and scored cases;<br/>totals, spread and missing information"]
+
+  subgraph Q["Quantitative branch"]
+    direction TB
+    Q1["<b>Q1 Denominators</b><br/>Null is not zero"]
+    Q2["<b>Q2 Related cases</b><br/>Match units;<br/>group repeated fields"]
+    Q3["<b>Q3 Choose the test</b><br/>Check design<br/>and assumptions"]
+    Q4["<b>Q4 Difference and uncertainty</b><br/>Estimate, interval<br/>and sampling unit"]
+    Q5["<b>Q5 Check stability</b><br/>Several tests, groups,<br/>failures and exclusions"]
+    Q1 --> Q2 --> Q3 --> Q4 --> Q5
+  end
+
+  subgraph K["Qualitative branch"]
+    direction TB
+    K1["<b>K1 Authorised inputs</b><br/>Error records and<br/>consented feedback only"]
+    K2["<b>K2 Codes set in advance</b><br/>ID, EXT, NORM, TIME, PROV,<br/>VER, REP, SEC and HITL"]
+    K3["<b>K3 Case-by-code matrix</b><br/>Every code keeps<br/>an exact locator"]
+    K4["<b>K4 Coding record</b><br/>Reviewer, reason<br/>and disagreement"]
+    K5["<b>K5 Negative cases</b><br/>Exceptions and<br/>limitations retained"]
+    K1 --> K2 --> K3 --> K4 --> K5
+  end
+
+  S --> Q1
+  S --> K1
+  Q5 --> I["<b>Combined interpretation</b><br/>Differences, patterns<br/>and contrary evidence"]
+  K5 --> I
+  I --> L["<b>Explicit limitations</b><br/>Evidence class, holds and<br/>deviations remain visible"]
+  T["<b>TO DECIDE</b><br/>Exact method and sample<br/>size follow D1, supervisor<br/>and statistical review"] -.-> Q3
+
+  class S,Q1,Q2,Q4,Q5,K1,K2,K3,K4,K5 fx-stage
+  class Q3,I fx-key
+  class L fx-banner
+  class T fx-hold

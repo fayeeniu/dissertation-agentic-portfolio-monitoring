@@ -1,4 +1,4 @@
-SYS-F2 — Canonical data and provenance model
+SYS-F2: Shared data and source-record model
 Author: Faye Niu
 Target section: 4.3 Canonical data, persistence, and provenance
 Suggested LaTeX label: fig:sys-canonical-data-provenance-model
@@ -8,41 +8,41 @@ Purpose
 This figure explains how the prototype separates canonical semantics, immutable evidence and derivations, claim verification, versioned content, named approval, and export integrity. It also distinguishes the locally tested canonical report path from the separately persisted company-research path whose guarded live public capture has not been run. The diagram does not claim a completed live capture, perfect provenance, source truth, empirical quality, external or cloud storage, lawful processing authority, production security, or production readiness.
 
 Status key
-1. Solid blue boundary — IMPLEMENTED + LOCAL TESTS. The named schema or service control exists and is exercised by local unit, integration, migration, or export tests. This is implementation evidence, not a production or empirical-performance claim.
-2. Dashed amber boundary — IMPLEMENTED / LIVE UNRUN. The guarded company-research persistence, exact-span, contradiction, versioning, and review mechanics exist and have fake, synthetic, or adversarial test coverage. No completed live public-company capture or external-model result is claimed.
-3. Dotted purple boundary — PROTOCOL-ONLY / UNPOPULATED. The item is documented for later authorised evaluation but no corresponding empirical record or result is asserted.
+1. Solid boundary: BUILT AND LOCALLY TESTED. The named schema or service control exists and is covered by local unit, integration, migration or export tests. This is implementation evidence, not a production or performance claim.
+2. Dashed boundary: BUILT BUT NOT RUN LIVE. The protected company-research storage, exact-passage, conflict, version and review controls exist and have fake, fictional or hostile-input tests. No completed live public-company capture or external-model result is claimed.
+3. Dotted boundary: PLANNED AND EMPTY. The item is recorded for a later authorised evaluation, but there is no matching study record or result.
 
 Reading order
 
-1. Canonical semantics and typed missingness — implemented and locally tested.
-   - Company is the canonical entity record. It holds a canonical and normalized name plus resolution, entity, jurisdiction, and lifecycle state. Exact legal identifiers are separate records with reviewed resolution or decision state; a name or domain alone does not silently merge legal identities.
+1. Shared meanings and clear missing states: built and locally tested.
+   - Company is the shared entity record. It holds the agreed and normalised name plus resolution, entity, jurisdiction and lifecycle state. Exact legal identifiers are separate records with a reviewed decision state. A name or domain alone does not silently merge legal identities.
    - MetricDefinition is versioned through CatalogueVersion and gives a metric key, type, sourceability, unit, description, aliases, and period semantics. The initial catalogue is implemented, while domain approval and freeze before real scoring remain protocol work.
    - ReportingPeriod stores period start, period end, and reporting cutoff. Programme start, effective time, publication or availability time, and retrieval time remain separate where applicable.
    - Alembic revisions add schema fields and tables through explicit, ordered migrations; the current migration head is checked against the SQLAlchemy metadata model. Populated 0008/0009 downgrades fail before destructive schema mutation. This is a local migration contract, not a claim of backward-compatible production rollout.
-   - Observation binds exactly one Company × MetricDefinition × ReportingPeriod, and retains original value, normalized value, explicit missing_state, unit, currency, source cell, and normalization issues. A SQL null does not infer a missing-state meaning.
+   - Observation links exactly one Company × MetricDefinition × ReportingPeriod. It keeps the original value, normalised value, clear missing_state, unit, currency, source cell and normalisation issues. A SQL null does not decide why a value is missing.
    - The complete implemented MissingState taxonomy is: observed; zero; blank; none_stated; not_applicable; not_reported; not_found_publicly; filing_not_due; dormant; not_required; source_unavailable; invalid. In particular, zero is not blank, blank is not not reported, and source unavailable is not a zero or a claim that no record exists.
 
 2. Immutable evidence, exact locators, and versioned claims.
 
-   Locally tested canonical report path — solid blue:
+   Locally tested report path:
    - SourceDefinition binds a source key and version to publisher, admitted/active state, a capability manifest, and the manifest SHA-256.
    - SourceSnapshot binds the collection request to a reviewed company identifier, reporting cutoff, optional programme start, source version, request fingerprint, status, locator, media type, byte size, publication and retrieval times, classification, snapshot path, content SHA-256, derivation-contract version, and derivation SHA-256. Checksum-addressed bytes are written to local ignored storage rather than an external database or cloud store.
    - EvidenceFact links a snapshot to a company and, where applicable, a metric definition. It retains the typed value, unit, currency, period or effective time, publication time, exact source locator, structured locator, extraction method, extraction-schema version, and temporal state.
    - The source registry separately verifies the stored byte hash and a canonical derivation hash covering terminal source metadata plus sorted fact/event payloads. This detects stored or parser-output drift under the implemented contract. It does not establish that the publisher is correct or that the source is complete.
-   - EvidenceItem and Extraction preserve source metadata, original and normalized values, explicit missingness, provider/model/schema where applicable, and exact locator or span. Run-to-evidence and run-to-snapshot links bind use to the run and reporting cutoff.
-   - Claim is a reportable proposition linked many-to-many to EvidenceItem records. It keeps company, metric, period, report section, text, normalized value, and verification state. Verification is a separate record with status, rationale, verifier role, and time; statuses include supported, contradicted, insufficient, stale, and rejected_untrusted. Contradiction is therefore retained as a state, not silently rewritten into support.
+   - EvidenceItem and Extraction keep source details, original and normalised values, the reason for missing information, provider, model and schema where relevant, and the exact location or passage. Run-to-evidence and run-to-snapshot links connect use to the run and reporting cut-off.
+   - Claim is a reportable statement linked to one or more EvidenceItem records. It keeps the company, measure, period, report section, text, normalised value and verification state. Verification is a separate record with a status, reason, verifier role and time. Statuses include supported, contradicted, insufficient, stale and rejected_untrusted. A conflict therefore remains visible instead of being silently changed into support.
 
-   Separately persisted company-research profile path — dashed amber, implemented but live unrun:
-   - CompanyResearchSource retains the candidate and final URL, title, publisher domain, source tier, fetch status, HTTP/media/byte metadata, raw and normalized-text SHA-256 values, local snapshot path and kind, retrieval time, redaction count, and any error state.
+   Separately saved company-research profile path: built but not run live:
+   - CompanyResearchSource keeps the possible and final web address, title, publisher domain, source level, collection status, HTTP, file type and byte details, raw and normalised-text SHA-256 values, local copy path and kind, retrieval time, redaction count and any error state.
    - CompanyResearchClaim belongs to one research run and one captured source. It retains a stable claim hash, category, subject, statement, verbatim evidence span, source locator, optional event/value fields, perspective, verification state, extraction method, and model identifier.
    - ProfileVersion stores one versioned case synthesis with content JSON, content SHA-256, status, optimistic lock version, named reviewer, and review rationale. Contradiction candidates, gaps, and limitations are part of the persisted content contract. This path remains separate from the canonical Report/Claim tables; the figure does not imply an unimplemented automatic merge.
    - Local fake, synthetic, and adversarial tests exercise discovery/capture/exact-span/contradiction/review mechanics. No completed live public-company capture, live model execution, or observed external result is claimed.
 
-3. Versioned report, named approval, and manifest-bound export — implemented and locally tested.
+3. Versioned report, named approval and checked export: built and locally tested.
    - Report vN refers to a dataset, run, reporting period, current ReportSection versions, status, lock version, and content hash. Claim/evidence/verification links remain present in the exported audit object.
    - Named ReviewDecision records the actor, rationale, decision, report version, section where applicable, and time. Approval is rejected unless every current report section is reviewable and every claim has at least one independent Verification record.
    - Editing a pending or approved section marks the previous section version non-current, creates a new section version, increments Report.version, recomputes Report.content_hash, returns the report to pending review, and clears approval. A stale mutation fails its optimistic lock check.
-   - ReportExport is permitted only for the approved current report version. It records pending, finalized, or failed status, the local artifact root, manifest JSON, and manifest SHA-256. The manifest identifies the report and version, includes a bundle content hash, and records SHA-256 for JSON, Markdown, and HTML files. A restrictive staging directory is atomically renamed before database finalization, and finalized artifacts are reverified before reuse.
+   - ReportExport is allowed only for the approved current report version. It records pending, finalised or failed status, the local file root, file-list JSON and its SHA-256. The file list identifies the report and version, includes a content hash for the set, and records SHA-256 for the JSON, Markdown and HTML files. A private staging directory is renamed in one operation before the database marks the export as final, and final files are checked again before reuse.
    - These controls bind approval and export to versioned content and detect later byte changes. They do not certify the truth, completeness, accessibility, confidentiality, legal status, or production fitness of the report.
 
 4. Protocol-only and currently unpopulated extensions.

@@ -1,0 +1,13 @@
+GOV-T1: Governance controls, evidence and remaining requirements
+
+Risk area | Current control | Current evidence | Residual or required authority
+Data and privacy | Classification, purpose declaration, local restricted/internal boundary, public-text redaction | Policies, schemas and controlled tests | Approved lawful-purpose, retention, deletion, backup and incident responsibilities.
+External model | Public/synthetic-only gate, reviewed route, strict schema, budgets and store=False | Code and fake-provider tests; no live request | Eligible account configuration, observed payload/retention evidence and current provider review.
+Untrusted content | URL candidates only, guarded capture, instruction filtering and exact-span admission | Controlled malformed-content and grounding cases | Independent adversarial assessment and continuing source-policy maintenance.
+Transport | HTTPS, DNS, redirect, port, MIME and size validation with public-IP pinning | Controlled SSRF, rebinding and redirect cases | Network-isolated production egress, authentication and tenant separation.
+Resource and recovery | Budgets, retries, cancellation, fingerprints, checksums and staged export | Task/export recovery tests | Backup, service objectives, monitoring, hard-termination recovery and incident exercises.
+Decision and persons | No recommendation, valuation, suitability, profiling or reputation scoring | Requirements and output contracts | Separate authority for any changed purpose, audience or regulated decision use.
+Research validity | Frozen contracts, explicit nulls, manifests and D0 repeats | Fourteen constructed cases; D1/D2 and C0/C3 absent | Independent references, sealed prospective evaluation and authorised human observations.
+Operation and access | Loopback single-user deployment and semantic printable output | Local tests and visual PDF inspection | Full accessibility audit, assistive-technology study and production architecture evaluation.
+
+Source note: Author synthesis of the implemented controls, Chapter 5 evidence and declared holds. This matrix records the dissertation's evaluated state; it is not legal advice, a compliance assessment, a penetration test or deployment approval.

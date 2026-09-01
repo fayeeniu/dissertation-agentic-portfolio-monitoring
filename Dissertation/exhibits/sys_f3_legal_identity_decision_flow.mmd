@@ -1,0 +1,25 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+block-beta
+  columns 2
+  I["<b>WRITE-ONCE INTAKE</b><br/>Input, rule version, purpose and checksum"]:2
+  IN["<b>PORTFOLIO FILE OR COMPANY CASE</b><br/>XLSX, CSV, JSON, number,<br/>website, name or document"]
+  A["<b>INTAKE RECORD</b><br/>Rule fingerprint, checksum,<br/>data class and purpose"]
+  N["<b>CLEAN IDENTITY CLAIMS</b><br/>Exact number for its source;<br/>names and domains are suggestions"]
+  D["<b>NAMED IDENTITY DECISION</b><br/>Exact number, ownership and reason<br/><i>Conflict or rejection: held</i>"]
+  R["<b>RESOLVED</b><br/>Reviewed number and case ready"]
+  G["<b>RESEARCH ELIGIBILITY</b><br/>Public data, ready case<br/>and reviewed number<br/><i>Any failure: unresolved</i>"]
+  W["<b>LIMITED PUBLIC-WEB ROUTE</b><br/>Controls are built;<br/>no live company run"]
+
+  I --> A
+  IN --> A
+  A --> N
+  N --> D
+  D --> R
+  R --> G
+  G --> W
+
+  class I fx-banner
+  class IN fx-input
+  class A,N,R fx-stage
+  class D,G fx-key
+  class W fx-live

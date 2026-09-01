@@ -1,0 +1,9 @@
+EVAL-T7: Manual and human-in-the-loop comparison status
+
+C0 manual: capture protocol exists for same-source tasks, review-ready stopping, active/elapsed time, tools and corrections. Missing authorised practitioners, authority, frozen tasks, independent reference and sample basis. Current result: zero cases; all quality, time, cost and utility measures null.
+
+C2 pre-review: deterministic verified output can be frozen before human exposure, but no authorised real-company/reference dataset exists. D0 mechanism results are not human-comparison values.
+
+C3 HITL: versioned edits, approval/rejection and rationale mechanisms exist. Missing authorised reviewers, consent/instrument, gold-blind task, order plan and observed events. Current result: zero cases; edits, reversals, timing, quality and reviewer utility null.
+
+Reference: independent labels, agreement, adjudication and freeze are specified but unexecuted. RQ3 has no empirical result about time saving, error correction, usefulness or decision quality.

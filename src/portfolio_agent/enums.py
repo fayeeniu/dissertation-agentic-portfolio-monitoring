@@ -79,6 +79,15 @@ class LinkReviewStatus(StrEnum):
     REJECTED = "rejected"
 
 
+class EvidenceScope(StrEnum):
+    LEGAL_ENTITY = "legal_entity"
+    CONSOLIDATED_GROUP = "consolidated_group"
+
+
+class CompanyRelationshipType(StrEnum):
+    CONSOLIDATED_GROUP = "consolidated_group"
+
+
 class ProfileVersionStatus(StrEnum):
     DRAFT = "draft"
     PENDING_REVIEW = "pending_review"

@@ -1,0 +1,11 @@
+EVAL-T3: D0 fictional test set and C1-C2 comparison design
+
+Fixture: 14 fictional labelled cases admitted through hashed evaluation manifest v2, with test-only benchmark:d0 namespace. Edge cases cover complete, sparse, blank/zero, mixed type, conflict, stale, unsupported, ambiguous identity, duplicate, inaccessible, narrative, mixed currency and prompt injection.
+
+Shared preparation: identical case order, catalogue, sourceability, candidate values/currencies, normaliser and expected states.
+
+Changed mechanism: C1 emits eligible normalised candidates and holds ambiguous identity without a separate verification stage. C2 receives the same inputs but emits only candidates marked supported by the separate deterministic verifier.
+
+Repeats and scoring: three deterministic repeats; first-run outcomes are scored and exact outcome-vector equality measures repeat consistency.
+
+Limit: expected states are visible development labels and the rules are structurally aligned with them. This is mechanism/regression evidence, not an independent, out-of-sample, real-company or human-benefit estimate.

@@ -1,0 +1,37 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% Reading order snakes left-to-right, then right-to-left, on alternating rows; the step numbers
+%% carry the sequence. Row four therefore reads right-to-left: B1 then B2.
+%% Block diagrams give every cell the width of the widest cell, so the line breaks below are kept
+%% short on purpose: a narrow figure is a larger figure once it is scaled to \textwidth.
+block-beta
+  columns 3
+  D["<b>1 FIND SOURCES</b><br/>Web addresses<br/>and leads only"]
+  A["<b>2 APPLY<br/>SOURCE RULES</b><br/>Identity, purpose,<br/>scope and access<br/><i>Failure: rejected</i>"]
+  C["<b>3 SAVE A COPY</b><br/>Publisher, date, bytes,<br/>checksum and version<br/><i>Blocked: held</i>"]
+  V["<b>6 VERIFY<br/>SEPARATELY</b><br/>Support, date, trust<br/>and source record<br/><i>Unsupported or<br/>stale: held</i>"]
+  T["<b>5 STRUCTURE<br/>THE CLAIM</b><br/>Company, measure,<br/>value, period<br/>and location"]
+  P["<b>4 FIND EXACT<br/>SUPPORT</b><br/>Passage must meet the<br/>reporting cut-off<br/><i>No support: held</i>"]
+  X["<b>7 KEEP CONFLICTS</b><br/>Competing evidence<br/>remains visible<br/><i>Unresolved: held</i>"]
+  R["<b>8 NAMED APPROVAL</b><br/>Decision matches the<br/>current content hash<br/><i>Missing or old:<br/>no export</i>"]
+  E["<b>APPROVED REPORT<br/>OR EXPORT</b><br/>Versioned file list<br/>and output checksums"]
+  B2["<b>THE RECORD<br/>CANNOT SHOW</b><br/>Whether the source<br/>itself is true"]
+  B1["<b>THE RECORD CAN SHOW</b><br/>Origin, saved bytes, time,<br/>checksum, location and decision"]:2
+
+  D --> A
+  A --> C
+  C --> P
+  P --> T
+  T --> V
+  V --> X
+  X --> R
+  R --> E
+  E --> B1
+  B1 --> B2
+
+  class D fx-input
+  class A,C,P,T,X fx-stage
+  class V,R,E fx-key
+  %% B1 uses the medium tint rather than the deep banner fill: two connectors terminate on it, and
+  %% a dark connector on a dark fill is not legible.
+  class B1 fx-key
+  class B2 fx-hold

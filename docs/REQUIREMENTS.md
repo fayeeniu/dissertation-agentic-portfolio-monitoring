@@ -109,9 +109,9 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 
 | ID | Requirement | Acceptance evidence | Status |
 |---|---|---|---|
-| FR-UI-001 | Provide server-rendered, keyboard-operable pages for import, run trace, report review, decisions, and downloads. | FastAPI/Jinja views and web tests. | Implemented |
-| FR-UI-002 | Communicate state in text, not colour alone, with labels, captions, semantic headings, and skip navigation. | Templates/CSS and static inspection. | Implemented; formal accessibility audit pending |
-| FR-UI-003 | Reject non-loopback clients/unexpected Host headers and require CSRF on every mutation. | Web middleware and negative route tests. | Implemented |
+| FR-UI-001 | Provide a keyboard-operable Next.js control room for company intake, run trace, profile review, decisions, and approved downloads. | Next.js type/lint/build gates and control-room API tests. | Implemented; formal browser audit pending |
+| FR-UI-002 | Communicate state in text, not colour alone, with labels, semantic headings, and reduced-motion parity. | Next.js components/styles and static inspection. | Implemented; formal accessibility audit pending |
+| FR-UI-003 | Publish only Next.js on loopback; reject non-private FastAPI clients/unexpected Host headers and require CSRF on every API mutation. | Compose contract, web middleware negatives, and control-room API tests. | Implemented |
 | FR-UI-004 | Derive reviewer identity from local configuration, never an action form field. | `PORTFOLIO_REVIEWER_NAME`; mutation tests. | Implemented |
 | FR-OBS-001 | Give every dataset, workflow, agent action, evidence item, extraction, claim, report, and review a stable ID. | Data model. | Implemented |
 | FR-OBS-002 | Retain input/output hashes, duration, attempts, provider/model, tokens, errors, and bounded metadata. | Agent ledger. | Implemented |
@@ -125,7 +125,7 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | NFR-SEC-001 | Bind the prototype only to loopback and document that it has no production authentication. | CLI host guard; security document. | Implemented |
 | NFR-SEC-002 | Keep secrets, databases, imported data, raw snapshots, runtime outputs, and exports outside version control. | `.gitignore`; secret scan gate. | Implemented |
 | NFR-SEC-003 | Never place raw restricted values in agent trace metadata or application logs. | Stage summaries contain counts/IDs/hashes only. | Implemented |
-| NFR-SEC-004 | Auto-escape user/source text in the UI and generated HTML. | Jinja auto-escape and explicit HTML escaping. | Implemented |
+| NFR-SEC-004 | Render user/source text through React text nodes and explicitly escape generated HTML. | Next.js rendering boundary and export escaping tests. | Implemented |
 | NFR-SEC-005 | Benchmark IDs must be namespaced and impossible to attach to operational source snapshots. | Evaluation registry/SourceRegistry guards. | Implemented |
 | NFR-REL-001 | Enforce relational foreign keys and uniqueness invariants. | SQLite FK pragma, constraints, migration. | Implemented |
 | NFR-REL-002 | Repeat deterministic synthetic evaluation and report consistency. | Three-run comparison. | Implemented |
@@ -190,7 +190,7 @@ Requirements use stable IDs so design, code, tests, and dissertation evidence ca
 | FR-ACR-004 | Preserve named optimistic-locked profile approval through the JSON boundary; a stale lock version must fail. | `test_control_room_api.py` lock-version approval test. | Implemented |
 | FR-ACR-005 | Reserve colour, glow, and motion for real execution state, express every state in text as well as colour, and remove all motion under `prefers-reduced-motion` without removing information. | `AgentGraph` reduced-motion gating; rendered desktop and mobile checks. | Implemented |
 | FR-ACR-006 | Provide an offline fixture research mode that exercises the real orchestrator, snapshot checksums, exact-span validator, contradiction ledger, and approval gate without a model call or an outbound request, and label every such run as synthetic. | `test_company_research_fixtures.py`; `test_control_room_api.py` fixture run. | Implemented |
-| FR-ACR-007 | Route every company-research model call to the approved `gpt-5.6-luna` model with stage-specific effort, in code and never by model choice; record the model that actually ran on every attempt. | `test_model_routing.py` route, sent-parameter, and approved-route tests. | Implemented |
+| FR-ACR-007 | Route every company-research model call to the approved `gpt-5.6-luna` model with configured `high`/`max` effort: configured effort for first-pass discovery and `high` for selection and correction; choose the route in code, never by model choice, and record the model that actually ran on every attempt. | `test_model_routing.py` route, sent-parameter, and approved-route tests. | Implemented |
 | FR-ACR-008 | State the exact-span, cutoff, privacy, perspective, and prohibited-source acceptance rules verbatim in the model briefs. | `test_model_routing.py` brief-content tests. | Implemented |
 | FR-ACR-009 | Keep a run readable, reviewable, cancellable, and its approved deck downloadable after the prompt or source-policy version moves on, while refusing to execute a further stage on it. | `test_control_room_api.py` superseded-run and approved-deck tests. | Implemented |
 | FR-ACR-010 | Direct source planning toward company identity, financing, customers, partnerships, products, technology, certifications, operating scale, expansion, awards, public performance, and adverse evidence, while retaining the canonical public/mixed CBIT metric definitions in the prompt. | `test_model_routing.py` prompt-contract tests. | Implemented |

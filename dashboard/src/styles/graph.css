@@ -209,8 +209,8 @@
   border-radius: 50%;
 }
 
-/* A repair-tier attempt is the same engine at a smaller size; the dimmer dot
-   says so without adding another colour to the vocabulary. */
+/* A repair-tier attempt is the same engine under a corrective contract; the
+   distinct dot separates that retry without inventing another agent. */
 .gnode-engine[data-tier="repair"]::before {
   opacity: 0.45;
 }

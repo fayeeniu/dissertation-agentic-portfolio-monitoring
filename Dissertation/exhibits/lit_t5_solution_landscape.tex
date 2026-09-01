@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.16\textwidth}P{0.25\textwidth}P{0.27\textwidth}Y@{}}
+    \toprule
+    \textbf{Approach} & \textbf{What it can provide} & \textbf{Main trade-off for this prototype} & \textbf{Evidence position} \\
+    \midrule
+    Manual workflow & Flexible human collection, reconciliation and judgement & Provenance, timing and review depend on the local procedure & No measured baseline in this study \\
+    Deterministic pipeline & Repeatable rules, typed data and inspectable lineage & Limited handling of new unstructured evidence; wrong rules repeat consistently & Used for structured processing, not evaluated as a complete alternative \\
+    Single grounded agent & One interaction path can retrieve, extract and apply a fixed support gate & Production and checking share context and permissions unless separated explicitly & Credible alternative; not compared empirically \\
+    Role-separated workflow & Narrow permissions, persisted hand-offs, failure isolation and an approval boundary & More states, messages, storage and maintenance & Selected for inspectability; D0 isolates the verification gate, not general multi-agent superiority \\
+    Managed agent platform & Configured persistent roles, tools, context and hand-offs without building every interaction surface & Provider-managed boundaries and shared computer state require separate control review; setup and maintenance effects remain unknown & Grok Bot is a future comparator; not implemented or evaluated \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Architecture alternatives for the reporting problem}
+  \label{tab:lit-solution-landscape}
+  \vspace{3pt}
+
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author synthesis from \citet{buneman2001provenance},
+    \citet{nikiforova2020quality}, \citet{gao2023ragsurvey}, \citet{guo2024multiagent},
+    \citet{wu2024autogen}, \citet{cemri2025masfailures}, \citet{dibia2024autogenstudio} and
+    \citet{spacexai2026grokbot}. The table compares design choices; it does not report an
+    effectiveness comparison.}
+\end{table}

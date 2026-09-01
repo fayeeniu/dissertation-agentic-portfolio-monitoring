@@ -1,0 +1,13 @@
+EVAL-T1: Exact implementation and evidence record at 28 August 2026
+
+Host/runtime: Darwin 25.6.0 arm64; Python 3.12.13. Git state: HEAD 6356aa49cb3b with a recorded dirty working tree, so the commit is not a complete content seal.
+
+Python contracts: pyproject.toml SHA-256 d8ed0555634260d1069bff3fe303ede858d54793b556ecc33f849c9d74c01101; requirements.lock 5cce8f8e824bf5e6f88d47308a51fbc946a873a1327157dd5af9054b9892f0; requirements-dev.lock 5e2469bc4caaa724db1d4b60eb9103afd4c637afb35c5ab9ff7320a9e8185608.
+
+Database: Alembic revisions 0001–0009, current head 0009; a fresh SQLite upgrade and schema-drift check were executed.
+
+Evaluation manifest: SHA-256 1c16234a0dbb965ba0db882531389ddcc52c588c9d7904ba964d480f1ce24254, schema evaluation-manifest-v2. D0 is executable; D1 is protocol-only; D2 is sealed.
+
+D0: 14 synthetic test-only cases, namespace benchmark:d0, fixture SHA-256 f403d59ed8db8b3a7c8e2f19cae9e8d098317f6c09da94be361ffcf8a122c94b. Three-repeat output frozen at audit/d0_evaluation_2026-09-01.json on 1 September 2026, SHA-256 dcc2fbffab100dfcf034784002d63b610cd9f97a8d6e6f9218b6e7f900de9dcd.
+
+Held evidence: C0 and C3 have zero observations; no live company, model or public-web run was performed. Human, live-source, utility and production claims remain null.

@@ -104,7 +104,7 @@ Credential rotation remains **unverified external work**. This project cannot cl
 | Hallucinated fact | Generator fills blank from priors | Deterministic-first; no claim without candidate; verifier; HITL | Empirical false-positive measurement on frozen gold data |
 | Temporal leakage | Future evidence supports past report | UK civil cutoff plus publication/effective-time eligibility | Source-specific availability rules and final OOS governance |
 | Formula/malicious workbook | Spreadsheet executes formula or payload | `data_only=False`; no formula execution/macros; `.xlsx` only | File-type scanning and isolated parser for production |
-| Stored XSS/HTML injection | Source/reviewer text rendered as markup | Jinja auto-escape; custom HTML export escapes input; CSP | Security test/fuzzing and CSP nonce if scripts later added |
+| Stored XSS/HTML injection | Source/reviewer text rendered as markup | React text escaping; custom HTML export escapes input; restrictive API and dashboard headers | Security test/fuzzing and formal browser review |
 | Local unauthorised access | Other user/process reads runtime files | Snapshot/export mode `0600`; loopback bind, or Docker-private clients behind a host-loopback-only published port | Encrypted disk/database and OS account controls |
 | CSRF/local malicious site | Browser posts to loopback UI | Per-process CSRF token+HttpOnly Strict cookie, CSP, loopback client and Host allowlist | Production authentication/session rotation before wider use |
 | DNS rebinding/non-local request | Hostname resolves to loopback or forwarded client reaches app | Host-header and client-address loopback enforcement | Trusted reverse-proxy design only after explicit deployment review |
@@ -203,13 +203,16 @@ production threat review. The bounded connector/fetch policy is an engineering c
 source-law or redistribution approval. G2 remains closed except for the explicitly conditioned
 local web-discovery/capture path recorded in the source-admission register.
 
-The supported container path is also local-only: `compose.yaml` publishes `127.0.0.1:8000`, drops
-Linux capabilities, and enables private-network client acceptance only because Docker NAT replaces
-the host browser's loopback address with its private gateway address. Compose explicitly injects
-the private `.env` API key and named reviewer into the running container, never into the image; the
-two live-research gates are open in this local profile, while external calls still require an
-explicit research-stage advance. Publishing the container port on `0.0.0.0` or using
-`--docker-local` outside that boundary is unsupported and unsafe.
+The supported container path is also local-only: `compose.yaml` publishes only the Next.js service
+at `127.0.0.1:8000` by default and leaves FastAPI on the private Compose network. Both services drop
+Linux capabilities and run with read-only roots. FastAPI accepts the exact internal `api` Host only
+in Docker-local mode, alongside private-network client checks. Next.js rejects non-loopback Host,
+cross-site, and missing/mismatched Origin requests before a mutation handler can attach the private
+FastAPI CSRF credentials. Compose injects the private `.env`
+API key and named reviewer into the API container, never into either image; the two live-research
+gates are open in this local profile, while external calls still require an explicit research-stage
+advance. Publishing either service on `0.0.0.0` or using `--docker-local` outside this topology is
+unsupported and unsafe.
 
 Atomic export protects normal write/finalization failures and re-verifies hashes on reuse. A hard
 process termination in the narrow interval after directory rename but before database finalization

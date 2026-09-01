@@ -1,53 +1,41 @@
 \begin{table}[htbp]
   \centering
-  \caption{Research contract and current evidence boundary}
-  \label{tab:research-contract}
   \footnotesize
-  \setlength{\tabcolsep}{2.5pt}
+  \setlength{\tabcolsep}{2.2pt}
   \renewcommand{\arraystretch}{1.22}
   \hyphenpenalty=4000
   \exhyphenpenalty=4000
-  \begin{tabularx}{\textwidth}{@{}P{0.095\textwidth}P{0.19\textwidth}Y P{0.16\textwidth}P{0.19\textwidth}@{}}
+  \begin{tabularx}{0.99\textwidth}{@{}P{0.12\textwidth}P{0.30\textwidth}Y P{0.22\textwidth}@{}}
     \toprule
-    \rowcolor{WMGBlue!10}
     \textbf{Question} &
-    \textbf{Evaluand / comparison} &
-    \textbf{Observable measures} &
-    \textbf{Current evidence status} &
-    \textbf{Exclusion / interpretive boundary} \\
+    \textbf{How it will be answered} &
+    \textbf{Main measures} &
+    \textbf{Current evidence and limit} \\
     \midrule
     Primary question &
-    C0 manual; C1 deterministic, no independent verifier; C2 bounded independent verification; C3 is C2 plus named review. &
-    Automation extent; quality; provenance; reliability; failures; active and elapsed time. &
-    D0: C1/C2 mechanism evidence. Human C0/C3 and D1/D2: \textbf{EVIDENCE HELD / NO-GO}. &
-    Manual comparison requires authorised C0/C3. Live public-web company-research evaluation is outside RQ1--RQ3; no investment, production or exhaustive-web inference. \\
+    Combine RQ1 implementation evidence with the paired C1/C2 D0 comparison. &
+    Traceability; decision correctness; supported-claim precision; unsupported-claim rate; source-record completeness; repeatability. &
+    Engineering checks and D0 answer the bounded question. No real-portfolio or business-benefit inference is made. \\
     \addlinespace
-    \rowcolor{DraftPale}
     RQ1 &
-    Accurate and reliable bounded transformation of heterogeneous inputs against a frozen reference. &
-    Type, extraction, normalisation, missing-state, identity and time accuracy; provenance and locator completeness; outcome-vector repeat consistency. &
-    D0 labelled mechanism evidence. D1 pilot and sealed D2: \textbf{HELD}. &
-    D0 supports mechanism claims only; no real-portfolio, live-source or production inference. \\
+    Inspect the implemented records and test fixed identity, date, missing-data, provenance and approval rules. &
+    Required records and states; exact claim links; source completeness; repeated outcomes. &
+    Repository implementation, tests and D0 provide the evidence. \\
     \addlinespace
     RQ2 &
-    C1 without a verifier versus C2 bounded independent verification, under the same information boundary. &
-    Supported precision and recall; unsupported rate; conflicts; abstention; provenance completeness; repeat consistency. &
-    C1/C2 executable on labelled D0 cases. D1/D2: \textbf{HELD}. &
-    Estimate verifier effect; do not assume benefit. Report trade-offs, failures and null outcomes. \\
-    \addlinespace
-    \rowcolor{DraftPale}
-    RQ3 &
-    Compare C1/C2 automation and C3 named review with manual C0. Sub-comparison: C2 before versus C3 after review. &
-    Correctness and completeness; active/elapsed time; edits; approval time; reviewer utility. &
-    D0 C0/C3 measures are null. Human C0/C3 and D1/D2: \textbf{EVIDENCE HELD / NO-GO}. &
-    Requires ethics/data authority, frozen reference and authorised reviewers; no retrospective timing or invented participant evidence. \\
+    Compare C1 without a separate verifier with C2 on the same cases and with the same information access. &
+    Precision; recall; F1; unsupported-claim rate; contradiction handling; source-record completeness; repeatability. &
+    Executed on fourteen fictional cases across three repeats. \\
     \bottomrule
   \end{tabularx}
+
+  \caption{Research questions and evaluation plan}
+  \label{tab:research-contract}
   \vspace{3pt}
 
-  \parbox{\textwidth}{\scriptsize
-    \textit{Interpretive boundary:} Live public-web company-research evaluation is outside RQ1--RQ3. Investment outcomes, production readiness and exhaustive-web coverage are not evaluands.\\
-    \textit{Source note:} Author synthesis of frozen project contracts, not results. Evidence-status labels distinguish executable D0 mechanism evidence from held D1/D2, manual and human evidence.
+  \parbox{0.99\textwidth}{\scriptsize
+    \textit{Limit:} Manual, participant, live-web and managed-platform comparisons are prospective work. Investment outcomes, production readiness and complete web coverage are not tested.\\
+    \textit{Source note:} Developed by the author from the fixed evaluation plan and current evidence status. It does not add a study result.
   }
 \end{table}
 \clearpage

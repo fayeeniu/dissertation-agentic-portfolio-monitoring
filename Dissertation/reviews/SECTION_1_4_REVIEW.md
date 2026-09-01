@@ -1,5 +1,9 @@
 # Section 1.4 independent review
 
+> Historical review note, 29 August 2026: this decision applies to the superseded standalone
+> objectives section. The current Section 1.4 contains the research questions and evaluation plan
+> and requires a new independent review.
+
 Section: `1.4 Research objectives`  
 Reviewer: `$dissertation-reviewer`  
 Final gate: **PASS**  

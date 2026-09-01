@@ -1,0 +1,9 @@
+EVAL-T6: Held future public-company source-discovery comparison
+
+Required but held: authorised public-company manifest and cutoffs; exact reviewed Companies House identity; equivalent eligible-source access; admitted live official adapters and immutable captures; separately authorised counts/hash/locator smoke; frozen query/model/prompt/budgets; independently constructed claims/spans/conflicts/gaps/unavailable-source reference; sample size and analysis decision.
+
+Implemented but live-unrun: bounded OpenAI web-search candidate discovery, guarded public-page capture and deterministic evidence admission.
+
+Planned measures: supported-claim recall, unsupported-claim rate, source-tier mix, provenance completeness, contradiction retention, category coverage, unavailable/paywalled states, captured-source count, elapsed time, retries, tokens and cost, paired on the same company and cutoff.
+
+Current consequence: all result cells remain held or null. Synthetic replay and controlled tests cannot substitute for the comparison. A future result could address incremental bounded discovery only, not exhaustive open-web coverage or investment merit.

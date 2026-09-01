@@ -1,8 +1,8 @@
 # Section 4.2 verified evidence packet
 
 Scope: `4.2 Architecture and local deployment` only. Page numbers are PDF page numbers in the
-hash-pinned local files. Literature claim fit and the cited repository surfaces were checked on
-27 August 2026. Repository paths establish this artefact's current implementation; the literature
+hash-pinned local files. Literature claim fit and the cited repository surfaces were rechecked on
+31 August 2026. Repository paths establish this artefact's current implementation; the literature
 supports the design and reporting principles, not the existence or effectiveness of the artefact.
 
 ## Paragraph 1: local application and service boundaries
@@ -11,11 +11,12 @@ supports the design and reporting principles, not the existence or effectiveness
   artefact from rigorous evaluation of its utility, quality and efficacy.
 - `peffers2007dsrm`, PDF pp. 16--18: design and development include the artefact's desired
   functionality and architecture; demonstration and evaluation remain separate activities.
-- Repository evidence: `src/portfolio_agent/web.py:825--840, 910--1006, 1273--1477` constructs the
-  FastAPI/Jinja surface and delegates through the selected runtime; `src/portfolio_agent/bootstrap.py:
-  45--110` assembles importer, workflow, reports, sources and intake services; `src/portfolio_agent/
-  cli.py:62--173, 212--235, 274--327` exposes local serve/import/run/review/export operations through
-  the same runtime; `docs/ARCHITECTURE.md:75--95` records component ownership.
+- Repository evidence: `dashboard/src/app/dash-api/[...path]/route.ts` is the same-origin server-side
+  proxy; `src/portfolio_agent/web.py` constructs the private FastAPI service and
+  `src/portfolio_agent/api.py` delegates API requests through selected domain services;
+  `src/portfolio_agent/bootstrap.py` assembles importer, workflow, reports, sources and intake
+  services; the CLI uses that Runtime for non-dashboard operations. `docs/ARCHITECTURE.md` and
+  ADR-0013 record the sole Next.js dashboard and the private API boundary.
 
 Safe synthesis: describe a modular local artefact whose presentation, service and persistence
 responsibilities are explicit. Do not infer utility, empirical quality or production suitability
@@ -45,13 +46,12 @@ prove truth, encryption, lawful authority or external reproducibility.
   recorded so implementation evidence can be rerun and qualified.
 - `nist2023airmf`, PDF pp. 20--23 and 33--35: deployment context, security, resilience, testing,
   documentation and operational monitoring are distinct risk-management concerns.
-- Repository evidence: `src/portfolio_agent/cli.py:153--170, 212--235` restricts native binding and
-  defines Docker-local mode; `src/portfolio_agent/web.py:842--872, 911--918` enforces local clients,
-  Host allowlisting, headers and health state; `Dockerfile:1--33` pins the base image and runs the
-  CLI health-checked service as a non-root user; `compose.yaml:1--29, 49--50` publishes the port on
-  host loopback, mounts `portfolio-state`, uses a read-only root filesystem and applies container
-  restrictions; `docs/REQUIREMENTS.md:175--181, 197--217` and `README.md:527--535` keep the
-  implemented public-web path's live smoke/evaluation unrun.
+- Repository evidence: ADR-0013 defines native and Compose execution as separate Next.js and
+  FastAPI processes. `compose.yaml` publishes only the dashboard at host loopback, exposes the API
+  only inside the Compose network, mounts `portfolio-state` only on the API and makes both roots
+  read-only. The Next.js proxy applies same-origin checks before attaching the private API's CSRF
+  credentials; `web.py` enforces exact Host/client boundaries. Requirements and the source-admission
+  register keep the implemented public-web path's live smoke and evaluation unrun.
 
 Safe synthesis: report the native and Docker-local mechanisms and checks separately from a live
 company-research result. Configuration and engineering tests do not establish hosted behaviour.
@@ -74,19 +74,16 @@ properties.
 
 ## SYS-F1 integration boundary
 
-The sealed non-empirical architecture figure shows the request and data path, not measured
-performance: local browser and CLI entry points; FastAPI/Jinja/API presentation; shared runtime and
-service layer; SQLAlchemy/SQLite metadata and audit; immutable local raw/source/export stores;
-Alembic startup; Docker-local loopback/persistent-volume boundary; optional external research path
-marked implemented but live-unrun; and a visible production-boundary stop. The integrated PDF is
-`Dissertation/exhibits/sys_f1_architecture_deployment_boundary.pdf` with label
-`fig:sys-architecture-deployment-boundary`. Verified SHA-256 values are: renderer PY
-`2624fb20c86fe34150e2e6acae244d2818d614d3323cf7cfd2cc4b35dae5a7e9`; source SVG
-`6aef9ac65c5d8112066e1ea9a97ada4a2444398aa5b5f71da1cca325a292f46d`; PDF
-`3e2fe6bcd8839b0d558f57379d75e3176450383435ec37aefc146323b3d83a14`; TXT alternative
-`089711806de53be22b7e921a4b6e65091fb05b2f3bbad65ed0f45e06d38c69a0`; and provenance JSON
-`4a17e8be4ec851ed3768b79f1626ea98ca5c7bc0ec980cd78ace22c84a7298a4`. All 30 recorded inputs
-and four outputs independently match their provenance hashes.
+The current non-empirical architecture figure shows the request and data path, not measured
+performance: loopback browser to Next.js; server-side proxy to private FastAPI; shared Runtime and
+CLI; SQLAlchemy/SQLite and local files; the two-service Compose boundary; the implemented but
+live-unrun public-research path; held direct registry retrieval; and explicit production non-goals.
+The manuscript integrates the PNG with label `fig:sys-architecture-deployment-boundary`. SHA-256
+values are MMD `667b4358131ce517b6ad016b481e277da57f0b7b0ef553f982a2602fe4d14d5a`, PNG
+`3f1e100e25e4e583253c94391edf8ceffec074a1bde465ae89882caaac7bd7af`, TXT
+`3b5e8cd03b6566bab18e95f366527e3296834cb3365846bd9a50117c7654fce2`, and provenance JSON
+`3c89446e602caa07f545cc4d834efdf81db1a262f4d838ac0c661e5ba01dfcfb`. The prior SVG/PDF/Python
+assets are explicitly superseded and are not referenced by the manuscript.
 
 ## Prohibited overreach
 
@@ -99,20 +96,11 @@ and four outputs independently match their provenance hashes.
 
 ## Author validation record
 
-- Eight focused local tests passed: server-rendered pages/security headers, Host/CSRF/reviewer
-  rejection, Docker-private-client filtering, immutable/idempotent import, Alembic/ORM schema
-  equivalence, `0008` and `0009` empty-schema downgrade/re-upgrade, and finalized-export checksum
-  verification. The only test diagnostic was the pre-existing Starlette TestClient/httpx deprecation
-  warning.
-- `docker compose config --quiet` passed. The current Compose app hash
-  `836f4bf5e9f70b8e5dbea13d3cd4c83443530b11c624c764012e5310d2c0f150` matched the running
-  `agentic-portfolio-app-1` label. Read-only root, the read/write `portfolio-state` mount at
-  `/app/var`, `127.0.0.1:8000` publication and healthy status were inspected; the loopback health
-  response was `{"status":"ok","external_llm":"enabled"}`. Enabled is configuration state only;
-  no research stage, public-source retrieval or model call was executed.
-- Strict source validation passed: 38 local PDFs and hashes, two immutable web captures, 80
-  substantive body paragraphs and 34 distinct cited sources.
-- Tectonic produced a 68-page PDF. No warning originated in Section 4.2 or SYS-F1; existing
-  underfull-box warnings elsewhere remain non-blocking. Physical page 50 contains Section 4.2,
-  page 51 contains the complete figure and caption, and page 52 begins Section 4.3. Targeted renders
-  show no blank intervening page, clipping, overlap or heading-before-figure regression.
+- Six focused current-candidate tests pass: the Docker/Next.js topology contract, proxy credential
+  guards, private FastAPI route/security checks and Alembic-head/ORM schema equivalence. One
+  dependency deprecation warning remains. These are local static/API/schema checks; no browser,
+  Compose runtime, live source or model call was run for this refresh.
+- The Mermaid source/render manifest passes with the refreshed SYS-F1 source and PNG hashes. The
+  current PNG was inspected directly and is legible without clipping or overlap.
+- Whole-dissertation source, citation, build and integrated-page results are recorded by the final
+  document sweep rather than inferred here.

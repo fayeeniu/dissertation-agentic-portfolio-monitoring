@@ -4,7 +4,6 @@ import json
 from datetime import UTC, date, datetime
 
 import pytest
-from fastapi.testclient import TestClient
 from sqlalchemy import select
 
 from portfolio_agent.bootstrap import Runtime
@@ -25,7 +24,6 @@ from portfolio_agent.models import (
     run_source_snapshots,
 )
 from portfolio_agent.temporal import TemporalEvidence, TemporalWindow, temporal_eligibility
-from portfolio_agent.web import create_app
 
 
 def _payload(*, period: str, start: date, end: date, classification: str = "synthetic") -> bytes:
@@ -394,11 +392,6 @@ def test_later_source_run_does_not_leak_future_events_into_earlier_ui_or_export(
     assert "Synthetic outcome after cutoff" not in earlier_titles
     assert "Synthetic filing after historical cutoff" in later_titles
     assert "Synthetic outcome after cutoff" in later_titles
-
-    page = TestClient(create_app(runtime)).get(f"/reports/{earlier.report_id}")
-    assert page.status_code == 200
-    assert "Synthetic filing after historical cutoff" not in page.text
-    assert "Synthetic outcome after cutoff" not in page.text
 
     lock_version = runtime.reports.approve(
         earlier.report_id,

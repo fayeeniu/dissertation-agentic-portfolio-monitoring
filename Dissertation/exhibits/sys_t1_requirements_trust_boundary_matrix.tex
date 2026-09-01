@@ -8,29 +8,24 @@
   \setlength{\LTcapwidth}{\textwidth}
   \hyphenpenalty=2600
   \exhyphenpenalty=2600
-  \captionsetup{hypcap=false}
-  \captionof{table}{Requirements and trust-boundary matrix for the research prototype}
-  \label{tab:sys-requirements-trust-boundary}
-  \vspace{-3pt}
-  \begin{longtable}{@{}P{0.12\textwidth}P{0.14\textwidth}P{0.20\textwidth}P{0.16\textwidth}P{0.18\textwidth}P{0.15\textwidth}@{}}
+  \begin{longtable}{@{}P{0.125\textwidth}P{0.135\textwidth}P{0.20\textwidth}P{0.16\textwidth}P{0.18\textwidth}P{0.15\textwidth}@{}}
     \toprule
-    \textbf{Boundary / requirement} &
-    \textbf{In-scope actor, data, action} &
-    \textbf{Current implemented control} &
-    \textbf{Approved outstanding work} &
-    \textbf{Non-goal / stop condition} &
-    \textbf{Evidence locator / status} \\
+    \textbf{Requirement} &
+    \textbf{Person, data and action in scope} &
+    \textbf{Control in the prototype} &
+    \textbf{Work still needed} &
+    \textbf{Outside scope or reason to stop} &
+    \textbf{Evidence and status} \\
     \midrule
     \endfirsthead
 
-    \multicolumn{6}{@{}l}{\scriptsize\textit{Table~\ref{tab:sys-requirements-trust-boundary} continued: requirements and trust boundaries}} \\
     \toprule
-    \textbf{Boundary / requirement} &
-    \textbf{In-scope actor, data, action} &
-    \textbf{Current implemented control} &
-    \textbf{Approved outstanding work} &
-    \textbf{Non-goal / stop condition} &
-    \textbf{Evidence locator / status} \\
+    \textbf{Requirement} &
+    \textbf{Person, data and action in scope} &
+    \textbf{Control in the prototype} &
+    \textbf{Work still needed} &
+    \textbf{Outside scope or reason to stop} &
+    \textbf{Evidence and status} \\
     \midrule
     \endhead
 
@@ -42,66 +37,70 @@
     \endlastfoot
 
     \textbf{Local runtime and accountable actor}\par NFR-SEC-001; FR-UI-003--004 &
-    One configured local operator uses the FastAPI/Jinja interface, SQLite and ignored local files. &
-    CLI loopback bind; Host/client allowlists; CSRF on mutations; configured reviewer identity; Docker clients accepted only behind a host-loopback published port. &
+    One configured local operator uses the loopback Next.js dashboard, private FastAPI service, SQLite and ignored local files. &
+    Next.js is the only published browser surface; its same-origin server-side proxy reaches FastAPI privately. Host/client checks, server-held CSRF credentials and configured reviewer identity protect changes. &
     Formal accessibility/security review and any wider deployment design require separate evidence and authority. &
     No anonymous, remote or multi-user access. Reject non-loopback clients, unexpected hosts, missing CSRF or missing configured reviewer. &
-    \emph{cli.py}; \emph{web.py}; route tests.\par \textbf{IN PLACE}\par Local only; not production auth. \\
+    \emph{web.py}; dashboard proxy; Compose and route tests.\par \textbf{IN PLACE}\par Local only; not production sign-in. \\
 
     \addlinespace[1.5pt]
     \textbf{Identity-first intake}\par FR-ID-001--004; FR-INT-001, 006 &
     A submitted Companies House number is an identity claim; a named reviewer may accept or reject it with rationale. &
-    Structurally valid number-only intake creates an unresolved company and unreviewed identifier. Names/domains do not auto-merge; identity conflict and classification mismatch fail closed. &
+    A number with a valid format creates an unresolved company and unreviewed identifier. Names and domains do not merge records automatically. Identity conflicts and data-class mismatches stop the case. &
     Before direct live registry use: close G2 with current interface/terms, credential, identifier, storage, cutoff and attribution review. &
     Syntax is not legal-identity authority. Do not collect or link facts while identity is unresolved, conflicting, rejected or from another classification boundary. &
     Intake service; ADR-0007; tests.\par \textbf{IN PLACE}\par Offline; live registry held. \\
 
     \addlinespace[1.5pt]
     \textbf{Data class and authority}\par NFR-SEC-002--005; NFR-RES-001 &
-    Restricted and internal material stays local; admitted public evidence and fictional synthetic cases follow separate flows. &
-    Closed classification enum; purpose and actor records; ignored create-once files with mode ``0600''; content-free traces; provider recheck. &
+    Restricted and internal material stays local. Accepted public evidence and fictional cases follow separate routes. &
+    Fixed data classes; purpose and person records; write-once files with private ``0600'' permissions; records without content; provider check. &
     Verify lawful authority, controller, access, retention and deletion, and any ethics/consent terms before restricted-data or participant work. &
     Never place restricted or internal content in Git, fixtures, raw logs or an external model. Unclear authority or unexpected personal data stops processing. &
     \emph{enums.py}; \emph{security.py}; boundary tests.\par \textbf{CONTROL IMPLEMENTED}; authority not verified. \\
 
     \addlinespace[1.5pt]
     \textbf{Public and model boundary}\par FR-EXT-004--008; FR-RES-001--004 &
-    Only a public case with reviewed company number and cutoff may enter bounded URL discovery, capture and optional extraction; synthetic fixtures rehearse the path offline. &
-    External and retrieval gates default closed; snippets/prose are candidates, not evidence; guarded HTTPS capture, injection rejection, ``store=False'', strict span/schema checks and independent verification remain mandatory. &
+    Only a public case with a reviewed company number and cut-off may enter limited web search, collection and optional extraction. Fictional cases test the route offline. &
+    External and collection gates start closed. Snippets and model text are suggestions, not evidence. Protected HTTPS collection, rejection of hidden instructions, ``store=False'', strict passage and schema checks, and separate verification are required. &
     Separately authorise and evaluate the live public company path; finish source-specific G2 review and verify provider controls at execution. Direct registry execution remains P1. &
     No restricted or internal model input, person profiling, arbitrary browsing, snippet support, autonomous recommendation or model approval/export. Missing, held or conflicting evidence cannot become support. &
-    \emph{bootstrap.py}; ADR-0008; fake boundary tests.\par \textbf{CODE/LOCAL TEST EVIDENCE}; live company path unrun. \\
+    \emph{bootstrap.py}; ADR-0008; controlled boundary tests.\par \textbf{CODE AND LOCAL TEST EVIDENCE}; live company route not run. \\
     \pagebreak
 
     \addlinespace[1.5pt]
     \textbf{Review and export}\par FR-VER-002; FR-REP-004--009 &
     The configured reviewer assesses a versioned report or profile with verification records, then approves, rejects or returns it. &
-    Actor, reason and version audit; optimistic lock; edits revoke approval; no export before approval; manifest-backed files and hash checks on reuse. &
+    Person, reason and version record; version lock; edits remove approval; no export before approval; files checked against a list and hashes before reuse. &
     Authorised C0/C3 observation and reviewer utility remain pending; production roles or signed approval need a separately scoped design. &
     No model or workflow stage can approve or publish. Unverified claims, stale versions, rejected reports, missing approval, tampering or incomplete writes stop export. &
     \emph{reporting.py}; approval and export tests.\par \textbf{IN PLACE}\par Offline; human result unavailable. \\
 
     \addlinespace[1.5pt]
     \textbf{Prototype exclusions}\par Charter P0/P1/P2 &
-    Engineering evaluation of bounded ingestion, evidence, verification and local review for RQ1--RQ3. &
-    Fixed stage contracts, explicit failures, provenance and local audit make unsupported actions visible rather than silently expanding scope. &
+    Engineering evaluation of controlled intake, evidence, verification and local review for RQ1 and RQ2. &
+    Fixed rules for each stage, clear failures, source records and local audit make unsupported actions visible instead of quietly expanding scope. &
     Live connectors, participants, restricted-data study or deployment may proceed only through named future gates; they are not completion criteria for this slice. &
     No supplied credential use, production tenancy, social scraping, unrestricted crawling, autonomous publication, investment decisions, fine-tuning, cloud deployment or native PPTX/PDF generation. &
     Project Charter ``Explicit non-goals''; requirements P1/P2; architecture gaps.\par \textbf{CONTRACT BOUNDARY}; not an empirical result. \\
 
     \addlinespace[3pt]
     \multicolumn{6}{@{}P{0.98\textwidth}@{}}{\RaggedRight\scriptsize
-      \textit{Source note:} Faye Niu's author synthesis of versioned repository requirements,
-      accepted architecture decisions and executable local checks. NIST (2023, PDF
+      \textit{Source note:} Developed by Faye Niu from versioned repository requirements,
+      accepted design decisions and local checks. NIST (2023, PDF
       pp.~32--35) supports documented scope, oversight and independent assessment;
       Greshake et al. (2023, PDF pp.~1, 3--5) supports treating retrieved content as an
       untrusted instruction boundary; and Amershi et al. (2019, PDF p.~3) supports clear
       capability limits and efficient human correction. These sources do not certify this
-      artefact. The matrix is conceptual and non-empirical: implemented means named code plus
+      system. The matrix is a design summary, not a study result. Built means named code plus
       local checks, not live-source completion, ethics approval, restricted-data authority,
       security effectiveness or production readiness.} \\
   \end{longtable}
-  % longtable reserves a table number even without its own caption; retain the captionof number only.
+  \par\nopagebreak[4]
+  \captionsetup{hypcap=false}
+  % longtable reserves a table number even without its own caption; reuse that number below.
   \addtocounter{table}{-1}
+  \captionof{table}{Prototype requirements, controls and limits}
+  \label{tab:sys-requirements-trust-boundary}
 \endgroup
 \clearpage

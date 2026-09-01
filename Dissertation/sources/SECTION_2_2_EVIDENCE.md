@@ -2,7 +2,7 @@
 
 Scope: `2.2 Early-stage finance, portfolio reporting, and public company intelligence` only. Page
 numbers are PDF page numbers in the hash-pinned local files. These claims were checked against
-locally extracted text on 27 August 2026.
+locally extracted text on 27 August 2026 and the expanded domain/landscape sources on 31 August 2026.
 
 ## Paragraph 1: information asymmetry and observable finance signals
 
@@ -59,6 +59,47 @@ Safe synthesis: admissible portfolio intelligence states the event, legal entity
 locator and exact supported content, while making gaps and conflicts visible. It does not produce
 automatic buy/sell advice, speculative valuation, causal performance attribution or a universal
 company-quality score.
+
+## Paragraph 5: sector scale and monitoring attention
+
+- `britishbusinessbank2025equity`, PDF pp. 5 and 10: the report records \pounds10.8 billion of
+  announced UK smaller-business equity investment across 2,048 deals in 2024, a 15.1 per cent fall
+  in deal count, and weaker seed- and venture-stage deal activity.
+- `gompers2016vcdecisions`, PDF pp. 1, 8, 28 and 34: the survey covers 885 institutional venture
+  capitalists; respondents report an average of 18 hours per week working with portfolio companies
+  and roughly 60 per cent interacting with them at least weekly.
+
+Safe synthesis: the market is material and portfolio-company monitoring uses professional attention.
+The figures are descriptive, drawn from different periods/settings, and do not measure portfolio
+reporting effort or software benefit.
+
+## Paragraph 6: private-market evidence limits
+
+- `kaplan2016vcdata`, PDF pp. 3--7: venture-capital data are difficult to study because the market is
+  private; commercial datasets differ in definitions and can contain omissions, backfill,
+  non-reporting and under-coverage of failed firms. The working-paper and author-disclosure caveats
+  remain explicit.
+- `britishbusinessbank2025equity`, PDF pp. 55--57: the report treats UK angel-investment evidence as
+  partial because much activity is private and reported data are patchy.
+
+Safe synthesis: reporting should retain definitions, dates, legal identity and coverage gaps. Neither
+source establishes automation effects on time, error, cost, satisfaction or decisions.
+
+## Paragraphs 7--8: technical and commercial alternatives
+
+- `buneman2001provenance`, PDF pp. 1--3, and `nikiforova2020quality`, PDF pp. 1--3 and 15--17:
+  deterministic processing can be traceable only when origins, transformations and use-specific
+  quality rules remain explicit.
+- `gao2023ragsurvey`, PDF pp. 1--5 and 15--18, and `guo2024multiagent`, PDF pp. 3--5 and 10--11:
+  retrieval and role decomposition introduce different coverage, coordination and evaluation risks;
+  neither proves superiority over a simpler fixed process.
+- `visible2026investors`, captured PDF pp. 1--4; `zapflow2026portfolio`, captured PDF pp. 1--4; and
+  `affinity2026portfolio`, captured PDF pp. 1--3: official pages describe related portfolio-data,
+  monitoring, relationship and reporting workflows.
+
+Safe synthesis: compare the approaches against consistent workflow, evidence-control and unresolved-
+evidence criteria. Vendor pages establish self-described capability only; unknown accuracy, reviewer
+effort, time saving, UK early-stage suitability and comparative performance remain unknown.
 
 ## Proposed exhibit LIT-T2
 

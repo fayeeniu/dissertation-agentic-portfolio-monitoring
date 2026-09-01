@@ -81,9 +81,10 @@ def test_closed_gates_are_reported_as_closed(runtime: Runtime) -> None:
     assert "closed by default" in session["system"]["boundary"]
     assert session["system"]["model_route"]["selection"] == {
         "model": "gpt-5.6-luna",
-        "effort": "low",
+        "effort": "high",
         "stages": ["extract_claims"],
     }
+    assert session["system"]["model_route"]["repair"]["effort"] == "high"
     assert [role["key"] for role in session["system"]["agents"]] == [
         "identity",
         "discover_sources",
@@ -488,7 +489,7 @@ def test_a_superseded_run_stays_readable_but_cannot_be_advanced(
     for _ in range(2):
         client.post(f"/api/research-runs/{run_id}/advance", json={"csrf_token": token})
 
-    superseded = "company-research-web-v10"
+    superseded = "company-research-web-v11"
     monkeypatch.setattr(company_research, "PROMPT_VERSION", superseded)
     monkeypatch.setattr(
         company_research,
@@ -498,7 +499,7 @@ def test_a_superseded_run_stays_readable_but_cannot_be_advanced(
 
     # Reading the run is unaffected: the projection reads persisted rows.
     state = client.get(f"/api/research-runs/{run_id}").json()
-    assert state["run"]["prompt_version"] == "company-research-web-v9"
+    assert state["run"]["prompt_version"] == "company-research-web-v10"
     assert [node["status"] for node in state["nodes"][:3]] == [
         "succeeded",
         "succeeded",

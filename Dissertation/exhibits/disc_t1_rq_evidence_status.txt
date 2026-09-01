@@ -1,0 +1,9 @@
+DISC-T1: Research-question evidence and answer status
+
+Primary question: PARTLY ANSWERED. The controlled automation mechanisms run locally, but there is no comparison with manual report quality. C0 and C3, an authorised real-company reference, cycle time and practical-value evidence are missing.
+
+RQ1: CONTROLLED FEASIBILITY. Identity, date, source, verification and export controls plus fourteen designed D0 cases behave as specified. There is no estimate for extraction from new material, source discovery, identity links, report completeness or field accuracy.
+
+RQ2: FICTIONAL-CASE BENEFIT. In matched D0 output, verification removed six false positive claims while keeping five supported claims. Visible development labels, unknown false rejection, unusable timing and no external cost evidence prevent wider conclusions.
+
+RQ3: NO OBSERVATIONAL ANSWER. Versioned named review, edits, removal of approval and export gates exist, but C0 and C3 have no observations and no result for time, quality, edits, usability or reviewer value.

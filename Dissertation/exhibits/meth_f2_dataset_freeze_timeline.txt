@@ -114,9 +114,9 @@ Exact repository inputs
 - Dissertation/sources/MANIFEST.csv and SHA256SUMS: local citation-key, file and checksum bindings.
 
 Accessibility and limitations
-The SVG includes a title and complete description. Stages, states, arrows and stop conditions are
-identified in text, so the meaning does not rely on colour. The PDF is vector-only but is not
-claimed to be tagged; this file is the complete linear reading-order alternative. Freezing,
+The current visual is a monochrome PNG screenshot generated from the corresponding Mermaid source.
+Stages, states, arrows and stop conditions are identified in text, so the meaning does not rely on
+colour; this file is the complete linear reading-order alternative. Freezing,
 versioning and sealing reduce leakage risk but do not guarantee reference truth, protocol validity,
 authorisation, representativeness, reproducibility or generalisation. No D1, D2, C0 or human C3
 result is claimed.

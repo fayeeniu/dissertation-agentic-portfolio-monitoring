@@ -1,5 +1,8 @@
 # Section 1.3 verified evidence packet
 
+> Historical evidence note, 29 August 2026: this packet describes the superseded combined
+> aim-and-questions section. Current paragraph evidence is recorded in `CLAIM_LEDGER.md`.
+
 Scope: `1.3 Aim and research questions` only. Page numbers are PDF page numbers in the
 hash-pinned local files. These claims were checked against locally extracted text on
 27 August 2026.

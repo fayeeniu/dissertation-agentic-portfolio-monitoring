@@ -1,0 +1,21 @@
+%% Shared palette: exhibits/figure_palette.json (roles applied via exhibits/mermaid.css)
+%% DIRECT LIVE COMPANIES HOUSE RETRIEVAL and the boundary band carry no relationship arrows.
+%% The `~~~` links are invisible and only fix their position.
+flowchart TB
+  D["<b>CONTAINER SET-UP · BUILT AND CHECKED</b><br/><br/>Docker Compose → Next.js app<br/>+ private FastAPI API<br/>↓<br/>Publish dashboard on host loopback only<br/>↓<br/>Read-only containers + API state volume<br/>↓<br/>Health, proxy and database checks"]
+  E["<b>EXTERNAL PUBLIC EVIDENCE ·<br/>NOT RUN LIVE</b><br/><br/>Limited web-search suggestions<br/>↓<br/>Protected HTTPS collection<br/>with fixed limits<br/>↓<br/>Exact-passage extraction<br/>and fixed checks"]
+  L["<b>LOCAL SINGLE-USER APPLICATION</b><br/><br/>Loopback browser → Next.js dashboard<br/>↓ server-side proxy<br/>Private FastAPI JSON API ·<br/>host, client and CSRF gates<br/>↓<br/>Shared runtime services ← CLI<br/>↓<br/>SQLite versioned records<br/>+ local private files"]
+  H["<b>DIRECT LIVE COMPANIES HOUSE<br/>RETRIEVAL · HELD</b><br/><br/>Source-admission gate remains closed"]
+  B["<b>DEPLOYMENT AND EVIDENCE BOUNDARY</b><br/>Local machine only · clear live gates ·<br/>approved evidence only"]
+
+  D --> L
+  E --> L
+
+  L ~~~ H
+  H ~~~ B
+
+  class D fx-stage
+  class L fx-key
+  class E fx-live
+  class H fx-hold
+  class B fx-banner

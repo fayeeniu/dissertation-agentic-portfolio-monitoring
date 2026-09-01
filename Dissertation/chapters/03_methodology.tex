@@ -1,101 +1,146 @@
 \chapter{Research Design and Methodology}
 \section{Applied design-science strategy}
 
-An applied design-science strategy fits this dissertation because its research object is a purposeful portfolio-reporting artefact for a bounded organisational reporting problem, together with the evaluation of that artefact, rather than a model demonstration alone. Design science combines the construction of an artefact with rigorous evaluation of its utility, quality and efficacy \citep{hevner2004design}. The Design Science Research Methodology likewise connects problem definition and objectives to design, demonstration and evaluation against observed outcomes \citep{peffers2007dsrm}. The local workflow is therefore the constructed evaluand; implementation alone cannot establish utility or answer the research questions.
+This dissertation uses an applied design-science strategy because the research object is a working
+portfolio-reporting artefact for a bounded organisational problem. Design science links construction
+to evaluation against stated objectives \citep{hevner2004design,peffers2007dsrm}. The method therefore
+separates three kinds of evidence: implementation records show what was built, engineering tests show
+which specified behaviours were exercised, and D0 shows how two workflow conditions handled labelled
+fictional cases. None of these observations is treated as evidence of business benefit.
 
-The student acts as both builder and evaluator, which creates a direct confirmation-bias threat. The protocol addresses this through frozen conditions, measures and stop rules; versioned code, schemas and dataset manifests; independent or adjudicated reference labels; blinded scoring where practical; and complete accounting of failures and exclusions. Reproducibility depends on retaining sufficient code, data, procedural and reporting detail \citep{pineau2021reproducibility}. Risk measurement should also document uncertainty, tested conditions and independent-review limits \citep{nist2023airmf}. These controls constrain discretionary reinterpretation but do not remove researcher judgement.
+The student built and evaluated the artefact, which creates confirmation risk. The main controls were
+fixed case labels and metrics, versioned code and fixtures, saved result files, complete failure
+accounting and repeated runs. Reproducibility requires enough code, data, procedure and reporting
+detail for another person to inspect the route to a result
+\citep{pineau2021reproducibility,nist2023airmf}. These
+controls make changes visible, but they do not provide independent validation.
 
-Repository code, tests and contracts can establish what is implemented and which engineering invariants pass; they are not empirical findings about effectiveness, efficiency or human benefit. Such findings require execution of the frozen comparison protocol against stated objectives \citep{hevner2004design,peffers2007dsrm}, supported by reproducible artefacts and bounded reporting \citep{pineau2021reproducibility}. Synthetic D0 outcomes remain mechanism evidence. Manual, restricted-data, human-review and live public-web comparisons remain held until separately authorised and frozen; unavailable or unlabelled outcomes remain null, never zero. Figure~\ref{fig:meth-design-science-evidence-chain} summarises this non-empirical evidence-state boundary \citep{nist2023airmf}.
+Figure~\ref{fig:meth-design-science-evidence-chain} shows the evidence boundary used throughout the
+study. Manual work, participant review, live-web operation and managed-platform comparison were
+removed from the active research questions because they had no authorised observations. Their
+protocols are retained only as future evaluation material. This keeps unobserved outcomes null rather
+than converting an evaluation plan into a result \citep{nist2023airmf,hevner2004design}.
 
-\clearpage
-\begin{figure}[p]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.88\textwidth,height=0.80\textheight,keepaspectratio]{exhibits/meth_f1_design_science_evidence_chain.pdf}
-  \caption{Design-science evidence chain separating artefact construction and engineering evidence from empirical findings. Author synthesis from locally admitted methodology literature and frozen project contracts; conceptual and non-empirical.}
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/meth_f1_design_science_evidence_chain.png}
+  \caption{Boundary between construction, engineering checks and study results. Developed by the
+  author from the cited methods literature and the project's fixed rules.}
   \label{fig:meth-design-science-evidence-chain}
 \end{figure}
-\clearpage
-\section{Evaluand and experimental conditions}
 
-The evaluand is the complete workflow configuration, not an abstract model or leaderboard. For each condition, the project protocol binds the input contract, catalogue, source access, agent decomposition, verification rule, human involvement, prompt and schema versions, compute environment, and stop criteria. This definition keeps observed outcomes attached to a specified artefact and context. Design science requires a viable artefact and rigorous evaluation against relevant objectives \citep{hevner2004design,peffers2007dsrm}, while structured reporting makes intended use, version and evaluation procedures visible \citep{mitchell2019modelcards}.
+\section{Evaluand and comparison conditions}
 
-Within the RQ1--RQ3 research contract, the protocol pre-specifies four conditions for later freeze. C0 is an authorised practitioner completing the existing manual workflow under the same frozen input and source-access window, with timing and corrections recorded; any tool or model assistance must also be logged. It remains protocol-only. C1 is one deterministic extraction and composition path using the common catalogue and normaliser without an independent verifier; it retains available provenance and is implemented only on synthetic labelled cases. Comparing stated objectives with observations, rather than construction, is the evaluation step \citep{peffers2007dsrm}, and reproducibility requires procedural detail \citep{pineau2021reproducibility}.
+The evaluand is the complete local workflow configuration: input rules, catalogue, source access,
+operational roles, verification, prompts, schemas, computing environment and stop conditions. This
+binds each observation to one defined artefact version. Design-science evaluation requires comparison
+with stated objectives \citep{hevner2004design,peffers2007dsrm}, while system reporting should state
+the intended use, version and evaluation procedure \citep{mitchell2019modelcards}.
 
-C2 adds bounded planner, resolver, collector, extractor, normaliser, verifier and composer roles. Its separately recorded verifier controls support eligibility, and no human edit occurs before scoring; its current evidence is likewise synthetic. C3 then passes C2 output through the versioned human-review interface, retaining edits, approvals and rejections and scoring pre-review and approved outputs separately. The workflow exists, but human results remain protocol-only. Comparable execution requires the same canonical definitions, reporting period, source-access window and frozen gold reference. Documented test conditions, measures and independent review support interpretable comparison \citep{nist2023airmf}, while retained procedures and artefacts support reproducibility \citep{pineau2021reproducibility}.
+The executed comparison uses C1 and C2. C1 applies the shared catalogue and normalisation rules and
+emits each eligible cleaned value unless identity is unclear. It retains available provenance but has
+no separately recorded verifier. C2 receives the same candidate values and evidence, then admits a
+claim only when the separate fixed verifier marks it as supported. Composition cannot override that
+decision. Each condition ran three times on the same fourteen D0 cases, so the measured difference is
+the verification gate and its recorded decision, not a claim about agent personalities
+\citep{guo2024multiagent,wu2024autogen}.
 
-Table~\ref{tab:meth-condition-matrix} records the conditions; the protocol remains draft-for-domain and ethics review. Manual, restricted-data and human-user execution stays held until ethics and data authority, gold-reference construction and protocol freeze are complete; affected outcomes remain null. The implemented but live-unrun public-web company-research path is an engineering case study, not an experimental condition within C0--C3 or the frozen RQ1--RQ3 research contract. Any future official-adapter-only versus LLM-assisted comparison therefore remains held rather than becoming substitute evidence. Explicit version, context and out-of-scope reporting supports this separation \citep{mitchell2019modelcards}, while leakage evidence cautions against generalising across unmatched information boundaries \citep{kapoor2023leakage}.
+The original protocol also defined C0 manual work and C3 named review. These conditions did not run
+and are not used to answer RQ1 or RQ2. Their detailed condition matrix is kept as
+Table~\ref{tab:meth-condition-matrix} in Appendix~\ref{app:dataset-source-freeze} to support a future authorised pilot. Retaining the protocol
+preserves the planned comparison without presenting missing observations as evidence
+\citep{pineau2021reproducibility,nist2023airmf}.
 
-\input{exhibits/meth_t1_condition_matrix.tex}
-\section{Dataset tiers and freeze protocol}
+\section{D0 fixture, labels and freeze}
 
-Figure~\ref{fig:meth-dataset-freeze-timeline} distinguishes engineering from authorised empirical evidence. D0 comprises fictional, labelled, visible adversarial fixtures supporting regression and mechanism evidence, not real portfolio performance. The current manifest hash-pins the D0 file and records \texttt{benchmark:d0}, source version, test-only partition policy and permitted use. The loader computes the manifest checksum, validates the declared dataset checksum, source-version/classification and entity/period partition consistency; other \texttt{benchmark:} namespaces and policy strings remain accepted. A separate operational-ID guard rejects benchmark-prefixed identifiers where invoked. Synthetic financial tables can provide labelled task material \citep{bradley2024synfintabs}; datasheets support provenance and permitted-use documentation \citep{gebru2021datasheets}.
+D0 contains fourteen visible, labelled fictional cases designed to expose known error categories.
+They cover complete and sparse records, blank and observed-zero values, mixed types, conflicting and
+stale evidence, unsupported and inaccessible sources, unclear identity, duplicate support, narrative
+evidence, mixed currencies and prompt injection. This one-case-per-category structure is deliberate
+and follows the behavioural-testing argument set out in Section 2.7: a suite of targeted cases, each
+probing one specified behaviour, reveals failures that an aggregate score over a single test set hides
+\citep{ribeiro2020checklist}. Synthetic material serves that purpose well because it supplies
+controlled labels, provided its construction and permitted use are explicit
+\citep{bradley2024synfintabs,gebru2021datasheets}.
 
-D1 is the smallest separately authorised pilot or calibration subset sufficient to clarify codebook and label instructions, estimate labelling workload, disagreement and timing variance, test capture forms and code, and support sample-size or precision planning. Its sampling and collection window must be documented; results are labelled pilot and excluded from confirmatory estimates unless the analysis plan pre-declares the study exploratory. Dataset documentation should state motivation, composition, sampling, collection and validation \citep{gebru2021datasheets}; reproducibility also requires enough procedural and analytical detail to repeat the experiment \citep{pineau2021reproducibility}. D1 currently remains protocol-only.
+The fixture and its evaluation record are checksum-pinned. Loading checks the schema version, data
+classification, source version, file checksum and test-only namespace. Case and evidence identifiers
+are placed in a benchmark namespace that the operational collector rejects. The labels specify the
+expected emission decision and verification status. The complete case ledger is
+Table~\ref{tab:appendix-d0-case-ledger} in Appendix~\ref{app:supplementary-evaluation}
+\citep{gebru2021datasheets,pineau2021reproducibility}.
 
-Before D2 is opened, freeze catalogue aliases and rules, schemas, prompts and model choices, code and environment, metrics and denominators, analysis, dataset and source manifests, and reference versions. D2 is a company-period final out-of-sample set whose manifest remains sealed, with no path, checksum or development access. It must not be inspected, tuned against, or used to repair connectors or rules or select models; any post-access change creates a new exploratory run. Clean train-test separation and protection from non-independent or temporal leakage are necessary because leakage can inflate performance estimates \citep{kapoor2023leakage}; code, data and experimental reporting support reproducibility \citep{pineau2021reproducibility,mitchell2019modelcards}.
+D0 is a development fixture, not a sample of companies. The rules and cases were developed together,
+so the result establishes only whether the programmed gate behaves as designed on these cases. A
+future pilot must create independent labels before a sealed final set is opened. Separating
+development from final evaluation reduces leakage risk \citep{kapoor2023leakage}, and versioned data
+records support later repetition \citep{pineau2021reproducibility,mitchell2019modelcards}.
 
-Partitioning groups all records for the same company, report and entity-period so related units cannot cross evaluation partitions; repeated fields are clustered and analysis must aggregate or use cluster-aware methods. This prevents a larger field count from being treated as independent evidence. Participant observations are authorised executions of C0 or C3, not an additional D3 dataset tier. D2 remains sealed, while C0 and human-result C3 remain held pending authority and protocol freeze. Dataset lifecycle documentation should expose sampling and exclusions \citep{gebru2021datasheets}, and non-independent test data require explicit leakage controls \citep{kapoor2023leakage}.
+\section{Source parity and reference decisions}
 
-\clearpage
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{exhibits/meth_f2_dataset_freeze_timeline.pdf}
-  \caption{Dataset tiers and freeze timeline.}
-  \label{fig:meth-dataset-freeze-timeline}
-\end{figure}
-\clearpage
-\section{Gold-reference construction and source-access parity}
+For D0, both conditions receive the same candidate value, evidence record, reporting period and
+precondition. Scoring uses the fixture's expected emission and status fields. The evaluator does not
+give either condition later evidence or a wider source window. This equal-input design is sufficient
+for the narrow C1/C2 mechanism comparison, but the visible development labels are not an independent
+reference \citep{kapoor2023leakage,pineau2021reproducibility}.
 
-Gold-reference construction will begin with a versioned codebook derived from the canonical data dictionary. Two authorised domain reviewers will independently receive the same frozen source bundle. For each company-period, they will label the canonical value or typed missing state, eligible evidence, sourceability, period, claim support and required report section. Independent coding supports reliability assessment but cannot establish validity, because reviewers may agree consistently and still be wrong \citep{artstein2008agreement}; independent assessment and documented test methods make evaluation inspectable \citep{nist2023airmf}.
+A real-company evaluation would require an eligible-source list, cut-off date, independently labelled
+claims and recorded adjudication. Agreement would indicate consistency rather than truth because
+reviewers can share an error \citep{artstein2008agreement}. Exact locators and source records would
+also remain necessary because citation presence does not establish complete or correct support
+\citep{gao2023alce,pineau2021reproducibility}. The full prospective reference-parity matrix is
+Table~\ref{tab:meth-reference-parity-matrix} in Appendix~\ref{app:dataset-source-freeze}.
 
-Raw agreement will be reported before adjudication. A chance-corrected statistic will be added only when the sample size, label type and category distribution support its assumptions; no universal agreement threshold will be imposed. Reviewers will adjudicate disagreements, record the reason and update the codebook version, after which the reference and manifest will be frozen before scoring. Manual reports and system outputs remain comparison conditions rather than truth, and scoring will be blind to condition where practicable \citep{artstein2008agreement,pineau2021reproducibility,nist2023airmf}.
-
-Source-access parity will freeze an eligible-source manifest and availability cutoff for each company-period. Comparable conditions will receive the same canonical definitions, period, source window and gold reference. Inaccessible, deleted, paywalled, login-only and later-published states will be recorded. Retrieval time is distinct from publication and availability time, and post-cutoff material cannot support a historical claim. Each admitted claim will preserve its exact locator or span and source policy, because citation presence alone does not establish complete or correct support \citep{gao2023alce,gebru2021datasheets,pineau2021reproducibility}.
-
-Table~\ref{tab:meth-reference-parity-matrix} maps the codebook, reviewer labels, adjudication reasons, source manifest and scoring deviations into one frozen record. This supports reproducible comparison without treating adjudication as infallible or converting a source into truth \citep{artstein2008agreement,pineau2021reproducibility}. At present, the gold reference has not been constructed or frozen, so C0--C3 scores remain unavailable and no empirical outcome is claimed. Documented uncertainty and unavailable measures must remain visible rather than being replaced by assumed values \citep{nist2023airmf,gebru2021datasheets}.
-
-\input{exhibits/meth_t2_reference_parity_matrix.tex}
 \section{Measures and denominator rules}
 
-Evaluation units are field, claim, report, workflow and reviewer. A field is one company--metric--period observation; a claim is one reportable proposition; the others follow the frozen protocol. Repeated fields within a company or report are clustered rather than independent, so analysis will aggregate at report or company level or use cluster-aware methods. No acceptance threshold is pre-populated. Table~\ref{tab:meth-metric-denominator-matrix} records each measure's numerator, denominator, exclusions and zero-denominator rule; an undefined result remains null, not zero \citep{artstein2008agreement,pineau2021reproducibility,nist2023airmf}.
+The primary D0 measures are supported-claim precision, recall, F1, unsupported-claim rate,
+supported-claim rate, source-record completeness, verification or abstention accuracy,
+contradiction accuracy and exact repeat consistency. Precision uses supported emitted claims over all
+emitted claims. Recall uses correctly emitted required claims over all required claims. Unsupported
+claim rate uses unsupported emitted claims over all emitted claims. These denominators keep claim
+correctness separate from citation presence and support \citep{gao2023alce,gao2023rarr}.
 
-Claim precision is supported emitted claims divided by all emitted claims eligible for scoring; recall is correctly emitted gold claims divided by all gold claims required by scope. F1 is their harmonic mean only when both are defined. The unsupported-claim rate divides emitted claims lacking gold or evidence support by emitted claims; the claim-support rate applies the frozen support rule to the same denominator. Contradiction-detection recall divides correctly flagged gold conflicts by all gold conflicts. These project formulas separate correctness, citation recall and citation precision \citep{gao2023alce,nist2023airmf}.
+Schema and normalisation accuracy are also reported because both conditions share earlier processing.
+Contradiction accuracy has two applicable cases and is interpreted as a small case result, not a stable rate.
+Duration values below one millisecond were truncated to zero, so they cannot support a speed
+comparison. Model cost is zero because D0 uses fixed local rules. Measures without D0 labels remain
+null, not zero. Clear missing states and denominators are necessary for task-specific data-quality
+interpretation \citep{nikiforova2020quality,gebru2021datasheets}.
 
-Extraction measures include strict schema validity, exact field accuracy, type-specific normalisation, currency or unit correctness, missing-state accuracy with a separate blank-versus-zero error matrix, and identity accuracy and coverage. Provenance and report measures include provenance completeness, locator validity at capture, required-section completeness, factual-error count and severity, and transparency for missing, conflicted or stale items. Provenance completeness uses eligible emitted claims with required source, locator, applicable publisher, retrieval time, checksum and period over eligible emitted claims. Other scorer denominators must be frozen before use, not improvised after results \citep{nikiforova2020quality,gao2023alce,gebru2021datasheets}.
+The complete metric and denominator matrix in Appendix~\ref{app:supplementary-evaluation} also defines
+prospective human time, edit, usability, source-coverage and cost measures. Those fields are pilot
+metrics, not results of this study \citep{gale2013framework,nist2023airmf}.
 
-Efficiency separates active human minutes from elapsed time while recording machine-stage durations, retries, input and output tokens, reviewer edit events, optional edit distance, and failure or rerun counts. LLM or API cost uses only the provider's official price effective on the execution date, with formula, units, currency and token quantities recorded; otherwise it is null, not estimated. Reliability will report exact outcome-vector consistency for deterministic repeats, field or claim agreement for fixed stochastic configurations, completion and schema validity across repeats, and failure-category distributions \citep{pineau2021reproducibility,mitchell2019modelcards,nist2023airmf}.
+\section{Analysis and interpretation}
 
-Usability belongs only to separately authorised C3 execution under an approved instrument and protocol. Candidate observations include task success, time, decision reversals, confidence calibration and a suitable validated scale where licensed, plus consented qualitative feedback coded under a pre-defined scheme. Reviewer or event layers with no authorised or labelled cases remain null and cannot be converted to zero. This preserves the distinction between an implemented review interface and measured reviewer benefit \citep{amershi2019guidelines,nist2023airmf,artstein2008agreement}.
+The evaluator reports counts before rates and keeps all fourteen paired cases in both conditions.
+The first repeat supplies the scored values, and the complete ordered result list is compared across
+all three repeats. Individual cases explain why an aggregate changed. No confidence interval or
+hypothesis test is reported because D0 is a small, deliberately constructed fixture rather than a
+sample drawn from a target population \citep{demsar2006comparisons,diciccio1996bootstrap}.
 
-\input{exhibits/meth_t3_metric_denominator_matrix.tex}
-\section{Statistical and qualitative analysis}
+Error analysis uses the expected verification states and records false emission, false withholding,
+conflict, stale evidence, inaccessible evidence, identity hold and untrusted content separately.
+Negative and unavailable outcomes remain in the record. Any later study should pair the same
+company-periods, report exclusions before rates and use uncertainty at the company or report level,
+not treat repeated fields as independent observations \citep{kapoor2023leakage,pineau2021reproducibility}.
 
-Analysis will publish the flow of eligible, excluded, failed and scored units, with reasons for losses. Per-condition denominators and descriptive distributions will precede any test. Comparisons will pair the same company-period or claim wherever conditions share units. Repeated fields within one company or report will not be counted as independent evidence; results will instead be aggregated at report or company level or use cluster-aware intervals. This preserves the experimental unit and exposes attrition rather than hiding it \citep{demsar2006comparisons,kapoor2023leakage,pineau2021reproducibility}.
+\section{Ethics, leakage prevention and reproducibility}
 
-For paired binary outcomes, the current draft analysis plan may use an exact paired method. Non-normal time and edit-burden differences may use a paired Wilcoxon-style analysis, but only when sample size, pairing, distributional and measurement assumptions support it. Estimates will be accompanied by effect sizes and uncertainty; interval construction will respect the resampling unit and document the method. Non-parametric labels do not remove design assumptions, while confidence-interval coverage can be inaccurate in finite samples \citep{demsar2006comparisons,diciccio1996bootstrap,nist2023airmf}.
+Every input is classified as restricted, internal, public or synthetic. Restricted material remains
+local, and public availability does not itself authorise every use. Participant observation and live
+external processing require separate authority, purpose, consent and storage decisions
+\citep{gebru2021datasheets,cddo2023genai,nist2023airmf}. D0 uses only fictional data and no external
+source or model call.
 
-Any multiplicity correction will be declared prospectively; otherwise affected comparisons will be labelled exploratory. Stratification by metric type, sourceability, missingness, conflict or staleness, and identity difficulty will occur only where the sample supports interpretable denominators. Sensitivity analyses will repeat conclusions with failures included and with each justified exclusion, preserving negative, null and regressive outcomes. The exact test, interval method and sample size remain TO FREEZE after D1 variance and annotation evidence plus supervisor and statistical review \citep{demsar2006comparisons,pineau2021reproducibility,kapoor2023leakage}.
+The evaluation record retains the Git revision and dirty-state warning, platform and dependency
+versions, migration version, fixture and protocol checksums, test commands, result files, failures and
+output hashes. A checksum detects byte changes but cannot establish truth or independent replication
+\citep{pineau2021reproducibility,mitchell2019modelcards}. The detailed implementation snapshot is in
+Appendix~\ref{app:reproducibility-build}.
 
-Qualitative error analysis will apply pre-defined families ID, EXT, NORM, TIME, PROV, VER, REP, SEC and HITL to eligible cases, with severity definitions TO FREEZE before scoring. The record will retain definitions, codes, coder disagreements and reasoned adjudication, protocol deviations and negative cases. Agreement may support reliability assessment but does not establish validity, and risk assessment must preserve uncertainty and documented review limits \citep{artstein2008agreement,gale2013framework,nist2023airmf}.
-
-If authorised C3 reviewers provide consented feedback, a framework-style case-by-code matrix will connect summaries to source records for comparison within and across cases. Analysis will document framework revisions, reflexive notes and codebook departures without forcing feedback into favourable themes. Until authorised material exists, this branch remains unavailable and no thematic finding will be claimed. Figure~\ref{fig:meth-analysis-decision-flow} summarises this non-empirical decision flow \citep{gale2013framework,artstein2008agreement,pineau2021reproducibility}.
-
-\clearpage
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/meth_f3_analysis_decision_flow.pdf}
-  \caption{Analysis decision flow for dependence-aware quantitative and auditable qualitative evidence. Source: author synthesis of the current draft project evaluation plan and locally admitted methodological literature; conceptual and non-empirical, not a result.}
-  \label{fig:meth-analysis-decision-flow}
-\end{figure}
-\clearpage
-\section{Ethics, leakage prevention, and reproducibility}
-
-Ethical use begins with authority and classification, not technical availability. Each input will be classified as restricted, internal, public or synthetic before admission, with its purpose and access basis recorded. Public availability alone will not authorise reuse. Participant observation and restricted data will remain unavailable unless ethics and data owners approve the purpose, consent process and storage route. Restricted material will stay local and will not be sent to an external model without separate recorded authority \citep{gebru2021datasheets,cddo2023genai,nist2023airmf}.
-
-Before D2 is opened, the catalogue, aliases, schemas, prompts, model choices, code, environment, metrics, analysis and manifests are to be frozen. D1 may inform that freeze only after separate authority; D2 remains sealed and cannot be inspected, repaired or used to choose rules. Any post-access change will create a new exploratory run rather than a confirmatory result. This separation addresses leakage where held-out information influences preprocessing, selection or evaluation \citep{kapoor2023leakage,pineau2021reproducibility}.
-
-Each authorised final run will retain a Git revision and diff manifest that excludes restricted data, platform and dependency versions, migration revision, dataset and source manifests, availability cutoff, catalogue, codebook, prompt, schema and model versions, secret-free configuration, run identifiers, failures, outputs, decisions, scoring code and generated artefact hashes. The record will also identify deviations, their reasons and the affected evidence class. Hashes will show byte-level change but will not establish truth, ethical authority or replication in another setting \citep{pineau2021reproducibility,mitchell2019modelcards,gebru2021datasheets}.
-
-Collection will stop if authority or consent is unclear, a credential is exposed, unexpected personal data appears, source terms are breached, restricted data would cross an unapproved processor, or the D2 seal is broken. The event will be recorded, never bypassed. The student is the builder-evaluator; fixed questions, a future protocol freeze, independent, adjudicated labels, error accounting and narrow conclusions are controls against confirmation bias. Table~\ref{tab:meth-evidence-control-matrix} summarises this control boundary. None implies ethics approval, participant execution or completed evaluation \citep{nist2023airmf,pineau2021reproducibility,kapoor2023leakage}.
-
-\input{exhibits/meth_t4_evidence_control_matrix.tex}
+Collection or evaluation must stop when authority is unclear, a credential is exposed, unexpected
+personal data appears, source terms would be breached, restricted data would reach an unapproved
+service, or a sealed evaluation set is compromised. The detailed evidence-control matrix is retained
+in Appendix~\ref{app:source-provider-controls}. These controls define the research boundary; they do
+not imply ethics approval for the future pilot \citep{nist2023airmf,pineau2021reproducibility}.

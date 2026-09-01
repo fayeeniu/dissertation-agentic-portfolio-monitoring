@@ -189,10 +189,16 @@ def _claim_payload(claim: MetricClaim) -> dict[str, Any]:
     }
 
 
-def build_investment_report(claims: Iterable[MetricClaim]) -> dict[str, Any]:
+def build_investment_report(
+    claims: Iterable[MetricClaim], *, entity_scope: str = "legal_entity"
+) -> dict[str, Any]:
     """Build a deterministic metric ledger and report outline from admitted claims."""
 
-    claim_rows = list(claims)
+    claim_rows = [
+        claim
+        for claim in claims
+        if getattr(claim, "entity_scope", "legal_entity") == entity_scope
+    ]
     claims_by_metric: defaultdict[str, list[MetricClaim]] = defaultdict(list)
     for claim in claim_rows:
         if claim.subject_key in PUBLIC_RESEARCH_METRIC_KEYS:
@@ -209,6 +215,8 @@ def build_investment_report(claims: Iterable[MetricClaim]) -> dict[str, Any]:
 
     categories: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
     populated = 0
+    publicly_evidenced = 0
+    internally_evidenced = 0
     document_required = 0
     not_found_publicly = 0
     for row in CBIT_ROWS:
@@ -216,8 +224,22 @@ def build_investment_report(claims: Iterable[MetricClaim]) -> dict[str, Any]:
             continue
         metric_claims = claims_by_metric.get(row.metric_key, [])
         if metric_claims:
-            status = "public_evidence"
+            has_internal = any(
+                claim.perspective == "internal_document" for claim in metric_claims
+            )
+            has_public = any(
+                claim.perspective != "internal_document" for claim in metric_claims
+            )
+            status = (
+                "hybrid_evidence"
+                if has_internal and has_public
+                else "internal_document_evidence"
+                if has_internal
+                else "public_evidence"
+            )
             populated += 1
+            publicly_evidenced += int(has_public)
+            internally_evidenced += int(has_internal)
         elif row.sourceability is Sourceability.INTERNAL_ONLY:
             status = "document_required"
             document_required += 1
@@ -293,11 +315,14 @@ def build_investment_report(claims: Iterable[MetricClaim]) -> dict[str, Any]:
         )
     return {
         "schema_version": "cbit-investment-report-proposal-v2",
+        "entity_scope": entity_scope,
         "metric_contract_version": CBIT_CONTRACT_VERSION,
         "summary": {
             "defined_metrics": metric_count,
             "publicly_sourceable_metrics": public_metric_count,
-            "publicly_evidenced": populated,
+            "evidenced": populated,
+            "publicly_evidenced": publicly_evidenced,
+            "internally_evidenced": internally_evidenced,
             "public_metric_coverage_percent": round(
                 (populated / public_metric_count) * 100 if public_metric_count else 0
             ),

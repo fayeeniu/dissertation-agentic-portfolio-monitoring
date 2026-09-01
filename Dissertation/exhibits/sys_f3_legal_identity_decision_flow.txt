@@ -20,24 +20,24 @@ Reading order
    - The PortfolioImporter accepts XLSX, CSV, or canonical JSON together with a reporting period, reporting cutoff where supplied, and classification.
    - It hashes the supplied bytes, derives a period-bound dataset identity, writes a restrictive local raw snapshot, and records a RawSubmission with filename, checksum, path, classification, period and catalogue/profile metadata.
    - The same admitted bytes for the same period reuse the existing import rather than creating a second dataset or rewriting the raw file.
-   - Company name and supplied external identifier remain submitted identity claims. They are not assumed to identify the same legal entity merely because a normalized name matches.
+   - A company name and supplied external identifier remain submitted identity claims. They are not assumed to identify the same legal entity only because a normalised name matches.
 
    Company-research case intake:
    - A structurally valid Companies House number is sufficient to create a first-class company case. A name or website is not required.
    - Website, name plus jurisdiction, or a declared-company document may also be submitted, but they remain reviewable claims. They do not resolve legal identity automatically.
-   - The service creates a stable IntakeArtifact fingerprint over the intake-contract version, template version, input kind, purpose, classification and canonical submitted-value object. An identical fingerprint reuses the existing artifact, company and case.
+   - The service creates a stable IntakeArtifact fingerprint from the intake-rule version, template version, input kind, purpose, data class and agreed submitted values. An identical fingerprint reuses the existing intake record, company and case.
    - Document bytes receive a SHA-256, safe basename, classification, purpose and actor. The create-once local file is mode 0600. Existing bytes are verified before reuse, conflicting concurrent bytes fail, and a failed database transaction removes only the newly created snapshot.
    - Uploaded content is recorded as untrusted, is not executed, and is not sent to an external model by this intake step.
 
 2. Identity claims feed an exact-number, named decision gate - implemented and locally tested.
 
    Exact Companies House number claim:
-   - The implementation applies Unicode normalization, trims and uppercases the input, removes spaces and hyphens, and zero-pads a digit-only number up to eight digits.
+   - The implementation applies Unicode normalisation, trims the input, changes letters to upper case, removes spaces and hyphens, and adds leading zeroes to a number of up to eight digits.
    - The conservative structural rule accepts exactly eight digits or a two-letter prefix followed by six digits. Structural validity is not authoritative proof that a live registry record exists or that the company is currently operating.
-   - The normalized value is globally unique within its closed identifier scheme and is source-scoped to Companies House. A new public identifier remains reviewed=false until a named decision.
+   - The normalised value is unique within its closed identifier scheme and belongs to Companies House. A new public identifier remains reviewed=false until a named decision.
 
    Supporting claims without legal-merge authority:
-   - Company names are normalized only to order or suggest candidates. Same normalized names may coexist. There is no fuzzy matcher and no name-only automatic merge.
+   - Company names are normalised only to order or suggest possible matches. The same normalised name may appear more than once. There is no fuzzy matcher and no automatic merge based only on a name.
    - An HTTPS website is canonicalized into a domain claim with its own pending, verified, or rejected decision history. Verifying a domain does not mark the company legal identity as resolved.
    - A document is checksum-addressed local evidence tied to a declared company claim. It remains untrusted and cannot establish legal identity by itself.
 

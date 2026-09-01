@@ -1,0 +1,27 @@
+\begin{table}[!htbp]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.10}
+  \begin{tabularx}{\textwidth}{@{}P{0.12\textwidth}P{0.30\textwidth}P{0.27\textwidth}Y@{}}
+    \toprule
+    \textbf{Question} & \textbf{Available evidence} & \textbf{Answer supported by the evidence} & \textbf{Missing evidence or limit} \\
+    \midrule
+    Primary question & Implemented local workflow; engineering tests; D0 C1/C2 comparison & \textbf{ANSWERED WITHIN CONTROLLED SCOPE}: evidence records and the verifier effect are demonstrated & No inference to real-company accuracy, business benefit or production use. \\
+    \addlinespace
+    RQ1 & Identity, time, source, verification and export controls; fourteen designed D0 cases; three repeats & \textbf{IMPLEMENTATION AND CONTROLLED BEHAVIOUR}: the required states and links are retained & No estimate for real-world accuracy or source coverage. \\
+    \addlinespace
+    RQ2 & Paired C1/C2 D0 output; five supported and six unsupported emitted candidates; zero local LLM cost & \textbf{OBSERVED D0 EFFECT}: the verifier held the six designed unsupported candidates without reducing D0 recall & Visible labels helped shape the test, false rejection outside D0 is unknown and timing is not useful. \\
+    \addlinespace
+    Future pilot & Manual baseline and versioned named-review controls are defined & \textbf{NOT A CURRENT RESULT}: the design is prospective & No participant observations, active time, cost, editing or usefulness evidence. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Research-question evidence and answer status}
+  \label{tab:disc-rq-evidence-status}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Author summary of Chapters 1, 3 and 5. The status labels separate what
+    was built, what was measured with fictional cases and what is proposed for the pilot.}
+\end{table}

@@ -1,0 +1,30 @@
+\clearpage
+\begin{table}[p]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.08}
+  \begin{tabularx}{\textwidth}{@{}P{0.20\textwidth}P{0.18\textwidth}P{0.30\textwidth}Y@{}}
+    \toprule
+    \textbf{Check} & \textbf{Result} & \textbf{Evidence from the run} & \textbf{Limit} \\
+    \midrule
+    Full automated suite & \textbf{PASS} & 286 passed; 22 warnings; 85.58\% statement coverage & Fictional, fake and local inputs; coverage does not prove that the software is complete or free from faults. \\
+    Ruff lint & \textbf{PASS} & No lint finding across \textnormal{src} and \textnormal{tests} & Only the configured static rules were checked. \\
+    Ruff format check & \textbf{FAIL} & Five files would be reformatted: two source and three test modules & Dated result only; later code changes were not evaluated by this record. \\
+    Strict MyPy & \textbf{PASS} & No issues in 46 source files & Only typed code and the configured rules were checked. \\
+    Database migration & \textbf{PASS} & Fresh SQLite upgrade 0001--0009; snapshot head 0009; no pending operations & Local SQLite only; production concurrency and recovery were not tested. \\
+    Diff whitespace check & \textbf{PASS} & \textnormal{git diff --check} returned success & This does not check meaning or untracked files. \\
+    External/live actions & \textbf{NOT RUN} & No company, model, registry or public-web call & Live availability, coverage, latency and cost remain unknown. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Engineering check results recorded on 28 August 2026}
+  \label{tab:eval-engineering-validation}
+
+  \vspace{4pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Fresh local commands were run on the dated version recorded in EVAL-T1. PASS
+    applies only to the named check. The formatting failure and warnings are reported because they
+    are part of the result.}
+\end{table}
+\clearpage

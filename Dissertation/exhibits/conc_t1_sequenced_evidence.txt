@@ -1,0 +1,11 @@
+CONC-T1: Ordered evidence plan after this dissertation
+
+Gate | Authorised activity | Evidence required to proceed | Outcome unavailable beforehand
+1 | Counts/hash/locator-only live smoke; no deck content | Named authority, admitted routes, account/retention evidence and immutable run record | Live connectivity, retention-path and minimal operational evidence.
+2 | Official adapters plus frozen public-company source benchmark | Frozen companies, cutoff, sources, queries, budgets and independent passage reference | Incremental supported discovery, failure, resource and cost estimates.
+3 | D1 authorised pilot and calibration | Frozen labels, scorer agreement, deviations and calibrated operating rules | Prospective pilot estimates and justified final protocol.
+4 | One sealed D2 evaluation | Unchanged protocol, no holdout tuning and failure-inclusive analysis | Out-of-sample claim-quality and reliability estimates.
+5 | Authorised C0/C3 human comparison | Ethics/data authority, participant process, task parity and independent reference | Manual equivalence, time, edit burden, utility and review benefit.
+6 | Accessibility, security and operational assessment | Assistive-technology audit, independent security scope, ownership, monitoring and recovery exercises | Any justified usability, resilience, security or production-readiness conclusion.
+
+Source note: Author synthesis of unresolved evidence and stop conditions. Each gate requires separate authority and a frozen protocol; sequence does not imply approval, success or an obligation to deploy.
