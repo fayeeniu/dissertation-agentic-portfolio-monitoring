@@ -49,6 +49,7 @@ RETIRED_BY_DEFAULT = {
     "intro_f1_problem_to_research_contract",
     "meth_f2_dataset_freeze_timeline",
     "meth_f3_analysis_decision_flow",
+    "eval_f1_d0_metric_profile",
 }
 
 

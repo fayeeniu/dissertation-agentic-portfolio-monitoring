@@ -1395,10 +1395,18 @@ def company_view(runtime: Runtime, company_id: str) -> JsonDict:
                 "id": item.id,
                 "purpose": item.purpose,
                 "classification": item.classification,
-                "evidence_scope": item.submitted_value_json.get(
-                    "evidence_scope", EvidenceScope.LEGAL_ENTITY.value
+                "evidence_scope": (
+                    item.submitted_value_json.get(
+                        "evidence_scope", EvidenceScope.LEGAL_ENTITY.value
+                    )
+                    if isinstance(item.submitted_value_json, dict)
+                    else EvidenceScope.LEGAL_ENTITY.value
                 ),
-                "processing_boundary": item.submitted_value_json.get("processing_boundary"),
+                "processing_boundary": (
+                    item.submitted_value_json.get("processing_boundary")
+                    if isinstance(item.submitted_value_json, dict)
+                    else None
+                ),
                 "status": item.status,
                 "created_at": _iso(item.created_at),
                 "created_by": item.created_by,
@@ -1492,7 +1500,12 @@ def company_view(runtime: Runtime, company_id: str) -> JsonDict:
         )
         for profile in profiles:
             if profile.research_run_id is not None:
-                validated_profile_content(profile)
+                try:
+                    validated_profile_content(profile)
+                except CompanyResearchError:
+                    # A hash mismatch must not blank the company page. Export
+                    # routes still validate before a download.
+                    continue
         current_profile = next(
             (item for item in profiles if item.status == ProfileVersionStatus.APPROVED.value),
             profiles[0] if profiles else None,

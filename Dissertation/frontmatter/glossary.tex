@@ -17,9 +17,9 @@ C0--C3 & The four planned comparison conditions: manual work, a deterministic ba
 Checksum & A short fingerprint calculated from a file's contents. If one byte changes, the fingerprint changes, so a reader can tell whether a saved file has been altered. Also called a content hash. \\
 CLI & Command-line interface: text commands typed into a terminal rather than clicked in a browser. \\
 Claim & \textit{(project term)} A structured statement about one company, one measure, one value and one reporting period, which must be checked before it may appear in a report. \\
+Claim admission & \textit{(project term)} The decision to let a checked claim enter the report. Refusal of claim admission withholds the claim and records the reason. \\
 Contradicted & \textit{(project term)} A verification outcome: eligible evidence disagrees with the proposed value, so the claim is withheld and the disagreement is kept on record. \\
 Coverage & See \textit{statement coverage}. \\
-CSRF & Cross-site request forgery: a browser attack in which another site makes requests on the user's behalf. \\
 CSV, JSON, XLSX & Common file formats for tabular or structured data. \\
 D0--D2 & The three dataset tiers: D0 synthetic development cases, D1 an authorised pilot, and D2 a sealed final out-of-sample set. Only D0 produced observations. \\
 Deterministic & Producing the same output from the same input every time, with no element of chance. \\
@@ -28,14 +28,13 @@ Docker, Docker Compose & Tools that package software with its dependencies into 
 Egress & Outbound network traffic leaving a system. \\
 Evidence item & \textit{(project term)} A saved passage from a saved source copy, recorded with its exact location, so a later reader can find the same words again. \\
 Fixture & A fixed, made-up test input used to check that software behaves as specified. \\
-Held & \textit{(project term)} A verification outcome: the claim is not supported, is out of date or comes from untrusted content, so it is withheld from the report with its reason recorded. \\
-HITL & Human in the loop: a person must approve an output before it can be released. \\
+Held & \textit{(project term)} The D0 fixture label for refusal or non-admission: the claim is not supported, is out of date or comes from untrusted content, so it is withheld from the report with its reason recorded. It is not a human hold. \\
+Refusal & \textit{(project term)} Withholding claim admission when the saved passage does not support the statement, and recording that outcome instead of rewriting the claim. \\
 HTTPS, TLS & The encrypted protocol and the encryption layer used for secure web connections. \\
 LLM & Large language model: a model trained to generate text, such as those behind current chat assistants. \\
 Loopback & A network address reachable only from the same machine, so the service is not exposed to the network. \\
 Manifest & A list that binds outputs to their sources and fingerprints, so an export can be checked afterwards. \\
-Nulls, missing states & \textit{(project term)} The eight distinct reasons a value can be absent, such as an explicit zero, not reported, or source unavailable, kept separate rather than merged into one blank. \\
-OOS & Out of sample: data held back so it cannot influence how a system was built. \\
+Nulls, missing states & \textit{(project term)} The eight narrative states are blank, explicit zero, none stated, not applicable, not reported, not found publicly, source unavailable and invalid. The implemented type system also records observed, filing-not-due, dormant and not-required. \\
 Prompt injection & Hidden instructions placed in a web page or document that try to make a language model ignore its own rules. \\
 Provenance & The recorded origin and handling history of a piece of data: where it came from, when it was saved and what was done to it. \\
 RAG & Retrieval-augmented generation: retrieving documents first and then generating text from them, rather than relying on the model's memory. \\
@@ -43,7 +42,6 @@ RQ & Research question. \\
 Schema & A declared structure that data must match, used to reject malformed output automatically. \\
 Snapshot, freeze & A dated, unchanging copy of data or results, taken so later changes cannot alter what was reported. \\
 SQLite & A small database stored as a single local file. \\
-SSRF & Server-side request forgery: tricking a server into fetching an address it should not reach, such as an internal service. \\
 Statement coverage & The share of a program's lines that were executed at least once by its tests. It shows what was exercised, not that the behaviour is correct. \\
 \texttt{store=False} & A setting asking an external model provider not to save the request as application state. It does not remove separate abuse-monitoring retention. \\
 Supported & \textit{(project term)} A verification outcome: eligible evidence matches the proposed value, period and units, so the claim may enter the report. \\

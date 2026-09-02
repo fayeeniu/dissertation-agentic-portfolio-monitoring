@@ -1,0 +1,21 @@
+\section*{Public-web capture controls}
+
+The public-web path is built and locally tested. It opens only after a public case has a reviewed
+Companies House number and a fixed reporting cut-off. The Responses API then runs
+\texttt{web\_search} with \texttt{store=False} to plan discovery, and the application admits only
+canonical HTTPS addresses that also appear in the tool's own list of consulted sources. Page titles
+and model prose stay metadata; they never become company facts. Application code, not the search
+result, then fetches each candidate. It refuses embedded credentials, non-default ports, local hosts
+and addresses that do not resolve publicly; it checks robots rules, re-validates every redirect,
+permits six textual content types, and enforces limits on elapsed time, redirects and bytes. What
+survives capture is converted to visible text, stripped of personal contact details, and stored
+under a content hash in a directory that refuses to overwrite. A proposed statement is admitted only
+if its address matches a captured source, the statement equals the evidence passage, and that
+passage occurs literally in the stored text. Four tasks run in order: discover, capture, extract
+and compose, under one fingerprint covering identity, cut-off, model, prompt, policy and budgets.
+Table~\ref{tab:sys-failure-recovery-status} separates tested engineering work from work that is on
+hold. Retryable tasks keep their attempts and final reasons, and interrupted work resumes only
+under the same run contract.
+
+This appendix describes the implemented controls. Chapter~5 reports only the controlled tests of
+them. No authorised live company or open website was contacted.

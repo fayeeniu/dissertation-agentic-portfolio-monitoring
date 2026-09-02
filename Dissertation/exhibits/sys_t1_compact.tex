@@ -1,0 +1,22 @@
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.22\textwidth}P{0.38\textwidth}Y@{}}
+    \toprule
+    \textbf{Boundary} & \textbf{Control in the prototype} & \textbf{Status} \\
+    \midrule
+    Local runtime & Loopback dashboard, private API, SQLite, ignored local files; non-local clients refused. & In place; not production sign-in. \\
+    Identity-first intake & A well-formed Companies House number is an identity claim until a named reviewer accepts it. Names do not merge records. & In place; live register held. \\
+    Data class & Restricted and internal material stays local. Public or synthetic material may use the external route only when gates are open. & Control implemented; legal authority not verified. \\
+    Review and export & Named reviewer, reason and version; edits cancel approval; no export before current approval. & In place offline; human outcome unavailable. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Trust boundary of the local prototype}
+  \label{tab:sys-requirements-compact}
+  \vspace{3pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Compact view of Table~\ref{tab:sys-requirements-trust-boundary} in
+    Appendix~\ref{app:requirements-traceability}. The full matrix maps each control to residual risk.}
+\end{table}

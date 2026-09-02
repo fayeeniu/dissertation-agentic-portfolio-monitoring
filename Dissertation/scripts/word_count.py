@@ -65,7 +65,7 @@ def counts() -> dict[str, object]:
     main_body = sum(int(row["words"]) for row in chapters)
     return {
         "convention": (
-            "Chapters 1-8 prose; excludes Abstract/front matter, table bodies and captions, "
+            "Chapters 1-7 prose; excludes Abstract/front matter, table bodies and captions, "
             "figure content and captions, references, and appendices"
         ),
         "lower_bound": LOWER_BOUND,

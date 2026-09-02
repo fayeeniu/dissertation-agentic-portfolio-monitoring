@@ -86,10 +86,10 @@ interface Drawn {
 
 const TONE_STROKE: Record<Drawn["tone"], string> = {
   idle: "var(--rule-3)",
-  armed: "rgba(67, 216, 189, 0.28)",
+  armed: "var(--evidence-glow)",
   flowing: "var(--evidence)",
-  done: "rgba(67, 216, 189, 0.45)",
-  severed: "rgba(242, 112, 93, 0.6)",
+  done: "var(--evidence)",
+  severed: "var(--danger)",
 };
 
 export function AgentGraph({

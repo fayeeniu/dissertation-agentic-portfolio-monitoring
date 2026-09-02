@@ -77,6 +77,12 @@ export function statusTone(status: string): "evidence" | "human" | "danger" | "i
   return STATUS_TONE[status] ?? "idle";
 }
 
+/** Chart colour: queued work reads as in-progress, not complete. */
+export function chartTone(status: string): "evidence" | "human" | "danger" | "idle" | "active" {
+  if (status === "pending" || status === "discovered") return "active";
+  return statusTone(status);
+}
+
 const STATUS_LABEL: Record<string, string> = {
   pending: "Queued",
   running: "Executing",

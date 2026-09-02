@@ -1,15 +1,15 @@
 # Dissertation structure and evidence map
 
-Status: **revised full-report candidate, 1 September 2026; final review pending**. The active research contract now matches
+Status: **seven-chapter rebuild to the supervisor-agreed 7ch outline, 2 September 2026; final review pending**. The active research contract now matches
 the implementation and D0 observations. Manual, participant, live-web and managed-platform
 comparisons are prospective work rather than active research questions.
 
 ## Working count
 
 The reproducible command `python3 scripts/word_count.py --check` applies the candidate-confirmed
-convention to Chapters 1--8 prose. It excludes the Abstract and other front matter, table bodies and
+convention to Chapters 1--7 prose. It excludes the Abstract and other front matter, table bodies and
 captions, figure content and captions, references and appendices. The current main-body total is
-**15,660 words**, within the required **13,500--16,500** range around the 15,000-word target.
+**13,603 words**, within the required **13,500--16,500** range around the 15,000-word target.
 `metadata.tex` states the 15,000-word target. Authenticated WMG instructions take precedence if they
 later define any exclusion differently.
 
@@ -19,13 +19,14 @@ A table stays in a body chapter only if the prose argues from it at that point a
 roughly half a page. Everything else goes to an appendix and is referred to exactly once, in appendix
 form (`Table~\ref{...}, in Appendix~\ref{...}, ...`). No table is referred to both as present in the
 body and as provided in an appendix. Under this rule `lit_t2` and `lit_t3`, which no prose referenced,
-moved to Appendix H; `lit_t4` and `lit_t5` stay in Chapter 2 because its argument uses them. Every
+moved to Appendix H; `lit_t4` and Figures 2.1--2.2 sit in the appendices; `lit_t5` and
+`lit_t6` stay in Chapter 2 because its argument uses them. Every
 table, figure and graph caption is placed below its content.
 
 ## Figure and caption disclaimer rule
 
 Each epistemic scope statement appears exactly once across the whole figure set, at the figure where
-it actually operates, and Section 7.5 carries the full statement of the study's limits. Failure-state
+it actually operates, and Section~\ref{sec:limitations} in Chapter 6 carries the full statement of the study's limits. Failure-state
 labels inside a diagram (`Blocked: held`, `EXPORT FAILED`, `Any failure: unresolved`) are part of the
 gating logic and are retained. Captions state what the figure shows and where it came from, and do not
 repeat the limitations.
@@ -62,15 +63,14 @@ decisions and recorded human, cost and operational observations.
 | Part | Current words | Main purpose | Main evidence | Body exhibits |
 |---|---:|---|---|---|
 | Abstract (excluded) | 400 | Stand-alone problem, method, D0 result, contribution and main limit | Current implementation and D0 output | None |
-| 1. Introduction | 2,168 | Business problem, evidence risks, active questions, design alternatives and scope | Project charter and admitted literature | Business-process table; research contract |
-| 2. Literature Review | 3,501 | Critical synthesis of evidence risks, design criteria and architecture alternatives | Admitted papers and immutable primary captures | Evidence-boundary figures; concise alternatives table |
-| 3. Research Design and Methodology | 1,174 | Executed C1/C2 method, D0 fixture and its behavioural-testing warrant | Evaluation fixture, protocol and methods literature | Design-science evidence boundary |
-| 4. System Design and Implementation | 3,001 | Implemented role-separated architecture and controls | Requirements, ADRs, code, migrations and tests | Architecture and workflow figures |
-| 5. Evaluation and Results | 2,090 | Engineering record, D0 results answering RQ1/RQ2, and narrated worked examples | Frozen run outputs and D0 fixture | D0 design, results, examples and metric figure |
-| 6. Discussion | 1,843 | Answer RQ1/RQ2, interpret architecture, and define the pilot | Chapter 5 results and admitted literature | Body prose; supporting tables moved to appendices |
-| 7. Ethics, Governance and Limitations | 1,274 | Authoritative ethics, external-model record, security and consolidated validity boundary | Governance records, run manifests and admitted guidance | Supporting risk matrix moved to appendix |
-| 8. Conclusion and Future Work | 609 | Bounded contribution and sequenced next evidence | RQ findings and pilot plan | Roadmap moved to appendix |
-| **Main-body total** | **15,660** |  |  |  |
+| 1. Introduction | 1,430 | Business problem, why it matters, active questions and one-paragraph scope | Project charter and admitted literature | Business-process table; research contract |
+| 2. Literature Review | 3,381 | 7ch seven-section argument; search method; architecture argument in §2.6 | Admitted papers and immutable primary captures | Competitor and settled/gap tables; figures in appendix |
+| 3. Research Design and Methodology | 2,297 | C1/C2 method, evidence-scope table, D0 fixture, sequencing of unrun work, ethics | Evaluation fixture, protocol and methods literature | Design-science evidence chain; evidence-scope table |
+| 4. The artefact: the life of a claim | 1,740 | Eight stages of one claim; two end-to-end examples | Requirements, ADRs, code, migrations and tests | Architecture and verification-state figures |
+| 5. Evaluation and Results | 1,687 | Engineering record, D0 results answering RQ1/RQ2, honesty on C2 vs published detectors | Frozen run outputs and D0 fixture | Results tables; no metric-profile figure |
+| 6. Discussion | 2,238 | Answer RQ1/RQ2; operator screens; six-part pilot; only limitations section | Chapter 5 results and admitted literature | Transfer and literature-alignment tables |
+| 7. Conclusion | 830 | Bounded contribution, sequenced next evidence and closing statement | RQ findings and pilot plan | None |
+| **Main-body total** | **13,603** |  |  |  |
 
 ## Narrative spine
 
@@ -86,14 +86,15 @@ decisions and recorded human, cost and operational observations.
 
 - **Appendix A:** evidence of required ethics training.
 - **Appendix B:** ethics approval or waiver confirmation.
-- **Appendix C:** requirements, trust boundaries, connectors and failure-state traceability.
+- **Appendix C:** requirements, trust boundaries, connectors, failure-state traceability and moved pipeline figures.
 - **Appendix D:** condition and reference-parity matrices.
 - **Appendix E:** source admission, ethics, leakage, repeatability and provider data controls.
 - **Appendix F:** metric denominators, complete D0 case ledger, adversarial results
   and held comparison records.
 - **Appendix G:** implementation snapshot and engineering-validation ledger.
-- **Appendix H:** transfer, literature-alignment, residual-risk and future-evidence tables.
-- **Appendix I:** generative-AI use disclosure.
+- **Appendix H:** remaining literature and residual-risk tables (transfer and alignment tables now sit in Chapter 6).
+- **Appendix I:** literature search, PRISMA-style flow and screened-out table.
+- **Appendix J:** generative-AI use disclosure.
 
 ## Claim-control rule
 

@@ -1,5 +1,5 @@
 \chapter{Introduction}
-\section{Early-stage portfolio reporting and company intelligence}
+\section{The reporting problem}
 
 An investor holding stakes in a dozen young companies has to say, in writing and on a date, how each
 one is doing. The awkward part is not writing the summary but standing behind it: a figure that came
@@ -41,63 +41,79 @@ missing simply because a filing is not yet due \citep{galanakis2026chrt,hardman2
     repository evidence does not establish reporting frequency, labour cost, error rate or job title.}
 \end{table}
 
+Portfolio reports should record funding and public support as dated events with clear sources. In the
+Crowdcube study, an earlier successful round may act as a signal, but its meaning still depends on the
+campaign and platform \citep{wasti2024successive}. UK research on public support found later
+differences between participating firms, but it also noted selection effects and did not claim that
+the support caused those differences \citep{mondal2025state,thorne2026funding}. A round, grant or
+award can support a dated fact. It cannot prove future success or provide a complete funding history.
+
 Evidence about a company's development comes from dated events rather than one complete profile.
 Crowdfunding results vary by pitch, platform, country, sector, region and time. Published samples may
 also include only successful pitches \citep{estrin2024digital}. Research on repeat funding uses the
-campaign round as its unit and reports links with investor numbers, targets, equity offered and
-overfunding on one platform \citep{wasti2024successive}. UK funding data can connect opportunities,
+campaign round as its unit \citep{wasti2024successive}. UK funding data can connect opportunities,
 applications, decisions, organisations, projects and outcomes, but its coverage and links remain
-incomplete \citep{thorne2026funding}. A report should keep each event tied to its date and source. It
-should not turn these observations into a score that claims to measure company quality.
+incomplete \citep{thorne2026funding}. A report should keep each event tied to its date and source.
 
-These limits show that reliable reporting starts with the data, not with well-written text. A company
-register may be suitable for one task but not another. Legal identity and address fields are more
-available than management, financial or contact information \citep{krasikov2020ready}. Even required
-Companies House fields can be empty, so quality rules must be clear, linked to the intended use and
-checked in code \citep{nikiforova2020quality}. Extracting financial tables can also introduce errors
-through optical character recognition (OCR), repeated values, cell positions and missing negative
-signs \citep{bradley2024synfintabs}. The system must record the source, date, location and check result
-for each important statement. It must also show when evidence is missing or unclear.
-
-\section{Problem definition and motivation}
+These limits show that reliable reporting starts with the data. A company register may be suitable
+for one task but not another \citep{krasikov2020ready}. Even required Companies House fields can be
+empty, so quality rules must be linked to the intended use and checked in code
+\citep{nikiforova2020quality}. The system must record the source, date, location and check result for
+each important statement, and show when evidence is missing or unclear.
 
 The main data problem is to match different records to the correct legal company and to use only
 information that was available at the relevant date. Research that joined several registers used
-normalised names, alternative country names, approximate matching and manual review, but some records
-still could not be matched \citep{surak2026gateways}. Companies House data can contain empty required
-fields and inconsistent country names \citep{nikiforova2020quality}. Newer companies may also have no
-accounts because the filing date has not arrived \citep{hardman2023small}. The prototype therefore
-waits until the company number and legal identity are clear. It keeps different types of missing data
-instead of changing blanks to zeros, and records when information first became available.
+normalised names, approximate matching and manual review, but some records still could not be matched
+\citep{surak2026gateways}. Newer companies may also have no accounts because the filing date has not
+arrived \citep{hardman2023small}. The prototype waits until the company number and legal identity are
+clear. It keeps different types of missing data instead of changing blanks to zeros.
 
-Text can sound convincing and still be wrong, even when it includes citations. Research on cited
-answers separates factual correctness from citation precision and recall. A citation marker alone
-does not guarantee any of these qualities \citep{gao2023alce}. A statement may also match a source that
-is itself wrong \citep{gao2023rarr}. Public web pages can contain hidden instructions that try to
-change a model's summary, source choice or tool actions \citep{greshake2023indirect}. For this reason,
-web search is used only to find possible sources. Each report claim must point to a saved source and
-an exact page or passage, and a separate check must confirm the support. Retrieved text is always
-treated as untrusted data.
+Text can sound convincing and still be wrong, even when it includes citations. A citation marker
+alone does not guarantee factual correctness, citation precision or passage support
+\citep{gao2023alce}. A statement may also match a source that is itself wrong \citep{gao2023rarr}.
+Public web pages can contain hidden instructions that try to change a model's summary, source choice
+or tool actions \citep{greshake2023indirect}. Web search is therefore used only to find possible
+sources. Each report claim must point to a saved source and an exact passage, and a separate check
+must confirm the support.
 
-Human approval creates a release boundary, but it does not guarantee a better result. General guidance for human-AI
-systems recommends explaining what the system can do, showing uncertainty and allowing people to
+The same three properties -- factual correctness, citation precision and passage support -- are why
+a report cannot treat a fluent summary as evidence. Retrieval-augmented generation can extend search
+and still return irrelevant or hostile passages, and a citation marker on the resulting sentence
+does not repair that \citep{gao2023ragsurvey,gao2023alce}. The prototype therefore keeps finding,
+checking, extracting and verifying as separate steps.
+
+Human approval creates a release boundary, but it does not guarantee a better result. General
+guidance recommends explaining what the system can do, showing uncertainty and allowing people to
 correct or dismiss its output \citep{amershi2019guidelines}. In one controlled task, some participants
-followed incorrect AI advice. Prompts that made them stop and think reduced this problem, but they also
-affected preference, trust and different participant groups in different ways
-\citep{bucinca2021forcing}. The prototype shows conflicts, missing evidence, limits and exact source
-locations, and it requires a named reviewer before export. The evaluation tests the evidence and
-verification mechanisms, while human outcomes remain a future pilot question.
+followed incorrect AI advice \citep{bucinca2021forcing}. The prototype shows conflicts, missing
+evidence and exact source locations, and it requires a named reviewer before export. Whether review
+improves outcomes remains a future pilot question
+\citep{amershi2019guidelines,bucinca2021forcing}.
 
-\section{Research aim}
+Those three problems -- identity, unsupported text, and over-trusted review -- are why the aim is an
+evidence-first workflow rather than a better writer. A system that cannot refuse claim admission can
+only produce more sentences. A system that can refuse them can still be wrong, but the wrongness is
+then a recorded decision rather than a fluent gap \citep{gao2023alce,nist2023airmf}. Chapter~3 turns
+that refusal into a measurable C1/C2 difference under matched inputs, and Chapter~5 reports it on
+designed cases rather than on a sample of companies \citep{ribeiro2020checklist,fu2026agents}. That
+equal-input comparison is the warrant taken from the 2026 preprint, not a claim that extra roles are
+generally better.
+
+\section{Why it matters}
+
+The reporting problem matters because an untraced claim consumes monitoring attention without leaving
+a defensible record. Section~\ref{sec:reporting-problem} locates that cost in the UK equity market
+and in weekly portfolio work; the figures themselves are stated only there
+\citep{britishbusinessbank2025equity,gompers2016vcdecisions}.
+
+\section{Aim, research questions and objectives}
+\label{sec:research-questions}
 
 The aim of this dissertation is to design, implement and evaluate an evidence-first, role-separated
 workflow for early-stage portfolio reporting. The study examines how the prototype preserves evidence
 from intake to a reviewable report and how a separate verification stage changes claim admission in
 controlled cases. This follows design-science research, which links a practical problem to the
 development and evaluation of an artefact \citep{hevner2004design,peffers2007dsrm}.
-
-\section{Research questions}
-\label{sec:research-questions}
 
 \subsection*{Primary research question}
 
@@ -111,27 +127,25 @@ as required in design-science evaluation \citep{hevner2004design,peffers2007dsrm
 
 \textit{How does the implemented workflow preserve company identity, reporting time, missing states,
 source provenance and approval boundaries from input to report?} RQ1 is answered with implementation
-records, engineering tests and labelled D0 cases. The assessment covers exact identity holds, value and
-period semantics, source-record completeness, claim-to-evidence links and repeated outcomes. These
-measures keep data quality tied to the reporting task and keep factual correctness separate from
-citation support \citep{nikiforova2020quality,gao2023alce}.
+records, engineering tests and labelled D0 cases. The assessment covers exact identity holds, value
+and period semantics, source-record completeness, claim-to-evidence links and repeated outcomes
+\citep{nikiforova2020quality,gao2023alce}.
 
 \subsection*{RQ2: Effect of separate verification}
 
 \textit{What effect does a separately recorded verification stage have on supported-claim precision,
 unsupported claims, conflict handling, source-record completeness and repeatability in D0?} RQ2 uses
 a paired comparison between C1, which has no separate verifier, and C2, which adds verification.
-Both conditions receive the same fictional cases and proposed values. This avoids treating a citation
-link or fluent statement as proof that a claim is supported \citep{gao2023alce,gao2023rarr}.
+Both conditions receive the same fictional cases and proposed values
+\citep{gao2023alce,gao2023rarr}.
 
 \subsection*{Scope narrowing}
 
 The original contract also proposed manual C0, named-review C3, live-web and managed-platform
-comparisons. They require authorised participants, frozen references, live access and recorded time,
-cost or review observations. Those observations were not available, so these comparisons are not
-active research questions. Human control may support correction and accountability, but it may also
-create delay or over-reliance \citep{amershi2019guidelines,bucinca2021forcing}. Chapter~7 records this
-limitation once, and Chapters~6 and~8 specify the future pilot needed to test it.
+comparisons. They require authorised participants, frozen references, live access and recorded time.
+Those observations were not available, so these comparisons are not active research questions
+\citep{amershi2019guidelines,bucinca2021forcing}. Section~\ref{sec:limitations} is the only place
+those absences are discussed at length.
 
 \subsection*{Research objectives and evaluation plan}
 
@@ -139,107 +153,32 @@ Four objectives connect the questions to the study. O1 defines shared rules for 
 dates, missing data and source records. O2 implements those rules in a workflow that stops when
 required evidence is missing or invalid. O3 evaluates the implemented controls and the C1/C2 verifier
 difference using the fixed D0 fixture. O4 distinguishes supported, unsupported, conflicting,
-unavailable and missing evidence in every result. Together, these objectives connect the artefact to
-observable evaluation criteria without treating successful execution as proof of practical benefit
-\citep{hevner2004design,peffers2007dsrm}.
+unavailable and missing evidence in every result
+\citep{hevner2004design,peffers2007dsrm}. Why the workflow separates production from judgement is
+argued in Section~\ref{sec:design-alternatives}; that argument is not repeated here.
 
 Table~\ref{tab:research-contract} summarises this evaluation plan and the evidence currently available.
 
 \input{exhibits/intro_t1_research_contract.tex}
 
-\section{Design alternatives and why roles were separated}
-\label{sec:design-alternatives}
+\section{Scope and boundary}
 
-A reasonable reader will ask why this problem needs several cooperating components at all. Simpler
-designs exist, three of them are genuinely capable, and the case for role separation is narrower than
-the phrase ``multi-agent'' usually implies. Surveys of such systems show that role labels and
-communication patterns vary widely and carry no guaranteed benefit \citep{guo2024multiagent}, while
-design-science practice requires an artefact's design choices to be justified against alternatives
-\citep{hevner2004design}. This section therefore states the case plainly, including what it does not
-claim.
+The system is a local, single-user research prototype rather than a deployed service. Restricted or
+internal material stays local and is never sent to public generative-AI tools
+\citep{cddo2023genai,nist2023airmf}. The project excludes buy or sell recommendations, speculative
+valuations, profiles of people, automatic publication and claims of production readiness
+\citep{fca2024promotions,greshake2023indirect}. Those boundaries are stated once;
+Section~\ref{sec:limitations} is the only later limitations section.
 
-The first alternative is a single model call: give one language model the evidence and the question,
-and take its answer. This is the weakest option, and not because such models write badly. The
-difficulty is structural. The component that writes the claim is also the component that decides the
-claim is supported, so there is no position from which the claim can be refused. Work on cited
-answers shows why that matters: whether a statement is factually right, whether its citation points
-to the right place, and whether the cited passage actually supports it are three separate properties,
-and a citation marker on its own guarantees none of them \citep{gao2023alce}. A statement can also be
-faithful to a source that is itself wrong \citep{gao2023rarr}. If the writer is the only judge, those
-distinctions cannot be recorded, because nothing in the design is asking the question.
+\section{Contribution and roadmap}
 
-The second alternative is a deterministic script with no model at all, and here the concession is
-real: for structured register fields, a script is sufficient, and this project uses exactly that. The
-identity, period and missing-value rules in Chapter~4 are ordinary code, not model output, because
-fixed rules are the more reliable instrument when the input has a schema \citep{nikiforova2020quality}.
-A script becomes insufficient only where the evidence is prose: an accounts commentary or a funding
-announcement carries the figure in narrative form, and extracting it involves interpretation that a
-schema cannot express. Table extraction alone introduces character-recognition errors, repeated
-values, misplaced cells and dropped negative signs \citep{bradley2024synfintabs}. The honest position
-is therefore a division of labour, with fixed rules wherever a rule will do and language models only
-where meaning must be read from text.
-
-The third alternative is a plain retrieval-then-generation pipeline, which is the strongest competitor
-and the one closest to standard practice. Retrieving real passages before writing does reduce
-invention, and this project retrieves too. The limitation is again about authority rather than
-quality: in that arrangement the generator remains the last component to touch the claim, so support
-is asserted by the same step that composes the text, and surveys of retrieval pipelines note that
-retrieved passages may be irrelevant or unsupported \citep{gao2023ragsurvey}. Retrieved web content is
-also untrusted input, because a page can carry instructions aimed at changing a model's summary,
-source choice or tool use \citep{greshake2023indirect}. Retrieval improves the evidence available; it
-does not create a stage that is allowed to say no.
-
-What separation buys, then, is narrow and structural. The extractor cannot admit its own output, the
-verifier can refuse a claim but cannot rewrite it to pass, the composer can use only admitted claims,
-and only a named person can approve a release. These are constraints on authority, demonstrable by
-inspection rather than inferred from a score. The cost is equally real: more state, more hand-offs and
-more to maintain, and analysis of multi-agent traces shows that added roles introduce coordination and
-verification failures of their own \citep{cemri2025masfailures,sculley2015debt}. Managed platforms can
-host such roles through configuration rather than code, which Chapter~2 examines as a serious
-alternative \citep{dibia2024autogenstudio}.
-
-This leads to a claim deliberately smaller than the design might suggest, and it is worth stating
-before any result appears. A single program could apply the identical support rule and reach the
-identical decisions; the D0 comparison in Chapter~5 isolates that rule and its authority over
-composition, not the number of components. Where Chapters~4 and~6 concede this, they state the
-argument's actual shape rather than retreat from it. What is defended here is that separating who may
-propose, judge and approve makes the reasons for a decision recoverable -- a property of the
-arrangement, not a measured gain in accuracy
-\citep{guo2024multiagent,wu2024autogen,hevner2004design}.
-
-\section{Scope, contribution, and exclusions}
-
-The system is a local, single-user research prototype rather than a deployed service, reachable only
-from the same computer. Stating its purpose, user and operating limits matters because risk depends on
-the setting in which a system is used \citep{nist2023airmf}. Public company information may be sent to
-an external model only after the required checks, while restricted or internal material stays local
-and is never sent to public generative-AI tools \citep{cddo2023genai}.
-
-The contribution has three parts: an evidence-first prototype, an executed controlled evaluation and
-a reporting method that traces claims to sources. It combines design with tests against stated
-objectives, without treating implementation as proof of operational usefulness
-\citep{hevner2004design,peffers2007dsrm}. It also keeps factual correctness separate from citation
-support, so each sourced claim still needs a page or passage check \citep{gao2023alce,gao2023rarr}.
-The public-web research route provides additional implementation and adversarial-test evidence, but
-it is not used to answer the active questions.
-
-The project excludes buy or sell recommendations, speculative valuations, profiles of people,
-automatic publication and claims that the system is ready for remote, multi-user or production use.
-Financial communications can affect investment decisions and may create further duties. This supports
-a cautious scope, not a claim of legal compliance \citep{fca2024promotions}. Public web content remains
-untrusted because hidden prompt injection can change model output or tool actions
-\citep{greshake2023indirect}. A named person must approve a report before export, which keeps human
-responsibility clear \citep{cddo2023genai}. These controls define the prototype's authority boundary;
-their wider limits are addressed in Chapter~7.
-
-\section{Dissertation roadmap}
-
-Chapter 2 examines the literature behind the design criteria and weighs the architecture alternatives
-introduced in Section~\ref{sec:design-alternatives}.
-Chapter 3 defines the executed evaluation and places unrun protocols in the appendices. Chapter 4
-explains the implemented architecture and operational roles. Chapter 5 reports engineering and D0
-results, including individual claim decisions. Chapter 6 interprets RQ1 and RQ2 and specifies a
-prospective business pilot. Chapter 7 is the authoritative location for ethics, governance and study
-limitations. Chapter 8 states the bounded contribution and future evidence. This order follows design
-science by linking the problem, artefact, evaluation and communication
+The contribution has three parts: an evidence-first prototype, an executed controlled evaluation, and
+a reporting method that traces claims to sources \citep{hevner2004design,peffers2007dsrm}. The
+dissertation title names the implemented role structure. It is not a claim that extra agents
+outperform a single program. Chapter~2 reviews the literature and argues the design alternatives,
+including matched-input evidence for role separation. Chapter~3 defines the executed evaluation, the
+evidence-scope table and the ethics boundary. Chapter~4 retells the artefact as the life of a claim.
+Chapter~5 reports engineering and D0 results. Chapter~6 interprets RQ1 and RQ2, specifies a
+prospective business pilot, and states the study's limits. Chapter~7 closes the argument. This order
+follows design science by linking the problem, artefact, evaluation and communication
 \citep{hevner2004design,peffers2007dsrm}.

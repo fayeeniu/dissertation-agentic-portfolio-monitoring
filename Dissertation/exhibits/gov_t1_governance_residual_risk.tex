@@ -9,7 +9,7 @@
     \textbf{Risk area} & \textbf{Current control} & \textbf{Current evidence} & \textbf{What is still required} \\
     \midrule
     Data and privacy & Classification, purpose declaration, local restricted/internal boundary, public-text redaction & Policies, schemas and controlled tests & Approved lawful-purpose, retention, deletion, backup and incident responsibilities. \\
-    External model & Public or fictional data only, reviewed route, strict schema, budgets and \textnormal{store=False} & Code and fake-provider tests; five bounded synthetic smoke runs, 26 August 2026 (Section~7.2) & Eligible account settings, retention and deletion evidence, and a current provider review. \\
+    External model & Public or fictional data only, reviewed route, strict schema, budgets and \textnormal{store=False} & Code and fake-provider tests; five bounded synthetic smoke runs, 26 August 2026 (Section~\ref{sec:ethics}) & Eligible account settings, retention and deletion evidence, and a current provider review. \\
     Untrusted content & URL candidates only, protected collection, instruction filtering and exact-passage checks & Controlled malformed-content and grounding cases & Independent hostile-input testing and continuing maintenance of source rules. \\
     Network transport & HTTPS, DNS, redirect, port, file type and size checks with public-IP pinning & Controlled SSRF, rebinding and redirect cases & Separate production network access, sign-in and separation between users. \\
     Resource and recovery & Budgets, retries, cancellation, fixed fingerprints, checksums and staged export & Task and export recovery tests & Backup, service targets, monitoring, recovery after a forced stop, and incident exercises. \\

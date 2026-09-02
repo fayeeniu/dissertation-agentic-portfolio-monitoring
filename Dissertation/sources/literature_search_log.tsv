@@ -1,0 +1,35 @@
+Search log, PRISMA-style flow & screened-out sources		
+Open-literature pass (arXiv/ACL/NeurIPS/journals). Re-run these strings in Scopus/Web of Science for the official identification counts.		
+PRISMA-style flow (open-literature pass)		
+Stage	Count	Notes
+Candidate records surfaced & relevance-screened	53	across all 15 Boolean strings / 5 theme searches
+Duplicates removed	0	searches theme-partitioned; no exact dups
+Full-text screened	53	
+Excluded at full-text (with reason)	7	see 'Screened out' below
+Included in review	46	target was ~35-45
+Screened out at full text (with reason)		
+Source	Reason	
+Maier et al. (2015) — SROI merits/limitations	Redundant with Corvo et al. (2022) systematic SROI review	
+Tiron-Tudor et al. (2024) — RPA in accounting	Adjacent domain (corporate RPA), not venture reporting	
+Madaan et al. (2023) — Self-Refine	Overlaps Shinn et al. Reflexion on the generator–critic pattern	
+Dhuliawala et al. (2023) — Chain-of-Verification	Q12 already saturated; no external grounding	
+Bohnet et al. (2022) — Attributed QA	Short-answer attribution; less central than ALCE/RARR	
+Stureborg et al. (2024) — Inconsistent/Biased Evaluators	Q16 judge-bias already covered by Panickssery/Wang/Verga	
+FCA (2024) — AI research note	Companion overlap with the BoE/FCA joint survey	
+Boolean search strings (paste into Scopus/WoS to log official counts)		
+Theme	Boolean search string	
+A	("portfolio monitoring" OR "portfolio reporting" OR "impact report*" OR "investor report*") AND ("venture capital" OR "early-stage" OR startup*) AND (manual OR workflow OR automat*)	
+A	("impact measurement" OR "impact reporting" OR ESG OR "impact management") AND (venture OR "early-stage" OR startup*) AND (metric* OR indicator* OR standard*)	
+B	("multi-agent" OR multiagent OR agentic) AND ("large language model" OR LLM) AND (architecture OR orchestration OR framework OR pattern*)	
+B	("multi-agent" OR multiagent) AND (LLM OR "language model") AND (verifier OR "critic agent" OR checker OR reviewer OR "role-based")	
+C	("multi-agent" OR multiagent OR agentic) AND ("large language model" OR LLM) AND (quality OR reliability OR accuracy OR faithfulness) AND (generation OR report* OR summar*)	
+C	("multi-agent" OR multiagent) AND LLM AND ("failure mode*" OR "error propagation" OR robustness OR coordination)	
+C	("automated" OR "LLM-generated" OR "AI-generated") AND (report* OR summar*) AND (quality OR reliability OR accuracy) AND (human OR manual OR expert) AND (compar* OR baseline OR evaluat*)	
+D	(provenance OR traceability OR "source attribution") AND (LLM OR "language model") AND (extraction OR "report generation" OR "information extraction")	
+D	(validation OR normalis* OR normaliz* OR "data cleaning" OR "data quality") AND (LLM OR "language model") AND (heterogeneous OR tabular OR "structured data")	
+D	(hallucination OR grounding OR faithfulness OR verification OR "fact-checking") AND (LLM OR "language model") AND (citation OR provenance OR source OR evidence)	
+E	("LLM-as-a-judge" OR "G-Eval" OR "automatic evaluation") AND (quality OR "text generation" OR "long-form") AND (report* OR summar* OR generation)	
+E	("error injection" OR "fault injection" OR "error detection" OR "fault detection") AND (LLM OR "language model") AND (evaluat* OR reliability OR benchmark)	
+E	("LLM-as-a-judge" OR "self-evaluation" OR "self-verification") AND (bias OR validity OR "self-preference" OR limitation*)	
+F	("human-in-the-loop" OR "human review" OR "reviewer interface") AND (LLM OR AI) AND (error* OR "quality control" OR oversight)	
+F	("agentic AI" OR "autonomous agents" OR "generative AI") AND (governance OR regulation OR regulatory OR compliance) AND (finance OR financial OR "high-stakes")	

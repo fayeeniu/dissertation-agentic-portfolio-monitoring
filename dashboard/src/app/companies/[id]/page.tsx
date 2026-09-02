@@ -9,17 +9,18 @@ import { InvestmentBrief, claimsForCategories } from "@/components/InvestmentBri
 import { PortfolioMetrics } from "@/components/PortfolioMetrics";
 import { RunPipeline } from "@/components/RunPipeline";
 import {
+  BoardSkeleton,
   EmptyState,
   ErrorNote,
   NextActionBanner,
   Panel,
   Pill,
-  Skeleton,
-  StatRail,
+  ServiceError,
+  StatGrid,
 } from "@/components/ui";
 import { ApiError, apiPost } from "@/lib/api";
 import { formatDate, formatDateTime, formatNumber, humanize, shortHash } from "@/lib/format";
-import { useResource } from "@/lib/hooks";
+import { useDocumentTitle, useResource } from "@/lib/hooks";
 import type { CompanyPayload, RunPayload, SessionPayload } from "@/lib/types";
 
 export default function CompanyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -30,19 +31,20 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
   const [starting, setStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
 
-  if (company.error) return <ErrorNote message={company.error.message} />;
+  useDocumentTitle(company.data?.company.name ?? "Company");
+
+  if (company.error) {
+    return (
+      <ServiceError
+        title="This company could not be loaded."
+        message={company.error.message}
+        onRetry={() => void company.refresh()}
+      />
+    );
+  }
 
   if (!company.data) {
-    return (
-      <div className="stack">
-        <Skeleton lines={2} />
-        <div className="panel">
-          <div className="panel-body">
-            <Skeleton lines={6} />
-          </div>
-        </div>
-      </div>
-    );
+    return <BoardSkeleton />;
   }
 
   const data = company.data;
@@ -75,91 +77,100 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
   }
 
   return (
-    <div className="stack">
-      <nav className="row" style={{ fontSize: "0.75rem", color: "var(--ink-4)" }}>
-        <Link href="/">Control room</Link>
+    <div className="overview">
+      <nav className="crumb">
+        <Link href="/">Overview</Link>
         <span aria-hidden="true">/</span>
         <Link href="/companies">Companies</Link>
         <span aria-hidden="true">/</span>
         <span className="mono">{primary?.value ?? data.company.id}</span>
       </nav>
 
-      <header className="run-head">
-        <div className="stack-sm" style={{ gap: "0.4rem", minWidth: 0 }}>
-          <p className="eyebrow">Company 360 · {humanize(data.company.entity_type)}</p>
-          <div className="row" style={{ gap: "0.7rem" }}>
-            <h1 style={{ fontSize: "1.6rem" }}>{data.company.name}</h1>
-            <Pill status={data.company.resolution_status} />
-          </div>
-          <div className="run-meta">
-            <span>
-              number <b>{primary?.value ?? "not recorded"}</b>
-            </span>
-            <span>
-              classification <b>{data.company.classification}</b>
-            </span>
-            <span>
-              jurisdiction <b>{data.company.jurisdiction ?? "not recorded"}</b>
-            </span>
-            <span>
-              registered <b>{formatDate(data.company.created_at)}</b>
-            </span>
-          </div>
+      <section className="overview-hero stack-sm">
+        <div className="row" style={{ gap: "0.7rem" }}>
+          <h1 className="page-title">{data.company.name}</h1>
+          <Pill status={data.company.resolution_status} />
         </div>
-        <div className="run-controls">
-          {resolved && openCase && data.live_research_enabled ? (
-            <button
-              type="button"
-              className="btn"
-              data-variant="primary"
-              disabled={starting}
-              onClick={() => void startRun()}
-            >
-              {starting ? "Creating run…" : "Start research run"}
-            </button>
-          ) : null}
-          {data.runs[0] ? (
-            <Link className="btn" href={`/runs/${data.runs[0].id}`}>
-              Open control room
-            </Link>
-          ) : null}
-          <Link className="btn" href="/reports">
-            Reports & exports
-          </Link>
-        </div>
-      </header>
+        <p className="lede page-lede">
+          Number {primary?.value ?? "not recorded"} · {data.company.classification} ·{" "}
+          {data.company.jurisdiction ?? "jurisdiction not recorded"} · registered{" "}
+          {formatDate(data.company.created_at)}.
+        </p>
+      </section>
 
       {startError ? <ErrorNote message={startError} /> : null}
 
-      <NextActionBanner
-        label={data.next_action.label}
-        detail={data.next_action.detail}
-      />
+      <div className="command-band">
+        <NextActionBanner
+          size="hero"
+          label={data.next_action.label}
+          detail={data.next_action.detail}
+          href={
+            /start/i.test(data.next_action.label)
+              ? null
+              : (data.next_action.href ??
+                (data.runs[0] ? `/runs/${data.runs[0].id}` : "#identity"))
+          }
+          action={
+            /start/i.test(data.next_action.label) &&
+            resolved &&
+            openCase &&
+            data.live_research_enabled ? (
+              <button
+                type="button"
+                className="btn"
+                data-variant="primary"
+                disabled={starting}
+                onClick={() => void startRun()}
+              >
+                {starting ? "Creating run…" : "Start run"}
+              </button>
+            ) : undefined
+          }
+        />
 
-      <StatRail
-        items={[
-          { label: "Research runs", value: formatNumber(data.runs.length) },
-          {
-            label: "Claims admitted",
-            value: formatNumber(claims.length),
-            tone: claims.length ? "evidence" : "muted",
-          },
-          { label: "Sources captured", value: formatNumber(captured) },
-          {
-            label: "CBIT metrics evidenced",
-            value: investmentReport
-              ? formatNumber(investmentReport.summary.publicly_evidenced)
-              : "—",
-            tone: investmentReport?.summary.publicly_evidenced ? "evidence" : "muted",
-          },
-          {
-            label: "Profile versions",
-            value: formatNumber(data.profile_versions.length),
-            tone: data.profile?.status === "approved" ? "evidence" : "human",
-          },
-          { label: "Intake artifacts", value: formatNumber(data.artifacts.length) },
-        ]}
-      />
+        <StatGrid
+          items={[
+            {
+              icon: "activity",
+              label: "Research runs",
+              value: formatNumber(data.runs.length),
+              hint: "Each run pins one cutoff and one source policy",
+            },
+            {
+              icon: "quote",
+              label: "Claims admitted",
+              value: formatNumber(claims.length),
+              tone: claims.length ? "evidence" : "muted",
+              hint: "Statements that passed admission",
+            },
+            {
+              icon: "inbox",
+              label: "Sources captured",
+              value: formatNumber(captured),
+              hint: `${data.lanes.length} planned lanes`,
+            },
+            {
+              icon: "versions",
+              label: "Profile versions",
+              value: formatNumber(data.profile_versions.length),
+              tone: data.profile?.status === "approved" ? "evidence" : "human",
+              hint: data.profile ? humanize(data.profile.status) : "No composed version yet",
+            },
+          ]}
+        />
+      </div>
+
+      <div className="run-controls">
+        {data.runs[0] ? (
+          <Link className="btn" href={`/runs/${data.runs[0].id}`}>
+            Open run
+          </Link>
+        ) : null}
+        <Link className="btn" href="/reports">
+          Reports
+        </Link>
+      </div>
 
       <nav className="section-nav" aria-label="Company sections">
         <a href="#assessment">Assessment</a>
@@ -189,8 +200,8 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
             <PortfolioMetrics report={investmentReport} />
           ) : (
             <EmptyState
-              title="This saved profile predates the CBIT metric report."
-              detail="Restart the loopback research service to load the current metric contract. Existing admitted claims and sources remain available below; missing report data is not treated as zero evidence."
+              title="This saved profile has no metric report."
+              detail="Admitted claims and sources below remain available. Missing report data is not treated as zero evidence."
             />
           )}
         </Panel>
@@ -286,7 +297,7 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
           </Panel>
         </div>
 
-        <div className="stack">
+        <div className="stack" id="identity">
           <Panel
             title="Identity"
             eyebrow="Root of the case"
@@ -318,10 +329,8 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
             )}
             {!data.live_research_enabled ? (
               <p className="muted" style={{ fontSize: "0.75rem", marginTop: "0.7rem" }}>
-                Live research is closed. Open both{" "}
-                <code className="mono">PORTFOLIO_ALLOW_LIVE_PUBLIC_RETRIEVAL</code> and{" "}
-                <code className="mono">PORTFOLIO_ALLOW_EXTERNAL_LLM</code>, set a reviewer name and
-                an API key, then restart the service.
+                Live research is closed. Set a reviewer and enable public retrieval and the model
+                on the service, then restart it.
               </p>
             ) : null}
           </Panel>
@@ -346,10 +355,14 @@ export default function CompanyPage({ params }: { params: Promise<{ id: string }
                         Export JSON
                       </a>
                     </div>
-                  ) : (
-                    <Link className="btn" data-size="sm" href={data.runs[0] ? `/runs/${data.runs[0].id}` : "#"}>
+                  ) : data.runs[0] ? (
+                    <Link className="btn" data-size="sm" href={`/runs/${data.runs[0].id}`}>
                       Open review gate
                     </Link>
+                  ) : (
+                    <p className="muted" style={{ fontSize: "0.75rem" }}>
+                      No run is available to review yet.
+                    </p>
                   )}
                 </div>
               ) : (

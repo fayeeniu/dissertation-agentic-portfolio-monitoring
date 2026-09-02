@@ -13,4 +13,4 @@ The candidate supplied the following requirements from WMG section 3.2 for permi
 4. list the prompts used; and
 5. explain briefly how the output was modified.
 
-The candidate confirmed that AI use for this dissertation was limited to report structure, visualisations, research support, feedback and review, and technical implementation. The exact declaration must remain truthful to the tools and interactions actually used. The example statement that no AI-generated content was presented as the candidate's own work must not be inserted unless the candidate confirms that it is accurate.
+The candidate confirmed that AI use for this dissertation was limited to report structure, visualisations, research and source-checking, and feedback on the writing. It was not used to implement or validate the prototype. The exact declaration must remain truthful to the tools and interactions actually used. The example statement that no AI-generated content was presented as the candidate's own work must not be inserted unless the candidate confirms that it is accurate.

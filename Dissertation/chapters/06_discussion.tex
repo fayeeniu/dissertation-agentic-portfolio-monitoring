@@ -1,192 +1,259 @@
 \chapter{Discussion}
-\section{RQ1: Evidence preservation in the implemented workflow}
+\section{What the workflow demonstrates}
 
 RQ1 asks how the implemented workflow preserves identity, time, missing states, provenance and
 approval boundaries from input to report. The repository and engineering checks show that these
 controls exist in one local workflow. Inputs retain dataset and period identifiers; company matches
 can enter an explicit hold; missing values keep typed reasons; source records retain locators and
 checksums; verifier decisions are persisted; and export requires approval of the current report
-version. This is evidence that the workflow is inspectable, not evidence that it is ready for
-production \citep{hevner2004design,peffers2007dsrm}.
+version \citep{hevner2004design,peffers2007dsrm}. Being able to inspect those records is the RQ1
+result. It is not a claim that the same records would survive a live registry, a different schema or
+a second author of the cases. Dataset documentation and reproducibility guidance both treat that
+inspectability as a property of the method, not of the world the method describes
+\citep{gebru2021datasheets,pineau2021reproducibility}.
 
 D0 supplies a narrower behavioural result. Both conditions normalised all fourteen fictional cases
 as expected and returned the same ordered outcomes in three repeats. C2 emitted the five supported
-cases and held the remaining nine. The accepted observed-zero case shows why a typed zero must not be
-collapsed into missing data. The contradicted, stale and untrusted examples show how period, value and
-trust rules change the report consequence. These decisions remain traceable to exact fixture records
-\citep{gao2023alce,gao2023rarr}.
-
-Being able to trace a claim does not make its source true. A fixed workflow will faithfully repeat a
-publisher's mistake, and an exact passage can support a sentence that still misleads. What the
+cases and refused admission of the remaining nine. The accepted observed-zero case in
+Section~\ref{sec:claim-journey} shows why a typed zero must not be collapsed into missing data
+\citep{gao2023alce,gao2023rarr}. Being able to trace a claim does not make its source true. What the
 workflow offers is narrower: a reader can see where a value came from, what was done to it, why it
-was admitted and who released it. Judging whether the source is right, and how much of the picture it
-covers, are separate jobs \citep{gao2023rarr,pineau2021reproducibility}.
+was admitted and who released it. Table~\ref{tab:disc-literature-result-alignment} sets that answer
+beside the literature expectation \citep{gao2023rarr,pineau2021reproducibility}.
 
-RQ1 is therefore answered for the implemented mechanisms under controlled inputs: the workflow
-produces a complete record of why each claim was emitted or withheld, and Section~7.5 states the
-boundary of that answer \citep{pineau2021reproducibility,gebru2021datasheets,nist2023airmf}.
+\input{exhibits/disc_t3_literature_result_alignment.tex}
 
-\section{RQ2: Observed effect of separate verification}
+\section{What separate verification changed}
 
 RQ2 compares C1 and C2 on identical D0 candidates and evidence. C1 emitted eleven claims, including
 six designed to be unsupported. Its precision was 0.455 and its unsupported-claim rate was 0.545. C2
 emitted five claims, all labelled as supported, giving precision of 1.000 and an unsupported-claim
-rate of 0.000. Recall remained 1.000 in both conditions. The observed effect was selective admission,
-not discovery of additional evidence \citep{gao2023alce,gao2023rarr}.
+rate of 0.000. Recall remained 1.000 in both conditions \citep{gao2023alce,gao2023rarr}.
 
-The lower claim count is important. C2 did not improve by producing a more complete report; it
-withheld candidates for conflicting values, a stale period, absent or inaccessible support, mixed
-currency and untrusted content. This was correct for D0, but a similar gate could falsely reject a
-valid claim in new data. D0 cannot estimate false rejection outside its visible designed cases
-\citep{kapoor2023leakage,nist2023airmf}.
+The lower claim count is the mechanism. C2 did not improve by producing a more complete report. It
+refused claim admission for conflicting values, a stale period, absent or inaccessible support, mixed
+currency and untrusted content. Source-record completeness rose because the two incomplete C1 records
+were among the refused claims. The observed effect is refusal, not better discovery
+\citep{gao2023alce,gebru2021datasheets}. Recall stayed at 1.000 because every required supported
+claim was already present in C1 and remained present in C2. The gate did not find an extra true
+claim. It stopped six false ones from being said. That is why the result is described as
+selective admission rather than as better discovery or as a more complete pack
+\citep{gao2023rarr,peffers2007dsrm}.
 
-The scope of that result needs stating precisely, and it is exactly the scope
-Section~\ref{sec:design-alternatives} claimed in advance. C1 and C2 share one program, one catalogue
-and one normalisation route, so what differs between them is the support rule and its authority over
-composition, not a persona, a conversation style or a count of agents. A deterministic pipeline or a
-single grounded agent could apply the same rule and reach the same decisions. The finding is that an
-explicit, separately recorded refusal changed what the report was allowed to say; it is not evidence
-that multi-agent designs are generally better \citep{guo2024multiagent,wu2024autogen}.
+C1 and C2 share one program, one catalogue and one normalisation route, so what differs is the
+support rule and its authority over composition, not a persona or a count of agents. A deterministic
+pipeline could apply the same rule and reach the same decisions. The finding is that an explicit,
+separately recorded refusal changed what the report was allowed to say
+\citep{guo2024multiagent,fu2026agents,wu2024autogen}.
 
 No useful speed or cost comparison was produced. Both routes used local fixed rules, model cost was
 zero and sub-millisecond times were truncated to zero. Role separation also adds states, hand-offs,
 storage, tests and maintenance. A later pilot must measure these costs alongside false acceptance,
-false rejection and reviewer work \citep{pineau2021reproducibility,hevner2004design}.
+false rejection and reviewer work \citep{pineau2021reproducibility,hevner2004design}. D0 cannot
+estimate false rejection outside its visible designed cases, so a similar gate could refuse a valid
+claim in new data \citep{kapoor2023leakage,nist2023airmf}.
 
-\section{Why functional role separation was selected}
+\section{Role separation revisited}
 
 The selected design separates production from verification and keeps approval outside both. The
-planner and collectors can propose work, but they cannot approve a report. The verifier can accept,
-hold or contradict a candidate, but it cannot rewrite the claim to make it pass. The composer can use
-only admitted claims, and the reviewer decides whether the current version may be exported. Persisted
-hand-offs make each decision recoverable and allow a failure to stop one stage without silently
-changing another \citep{guo2024multiagent,wu2024autogen}.
+verifier can accept, refuse or contradict a candidate, but it cannot rewrite the claim to make it
+pass. The composer can use only admitted claims. Section~\ref{sec:design-alternatives} already argued
+that this is a constraint on authority, priced against added state and against the failure modes in
+multi-agent traces \citep{cemri2025masfailures,nist2023airmf}. The prototype uses a fixed state
+machine rather than an open-ended conversation to keep that cost visible
+\citep{guo2024multiagent,wu2024autogen}.
 
-This design also supports narrower permissions. Public discovery, protected collection, local
-restricted-data processing and final approval do not share one unrestricted tool boundary. The trade-
-off is more code and more operational state. Multi-agent trace studies report coordination and task-
-verification failures, so added roles are themselves a source of risk
-\citep{cemri2025masfailures,nist2023airmf}. The prototype uses a fixed state machine rather than an
-open-ended conversation to keep this cost visible.
+The findings agree with literature that separates factual correctness, citation support and source
+attribution. Exact locators and saved copies make a decision inspectable, but they do not establish
+source truth or complete coverage \citep{gao2023alce,gao2023rarr}. The observed D0 change is
+consistent with the purpose of a verification gate because the fixture was built to test that gate.
+Fixed missing-state, cut-off and version rules also support repeatability. Their weakness is that a
+wrong or outdated rule repeats consistently, so the rules need named ownership and re-evaluation when
+sources, schemas or reporting needs change
+\citep{pineau2021reproducibility,nikiforova2020quality,gebru2021datasheets}. Human approval provides
+accountability for release, not automatic correctness
+\citep{amershi2019guidelines,bucinca2021forcing}.
 
-The alternatives in Table~\ref{tab:lit-solution-landscape} remain credible, for the reasons
-Section~\ref{sec:design-alternatives} set out. This workflow earns its place by making the support
-and approval boundaries explicit and open to inspection, not by being the best option for every
-reporting team \citep{gao2023ragsurvey,guo2024multiagent}.
+\section{What this means for an investment team}
 
-\section{Public-web case study and future comparator}
+For an analyst preparing a weekly or quarterly pack, the useful change is not a dashboard of more
+figures. It is a short list of claims that survived admission, sitting beside a visible list of
+refusals. The four exhibits below are the implemented operator surfaces of that local machine:
+identity hold, typed missingness, retained conflict, and named approval before export
+\citep{amershi2019guidelines,nist2023airmf}.
 
-The public-web route extends the implementation from structured replay to bounded source discovery:
+Four implemented surfaces matter in ordinary use. They are shown here as the existing
+operator-facing exhibits, because a live dashboard capture of the D0 fixture rows was not
+available in this tree. Figure~\ref{fig:op-local-architecture} is the machine the operator
+runs. Figure~\ref{fig:op-identity-hold} is the identity hold: a Companies House number stays a
+claim until a named person accepts it, so two similarly named companies are not merged by a
+spelling. Figure~\ref{fig:op-verification-export} is the verification, named-approval and
+export lock. Table~\ref{tab:op-missing-conflict} keeps an observed zero distinct from a blank
+and groups grant funding of \pounds100 against register evidence of \pounds200 for the same
+period, instead of averaging them \citep{bradley2024synfintabs,gao2023alce}. These are the
+implemented operator surfaces. They are not a usability study.
+
+\input{exhibits/disc_f_operator_surfaces.tex}
+
+The operator sees a held identifier rather than a silent merge, a typed zero rather than an
+empty cell, a retained disagreement rather than a manufactured grant figure, and an export that
+stays locked until the current version carries a name, a reason and a content hash. On the
+identity surface the number remains a claim. On the missing-state surface ``no jobs created''
+remains sayable. On the conflict surface \pounds100 stays beside \pounds200. On the approval
+surface an edit drops the previous release. None of those surfaces was tested with
+participants. They are the operator-facing consequence of the controls in Chapter~4, not a
+measured preference or effort result \citep{amershi2019guidelines,bucinca2021forcing}.
+
+What the team would stop doing, if the gate were trusted, is quieter than a new dashboard. It would
+stop treating a missing cell as zero, stop merging two companies because their names look alike, stop
+publishing the larger of two disagreeing grant figures, and stop exporting a pack whose content has
+changed since the named approval. Those are reporting-control habits, not predictions about
+portfolio returns \citep{fca2024promotions,nikiforova2020quality}. They still need the pilot before
+anyone should change a weekly process on their account.
+
+A managed platform could host the same roles through configuration. Grok Bot's documentation
+describes persistent named Bots with jobs, tools and approval boundaries
+\citep{spacexai2026grokbot,dibia2024autogenstudio}. Lower effort remains a hypothesis. The decisive
+question is whether the bought platform can refuse a claim the evidence does not support.
+
+The public-web route extends the same contract from structured replay to bounded source discovery:
 web search proposes addresses, local controls decide whether a page may be collected, and a claim
 still needs a saved source, an exact supporting passage and approval
 \citep{openai2026websearch,gao2023alce}. Controlled tests covered reviewed identity, network checks,
 request limits, write-once captures, redaction, exact passages, contradictions and approval using fake
-providers and fixtures, which establishes behaviour for those cases and nothing about the open web
-\citep{greshake2023indirect,nist2023airmf}.
+providers and fixtures. That establishes behaviour for those cases and nothing about the open web
+\citep{greshake2023indirect,nist2023airmf}. For an investment team the implication is narrow: assisted
+search can lengthen the candidate list, but it cannot shorten the evidence contract.
 
-The most honest challenge to the whole custom build is that a managed platform might do it for less
-work. Grok Bot's documentation describes persistent named Bots with defined jobs, tools, hand-offs and
-approval boundaries, covering a good deal of what Chapter~4 implements by hand
-\citep{spacexai2026grokbot}. Lower effort remains a hypothesis, and the decisive question for any such
-comparison is whether the platform can refuse a claim the evidence does not support, because a
-configurable Bot is not by itself a verification contract
-\citep{dibia2024autogenstudio,peffers2007dsrm}.
+\section{Business pilot plan}
+\label{sec:business-pilot}
 
-\section{Relationship to literature and design trade-offs}
+The proposed pilot is a time-limited evaluation of the existing portfolio XLSX import as the named
+input integration, with the Next.js review interface as the downstream report surface. It has six
+named parts \citep{pineau2021reproducibility,peffers2007dsrm}.
 
-The findings agree with literature that separates factual correctness, citation support and source
-attribution. Exact locators and saved copies make a decision inspectable, but they do not establish
-source truth or complete coverage \citep{gao2023alce,gao2023rarr}. The observed D0 change is consistent
-with the purpose of a verification gate because the fixture was built to test that gate. It is not an
-independent confirmation of a general theory.
+\paragraph{Integration.}
+The existing XLSX import is the only in-scope input. Eligible sources, schema, cut-off and completion
+rule are frozen before any paired report is started \citep{pineau2021reproducibility,peffers2007dsrm}.
+Four figures still have to be chosen on site: how many portfolio companies, how many reporting
+periods, what calendar window, and the smallest number of completed paired reports that would make
+the comparison worth reading. This dissertation leaves those four open, because a size picked without
+knowing the site's caseload would be invented rather than planned
+\citep{gebru2021datasheets,nist2023airmf}.
 
-Fixed missing-state, cut-off and version rules also support repeatability. Their weakness is that a
-wrong or outdated rule repeats consistently. The rules therefore need named ownership, change
-control and re-evaluation when sources, schemas or reporting needs change
-\citep{pineau2021reproducibility,nikiforova2020quality,gebru2021datasheets}.
+\paragraph{Staff responsibilities.}
+The pilot owner approves scope and the go/no-go decision. A reporting analyst prepares the manual
+baseline and operates each reporting case. A technical operator manages the local service, versions
+and failures. A reviewer checks the evidence and current report version. A data and security owner
+approves data classes, source licences, storage, retention and any external-model route
+\citep{amershi2019guidelines,nist2023airmf}. The analyst who prepares the manual baseline must not
+also score the workflow output against that baseline after seeing both. The reviewer who sets
+go/no-go thresholds must do so before paired results are visible
+\citep{kapoor2023leakage,artstein2008agreement}.
 
-Human approval provides accountability for release, not automatic correctness. Interfaces should
-show uncertainty and allow correction, while studies of reliance show that people may still follow
-incorrect advice \citep{amershi2019guidelines,bucinca2021forcing}. The pilot must measure reviewer
-edits, decisions and time instead of treating an approval button as evidence of benefit.
-Table~\ref{tab:disc-rq-evidence-status} in Appendix~\ref{app:supplementary-evaluation} separates the
-two answered research questions from the unexecuted comparisons. Table~\ref{tab:disc-literature-result-alignment}
-in Appendix~\ref{app:supplementary-exhibits} shows where the results support, qualify or leave the
-literature claims untested.
+\paragraph{Cost model.}
+Setup effort is recorded in staff-hours for data mapping, source admission, environment
+configuration, training and dry runs. For every report the team records analyst active minutes,
+reviewer active minutes, elapsed time, retries, tokens, provider charges, source-licensing charges,
+storage and security costs. Cost per report is allocated setup plus those items, divided by completed
+reports. No saving is assumed before this matched baseline exists
+\citep{pineau2021reproducibility,peffers2007dsrm}.
 
-\section{Generalisability and practical interpretation}
+\paragraph{Time-saving hypotheses.}
+Expected reductions in analyst active time, reviewer active time and elapsed time remain hypotheses
+until the paired pilot demonstrates them on the same company-periods. A saving nobody committed to
+in advance cannot later be claimed as one \citep{nikiforova2020quality,artstein2008agreement}.
 
-Everything above applies to one local prototype, fourteen designed cases and a set of controlled
-security tests. Early-stage private-market evidence is unusually incomplete and sensitive to how terms
-are defined, which is precisely why statistical generalisation would need an independently selected
-and labelled set rather than a larger version of D0
-\citep{kaplan2016vcdata,britishbusinessbank2025equity,kapoor2023leakage}.
+\paragraph{Success metrics and go/no-go.}
+Quality measures are supported-claim precision, evidence coverage, false acceptance, false rejection,
+reviewer edits, completion rate and source failures. Before seeing outcomes, the pilot owner and
+reviewer set the minimum acceptable quality and completion values and the maximum acceptable time,
+false-acceptance, false-rejection and cost values. The recommendation is go only when those frozen
+criteria are met, approval cannot be bypassed, and every exported claim has the required evidence
+record \citep{peffers2007dsrm,nist2023airmf}. The run stops immediately for unclear authority or
+consent, unexpected restricted or personal data, credential exposure, a source-licence or robots
+breach, external transmission outside the approved route, a broken evaluation freeze,
+evidence-record loss, approval bypass, uncontrolled cost or a security incident. The event, affected
+cases and recovery decision are recorded \citep{cddo2023genai,nist2023airmf}.
+
+\paragraph{Testing still required.}
+An independent tester needs to attack the collection and extraction route with hostile inputs. An
+accessibility assessment needs assistive technology and an assessor from outside the project. A
+security assessment needs to cover remote and multi-user operation, which this prototype does not
+support. A live-source study needs to run the approved official connectors against real registry and
+publisher data \citep{nist2023airmf,pineau2021reproducibility}. Expected time or cost reduction
+remains a hypothesis until the paired pilot demonstrates it. Results should be paired by
+company-period, and failed or abandoned cases should remain in the denominator where the measure
+requires them. Data-quality measures must remain tied to the intended reporting use, and reviewer
+disagreement must not be treated as proof that either person is correct
+\citep{nikiforova2020quality,artstein2008agreement}.
+
+\section{What this study cannot show}
+\label{sec:limitations}
+
+This section is the only place where the study's limits are stated in full. Earlier chapters report
+what was built and observed without repeating these boundaries
+\citep{hevner2004design,nist2023airmf}.
+
+The principal evidential limit is D0 itself. Its fourteen cases are fictional, and they were written
+by the same person who wrote the rules they test, so the verifier difference may partly reflect that
+shared design. Behavioural test suites expose specified known failures; passing them shows that the
+targeted behaviour is present \citep{ribeiro2020checklist,kapoor2023leakage}. Each error category has
+only one case, so no rate, distribution or confidence interval can be derived. Nothing in this
+dissertation estimates accuracy on real companies, parity with manual work, reviewer benefit or
+population performance.
+
+Several planned comparisons produced no observations and are absent rather than negative. The manual
+baseline, the participant-review condition, the live public-web study and the managed-platform
+comparison all required authority, frozen references or recorded human effort that was not available.
+Engineering evidence is bounded in the same way: 286 passing tests and 85.58~per cent statement
+coverage describe exercised local paths using fictional data and fake providers
+\citep{sculley2015debt,pineau2021reproducibility}.
+
+Anything outside the repository can move. Sources, licences, data formats, search ordering, model
+behaviour and provider policy all change independently of this code. Fixed rules repeat consistently,
+which is a strength until a rule is wrong, and each frozen mapping carries an ongoing maintenance
+cost \citep{sculley2015debt,gebru2021datasheets}. The researcher designed the system, wrote the cases
+and performed the scoring. Any final evaluation therefore needs independently constructed references
+and a freeze agreed before the data are seen \citep{nist2023airmf,pineau2021reproducibility}.
+
+Operationally the prototype is local, single-user, serial and SQLite-based. It has no production
+authentication, tenant separation, egress isolation, central monitoring, backup regime or tested
+disaster recovery. Accessibility was checked visually rather than with assistive technology. The
+dated snapshot retains five formatting failures and 22 deprecation warnings. None of this cancels
+the controlled D0 result. Together these limits rule out any claim about usability, resilience,
+maintainability or production readiness
+\citep{hevner2004design,amershi2019guidelines}.
+
+The study also cannot show that an investment team would accept refusal as a reporting habit.
+Nothing was measured about trust, override rates or whether a visible silence is treated as
+caution or as a defect. Time-saving and cost-reduction claims are out of scope for the same
+reason: no paired manual hour was recorded. Vendor dashboards were reviewed as documentation,
+not as measured alternatives \citep{visible2026investors,zapflow2026portfolio}. Transfer to
+another legal register or another reporting cycle would require a new data contract, which is
+why this section stops at that boundary and Section~\ref{sec:business-pilot} remains a plan
+rather than a result
+\citep{kaplan2016vcdata,britishbusinessbank2025equity}.
+
+\section{Transferring the design elsewhere}
 
 Moving the design to another setting is not a matter of copying code. It would need a new data
 dictionary, a legal identity source, source licences, missing-value rules, a reporting cut-off, an
-evidence contract, a security boundary and a named approval owner. Checksums and versions help explain
-why two runs differ; they do not hold behaviour steady when the sources or models underneath change
-\citep{gebru2021datasheets,nist2023airmf}. The transfer checklist is
-Table~\ref{tab:disc-transfer-conditions} in Appendix~\ref{app:supplementary-exhibits}.
+evidence contract, a security boundary and a named approval owner
+\citep{gebru2021datasheets,nist2023airmf}. Table~\ref{tab:disc-transfer-conditions} lists those
+conditions. The prototype ranks nothing, predicts nothing and advises nobody
+\citep{fca2024promotions,hevner2004design}.
 
-The prototype is best understood, then, as a reporting control system that can be tested. It ranks
-nothing, predicts nothing and advises nobody, and whether it is genuinely useful remains a question
-for the pilot \citep{fca2024promotions,hevner2004design}.
+Everything above applies to one local prototype, fourteen designed cases and a set of controlled
+security tests. Early-stage private-market evidence is unusually incomplete and sensitive to how terms
+are defined, which is why statistical generalisation would need an independently selected and labelled
+set rather than a larger version of D0
+\citep{kaplan2016vcdata,britishbusinessbank2025equity,kapoor2023leakage}. Checksums and versions help
+explain why two runs differ; they do not hold behaviour steady when the sources or models underneath
+change \citep{gebru2021datasheets,nist2023airmf}. The transfer question is therefore a new
+data-contract question, not a packaging question. A team that copies the code without copying the
+identity source, the missing-state rules and the named approval owner has not transferred the
+artefact; it has transferred a shell \citep{hevner2004design,peffers2007dsrm}. The checklist in
+Table~\ref{tab:disc-transfer-conditions} is therefore a list of new decisions, not a packing list.
 
-\section{Prospective business pilot}
-
-The proposed pilot is a time-limited evaluation of the existing portfolio XLSX import as the named
-input integration. The prototype's Next.js review interface is the downstream report interface, with
-versioned JSON and accessible HTML exported only after approval. The pilot owner approves scope and
-the go/no-go decision. A reporting analyst prepares the manual baseline and operates each reporting
-case. A technical operator manages the local service, versions and failures. A reviewer or approver
-checks the evidence and current report version. A data and security owner approves data classes,
-source licences, storage, retention and any external-model route
-\citep{amershi2019guidelines,nist2023airmf}.
-
-Before data collection, the team freezes the pilot's size as well as its rules. Four figures fix the
-size: how many portfolio companies, how many reporting periods, what calendar window, and the
-smallest number of completed paired reports that would make the comparison worth reading. The pilot
-owner and the reviewer choose those four; this dissertation leaves them open, because a size picked
-without knowing the site's caseload would be invented rather than planned. The team also freezes the
-eligible sources, schema, reference decisions, task completion rule and acceptance thresholds. It
-records setup effort in
-staff-hours for data mapping, source admission, environment configuration, training and dry runs.
-For every report it records analyst active minutes, reviewer active minutes, elapsed time, review and
-rework time, retries, model or API tokens, provider charges, source-licensing charges, storage and
-security costs. Cost per report is the allocated setup cost plus staff time, API use, licences,
-storage and security, divided by completed reports. No saving is assumed before this matched baseline
-exists \citep{pineau2021reproducibility,peffers2007dsrm}.
-
-Quality measures are supported-claim precision, evidence coverage, false acceptance, false rejection,
-reviewer edits, completion rate and source failures. Operational measures are active time, elapsed
-time and cost per report. The manual baseline uses the same inputs, source window and completion rule.
-Results are paired by company-period, and failed or abandoned cases remain in the denominator where
-the measure requires them. Data-quality measures must remain tied to the intended reporting use
-\citep{nikiforova2020quality}, and reviewer disagreement must not be treated as proof that either
-person is correct \citep{artstein2008agreement}.
-
-The pilot proceeds only if authority, source licences, reference labels, storage controls, trained
-owners and rollback are in place. Before seeing outcomes, the pilot owner and reviewer set the
-minimum acceptable quality and completion values and the maximum acceptable time, false-acceptance,
-false-rejection and cost values. Time is on that list because a saving nobody committed to in advance
-cannot later be claimed as one. The recommendation is go only when those frozen criteria are met,
-approval cannot be bypassed, every exported claim has the required evidence record, and no stop event
-occurs. It is no-go or redesign when a criterion fails. This avoids inventing numeric targets in the
-dissertation while leaving a checkable decision rule
-\citep{peffers2007dsrm,nist2023airmf}.
-
-The run stops immediately for unclear authority or consent, unexpected restricted or personal data,
-credential exposure, a source-licence or robots breach, external transmission outside the approved
-route, a broken evaluation freeze, evidence-record loss, approval bypass, uncontrolled cost or a
-security incident. The event, affected cases and recovery decision are recorded. Expected time or
-cost reduction remains a hypothesis until the paired pilot demonstrates it
-\citep{cddo2023genai,nist2023airmf}.
-
-Four kinds of testing remain outstanding, and they are gathered here so that a pilot owner can find
-them in one place. An independent tester needs to attack the collection and extraction route with
-hostile inputs. An accessibility assessment needs assistive technology and an assessor from outside
-the project. A security assessment needs to cover remote and multi-user operation, neither of which
-this prototype supports. And a live-source study needs to run the approved official connectors
-against real registry and publisher data. Sections~7.5 and~8.3 refer to this list rather than
-repeating it \citep{nist2023airmf,pineau2021reproducibility}.
+\input{exhibits/disc_t2_transfer_conditions.tex}

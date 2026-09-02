@@ -36,7 +36,7 @@ tectonic main.tex --outdir build
 `render_mermaid_figures.sh` rebuilds every figure from source in one step: it expands
 `exhibits/figure_palette.json` into the shared Mermaid config and stylesheet, renders each of the
 twelve `.mmd` sources to an SVG vector master and the PNG the LaTeX build consumes, and rebinds
-`exhibits/MERMAID_MANIFEST.csv`. Nine renders are referenced by the manuscript and three are
+`exhibits/MERMAID_MANIFEST.csv`. Eight renders are referenced by the manuscript and four are
 retained as review history. Every figure shares one print-safe, colour-blind-safe palette; colour
 never appears in a figure source, only semantic `fx-*` roles. The renderer is pinned to
 `@mermaid-js/mermaid-cli@11.16.0`, and the manifest binds every source, render and shared render
@@ -71,7 +71,7 @@ python3 scripts/word_count.py --check
 ```
 
 The word-count command applies the candidate-confirmed 15,000-word target with a ten-per-cent
-tolerance. It counts Chapters 1--8 prose and excludes the Abstract and other front matter, tables,
+tolerance. It counts Chapters 1--7 prose and excludes the Abstract and other front matter, tables,
 figures, references and appendices. Its per-chapter output is the source for `REPORT_STRUCTURE.md`
 and the section ledger; authenticated WMG instructions take precedence if they define an exclusion
 differently.

@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.28\textwidth}P{0.32\textwidth}Y@{}}
+    \toprule
+    \textbf{Measure} & \textbf{Numerator / denominator} & \textbf{Why it is used} \\
+    \midrule
+    Supported-claim precision & Supported emitted claims / all emitted claims & Does refusal raise the share of admitted claims that are supported? \\
+    Recall & Correctly emitted required claims / all required claims & Does refusal drop claims that should have been said? \\
+    Unsupported-claim rate & Unsupported emitted claims / all emitted claims & The complement of precision on the same emitted set. \\
+    Source-record completeness & Complete source records / emitted claims & Completeness of the record, not discovery of new sources. \\
+    Exact repeat consistency & Identical ordered outcomes across three repeats & Repeatability of the programmed gate. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Primary D0 denominators}
+  \label{tab:meth-primary-denominators}
+  \vspace{3pt}
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Compact view of the metric matrix in
+    Appendix~\ref{app:supplementary-evaluation}. Cost, time and reviewer measures have no D0 labels
+    and remain null.}
+\end{table}

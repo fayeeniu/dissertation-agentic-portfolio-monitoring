@@ -1,173 +1,252 @@
-\chapter{System Design and Implementation}
-\section{Requirements and trust boundaries}
+\chapter{The Artefact: the life of a claim}
+\section{Requirements and trust boundary}
 
-This chapter describes what was actually built, working outward from the trust boundary to the
-controls that sit on each stage. The release is a local, single-user research prototype rather than a
-service. It listens only on the machine that runs it and refuses any client or host header that is not
-local (NFR-SEC-001, FR-UI-003). The bounded company-research route accepts a Companies House number on
-its own, with no company name or website (FR-INT-001), but a named person must review and accept that
-number before research can begin (FR-RES-001). One reviewed number is therefore the whole of what this
-route needs to start. It fixes which registered company the work refers to, which is a narrower thing
-than knowing that the company trades \citep{galanakis2026chrt,hardman2023small,nist2023airmf}.
+This chapter follows one claim from intake to approved export. The release is a local, single-user
+research prototype. It listens only on the machine that runs it and refuses any client that is not
+local. A bounded company-research route may start from a Companies House number alone, but a named
+person must review that number before research can begin. Incorporation is not proof that the company
+trades \citep{galanakis2026chrt,hardman2023small}.
 
-Every item entering the system is labelled public, internal, restricted or synthetic, and each case keeps the purpose and the person behind it. The charter assigns the roles: the student operates the prototype, portfolio companies keep their confidentiality interests, and data owners or the university ethics body authorise any restricted or participant use. External-model processing is off by default and, when switched on, accepts only public or synthetic evidence (FR-EXT-005). The client sends \texttt{store=False} with every request, which controls what the provider saves as application state but not what it retains for abuse monitoring; Section~7.2 records the requests that were actually made under this route \citep{gebru2021datasheets,cddo2023genai,openai2026datacontrols}.
+Every item is labelled public, internal, restricted or synthetic. External-model processing is off by
+default and, when switched on, accepts only public or synthetic evidence. The client sends
+\texttt{store=False} with every request, which controls saved application state but not
+abuse-monitoring retention \citep{gebru2021datasheets,openai2026datacontrols}. Export is blocked until
+the current version is approved. Table~\ref{tab:sys-requirements-compact} states the trust boundary.
+The full requirement matrix is Table~\ref{tab:sys-requirements-trust-boundary} in
+Appendix~\ref{app:requirements-traceability} \citep{fca2024promotions,nist2023airmf}.
 
-No output leaves the system without a person deciding that it may. Export of a report is blocked until the current version is approved (FR-REP-005), and reaching a company deck requires both a named review and a content-hash check (FR-RES-007). Four things sit outside the design entirely: remote or multi-user deployment, profiling of individuals, speculative valuation, and buy or sell recommendations. Direct live Companies House retrieval remains held at gate G2. The public-web route is built, and the external-model extraction provider was exercised in the bounded development smoke runs recorded in Section~7.2, but live public-web discovery, live capture and the frozen evaluation have not run. Table~\ref{tab:sys-requirements-trust-boundary}, in Appendix~\ref{app:requirements-traceability}, maps each control to the risk it addresses, chiefly misleading communication and untrusted content \citep{fca2024promotions,greshake2023indirect,nist2023airmf}.
-\section{Architecture and local deployment}
+\input{exhibits/sys_t1_compact.tex}
 
-The artefact runs as two local processes. Next.js renders the operator dashboard, and its server-side proxy calls a private FastAPI service, so the browser never reaches the API directly. Behind the API handlers, a single runtime object assembles the importing, source, workflow, reporting, intake and company-research services, and the command-line interface builds that same runtime, so both entry points exercise identical domain code rather than parallel implementations \citep{hevner2004design,peffers2007dsrm}.
+\section{Architecture in one page}
 
-SQLite holds the canonical identity, workflow, claim, review and audit records, with foreign keys enabled. Startup migrates the database to the declared head rather than creating tables directly, so the schema always has a stated version. Imported bytes and source captures are written once into local directories that Git ignores, verified by checksum and recorded by path, and approved exports are staged as manifest-backed bundles. Keeping relational metadata apart from the evidence bytes means a record can be traced to the exact file it came from \citep{pineau2021reproducibility,gebru2021datasheets}.
-
-Docker Compose mirrors that two-process shape in pinned images. Only the dashboard is published to the local machine; it reaches the API over a private container network, both container file systems are read-only, and the API alone mounts the volume holding persistent state. Health, proxy, host, cross-site request forgery and migration checks exercise these mechanisms, and Figure~\ref{fig:sys-architecture-deployment-boundary} maps the resulting request and data path \citep{pineau2021reproducibility,nist2023airmf}.
-
-Every control described here is a local one, sized to the attack surface of a single laptop rather than a hosted service; Section~7.5 states what a remote or multi-user release would additionally require \citep{nist2023airmf,cddo2023genai}.
+The artefact runs as two local processes. Next.js renders the operator dashboard. Its server-side
+proxy calls a private FastAPI service, so the browser never reaches the API directly. SQLite holds
+identity, workflow, claim, review and audit records. Imported bytes and source captures are written
+once into local directories that Git ignores, verified by checksum and recorded by path
+\citep{pineau2021reproducibility,gebru2021datasheets}. Docker Compose mirrors that two-process shape
+in pinned images. Figure~\ref{fig:sys-architecture-deployment-boundary} maps the request and data
+path \citep{hevner2004design,nist2023airmf}. The canonical data model, including the separate
+company-research track, is Figure~\ref{fig:sys-canonical-data-provenance-model} in
+Appendix~\ref{app:requirements-traceability}. Startup migrates the database to the declared head
+rather than creating tables directly, so the schema always has a stated version. Alembic revisions
+0001--0009 reproduce the evaluated schema; revision 0010 was added after the dated snapshot, which
+Chapter~5 records at 0009. Tests compare the migrated schema against the one the code expects
+\citep{pineau2021reproducibility,gebru2021datasheets}.
 
 \clearpage
 \begin{figure}[p]
   \centering
   \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f1_architecture_deployment_boundary.png}
-  \caption{Local architecture, deployment and external-boundary status. Author synthesis of the repository's contracts, its implementation and the local verification evidence.}
+  \caption{Local architecture, deployment and external-boundary status. Author synthesis of the
+  repository's contracts, its implementation and the local verification evidence.}
   \label{fig:sys-architecture-deployment-boundary}
 \end{figure}
 \clearpage
-\section{Shared data definitions, storage and source records}
 
-Shared meaning starts from a versioned catalogue. Each metric definition fixes a key, type, unit, sourceability, permitted aliases and one period meaning, and a hash over the catalogue stops a version being reused after its meaning has changed. Observations then bind a company, metric, period and raw submission together, and normalisation keeps the original value beside the cleaned one. Blank, explicit zero, none stated, not applicable, not reported, not found publicly, source unavailable and invalid are eight separate states, not interchangeable nulls. Distinguishing them is what allows a later reader to see why a figure is absent, though the eight categories are this project's definitions and would need a domain owner's agreement before wider use \citep{nikiforova2020quality,gebru2021datasheets}.
+\section{Stages 1--3: intake, identity and capture}
 
-SQLite separates canonical companies and identifiers from submissions, observations, reporting periods, evidence, claims and reports. Foreign keys, uniqueness constraints and indexes protect relationships, while Alembic revisions 0001--0010 reproduce the ORM schema and incrementally add provenance, company-research and reviewed group-scope records. Revision 0010 was added after the dated evaluation snapshot, which Chapter~5 records at 0009; the results in that chapter therefore describe the earlier schema. Tests compare the migrated schema against the one the code expects, and exercise downgrade preflights. One weakness is visible here: many of the semantic states above are stored as strings or JSON and are enforced by application code rather than by the database, so the schema alone cannot guarantee they are used consistently \citep{pineau2021reproducibility,gebru2021datasheets}.
+The workflow is a fixed state machine with eight stages: plan, resolve identity, collect evidence,
+extract values, normalise them, verify claims, compose a report and stop at human review. Each stage
+leaves a persisted run record holding input and output hashes, status, timing and attempts. A failure
+stops the stages that would have followed it \citep{pineau2021reproducibility,hevner2004design}.
 
-Imported files are hashed before persistence and published create-once under checksum-addressed paths. Connector snapshots record source and version, reviewed identifier, cutoff, locator, media type, checksum, retrieval and publication times, and classification. Facts retain value, unit, currency, periods, effective and publication times, exact structured locator and extraction method/schema. A versioned derivation hash covers terminal snapshot metadata, facts and events, detecting same-byte parser drift. The public-web case implements redacted capture and checksum verification, though no live capture has run. Writing files once and hashing them means a later reader can tell whether the evidence behind a claim has changed since it was collected \citep{pineau2021reproducibility,gebru2021datasheets}.
+Identity is stage 2. The portfolio-import route accepts XLSX, CSV and JSON, hashes the original bytes
+and writes a create-once snapshot. Every company row passes through the same identity resolver. A
+conflicting identifier becomes a counted hold rather than a silent merge. A well-formed Companies
+House number creates an exact identifier and a held case. It is not confirmed against the register,
+because valid shape is not proof of existence. Names may suggest a candidate. They never merge
+companies \citep{thorne2026funding,surak2026gateways}. Identity becomes ready only after a named actor
+accepts the exact identifier with a substantive reason. Figure~\ref{fig:sys-legal-identity-decision-flow},
+in Appendix~\ref{app:requirements-traceability}, maps these gates.
 
-Claims persist normalised values and link many-to-many with evidence items; each evidence item carries publisher, locator, times, checksum, connector version, classification and trust or time flags. A separate verification stage records supported, contradicted, insufficient, stale or untrusted outcomes without rewriting the source. Portfolio reports can export these links without raw evidence. The separate company-research schema stores accepted passages word for word alongside their source URLs, and where two sources disagree it groups the statements as contradiction candidates for a named person to resolve. No live company has been run through that path \citep{gao2023alce,gao2023rarr}.
+Capture is stage 3. Collection stores run-linked evidence and its time decision before extraction.
+Only temporally eligible, trusted public evidence reaches later stages. Untrusted material is counted
+and bypassed. Connector snapshots record source and version, reviewed identifier, cutoff, locator,
+media type, checksum, retrieval and publication times, and classification
+\citep{pineau2021reproducibility,gebru2021datasheets}. Direct live Companies House and UKRI retrieval
+remain held at gate G2. Offline replay of those adapters is implementation evidence, recorded in
+Appendix~\ref{app:requirements-traceability}.
 
-Reports sit at the end of this chain and are versioned by appending rather than overwriting, so an edit retires the current section instead of erasing it and recalculates the report's content hash. Approval is therefore bound to an exact version of exact content: change the content and the approval falls away. Section~4.8 describes the review and export controls that enforce this, and Figure~\ref{fig:sys-canonical-data-provenance-model} maps the boundaries \citep{nist2023airmf,amershi2019guidelines,pineau2021reproducibility}.
+Time is judged relative to the claim, not to the moment of collection. Evidence is ineligible if it
+carries no recorded publication or availability time, was published after the reporting cut-off,
+takes effect in the future, or had expired before the period began. When it was retrieved is tracked
+separately. A cumulative figure must span exactly from the stored programme start to the cut-off.
+UKRI funding binds only when every award in the window carries a finite, explicit sterling amount,
+and otherwise leaves a missing state with a diagnostic rather than an inferred zero
+\citep{hardman2023small,kapoor2023leakage,nikiforova2020quality}. The source layer is a registry of
+declared capabilities rather than a crawler. Every request names the source, company, reviewed
+identifier, cut-off, fact keys and mode, and the registry refuses it before any adapter runs if the
+capability is unsupported or the identity is unresolved. A refusal of this kind is a decision not to
+look, recorded differently from a publisher having no record
+\citep{gebru2021datasheets,pineau2021reproducibility}. Two deterministic adapters are usable through
+synthetic offline replay: Companies House (manifest 1.4.0) matches an exact number, and UKRI
+(manifest 1.3.0) matches an exact organisation identifier and selects the most recent correction
+available at the cut-off \citep{galanakis2026chrt,hardman2023small}.
 
-\clearpage
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f2_canonical_data_provenance_model.png}
-  \caption{Canonical data, provenance and approval lineage. Author synthesis of the implemented relational contracts. The dashed panel is the company-research track, which runs on its own records rather than as a stage of the portfolio chain.}
-  \label{fig:sys-canonical-data-provenance-model}
-\end{figure}
-\clearpage
-\section{Intake and legal-identity control}
+\section{Stages 4--5: extraction and normalisation}
 
-The portfolio-import route accepts XLSX, CSV and JSON, then hashes the original bytes before writing a create-once snapshot. Its dataset identifier combines those bytes with the reporting-period label; a repeated hash and period reuses the stored submission only when classification, cutoff and profile remain compatible. Every company row then passes through the same identity resolver, and a conflicting identifier becomes a counted hold rather than a silent repair or merge \citep{pineau2021reproducibility,gebru2021datasheets}.
+Stage 4 extracts a candidate value. Structured evidence is extracted with fixed, rule-based code. A
+strict schema binds company, metric, period, value and exact evidence locator. Unstructured public or
+synthetic evidence may use an optional model only to suggest a claim that still links to an exact
+passage \citep{gao2023alce,gao2023rarr}. Existing extractions are reused. Every provider attempt is
+stored, including the failed ones.
 
-The company-intelligence route accepts a Companies House number without a name or website, tidying its format before checking its structure. A well-formed number creates an exact identifier, a placeholder company and a held case; crucially, it is not confirmed against the register, because valid shape is not proof of existence. Website, name-and-jurisdiction and document routes instead store what was submitted as a claim, leaving domains pending and document bytes untrusted and checksum-bound, since legal registration and operational identity are not the same thing \citep{galanakis2026chrt,hardman2023small}.
+Stage 5 normalises type, unit, currency and missing state against a versioned catalogue. Blank,
+explicit zero, none stated, not applicable, not reported, not found publicly, source unavailable and
+invalid are the eight states used in the narrative. Distinguishing them is what allows a later
+reader to see why a figure is absent, and what allows stage 6 to treat an observed zero as sayable
+rather than as a blank to be dropped
+\citep{nikiforova2020quality,gebru2021datasheets,bradley2024synfintabs}. The implemented type
+system also records observed, filing-not-due, dormant and not-required. Many of these semantic
+states are stored as strings or JSON and enforced by application code rather than by the
+database, so the schema alone cannot guarantee they are used consistently. The catalogue version
+is part of the evaluand: a later change of missing-state rules is a new configuration, not a
+silent improvement of the same one \citep{pineau2021reproducibility,mitchell2019modelcards}.
 
-Identity becomes ready only after a named actor accepts the exact identifier with a substantive reason before source use. A rejection leaves identity unresolved; an identifier/name disagreement, a reused name with another number, a cross-classification collision, or a domain verified elsewhere is refused or held. Names may suggest a candidate, but neither name normalisation nor fuzzy similarity merges companies; name-only portfolio imports create unresolved records for review. This conservative choice sacrifices recall to reduce false joins, consistent with evidence that heterogeneous registers need cautious linkage and retain matching error \citep{thorne2026funding,surak2026gateways,galanakis2026chrt}.
+\section{Stage 6: separate verification}
 
-A fingerprint over intake content, purpose, classification and contract versions means an exact repeat reuses the stored artefact rather than creating a duplicate, and source collection will not begin unless the reviewed number matches both the source key and the company. Figure~\ref{fig:sys-legal-identity-decision-flow} maps these gates, and direct live Companies House access remains held at gate G2 \citep{pineau2021reproducibility,galanakis2026chrt}.
+Verification is the stage that decides what may be said. Before a claim is constructed, the workflow
+checks sourceability, provenance, period, trust, value and currency, then writes a verification
+record beside the claim. The verifier is a pure function returning one of five states: supported,
+contradicted, insufficient evidence, stale, or rejected as untrusted. A conflict between two current
+public sources cannot be averaged away. The verifier runs separately from the extractor and the
+composer and cannot rewrite their records, so a claim can be refused but not quietly repaired
+\citep{gao2023alce,gao2023rarr,nist2023airmf}. This is separation of duties inside one program, not
+independent judgement by a second party.
 
-\clearpage
-\begin{figure}[p]
-  \centering
-  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f3_legal_identity_decision_flow.png}
-  \caption{Legal-identity intake, decision and downstream research gate. Author synthesis of the implemented local controls.}
-  \label{fig:sys-legal-identity-decision-flow}
-\end{figure}
-\clearpage
-\section{Fixed portfolio workflow and separate verification}
-
-The implemented portfolio workflow follows eight fixed stages: plan, resolve identity, collect evidence, extract values, normalise them, verify claims, compose a report and stop at human review. Each stage has a named functional role and a persisted run record holding input and output hashes, status, timing and attempts. A failure is recorded and stops the stages that would have followed it, and unresolved identity stops collection before it starts. Because every stage leaves a record, a reader can later ask not only what the workflow produced but where it stopped and why \citep{pineau2021reproducibility,hevner2004design}.
-
-Collection stores run-linked evidence and its time decision before extraction. Only temporally eligible, trusted public evidence reaches the extraction provider; untrusted material is counted and bypassed. A strict schema binds extracted company, metric, period, value and exact evidence locator, while deterministic metric rules then normalise type, unit, currency and missing state. Existing extractions are reused and every provider attempt is stored, including the failed ones \citep{gao2023alce,gao2023rarr,pineau2021reproducibility}.
-
-Verification is the stage that decides what may be said. Before a claim is constructed, the workflow checks sourceability, provenance, period, trust, value and currency, then writes a verification record beside the claim. The verifier is a pure function returning one of five states: supported, contradicted, insufficient evidence, stale, or rejected as untrusted. A conflict between two current public sources cannot be averaged away into a compromise figure. Crucially, the verifier runs separately from the extractor and the composer and cannot rewrite their records, so a claim can be refused but not quietly repaired. This is separation of duties inside one program, not independent judgement by a second party \citep{gao2023alce,gao2023rarr,nist2023airmf}.
-
-Composition places supported claims in the narrative and exposes other states as exceptions, then hashes the current, versioned report and moves it to pending review. A named reviewer may approve, reject or request an edit; each decision records actor, reason and report version. Editing creates a new section version, recalculates the content hash and revokes approval. Export remains unavailable until current approval, and optimistic locking plus a manifest-backed staged write guards stale or partial publication attempts \citep{amershi2019guidelines,bucinca2021forcing,pineau2021reproducibility}.
-
-Two design choices are worth separating here, because they are often confused. The first is fixed orchestration over open-ended agent conversation: the workflow is a state machine with explicit stops, which removes uncontrolled branching and puts every failure in a locatable place, at the price of any adaptive planning. The second is role separation, which Section~\ref{sec:design-alternatives} argues for and this chapter implements. Its value lies in who may do what, not in how many components exist: the extractor cannot admit its own output, the verifier cannot rewrite what it judges, and neither can approve a report. Consistent with that section, a single program could apply the identical support rule, and the D0 comparison in Chapter~5 isolates that rule rather than the number of roles. Figure~\ref{fig:sys-fixed-workflow-verification-state-machine} maps these boundaries \citep{guo2024multiagent,wu2024autogen,peffers2007dsrm}.
+Figure~\ref{fig:sys-fixed-workflow-verification-state-machine} is the anchor for that contract. A
+single program could apply the identical support rule. The D0 comparison isolates the rule and its
+authority over composition, not the number of roles
+\citep{guo2024multiagent,wu2024autogen,peffers2007dsrm}. Claims persist normalised values and link
+many-to-many with evidence items; each evidence item carries publisher, locator, times, checksum,
+connector version, classification and trust or time flags. A separate verification stage records
+supported, contradicted, insufficient, stale or untrusted outcomes without rewriting the source
+\citep{gao2023alce,gao2023rarr}. Portfolio reports can export these links without raw evidence. Where
+two sources disagree, the company-research track groups the statements as contradiction candidates
+for a named person to resolve. No live company has been run through that path
+\citep{yue2023attrscore,nist2023airmf}.
 
 \clearpage
 \begin{figure}[p]
   \centering
   \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{exhibits/sys_f4_fixed_workflow_verification_state_machine.png}
-  \caption{Fixed workflow, separate verification states, named approval and controlled export. Author synthesis of the implemented local controls.}
+  \caption{Fixed workflow, separate verification states, named approval and controlled export. Author
+  synthesis of the implemented local controls.}
   \label{fig:sys-fixed-workflow-verification-state-machine}
 \end{figure}
 \clearpage
-\section{Fixed source connectors, time and quality}
 
-The source layer is a registry of declared capabilities rather than a crawler. Every request names the source, company, reviewed identifier, cut-off, fact keys and mode, and the registry refuses it before any adapter runs if the capability is unsupported, the identity is unresolved, unreviewed or expired, or live retrieval is requested while admission is closed. A refusal of this kind is a decision not to look, which the system records differently from a publisher having no record \citep{gebru2021datasheets,pineau2021reproducibility}.
+\section{Stages 7--8: composition, approval and export}
 
-Two deterministic adapters are usable, both through synthetic offline replay. The Companies House adapter (manifest 1.4.0) matches an exact number and exposes company, filing and charge fields through JSON locators. The UKRI adapter (manifest 1.3.0) matches an exact organisation identifier, selects the most recent correction available at the cut-off, and emits stable project and outcome locators. Each replay stores the source version, the bytes, a checksum, the retrieval and publication times, and a derivation hash, so the same input can be re-examined later and shown to be the same input \citep{galanakis2026chrt,hardman2023small,pineau2021reproducibility}.
-
-Time is judged relative to the claim, not to the moment of collection. Evidence is ineligible if it carries no recorded publication or availability time, was published after the reporting cut-off, takes effect in the future, or had expired before the period began; when it was retrieved is tracked separately. A cumulative figure must span exactly from the stored programme start to the cut-off. UKRI funding binds only when every award in the window carries a finite, explicit sterling amount, and otherwise leaves a missing state with a diagnostic rather than an inferred zero or an unauthorised currency conversion \citep{hardman2023small,kapoor2023leakage,nikiforova2020quality}.
-
-The reasons a fact can be absent are then kept apart, because collapsing them would destroy the very distinction the report depends on. A lookup that finds nothing is \texttt{no\_record}; a source that could not be reached is \texttt{source\_unavailable}; a request refused before the adapter ran is a policy block; a value that fails validation is a typed missing state; and a collection problem that cannot be retried is \texttt{failed}. The quality contract built on these states excludes untrusted or time-ineligible evidence, holds incomplete provenance and conflicts, and warns on the bounded absence cases. Table~\ref{tab:sys-adapter-capability-state}, in Appendix~\ref{app:requirements-traceability}, maps the decisions, all of which remain bounded by the snapshots admitted, with live Companies House and UKRI retrieval held at gate G2 \citep{gao2023alce,gebru2021datasheets,nikiforova2020quality}.
-\section{Bounded public-web company-research case study}
-
-This section describes the one route that reaches outside the local machine, and the point of its
-design is that search is allowed to suggest but never to supply. The path opens only after a public
-case has a reviewed Companies House number and a fixed reporting cut-off. The Responses API then runs
-\texttt{web\_search} with \texttt{store=False} to plan discovery, and the application admits only
-canonical HTTPS addresses that also appear in the tool's own list of consulted sources. Page titles and
-model prose stay metadata; they never become company facts \citep{openai2026websearch,gao2023alce}.
-
-Application code, not the search result, then fetches each candidate. It refuses embedded credentials,
-non-default ports, local hosts and addresses that do not resolve publicly; it checks robots rules,
-re-validates every redirect, permits six textual content types, and enforces limits on elapsed time,
-redirects and bytes. The connection is made to a verified public address while still checking the
-hostname on the certificate. Every page that comes back is treated as hostile input, because hidden
-instructions can travel inside remotely supplied content
-\citep{greshake2023indirect,autio2024genai}.
-
-What survives capture is converted to visible text, stripped of personal contact details, and stored
-under a content hash in a directory that refuses to overwrite. Extraction sees only that bounded,
-redacted text, and a proposed statement is admitted only if its address matches a captured source, the
-statement equals the evidence passage, and that passage occurs literally in the stored text, with the
-cut-off rule satisfied and any date or amount appearing inside the passage itself. A citation
-therefore becomes something a reader can check rather than a mark implying that checking has happened
-\citep{gao2023alce,gao2023rarr,autio2024genai}.
-
-Four tasks run in order behind this -- discover, capture, extract and compose -- under one fingerprint
-covering identity, cut-off, model, prompt, policy and budgets, so no task can start before its
-prerequisite or resume under a changed contract, and every retry, token and byte is counted against
-the run. Composition is then fixed rather than generative: it groups admitted claims, marks
-multi-source disagreements for a named person, and lists the categories that were blocked,
-unsupported, failed or simply not covered, so a gap stays visible instead of being smoothed out of a
-persuasive narrative. Figure~\ref{fig:sys-company-research-funnel} summarises the funnel. Everything
-described here ran against fake providers and controlled responses, which makes this route
-implementation evidence that answers neither research question
-\citep{nist2023airmf,gao2023alce,autio2024genai}.
-
-\input{exhibits/sys_f5_company_research_evidence_funnel.tex}
-\section{Human review and controlled outputs}
-
-The portfolio-report path stops at pending review. Approval or rejection requires the configured
-reviewer identity, a substantive rationale and the current optimistic-lock token. Nobody can approve a
-report until every claim in it carries a recorded verification, and any edit appends a new section
-version, recalculates the report hash and cancels the previous decision. The effect is a deliberate
-stopping point at which a named person, not the software, takes responsibility for release
-\citep{amershi2019guidelines,bucinca2021forcing}.
+Composition places supported claims in the narrative and exposes other states as exceptions. It
+hashes the current, versioned report and moves it to pending review. A named reviewer may approve,
+reject or request an edit. Each decision records actor, reason and report version. Editing creates a
+new section version, recalculates the content hash and revokes approval. Export remains unavailable
+until current approval \citep{amershi2019guidelines,bucinca2021forcing,pineau2021reproducibility}.
+Files are staged below the local export root, bound to a versioned manifest and content hash, then
+re-verified before reuse. The system writes files to a folder. It does not publish.
 
 Company-research profiles use a separate, narrower gate. Before a named approve or reject decision,
 the service rechecks the profile hash, pinned run contract and completed composition task; stale
 locks, altered content and unfinished recovery are refused. Contradiction candidates and coverage
-gaps stay inside the dossier the reviewer sees, so a gap has to be looked at rather than discovered
-later. Only approved profiles can be downloaded, as JSON or printable HTML
-\citep{gao2023alce,nist2023airmf}.
+gaps stay inside the dossier the reviewer sees. Only approved profiles can be downloaded, as JSON or
+printable HTML \citep{gao2023alce,nist2023airmf}. Reports are versioned by appending rather than
+overwriting, so an edit retires the current section instead of erasing it. Approval is bound to an
+exact version of exact content: change the content and the approval falls away
+\citep{pineau2021reproducibility,amershi2019guidelines}.
 
-For portfolio reports, export accepts only the current approved version and produces JSON, Markdown
-and accessible HTML. Files are staged below the local export root, bound to a versioned manifest and
-content hash, then re-verified before reuse, and a partial write is never marked as exported. Release
-is therefore local and deliberate: the system writes files to a folder, it does not publish
-\citep{pineau2021reproducibility,gebru2021datasheets,nist2023airmf}.
-\section{Failure, recovery, and implementation-status ledger}
+\section{Two claims traced end to end}
+\label{sec:claim-journey}
 
-One principle runs through every control above: a failure keeps its own name and stays visible, so
-that none of the distinct outcomes catalogued in Section~4.6 can quietly become a successful claim.
-Retryable tasks keep their attempts and final reasons, and interrupted work resumes only under the
-same run contract, so a retry is safe rather than hopeful
+Two D0 cases show what these stages do to a single claim. Both use fictional companies, a pinned
+fixture and the same candidate-preparation route. C1 emits eligible cleaned values. C2 admits a claim
+only when the separate verifier marks it supported. Chapter~5 reports the aggregate rates. This
+section shows the decisions themselves \citep{gao2023alce,bradley2024synfintabs}.
+
+The first claim is an observed zero: jobs created equals 0. The submitted figure is zero. The stored
+evidence also says zero. The two agree, so the verifier marks the claim supported and it appears in
+the report with its source attached. The obvious shortcut would be to treat a zero as an empty box
+and quietly drop it. Doing so would remove a real and possibly unwelcome fact. The eight narrative
+missing states exist so that an observed nothing remains sayable
+\citep{bradley2024synfintabs,gebru2021datasheets}.
+
+The second claim is a contradiction: grant funding of \pounds100 against register evidence of
+\pounds200 for the same period. The two figures cannot both be right, and nothing in the evidence
+establishes which is. The verifier marks the claim contradicted. The report omits it. The disagreement
+is kept on record for a named person. The system does not choose the larger figure, the newer one or
+an average, because any of those would manufacture a number that no source states
+\citep{gao2023alce,gao2023rarr,yue2023attrscore}. For a reader, the useful contrast is that C1
+emitted this claim while C2 refused admission of it. Table~\ref{tab:eval-d0-case-examples} in
+Chapter~5 records both outcomes against the fixture locators.
+
+Table~\ref{tab:sys-claim-journey} walks both rows through the eight stages: intake, identity,
+capture, extract, normalise, verify, compose, and review or export. The locators are
+\texttt{submission://synthetic\#B2} for the observed zero and \texttt{fixture://conflict} for the
+grant pair. The weekly monitoring load in Section~\ref{sec:reporting-problem} is why those locators
+have to survive: an untraced figure spends attention without leaving a defensible record
+\citep{britishbusinessbank2025equity,gompers2016vcdecisions}. The walk is therefore a reading
+guide for those two fixture rows, not a second scored evaluation of the same fixture.
+
+\input{exhibits/sys_t_claim_journey.tex}
+
+At intake the operator records the candidate as typed. The observed-zero row arrives as jobs
+created equals 0. The conflict row arrives as grant funding of \pounds100. Neither figure is yet
+a report sentence. Identity then binds each row to one fictional legal company. These two D0 rows
+do not exercise an identity hold. The hold is the same contract that later keeps two similarly
+named companies apart, and it is evidenced by engineering tests rather than by these fixture
+identifiers. Capture stores the supporting bytes before anyone extracts a value. The zero is
+stored at \texttt{submission://synthetic\#B2}. The register figure of \pounds200 is stored at
+\texttt{fixture://conflict}. If those locators were missing, a later reader could not reopen the
+same evidence. Stages 1 to 3 for these two rows are therefore the workflow contract. They are
+evidenced by engineering tests, not by a full pipeline replay of the fixture through the
+dashboard \citep{gebru2021datasheets,pineau2021reproducibility,nikiforova2020quality}.
+
+Extract binds company, metric, period, value and exact locator. For the first row the candidate
+remains 0. For the second it remains \pounds100. Normalise is where the catalogue earns its keep.
+The zero is typed as an explicit zero rather than as a blank, none stated or not reported, so it
+stays sayable. The grant pair stays as two current sterling amounts for the same period. Nothing
+is converted, averaged or replaced by the newer figure. Verify then writes the admission
+decision. The two zeros agree, so the state is supported. The two grant figures disagree, so the
+state is contradicted. D0 scores that admission decision, which is the normalise-plus-verify
+pair. It does not score whether an operator liked the screen
+\citep{gao2023alce,bradley2024synfintabs,yue2023attrscore}.
+
+Compose is allowed to write only what verify admitted. C2 therefore emits the observed zero with
+its source record and withholds the grant claim, keeping the disagreement for a named person. C1
+emitted the contradicted grant because it had no separate refusal. Review and export then bind a
+name, a reason and a content hash. An edit drops the previous approval. Export remains a local
+file write, not a publication. Stages 7 and 8 for these two rows are again the workflow
+contract, evidenced by engineering tests rather than by a scored dashboard replay of the
+fixture. That is why the table can name an approval lock without claiming that anyone sat in
+front of the screen for these cases
+\citep{amershi2019guidelines,bucinca2021forcing,pineau2021reproducibility}.
+D0 therefore scores the admission decision, which is the normalise-plus-verify pair, and it
+leaves stages 1 to 3 and 7 to 8 as a workflow contract. Engineering tests show that those
+stages persist identity, capture, review and export records. They do not replay these two
+fixture rows through every operator screen. That split is why the table can be read as a
+life of a claim without being mistaken for a usability result or a live-source run
+\citep{hevner2004design,pineau2021reproducibility}.
+
+Two further D0 refusals complete the picture of what the gate is for. A stale-period case carries a
+matching awards figure, but only for a prior period; the verifier marks it stale and the report omits
+it while keeping the old evidence visible. A prompt-injection case carries a matching partnership
+count inside a fixture record marked untrusted; the verifier rejects it as untrusted and no
+instruction is followed \citep{greshake2023indirect,gao2023rarr}. In both cases C1 emitted the claim
+and C2 refused admission. The six refused claims are the whole of the measured difference between
+the conditions, and they are silences rather than corrections
+\citep{gao2023alce,huang2023hallucination}. A later reader can therefore ask not only what the
+report said but which candidates were refused and why, which is the inspectability RQ1 requires and
+the admission change RQ2 measures \citep{pineau2021reproducibility,hevner2004design}.
+
+\section{Built but not evaluated}
+
+Work that exists in code but was not evaluated is classified in
+Table~\ref{tab:meth-evidence-scope}. The public-web funnel is built and tested with fake
+providers, and Figure~\ref{fig:sys-company-research-funnel} in
+Appendix~\ref{app:requirements-traceability} shows that path
+\citep{greshake2023indirect,openai2026websearch}. Direct live Companies House and UKRI retrieval
+remain held at gate G2. External-model extraction on real companies, live company-research against
+an open website, named review of real reports and a manual baseline have not run. Those absences
+are planned cells, not failed tests \citep{hevner2004design,peffers2007dsrm}. The capture
+controls themselves are described in Appendix~\ref{app:requirements-traceability}
 \citep{pineau2021reproducibility,nist2023airmf}.
-
-Table~\ref{tab:sys-failure-recovery-status}, in Appendix~\ref{app:requirements-traceability}, then
-separates tested engineering work from work that is on hold, and the distinction matters because a
-reader can otherwise mistake a working feature for a tested outcome. The local workflow, source records, approval and export controls, offline connectors
-and gated public-web route were built and tested with fictional or controlled inputs. Direct live
-official-source access, a live public-web check, the fixed company comparison, authorised human
-evaluation and production deployment were not run, exist only as plans, or fall outside scope
-\citep{hevner2004design,peffers2007dsrm}.

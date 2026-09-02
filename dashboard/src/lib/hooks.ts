@@ -93,6 +93,15 @@ export function usePrefersReducedMotion(): boolean {
  * Milliseconds elapsed since `since`, ticking only while `active`. The clock is
  * read inside the interval callback so render stays pure.
  */
+export function useDocumentTitle(title: string): void {
+  useEffect(() => {
+    document.title = `${title} · Research control room`;
+    return () => {
+      document.title = "Research control room";
+    };
+  }, [title]);
+}
+
 export function useElapsed(active: boolean, since: number | null): number {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {

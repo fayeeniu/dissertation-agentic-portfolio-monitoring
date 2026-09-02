@@ -1,0 +1,32 @@
+\begin{table}[htbp]
+  \centering
+  \scriptsize
+  \setlength{\tabcolsep}{2.4pt}
+  \renewcommand{\arraystretch}{1.12}
+  \begin{tabularx}{\textwidth}{@{}P{0.16\textwidth}P{0.40\textwidth}Y@{}}
+    \toprule
+    \textbf{Stage} &
+    \textbf{Observed zero} (\texttt{zero\_is\_observed}; \texttt{submission://synthetic\#B2}) &
+    \textbf{Public-value conflict} (\texttt{conflicting\_public\_value}; \texttt{fixture://conflict}) \\
+    \midrule
+    Intake & Candidate arrives as jobs created $= 0$. & Candidate arrives as grant funding of \pounds100. \\
+    Identity & Fictional company; no identity hold on this row. & Fictional company; no identity hold on this row. \\
+    Capture & Portfolio submission stored at the B2 locator. & Synthetic register stores \pounds200 for the same period. \\
+    Extract & Candidate value remains $0$, bound to the locator. & Candidate value remains \pounds100, bound to the locator. \\
+    Normalise & Typed as an explicit zero, not a blank. & Two current sterling figures kept; no average. \\
+    Verify & Submission and evidence agree; state is supported. & \pounds100 against \pounds200; state is contradicted. \\
+    Compose & C2 emits the claim with its source record. & C2 withholds the claim and retains the disagreement. \\
+    Review / export & An approved version may include the emitted zero. & Export cannot invent a third grant figure. \\
+    \bottomrule
+  \end{tabularx}
+
+  \caption{Eight-stage walk of the observed-zero and grant-conflict D0 rows}
+  \label{tab:sys-claim-journey}
+  \vspace{3pt}
+
+  \parbox{\textwidth}{\scriptsize
+    \textit{Source note:} Locators and values from \texttt{fixtures/evaluation\_cases.json}.
+    D0 scores the admission decision (normalise and verify). Stages 1--3 and 7--8 for these
+    two rows are the workflow contract, evidenced by engineering tests, not a full pipeline
+    replay of the fixture.}
+\end{table}

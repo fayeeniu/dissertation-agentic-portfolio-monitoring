@@ -89,6 +89,7 @@ export function InvestmentBrief({ data }: { data: CompanyPayload }) {
         </div>
         <div
           className="coverage-ring"
+          data-tone="evidence"
           style={{ "--coverage": `${coverage ?? 0}%` } as React.CSSProperties}
         >
           <strong>{coverage === null ? "—" : `${coverage}%`}</strong>

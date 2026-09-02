@@ -7,30 +7,17 @@
 
 .graph {
   position: relative;
-  padding: 1.4rem 1.15rem 1.25rem;
-  background:
-    radial-gradient(60rem 22rem at 30% -6rem, rgba(67, 216, 189, 0.05), transparent 70%),
-    linear-gradient(180deg, var(--surface-2), var(--surface));
-  border: 1px solid var(--rule);
+  padding: var(--card-pad);
+  background: var(--surface);
+  border: none;
   border-radius: var(--r-lg);
   overflow: hidden;
 }
 
 .graph::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--rule) 1px, transparent 1px),
-    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
-  background-size: 34px 34px;
-  opacity: 0.34;
-  mask-image: radial-gradient(60rem 26rem at 40% 30%, #000, transparent 78%);
-  pointer-events: none;
+  display: none;
 }
 
-/* The scroll lives outside the measurement root so node geometry stays correct
-   at any scroll offset. */
 .graph-scroll {
   position: relative;
   z-index: 1;
@@ -88,49 +75,47 @@
   flex-direction: column;
   gap: 0.38rem;
   width: 100%;
-  padding: 0.72rem 0.8rem 0.68rem;
+  min-height: 8.5rem;
+  padding: 0.85rem 0.9rem 0.8rem;
   text-align: left;
   border-radius: var(--r);
-  border: 1px solid var(--rule-2);
-  background: linear-gradient(180deg, var(--raised), var(--surface-2));
+  border: 1px solid var(--rule);
+  background: var(--raised);
   color: inherit;
   cursor: pointer;
   transition:
     border-color var(--t-state) var(--ease-out),
-    box-shadow var(--t-state) var(--ease-out),
-    background var(--t-state) var(--ease-out),
-    transform var(--t-feedback) var(--ease-out);
+    background var(--t-state) var(--ease-out);
 }
 
 .gnode:hover {
-  transform: translateY(-1px);
-  border-color: var(--rule-3);
+  background: var(--surface);
+  border-color: var(--rule-2);
 }
 
 .gnode[data-status="pending"] {
-  opacity: 0.58;
+  opacity: 0.5;
   border-style: dashed;
 }
 
 .gnode[data-status="succeeded"] {
-  border-color: rgba(67, 216, 189, 0.3);
+  background: var(--surface);
+  border-color: var(--rule);
 }
 
 .gnode[data-status="running"] {
-  border-color: rgba(67, 216, 189, 0.62);
-  box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.2), 0 0 30px -8px var(--evidence-glow);
-  animation: node-live 2.1s var(--ease-move) infinite;
+  border-color: var(--accent);
+  background: var(--surface);
 }
 
 .gnode[data-status="awaiting"] {
-  border-color: rgba(240, 180, 94, 0.55);
-  box-shadow: 0 0 26px -10px var(--human-glow);
-  animation: node-wait 3.4s var(--ease-move) infinite;
+  border-color: var(--human);
+  background: var(--surface);
 }
 
 .gnode[data-status="failed"] {
-  border-color: rgba(242, 112, 93, 0.55);
-  background: linear-gradient(180deg, rgba(242, 112, 93, 0.09), var(--surface-2));
+  border-color: var(--danger);
+  background: var(--surface);
 }
 
 .gnode[data-status="cancelled"] {
@@ -138,32 +123,11 @@
 }
 
 .gnode[data-selected="true"] {
-  box-shadow: 0 0 0 1px var(--focus), 0 10px 30px -18px #000;
-  border-color: var(--focus);
+  border-color: var(--accent);
 }
 
 .gnode[data-dimmed="true"] {
   opacity: 0.34;
-}
-
-@keyframes node-live {
-  0%,
-  100% {
-    box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.2), 0 0 30px -8px var(--evidence-glow);
-  }
-  50% {
-    box-shadow: 0 0 0 1px rgba(67, 216, 189, 0.4), 0 0 46px -6px var(--evidence-glow);
-  }
-}
-
-@keyframes node-wait {
-  0%,
-  100% {
-    box-shadow: 0 0 22px -12px var(--human-glow);
-  }
-  50% {
-    box-shadow: 0 0 34px -8px var(--human-glow);
-  }
 }
 
 .gnode-top {
@@ -224,9 +188,9 @@
 }
 
 .gnode-label {
-  font-size: 0.8125rem;
-  font-weight: 550;
-  letter-spacing: -0.012em;
+  font-size: 0.9rem;
+  font-weight: 620;
+  letter-spacing: -0.02em;
   line-height: 1.25;
 }
 
@@ -311,11 +275,11 @@
   position: relative;
   display: grid;
   gap: 0.22rem;
-  padding: 0.5rem 0.6rem;
+  padding: 0.6rem 0.7rem;
   text-align: left;
-  border-radius: var(--r-sm);
+  border-radius: 8px;
   border: 1px solid var(--rule);
-  background: var(--canvas-2);
+  background: var(--raised);
   color: inherit;
   cursor: pointer;
   transition:
@@ -325,20 +289,22 @@
 }
 
 .lane:hover {
-  border-color: var(--rule-3);
+  border-color: var(--rule-2);
   background: var(--surface);
 }
 
 .lane[data-status="fetched"] {
-  border-color: rgba(67, 216, 189, 0.26);
+  background: var(--surface);
+  border-color: var(--rule);
 }
 .lane[data-status="discovered"] {
-  opacity: 0.62;
+  opacity: 0.55;
   border-style: dashed;
 }
 .lane[data-status="blocked"],
 .lane[data-status="failed"] {
-  border-color: rgba(242, 112, 93, 0.3);
+  background: var(--surface);
+  border-color: var(--danger);
 }
 .lane[data-status="unsupported"] {
   opacity: 0.66;

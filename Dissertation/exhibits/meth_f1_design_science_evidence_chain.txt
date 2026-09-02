@@ -9,7 +9,7 @@ Status: Conceptual, non-empirical author synthesis; this is not a result.
 
 Purpose and reading order
 -------------------------
-The figure separates construction evidence from empirical findings in an applied design-science dissertation. Read the central chain from top to bottom. The valid route is: problem and objectives -> frozen research contract -> artefact build -> implementation and engineering evidence -> authorised execution of the frozen C0-C3 evaluation -> empirical findings -> proportionate RQ1-RQ3 answer and communication.
+The figure separates construction evidence from empirical findings in an applied design-science dissertation. Read the central chain from top to bottom. The valid route is: problem and objectives -> frozen research contract -> artefact build -> implementation and engineering evidence -> authorised execution of the frozen C0-C3 evaluation -> empirical findings -> proportionate RQ1-RQ2 answer and communication.
 
 The central red gate is the non-leap boundary. Code, tests, migrations, deterministic replay and adversarial cases can establish that specified mechanisms exist and behave under tested conditions. They cannot, without protocol execution, become findings about effectiveness, efficiency, comparison with manual work, human benefit or general utility. An unexecuted condition remains held or null; it does not yield a zero, a positive result or an inferred conclusion.
 
@@ -22,7 +22,7 @@ Begin with the relevant portfolio-reporting problem, the intended users and deci
 
 Stage 2 - Frozen research contract [FREEZE]
 
-Before scored comparison, freeze RQ1-RQ3, the evaluand, C0-C3 condition definitions, units of analysis, dataset tiers, source-access window, reference construction, metrics, denominators, stop conditions, analysis rules, code and prompt or schema versions. Record what remains protocol-only or requires separate ethics and data authority. A protocol defines a test; it is not itself a result.
+Before scored comparison, freeze RQ1-RQ2, the evaluand, C0-C3 condition definitions, units of analysis, dataset tiers, source-access window, reference construction, metrics, denominators, stop conditions, analysis rules, code and prompt or schema versions. Record what remains protocol-only or requires separate ethics and data authority. A protocol defines a test; it is not itself a result.
 
 Stage 3 - Artefact build [BUILD]
 
@@ -54,7 +54,7 @@ Only executed conditions can produce empirical findings. Report observed outcome
 
 Stage 7 - RQ answer and communication [COMMUNICATE]
 
-Answer RQ1-RQ3 only to the extent supported by executed evidence. Bind each statement to the relevant artefact version, dataset and source manifest, protocol condition, result table or figure and analysis version. State limitations, held comparisons and uncertainty. Communication may establish an evidence-calibrated design and evaluation contribution; it must not claim investment performance, production readiness, exhaustive source coverage or universal multi-agent superiority.
+Answer RQ1-RQ2 only to the extent supported by executed evidence. Bind each statement to the relevant artefact version, dataset and source manifest, protocol condition, result table or figure and analysis version. State limitations, held comparisons and uncertainty. Communication may establish an evidence-calibrated design and evaluation contribution; it must not claim investment performance, production readiness, exhaustive source coverage or universal multi-agent superiority.
 
 Researcher involvement across the method
 ----------------------------------------

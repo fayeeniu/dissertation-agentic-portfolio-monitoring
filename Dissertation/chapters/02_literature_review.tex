@@ -1,364 +1,348 @@
 \chapter{Literature Review}
-\section{Scope and structure of the literature review}
+\section{What this review has to establish}
 
-The literature relevant to this dissertation spans several connected fields rather than one established
-research stream. Studies of early-stage finance examine how funding rounds, public support and investor
-activity may signal company development, but their findings depend on the platform, sample and reporting
-context \citep{estrin2024digital,wasti2024successive}. Research on company registers also shows that
-public records can support analysis while remaining incomplete, delayed or difficult to link across
-sources \citep{hardman2023small,thorne2026funding}. These findings make legal identity, reporting date
-and source context central to reliable portfolio reporting.
+This review has to establish four things before the artefact is described. First, what the
+reporting problem is, who does it and where time, rework and error enter the current cycle.
+Second, why public early-stage evidence resists being consolidated into one pack. Third, what
+makes a reporting claim defensible, as distinct from fluent or merely cited. Fourth, who is
+allowed to decide: which programmed role may propose a value, which may refuse claim admission,
+and which named person may release a report. Design-science reviews exist to fix those criteria
+before construction is judged \citep{hevner2004design,peffers2007dsrm}.
 
-A second body of work considers how raw information becomes a defensible report, treating data quality
-as dependent on intended use, requiring that origins and assumptions be documented, and separating
-factual correctness from citation support
-\citep{nikiforova2020quality,gebru2021datasheets,gao2023alce}. A third concerns AI-assisted retrieval,
-multi-agent workflows and human control, where each proposed remedy carries a matching risk:
-retrieval can return irrelevant or hostile material, extra agent roles add their own failures, and
-human review may not correct what it is shown
-\citep{gao2023ragsurvey,guo2024multiagent,bucinca2021forcing}. The sections that follow work through
-these themes in turn, and the chapter closes by identifying the gap this dissertation addresses.
+Candidate records were identified in Scopus, Web of Science, IEEE Xplore, the ACM Digital Library
+and the ACL Anthology. Google Scholar was used only to chase citations of already included papers.
+The screen was limited to English. Agent and language-model work was taken from 2022 onwards.
+Grey literature was admitted only for governance or market context and is labelled as such in
+Appendix~\ref{app:literature-search}. A systematic open-literature pass screened 53 records and
+retained 46 in the synthesis matrix. This chapter also uses already-admitted UK-register,
+governance and vendor sources that sat outside that screen, so the dissertation's admitted
+citation pool is larger than the matrix $N$. Recording both figures is required if the search
+method is to be inspectable \citep{pineau2021reproducibility,gebru2021datasheets}. The appendix
+records the screen. It does not make the whole bibliography a systematic review.
 
-\section{Early-stage finance, portfolio reporting, and public company intelligence}
+\section{The reporting problem: market, users, current process}
+\label{sec:reporting-problem}
 
-Founders usually know more about an early-stage business than outside investors, and funding platforms
-shape what information is visible. Two studies illustrate how differently that visibility can be
-read. Estrin and colleagues work across several countries and find that amounts raised and investor
-participation vary by pitch, sector, region, country and platform, but their sample contains
-successful pitches rather than every attempt \citep{estrin2024digital}. Wasti and colleagues go the
-other way, studying repeat funding in depth within a single platform and taking the campaign round as
-the unit of analysis \citep{wasti2024successive}. The two are not in conflict about facts, yet they
-pull in opposite directions on what a funding event means: breadth across platforms buys
-generalisability at the cost of a censored sample, while depth within one platform buys a clean unit at
-the cost of transferability. Neither design can license a general inference from investor numbers to
-company quality, which is why this project treats a funding round as a dated, sourced event rather
-than a signal to be scored.
+The market that needs these packs is large, and the monitoring load is already high. The British
+Business Bank records \pounds10.8~billion of announced UK smaller-business equity investment
+across 2,048 deals in 2024, while deal numbers fell by 15.1~per cent and seed- and venture-stage
+activity weakened \citep{britishbusinessbank2025equity}. A survey of 885 institutional venture
+capitalists reported an average of 18 hours each week working with portfolio companies, and about
+60~per cent interacted with them at least weekly \citep{gompers2016vcdecisions}. Those figures
+describe attention, not the effect of a reporting tool. They show why a claim that cannot be
+traced is expensive: it consumes that attention without leaving a defensible record.
 
-Portfolio reports should record funding and public support as dated events with clear sources. In the
-Crowdcube study, an earlier successful round may act as a signal, but its meaning still depends on the
-campaign and platform \citep{wasti2024successive}. UK research on public support found later differences
-between participating firms, but it also noted selection effects and did not claim that the support
-caused those differences \citep{mondal2025state}. Rebuilding the UK funding process requires links
-between opportunities, applications, decisions, projects, organisations and outcomes, even though
-these records often lack shared identifiers \citep{thorne2026funding}. A round, grant or award can
-support a dated fact. It cannot prove future success or provide a complete funding history.
+Five roles share the current cycle. A data contributor supplies company records. A reporting
+analyst turns those records into a draft pack. A technical operator runs collection and the local
+tools. A reviewer decides whether the pack may be released. A downstream user, typically an
+investment-team reader, uses the released pack. The names are jobs to be done rather than assumed
+job titles. Guidance on human--AI work treats the reviewer as a decision authority rather than as
+a second writer \citep{amershi2019guidelines,bucinca2021forcing}. The analyst and contributor
+roles exist because the underlying records are mixed, delayed and incomplete
+\citep{nikiforova2020quality,hardman2023small}.
 
-These events need to be linked to the correct legal company, and the literature on the UK register
-disagrees productively about how much that register can carry. Galanakis and colleagues treat
-incorporation records as a timely and broad indicator of company creation, valuing the register
-precisely for its currency \citep{galanakis2026chrt}. Hardman reaches an almost opposite conclusion
-about recent data, showing that filing rules and delays make the newest records the least complete
-part of the register \citep{hardman2023small}. Krasikov and colleagues then add a third position: open
-access is not the same as readiness, because a register may be fully published and still unsuitable
-for a given business task \citep{krasikov2020ready}. The disagreement is real but resolvable, and the
-resolution is that timeliness holds for the fact of incorporation and fails for financial filings.
-This project therefore accepts register identity as authoritative while treating recency of financial
-records as a property to be checked per field rather than assumed.
+The current process is a sequence of hand-offs, and time, rework and error enter at known points
+rather than as a single late failure. Collection consumes time in chasing files and public
+extracts; error enters as mixed formats, uncertain identity and blanks that later readers cannot
+interpret \citep{nikiforova2020quality,krasikov2020ready}. Identity resolution is the first
+rework loop: similar names are joined by hand, and a silent merge is the characteristic error
+\citep{surak2026gateways,thorne2026funding}. Period matching is the second: a figure from the
+wrong filing window looks complete and is wrong, especially when recent accounts are not yet due
+\citep{hardman2023small,galanakis2026chrt}. Drafting is where unsupported fluent sentences enter,
+because a citation marker can sit beside a statement the passage does not support
+\citep{gao2023alce,gao2023rarr}. Review is where unrecorded corrections and unclear release
+authority enter; showing uncertainty does not by itself prevent over-reliance
+\citep{amershi2019guidelines,bucinca2021forcing}.
 
-Two constraints follow for what may be reported. Public-support differences may reflect which firms
-applied rather than any effect of the support \citep{mondal2025state}, and financial communications
-must present benefits and risks fairly \citep{fca2024promotions}. Together these rule out causal
-performance claims, speculative valuations and any general company-quality score.
+What the pack may say is narrower than what the market talks about. Crowdfunding results vary by
+pitch, platform, country, sector, region and time, and published samples may include only
+successful pitches \citep{estrin2024digital}. Repeat-funding research uses the campaign round as
+its unit \citep{wasti2024successive}. UK work on public support found later differences between
+participating firms, but it also noted selection effects and did not claim that the support caused
+those differences \citep{mondal2025state,thorne2026funding}. A round, grant or award can support a
+dated fact. It cannot prove future success or provide a complete funding history. Financial
+communications must present benefits and risks fairly, which rules out speculative valuations and
+any general company-quality score \citep{fca2024promotions,mondal2025state}.
 
-\subsection{Sector importance and existing reporting approaches}
+None of those five roles is measured for hours or error rate in this dissertation. The point of
+naming them here is to locate where a later artefact has to intervene: identity before draft,
+typed missingness before a zero is assumed, a recorded refusal before a conflict is averaged, and
+a named approval before export. The current cycle can do each of those things by habit. It does
+not, on the reviewed evidence, leave a complete record of them
+\citep{nikiforova2020quality,gao2023alce}.
 
-The reporting problem sits within a material but uneven early-stage investment market. The British
-Business Bank records \pounds10.8 billion of announced UK smaller-business equity investment across
-2,048 deals in 2024, while deal numbers fell by 15.1 per cent and seed- and venture-stage activity
-weakened \citep{britishbusinessbank2025equity}. Monitoring also consumes professional attention: a
-survey of 885 institutional venture capitalists reported an average of 18 hours each week working
-with portfolio companies and about 60 per cent interacting with them at least weekly
-\citep{gompers2016vcdecisions}. These descriptive results come from different periods and settings;
-monitoring is broader than reporting, and neither source measures the effect of a reporting tool.
+\section{Why public early-stage evidence resists consolidation}
 
-Private-market evidence also limits what reporting can consolidate. The British Business Bank treats
-angel-investment evidence as partial because much activity is private and reporting is patchy
-\citep{britishbusinessbank2025equity}, and register research reaches a parallel conclusion about
-public records being published yet unfit for a given task \citep{krasikov2020ready}. Portfolio
-managers, analysts and downstream report users therefore need dates, definitions, legal identities and
-visible coverage gaps. Taken together, these sources establish the reporting problem as one of
-traceability under incomplete evidence, which is a different problem from the efficiency case usually
-made for automation.
+Public records can support analysis and still refuse to become one complete profile. The UK
+register literature disagrees productively about how much that register can carry. Galanakis and
+colleagues treat incorporation records as a timely and broad indicator of company creation,
+valuing the register for its currency \citep{galanakis2026chrt}. Hardman reaches an almost
+opposite conclusion about recent data: filing rules and delays make the newest records the least
+complete part of the register \citep{hardman2023small}. Krasikov and colleagues add a third
+position: open access is not the same as readiness, because a register may be fully published and
+still unsuitable for a given business task \citep{krasikov2020ready}. The disagreement is
+resolvable. Timeliness holds for the fact of incorporation and fails for financial filings. A
+report can therefore accept register identity as authoritative while treating recency of financial
+records as a property to be checked per field.
 
-Several technical approaches are plausible. Manual documents and spreadsheets preserve flexible
-judgement, but their provenance and consistency depend on the local practice. Deterministic data
-pipelines can apply repeatable identity, time and quality rules, although lineage must be explicit and
-schema changes can invalidate those rules \citep{buneman2001provenance,nikiforova2020quality}.
-Retrieval-augmented generation can extend unstructured search but may retrieve irrelevant or hostile
-material, while one fixed process or several bounded roles can apply the same final support rule
-\citep{gao2023ragsurvey,guo2024multiagent}. The reviewed sources do not measure this project's manual
-workflow, so effort and error cannot be assigned to any approach before a matched study.
-
-Commercial products cover related but non-equivalent workflows, and setting them beside the
-data-quality literature exposes an unresolved tension at the centre of this field. Visible describes
-portfolio-data collection, monitoring, dashboards and investor reporting; Zapflow describes integrated
-deal and portfolio records; and Affinity describes relationship-centred activity capture and reports
-\citep{visible2026investors,zapflow2026portfolio,affinity2026portfolio}. Each presents consolidated
-portfolio figures as a solved presentation problem. Yet Kaplan and Lerner describe the underlying
-private-market data as incomplete and inconsistent, with definitional differences, missing failed
-firms and backfilling \citep{kaplan2016vcdata}. Both cannot be straightforwardly true: a dashboard
-cannot be more reliable than the records beneath it, and no vendor page reports claim-level support
-accuracy or how conflicting sources are resolved. That gap between confident presentation and
-acknowledged data weakness is the space this dissertation works in.
-Table~\ref{tab:lit-solution-landscape} compares documented functions and unresolved evidence rather
-than scoring products.
-
-\section{Data quality, company identity, missing data and time}
-
-Data quality is a property of a dataset in use, not of the dataset alone, so accuracy, timeliness,
-completeness and consistency each need rules bound to a particular field and purpose
-\citep{nikiforova2020quality,krasikov2020ready}. The practical consequence is that a portfolio report
-must state how each field will be used and which checks matter for it, because a single combined
-quality score can conceal a serious fault in one field.
-
-Company matching also depends on the source. An exact company number from the official register is the
-main legal identifier; a company name is only a possible match. Funding sources without shared
-identifiers need careful exact or approximate matching, and errors and gaps still remain
-\citep{thorne2026funding}. Work across several registers also required name normalisation, approximate
+Linking those records to the correct legal company is a second barrier. Funding sources without
+shared identifiers need careful exact or approximate matching, and errors and gaps still remain
+\citep{thorne2026funding}. Work across several registers required name normalisation, approximate
 comparison and manual checks when company or country names disagreed \citep{surak2026gateways}.
 Companies House identifies incorporated companies rather than all economic activity
-\citep{galanakis2026chrt}. An uncertain match should therefore stay unresolved until a named reviewer
-checks it. Records with similar names must not be merged automatically.
+\citep{galanakis2026chrt}. An uncertain match should stay unresolved until a named reviewer checks
+it. Records with similar names must not be merged automatically.
 
-Missing data must keep its meaning instead of becoming a default number. Documentation should state
-what is missing, why it is missing and what is still unknown \citep{gebru2021datasheets}. A financial
-table contains values, empty cells, positions and different types of information. An empty cell does
-not automatically mean zero \citep{bradley2024synfintabs}. Completeness and validity are also separate
-qualities that need their own checks \citep{nikiforova2020quality}. This project distinguishes a blank,
-zero, none, not applicable, not reported, not found publicly, invalid and observed value. Not found
-publicly does not mean that something does not exist. These categories are a project design choice,
-not a general standard from the literature.
+Private-market evidence is incomplete in a different way. Kaplan and Lerner describe venture-capital
+data as inconsistent, with definitional differences, missing failed firms and backfilling
+\citep{kaplan2016vcdata}. The British Business Bank treats angel-investment evidence as partial
+because much activity is private and reporting is patchy \citep{britishbusinessbank2025equity}.
+Missingness must keep its meaning. Documentation should state what is missing, why it is missing
+and what is still unknown \citep{gebru2021datasheets}. An empty financial cell does not
+automatically mean zero \citep{bradley2024synfintabs}. Completeness and validity are also separate
+qualities that need their own checks \citep{nikiforova2020quality}. Not found publicly does not
+mean that something does not exist.
 
-The system also needs separate dates. It records when an event happened, when the information became
-available, when it was collected and the last date allowed in the report. Register snapshots and
-filing delays show why recent facts may not have been available at an earlier reporting date
-\citep{hardman2023small}. Incorporation and later business activity also happen at different times
-\citep{galanakis2026chrt}. Using information published after the reporting date creates data leakage
-and may make an evaluation look better than it should \citep{kapoor2023leakage}. A correction needs a
-new version and date. It must not be used to support an earlier report.
+Time makes consolidation harder still. A report needs separate dates for when an event happened,
+when the information became available, when it was collected and the last date allowed in the
+pack. Register snapshots and filing delays show why recent facts may not have been available at
+an earlier reporting date \citep{hardman2023small}. Incorporation and later business activity
+happen at different times \citep{galanakis2026chrt}. Using information published after the
+reporting date creates data leakage and may make an evaluation look better than it should
+\citep{kapoor2023leakage}. A correction needs a new version and date. It must not be used to
+support an earlier report.
 
-Together these rules give a testable evidence model, recording company identity, the type of missing
-value, event and availability dates, source, exact passage and version, and keeping invalid,
-conflicting and unresolved records visible. Its checks are tied to the task and the data
-\citep{nikiforova2020quality,gebru2021datasheets}, and its dating rules exist to keep later
-information out of an earlier report \citep{kapoor2023leakage}. Chapter 3 puts this model to work.
+Commercial products cover related but non-equivalent workflows, and setting them beside that
+data-quality literature exposes the gap. Visible describes portfolio-data collection, monitoring,
+dashboards and investor reporting; Zapflow describes integrated deal and portfolio records; and
+Affinity describes relationship-centred activity capture and reports
+\citep{visible2026investors,zapflow2026portfolio,affinity2026portfolio}. Each presents
+consolidated portfolio figures as a solved presentation problem. Kaplan and Lerner's account of
+the underlying records cannot be wished away by a dashboard \citep{kaplan2016vcdata}. No vendor
+page reports claim-level support accuracy or how conflicting sources are resolved.
+The gap is not a missing screen. It is the absence of a tested rule for when a consolidated
+figure may be said at all. A pipeline, a single grounded agent or a bought platform can each
+present a pack. None of the reviewed sources shows that presentation survives a support check
+when two eligible records disagree
+\citep{buneman2001provenance,gao2023ragsurvey,guo2024multiagent}.
+Section~\ref{sec:design-alternatives} and Table~\ref{tab:lit-solution-landscape} set those
+presentation options beside the evidence contract.
 
-\section{Source records, source checks, conflicts and traceable reporting}
+\section{What makes a claim defensible}
 
-Provenance is the record of where a statement came from and what was done to it. Foundational
-database work separates why a query result exists from where its contributing values sat
-\citep{buneman2001provenance}; that explains lineage, not whether a report is right. Documentation
-should record purpose, contents, processing, gaps, errors, dependencies and corrections
-\citep{gebru2021datasheets}, and repeating a result needs enough data, code, steps and measures
-\citep{pineau2021reproducibility}. Each portfolio statement should therefore link to its saved
-source, its exact place in that source, the changes made to it, the checks applied and the approval
-given.
+Data quality is a property of a dataset in use, not of the dataset alone, so accuracy,
+timeliness, completeness and consistency each need rules bound to a particular field and purpose
+\citep{nikiforova2020quality,krasikov2020ready}. Provenance is the matching record of where a
+statement came from and what was done to it. Foundational database work separates why a query
+result exists from where its contributing values sat \citep{buneman2001provenance}. That explains
+lineage, not whether a report is right. Documentation should record purpose, contents,
+processing, gaps, errors, dependencies and corrections \citep{gebru2021datasheets}, and repeating
+a result needs enough data, code, steps and measures \citep{pineau2021reproducibility}. A
+defensible portfolio statement therefore links to its saved source, its exact place in that
+source, the changes made to it, the checks applied and the approval given.
 
-Checking a source and checking a claim are two different steps: the source check covers access, type,
-permission, date and whether a stable copy can be saved, while the claim check asks whether an exact
-passage supports the statement. Two studies by overlapping authors take notably different views of
-what to do when that second check fails. The ALCE work treats attribution as a property to be measured,
-separating factual correctness from citation precision and recall so that weak support becomes
-visible in the score \citep{gao2023alce}. The RARR work treats it instead as a defect to be repaired,
-revising generated text after the fact so that it matches retrieved evidence \citep{gao2023rarr}. Both
-are defensible, and the choice between them is consequential rather than technical: repair improves
-the finished text but relocates the decision back inside the component that produced it. This project
-follows the measurement position and refuses repair, holding an unsupported claim rather than editing
-it into compliance, with the decision and files recorded so the outcome can be repeated
-\citep{pineau2021reproducibility}.
+\subsection{Measure, repair or refuse: ALCE versus RARR}
 
-Where permission and technology allow, an accepted source should be saved as a fixed local copy with a
-checksum, collection time, exact passage and version, and a correction should create a new version
-rather than replace the old one. Dataset and reproducibility guidance both support recording external
-resources, updates, errors and superseded versions
+Checking a source and checking a claim are two different steps. The source check covers access,
+type, permission, date and whether a stable copy can be saved. The claim check asks whether an
+exact passage supports the statement. Two studies by overlapping authors take different views of
+what to do when that second check fails. The ALCE work treats attribution as a property to be measured, separating factual
+correctness from citation precision and recall so that weak support becomes visible in the score
+\citep{gao2023alce}. The RARR work treats it as a defect to be repaired, revising generated text
+after the fact so that it matches retrieved evidence \citep{gao2023rarr}. Both are defensible,
+and the choice is consequential: repair improves the finished text but relocates the decision
+back inside the component that produced it. A third option, refusal, is to withhold claim
+admission when the passage does not support the statement, and to record that outcome instead of
+rewriting the text. Self-preference in model evaluators rises with self-recognition, which is a
+demonstrated reason not to let the same component rewrite the claim it is judging
+\citep{panickssery2024selfpref,pineau2021reproducibility}. Verification is also claim-level
+rather than report-level. FActScore decomposes long-form text into atomic facts and scores the
+share supported by a knowledge source, which is the grain at which admission can be refused
+\citep{min2023factscore,gao2023alce}.
+
+Where permission and technology allow, an accepted source should be saved as a fixed local copy
+with a checksum, collection time, exact passage and version. A correction should create a new
+version rather than replace the old one. Dataset and reproducibility guidance both support
+recording external resources, updates, errors and superseded versions
 \citep{gebru2021datasheets,pineau2021reproducibility}, and model cards apply the same logic to
-versioned intended use and evaluation limits \citep{mitchell2019modelcards}. Some sources, of course,
-cannot legally or technically be saved at all.
+versioned intended use and evaluation limits \citep{mitchell2019modelcards}. Some sources cannot
+legally or technically be saved at all.
 
 Conflicting evidence must be retained. Hallucination research distinguishes factual conflict,
-unverifiable claims and overstatement, linking reliable output to uncertainty and checking against
-trusted knowledge \citep{huang2023hallucination}. A source link does not resolve disagreement when text
-conflicts with evidence or the source is wrong \citep{gao2023rarr}; nor can one citation marker represent
-correctness, passage support and completeness \citep{gao2023alce}. Supported disagreements remain grouped
-and unverifiable claims unresolved until a stated rule or named reviewer decides them. The system must
-not automatically prefer the majority, newest or most fluent version.
+unverifiable claims and overstatement, linking reliable output to uncertainty and checking
+against trusted knowledge \citep{huang2023hallucination}. A source link does not resolve
+disagreement when text conflicts with evidence or the source is wrong \citep{gao2023rarr}. One
+citation marker cannot represent correctness, passage support and completeness
+\citep{gao2023alce}. AttrScore finds that support is easier to judge than contradiction. The authors summarise GPT-4
+at 81--83~per cent overall accuracy on AttrEval-GenSearch. The same local pages record overall
+85.1 in the zero-shot setting and 84.3 in the few-shot setting, while contradiction remains the
+weak class at 45.0 and 53.3 \citep{yue2023attrscore,huang2023hallucination}. Because contradiction
+detection is weak, the ledger retains conflict for a named person rather than collapsing it in
+software.
+The system must not automatically prefer the majority, newest or most fluent version.
 
-A traceable report therefore records the whole chain: discovery, checking, capture and use, then the
-claim, support decision, conflict, approval and export. The design principle drawn from this section is
-that a verifier should check evidence without being able to rewrite the claim, precisely because
-correctness, support and attribution are distinct properties
+A traceable report therefore records the whole chain: discovery, checking, capture and use, then
+the claim, support decision, conflict, approval and export. The design principle drawn from this
+section is that a verifier should check evidence without being able to rewrite the claim,
+precisely because correctness, support and attribution are distinct properties
 \citep{gao2023alce,gao2023rarr,nist2023airmf,amershi2019guidelines}.
-Figure~\ref{fig:lit-evidence-claim-chain} summarises this admission chain. The supporting review-source,
-signal-boundary and data-semantics tables are provided as
-Tables~\ref{tab:review-source-admission}, \ref{tab:signal-inference-boundary} and
-\ref{tab:data-semantics-matrix} in Appendix~\ref{app:supplementary-exhibits}.
+Figure~\ref{fig:lit-evidence-claim-chain}, in Appendix~\ref{app:supplementary-exhibits},
+summarises this admission chain. Measure and repair are the two positions already tested in the
+citation literature. Refusal of claim admission is the untested third, and it is the mechanism
+RQ2 isolates \citep{gao2023alce,gao2023rarr}.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{exhibits/lit_f1_evidence_claim_admission_audit_chain.png}
-  \caption{How a possible source becomes an approved report claim. Developed by the author from the
-  cited literature and the project's fixed rules.}
-  \label{fig:lit-evidence-claim-chain}
-\end{figure}
+\section{Retrieval as remedy and vulnerability}
 
-\section{LLM-assisted source finding and evidence extraction}
+Retrieval-augmented generation (RAG) separates document indexing, retrieval and text generation,
+and the literature holds two views of it that are hard to reconcile. In the hallucination
+literature, retrieval is the remedy: grounding output in real documents reduces invented content
+that a model would otherwise produce from memory \citep{huang2023hallucination}. In the security
+literature, the same mechanism is the vulnerability, because indirect prompt injection lets text
+hidden in retrieved pages alter a model's summary, queries, source choices or later tool use
+\citep{greshake2023indirect}. Retrieval, in other words, fixes a problem of invention by opening
+a channel for a problem of influence. Surveys of the field note that retrieval may equally miss
+relevant material or return irrelevant passages \citep{gao2023ragsurvey}. The practical
+consequence adopted here is that a large language model (LLM) may help find candidate sources,
+while finding, checking, extracting and verifying stay separate steps that retrieved text cannot
+reach into.
 
-Retrieval-augmented generation (RAG) separates document indexing, retrieval and text generation, and
-the literature holds two views of it that are hard to reconcile. In the hallucination literature,
-retrieval is the remedy: grounding output in real documents reduces invented content that a model
-would otherwise produce from memory \citep{huang2023hallucination}. In the security literature, the
-same mechanism is the vulnerability, because indirect prompt injection lets text hidden in retrieved
-pages alter a model's summary, queries, source choices or subsequent tool use
-\citep{greshake2023indirect}. Retrieval, in other words, fixes a problem of invention by opening a
-channel for a problem of influence, and surveys of the field note that retrieval may equally miss
-relevant material or return irrelevant passages \citep{gao2023ragsurvey}. The practical consequence
-adopted here is that a large language model (LLM) may help find candidate sources, while finding,
-checking, extracting and verifying stay separate steps that retrieved text cannot reach into.
-
-The saved Responses API documentation describes model-managed \texttt{web\_search}, inline citations,
-annotations, domain filters and a list of consulted sources \citep{openai2026websearch}. These features
-can help plan a search and produce a list of possible sources \citep{gao2023ragsurvey}. They
-guarantee nothing about how many sources or citations come back, though, and a visible citation may
-still be incomplete or unsupported \citep{gao2023alce}. Returned URLs, snippets and model text stay
-possible sources until they pass the source checks.
+The saved Responses API documentation describes model-managed \texttt{web\_search}, inline
+citations, annotations, domain filters and a list of consulted sources
+\citep{openai2026websearch}. These features can help plan a search and produce a list of possible
+sources \citep{gao2023ragsurvey}. They guarantee nothing about how many sources or citations come
+back, and a visible citation may still be incomplete or unsupported \citep{gao2023alce}. Returned
+URLs, snippets and model text stay possible sources until they pass the source checks.
 
 Structured evidence should first be extracted with fixed, rule-based code. Unstructured public or
 synthetic evidence may use an optional model, but only to suggest a claim that links to an exact
 passage. Factual correctness, passage support and citation completeness remain different measures
-\citep{gao2023alce}. A correct source link also does not prove a claim when the evidence disagrees
-\citep{gao2023rarr}. Both routes end with fixed checks of the exact passage, data structure and format,
-followed by separate verification. This reflects the need to test relevance, support, rejection and
-reliability separately \citep{gao2023ragsurvey}. Unsupported content is rejected or left unresolved.
-It is never filled in from model memory.
+\citep{gao2023alce}. A correct source link also does not prove a claim when the evidence
+disagrees \citep{gao2023rarr}. Both routes end with fixed checks of the exact passage, data
+structure and format, followed by separate verification. Unsupported content is rejected or left
+unresolved. It is never filled in from model memory.
 
-Public content found through search must be treated as untrusted data, not as instructions. Indirect
-prompt injection can hide harmful instructions in searched material and change summaries, queries,
-source choices or later actions \citep{greshake2023indirect}. RAG can also receive noisy, conflicting
-or hostile text \citep{gao2023ragsurvey}. The prototype therefore limits tool permissions, checks each
-destination, separates extraction from other actions, limits redirects and requests, and stops safely
-when a check fails. Testing, uncertainty, separate review and safe failure are recognised risk controls
-\citep{nist2023airmf}.
+Public content found through search must be treated as untrusted data, not as instructions.
+Indirect prompt injection can hide harmful instructions in searched material and change
+summaries, queries, source choices or later actions \citep{greshake2023indirect}. RAG can also
+receive noisy, conflicting or hostile text \citep{gao2023ragsurvey}. The prototype therefore
+limits tool permissions, checks each destination, separates extraction from other actions, limits
+redirects and requests, and stops safely when a check fails. Testing, uncertainty, separate
+review and safe failure are recognised risk controls \citep{nist2023airmf}.
+Figure~\ref{fig:lit-discovery-evidence-boundary}, in Appendix~\ref{app:literature-search},
+separates finding a source from accepting it as evidence. A report should therefore state how much searching was permitted rather than imply that the web
+was searched. Context size, token limits, domain filters and source lists are all configurable,
+and the number of sources returned is not guaranteed \citep{openai2026websearch}, so a
+repeatable method records the queries, sources, reporting date and budgets, then names what was
+inaccessible, missing, conflicting or unverified
+\citep{pineau2021reproducibility,gao2023alce}. Search may propose a source; fixed checks dispose
+of it; retrieved text is data, never instruction
+\citep{greshake2023indirect,nist2023airmf}.
 
-A report should therefore state how much searching was permitted rather than imply that the web was
-searched. Context size, token limits, domain filters and source lists are all configurable, and the
-number of sources returned is not guaranteed \citep{openai2026websearch}, so a repeatable method
-records the queries, sources, reporting date and budgets, then names what was inaccessible, missing,
-conflicting or unverified \citep{pineau2021reproducibility,gao2023alce}.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{exhibits/lit_f2_discovery_is_not_evidence.png}
-  \caption{Why finding a source is not the same as having evidence. Developed by the author from the
-  cited literature and the project's fixed rules.}
-  \label{fig:lit-discovery-evidence-boundary}
-\end{figure}
-\clearpage
-
-\section{Functional role separation and human approval}
+\section{Who is allowed to decide}
+\label{sec:design-alternatives}
 
 Dividing a task between programmed roles is a design choice, not an acquisition of collective
-intelligence, and the literature is strikingly inconsistent about what such a division even is:
-reported systems differ in interface, role description and communication structure
-\citep{guo2024multiagent}, while AutoGen shows that the developer, not the architecture, fixes the
-roles, tools, control flow and stopping rules \citep{wu2024autogen}. This is why
-Table~\ref{tab:lit-role-authority-matrix} assigns each role one responsibility, defined inputs and
-outputs and a visible failure limit, and why Section~\ref{sec:design-alternatives} rests its case on
-authority rather than on role count \citep{peffers2007dsrm}.
-
-The clearest counterweight to any enthusiasm here is empirical. Analysis of 1,642 traces from seven
-multi-agent systems identified fourteen failure modes spanning system design, inter-agent alignment
-and task verification \citep{cemri2025masfailures}. That evidence deserves careful reading rather than
-either dismissal or alarm: much of the wider dataset was annotated with model assistance, and its
-coding and mathematics tasks differ from portfolio reporting. Read cautiously, it still establishes
-that added roles are themselves a source of failure, which makes programmed control flow, tool
-permissions and explicit stop rules necessary rather than optional
-\citep{wu2024autogen,nist2023airmf}.
-
-Human review gives a person authority to decide; it does not create new evidence. Here the applied
-guidance and the experimental evidence are in genuine tension. The widely cited design guidelines
-recommend making system limits clear, showing uncertainty and letting people dismiss or correct output,
-treating transparency as the route to sound human judgement \citep{amershi2019guidelines}. Bu\c{c}inca
-and colleagues tested something close to that prescription and found it insufficient: participants
-still followed incorrect advice, and the interventions that reduced over-reliance did so by making the
-task deliberately harder, with uneven effects across participant groups \citep{bucinca2021forcing}. The
-uncomfortable implication is that the remedy the guidelines propose is the one the experiment found
-wanting, so a well-designed review screen cannot be assumed to produce better decisions. This project
-accordingly treats its interface as an accountability mechanism rather than an accuracy mechanism: it
-shows the claim, exact support, conflicts, uncertainty and content hash so that a named reviewer's
-decision is recorded and attributable, and it leaves the question of whether review improves outcomes
-to a study with participants \citep{nist2023airmf}.
-
-Evaluating such a workflow therefore means keeping its failures visible rather than reporting only its
-successes. Logs should carry role, task, attempt, input, output, hash, time, tokens, errors and
-recovery, and fixed cases should cover each role and the whole workflow, including disagreement and
-safe failure \citep{nist2023airmf,pineau2021reproducibility,guo2024multiagent}.
-
-Managed platforms make custom orchestration itself look optional, which is the sharpest challenge to
-this project's design. AutoGen Studio already exposes models, tools, memory and workflows through a
-visual interface, so much of the wiring described above can be bought rather than written; its authors
-nonetheless call the tool not production-ready and name architecture comparison and reliability as
-open problems \citep{dibia2024autogenstudio}. Vendor documentation for Grok Bot goes further,
-describing persistent named Bots with distinct jobs, tools, working rules and approval boundaries
-\citep{spacexai2026grokbot}. The unresolved question is not whether a platform can host roles, but
-whether it can enforce an evidence contract; convenience in configuring agents is a different property
-from correctness in admitting claims, and neither source measures the second
-\citep{dibia2024autogenstudio,guo2024multiagent}.
-
-\input{exhibits/lit_t4_role_authority_matrix.tex}
-
-\section{Main findings from the literature and research gap}
-
-No single best reporting design emerges from this literature, and the disagreements traced above
-explain why. Private-market datasets have limits of coverage and definition, work on lineage and
-citation keeps a statement's origin apart from its support and its truth, and vendor pages offer no
-independent comparison
-\citep{kaplan2016vcdata,buneman2001provenance,gao2023alce,visible2026investors}. What is missing is
-therefore evidence rather than novelty: whether rules for identity, missing values, time, source
-records, verification and human authority hold together on the same early-stage inputs.
-
-For RQ1, the established problem is that company and funding records can be incomplete, delayed and
-hard to link, while an exact citation can still sit beside a wrong or partial statement
-\citep{thorne2026funding,kaplan2016vcdata,gao2023rarr}. What remains unresolved is what survives the
-whole chain: whether fixed rules for identity, time, missing values and source support carry the
-intended meaning through, and hold back a claim they cannot support. RQ1 therefore needs labelled
-outcomes at each step, claim support, complete source records and agreement across repeats, not a
-demonstration that a report can be produced
-\citep{nikiforova2020quality,pineau2021reproducibility}.
-
-For RQ2, splitting the work between named roles can make responsibilities visible, but surveys and
-trace analysis also find failures of coordination, verification and system design; one program
-applying the same fixed gate remains a credible alternative
-\citep{guo2024multiagent,cemri2025masfailures}. What remains unresolved is whether a separately
-recorded verifier changes which claims are admitted when the inputs are equal, and at what cost. RQ2 therefore compares conditions with and without that verifier using supported-claim precision,
-recall, unsupported-claim rate, abstention, failures, time, tokens and cost
-\citep{peffers2007dsrm,pineau2021reproducibility}. A favourable result cannot be attributed to agent
-labels without a comparison that isolates the rule and separation.
-
-This choice of evaluation instrument needs its own justification, because a small set of designed
-cases is easily mistaken for a weak substitute for a large sample. Ribeiro and colleagues argue the
-opposite for behavioural testing: held-out accuracy on a single test set overstates real capability,
-and a structured suite of targeted cases, each built to probe one specific behaviour, exposes failures
-that aggregate scores conceal \citep{ribeiro2020checklist}. That is the warrant for the D0 design in
-Chapter~3. It also fixes what such a suite can conclude, and here it sits usefully against Kapoor and
-Narayanan's account of over-optimistic machine-learning evaluation, which shows how easily designed or
-leaky setups flatter a system \citep{kapoor2023leakage}. Read together, the two support a specific and
-limited position: a behavioural suite is diagnostic rather than estimative, so passing it demonstrates
-that a targeted control is present and cannot establish a rate on unseen data.
-
-For future human evaluation, guidance supports correction and decision authority, while controlled
-evidence also shows usability and over-reliance trade-offs
-\citep{amershi2019guidelines,bucinca2021forcing}. Commercial pages describe dashboards and reporting
-workflows, but not independently measured reviewer effort or decision quality
-\citep{visible2026investors,zapflow2026portfolio}. Whether named review changes correctness,
-completeness, editing effort or elapsed time therefore remains a pilot question. An implemented
-approval screen cannot answer it.
-
-Public-web research remains a separate engineering case, because retrieved content carries both
-prompt-injection and weak-support risks \citep{greshake2023indirect,gao2023alce}, and
-Figure~\ref{fig:lit-discovery-evidence-boundary} separates finding a source from accepting it as
-evidence. The live comparison between official sources alone and LLM-assisted search was never fixed
-before evaluation, so it is treated as neither a question nor a result
-\citep{openai2026websearch,pineau2021reproducibility}. Chapter 3 turns these gaps into the fixed
-evaluation method.
+intelligence. Reported systems differ in interface, role description and communication structure
+\citep{guo2024multiagent}, while AutoGen shows that the developer, not the architecture, fixes
+the roles, tools, control flow and stopping rules \citep{wu2024autogen}. This is why
+Table~\ref{tab:lit-role-authority-matrix}, in Appendix~\ref{app:supplementary-exhibits}, assigns
+each role one responsibility, defined inputs and outputs and a visible failure limit, and why
+this section rests its case on authority rather than on role count
+\citep{peffers2007dsrm,hevner2004design}.
+Table~\ref{tab:lit-solution-landscape} summarises those architecture alternatives against the
+evidence contract.
 
 \input{exhibits/lit_t5_solution_landscape.tex}
+
+One body of work argues that named roles help. Multi-agent debate can raise factuality on
+reasoning benchmarks \citep{du2024debate,guo2024multiagent}. Reflexion separates an actor from an
+evaluator and a reflection step, provided a reliable evaluation signal exists
+\citep{shinn2023reflexion,wu2024autogen}. MetaGPT encodes standard operating procedures as role
+hand-offs, and ChatDev adds explicit reviewer and tester roles in a chat-chain; both report gains
+on software-engineering tasks \citep{hong2023metagpt,qian2024chatdev}. These results support
+Position~A: role separation can help when the task supplies a checkable signal.
+
+Position~B is the caution. Under matched inputs, at most one of six multi-agent systems in a 2026
+preprint exceeded the single-agent anchor on a balanced accuracy average, while the remaining
+five trailed by 2.56 to 11.29 points \citep{fu2026agents,cemri2025masfailures}. The same study is
+the warrant for C1/C2 rather than an objection to this design: a comparison that does not hold
+inputs equal cannot attribute a gain to extra agents. This pipeline is not claimed to beat a
+single agent. Matched inputs are the only credible test, and the D0 comparison isolates a
+recorded refusal of claim admission rather than a count of roles
+\citep{fu2026agents,peffers2007dsrm}.
+
+The clearest counterweight to any enthusiasm here is empirical. Analysis of 1,642 traces from
+seven multi-agent systems identified fourteen failure modes spanning system design, inter-agent
+alignment and task verification \citep{cemri2025masfailures}. That evidence deserves careful
+reading rather than either dismissal or alarm: much of the wider dataset was annotated with
+model assistance, and its coding and mathematics tasks differ from portfolio reporting. Read
+cautiously, it still establishes that added roles are themselves a source of failure, which
+makes programmed control flow, tool permissions and explicit stop rules necessary rather than
+optional \citep{wu2024autogen,nist2023airmf}.
+
+Human review gives a person authority to decide; it does not create new evidence. Here the
+applied guidance and the experimental evidence are in genuine tension. The widely cited design
+guidelines recommend making system limits clear, showing uncertainty and letting people dismiss
+or correct output, treating transparency as the route to sound human judgement
+\citep{amershi2019guidelines}. Bu\c{c}inca and colleagues tested something close to that
+prescription and found it insufficient: participants still followed incorrect advice, and the
+interventions that reduced over-reliance did so by making the task deliberately harder, with
+uneven effects across participant groups \citep{bucinca2021forcing}. The implication is that the
+remedy the guidelines propose is the one the experiment found wanting, so a well-designed review
+screen cannot be assumed to produce better decisions. This project accordingly treats its
+interface as an accountability mechanism rather than an accuracy mechanism. It shows the claim,
+exact support, conflicts, uncertainty and content hash so that a named reviewer's decision is
+recorded and attributable, and it leaves the question of whether review improves outcomes to a
+study with participants \citep{nist2023airmf}.
+
+Managed platforms make custom orchestration itself look optional, which is the sharpest
+challenge to this project's design. AutoGen Studio already exposes models, tools, memory and
+workflows through a visual interface, so much of the wiring described above can be bought rather
+than written; its authors nonetheless call the tool not production-ready and name architecture
+comparison and reliability as open problems \citep{dibia2024autogenstudio}. Vendor documentation
+for Grok Bot goes further, describing persistent named Bots with distinct jobs, tools, working
+rules and approval boundaries \citep{spacexai2026grokbot}. The unresolved question is not
+whether a platform can host roles, but whether it can enforce an evidence contract. Convenience
+in configuring agents is a different property from correctness in admitting claims, and neither
+source measures the second \citep{dibia2024autogenstudio,guo2024multiagent}. Evaluating such a workflow therefore means keeping its failures visible rather than reporting
+only its successes. Logs should carry role, task, attempt, input, output, hash, time, tokens,
+errors and recovery, and fixed cases should cover each role and the whole workflow, including
+disagreement and safe failure
+\citep{nist2023airmf,pineau2021reproducibility,guo2024multiagent}. The benefit of role
+separation is therefore contested; matched inputs are the test; this pipeline is not claimed to
+beat a single agent \citep{fu2026agents,cemri2025masfailures}.
+
+\section{Settled / contested / gap}
+
+Three findings are settled enough to bind the design. A reporting claim needs a legal identity,
+a reporting date and a saved source; citation is not the same as support; and conflict should
+be retained rather than averaged
+\citep{buneman2001provenance,gao2023alce,kaplan2016vcdata}. Two findings
+remain contested: whether extra programmed roles improve outcomes under matched inputs, and
+whether human review improves decisions rather than merely recording them
+\citep{fu2026agents,amershi2019guidelines,bucinca2021forcing}. The gap this dissertation
+addresses is narrower than a missing product. No located study tests whether a separately
+recorded verification stage changes what a report may say when inputs are held equal, or
+whether evidence survives from intake to approved export. Fu and colleagues' matched-input
+result is why a manual baseline is postponed to the pilot in
+Section~\ref{sec:business-pilot} rather than treated as an omitted control
+\citep{fu2026agents,peffers2007dsrm}.
+
+For RQ1, the established problem is that company and funding records can be incomplete, delayed
+and hard to link, while an exact citation can still sit beside a wrong or partial statement
+\citep{thorne2026funding,kaplan2016vcdata,gao2023rarr}. What remains unresolved is what survives
+the whole chain. RQ1 therefore needs labelled outcomes at each step, not a demonstration that a
+report can be produced \citep{nikiforova2020quality,pineau2021reproducibility}. For RQ2, splitting
+the work between named roles can make responsibilities visible, but surveys and trace analysis
+also find failures of coordination, verification and system design; one program applying the
+same fixed gate remains a credible alternative \citep{guo2024multiagent,cemri2025masfailures}.
+What remains unresolved is whether a separately recorded verifier changes which claims are
+admitted when the inputs are equal. Table~\ref{tab:lit-settled-contested-gap} maps those
+positions to the questions Chapter~3 will operationalise. How that instrument is built, and why
+a designed suite is used instead of a field rate, is a methods question rather than a literature
+finding \citep{hevner2004design,peffers2007dsrm}.
+The supporting review-source, signal-boundary and data-semantics tables are provided as
+Tables~\ref{tab:review-source-admission}, \ref{tab:signal-inference-boundary} and
+\ref{tab:data-semantics-matrix} in Appendix~\ref{app:supplementary-exhibits}.
+
+\input{exhibits/lit_t6_settled_contested_gap.tex}

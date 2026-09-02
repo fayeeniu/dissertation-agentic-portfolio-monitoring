@@ -1,8 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
+import { Icon, resolveStatIcon, type StatIconName } from "@/components/Icon";
+import { actionTone, actionVerb } from "@/lib/action-verb";
 import { statusLabel, statusTone } from "@/lib/format";
+
+export type { StatIconName };
+
+export type StatItem = {
+  label: string;
+  value: string | number;
+  tone?: string;
+  hint?: string;
+  icon?: StatIconName;
+};
 
 export function Pill({
   status,
@@ -37,7 +50,7 @@ export function Panel({
   return (
     <section className="panel">
       <header className="panel-head">
-        <div className="stack-sm" style={{ gap: "0.15rem", minWidth: 0 }}>
+        <div className="stack-sm" style={{ gap: "var(--space-1)", minWidth: 0 }}>
           {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
           <h2>{title}</h2>
         </div>
@@ -48,51 +61,56 @@ export function Panel({
   );
 }
 
-export function StatRail({
-  items,
-}: {
-  items: { label: string; value: string | number; tone?: string }[];
-}) {
-  return (
-    <div className="stat-rail">
-      {items.map((item) => (
-        <div className="stat" key={item.label}>
-          <span className="stat-value" data-tone={item.tone ?? undefined}>
-            {item.value}
-          </span>
-          <span className="stat-label">{item.label}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function NextActionBanner({
   label,
   detail,
   href,
   action,
+  actionLabel,
+  size = "default",
 }: {
   label: string;
   detail: string;
   href?: string | null;
   action?: ReactNode;
+  actionLabel?: string;
+  size?: "default" | "hero";
 }) {
+  const verb = actionLabel ?? actionVerb(label);
   return (
-    <div className="next-action">
-      <div className="next-action-copy stack-sm" style={{ gap: "0.1rem" }}>
+    <div className="next-action" data-size={size} data-tone={actionTone(label)}>
+      <div className="next-action-copy">
         <p className="eyebrow">Next safe action</p>
         <p className="next-action-title">{label}</p>
-        <p className="muted" style={{ fontSize: "0.8125rem" }}>
-          {detail}
-        </p>
+        <p className="caption">{detail}</p>
       </div>
       {action ??
         (href ? (
-          <Link className="btn" href={href}>
-            Open
+          <Link className="btn" data-variant={size === "hero" ? "primary" : undefined} href={href}>
+            {verb}
           </Link>
         ) : null)}
+    </div>
+  );
+}
+
+export function StatGrid({ items }: { items: StatItem[] }) {
+  return (
+    <div className="stat-grid">
+      {items.map((item) => {
+        const tone = item.tone && item.tone !== "muted" && item.tone !== "idle" ? item.tone : undefined;
+        return (
+          <div className="stat-card" key={item.label} data-tone={item.tone ?? undefined}>
+            <span className="stat-card-head">
+              <Icon name={resolveStatIcon(item.label, item.icon)} className="stat-card-icon" />
+              <span className="stat-card-label">{item.label}</span>
+              {tone ? <i className="stat-card-dot" aria-hidden="true" /> : null}
+            </span>
+            <span className="stat-card-value">{item.value}</span>
+            {item.hint ? <span className="stat-card-hint">{item.hint}</span> : null}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -108,40 +126,106 @@ export function EmptyState({ title, detail }: { title: string; detail: string })
 
 export function ErrorNote({ message }: { message: string }) {
   return (
-    <div
-      role="alert"
-      style={{
-        padding: "0.7rem 0.9rem",
-        borderRadius: "var(--r-sm)",
-        border: "1px solid rgba(242, 112, 93, 0.34)",
-        background: "var(--danger-wash)",
-        color: "var(--danger)",
-        fontSize: "0.8125rem",
-      }}
-    >
+    <div className="error-note" role="alert">
       {message}
+    </div>
+  );
+}
+
+export function ServiceError({
+  title = "The research service could not complete this request.",
+  message,
+  onRetry,
+  secondary,
+}: {
+  title?: string;
+  message: string;
+  onRetry?: () => void;
+  secondary?: ReactNode;
+}) {
+  return (
+    <div className="service-error" role="alert">
+      <p>{title}</p>
+      <p className="muted">{message}</p>
+      <div className="row">
+        {onRetry ? (
+          <button type="button" className="btn" data-variant="primary" onClick={onRetry}>
+            Retry
+          </button>
+        ) : null}
+        {secondary}
+      </div>
     </div>
   );
 }
 
 export function Skeleton({ lines = 3 }: { lines?: number }) {
   return (
-    <div className="stack-sm" aria-hidden="true">
+    <div className="skeleton-stack" aria-hidden="true">
       {Array.from({ length: lines }).map((_, index) => (
         <div
           key={index}
-          style={{
-            height: "0.85rem",
-            borderRadius: "var(--r-xs)",
-            background:
-              "linear-gradient(90deg, var(--neutral-wash), rgba(24,34,30,0.07), var(--neutral-wash))",
-            backgroundSize: "200% 100%",
-            animation: "shimmer 1.4s linear infinite",
-            width: index === lines - 1 ? "60%" : "100%",
-          }}
+          className="skeleton-bar"
+          style={{ width: index === lines - 1 ? "60%" : "100%" }}
         />
       ))}
-      <style>{`@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}`}</style>
     </div>
+  );
+}
+
+export function BoardSkeleton() {
+  return (
+    <div className="overview" aria-hidden="true">
+      <div className="command-band">
+        <div className="next-action" data-size="hero">
+          <Skeleton lines={2} />
+        </div>
+        <div className="stat-grid">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div className="stat-card" key={index}>
+              <Skeleton lines={2} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="panel">
+        <div className="panel-body">
+          <Skeleton lines={5} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function LedgerRow({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) {
+  const router = useRouter();
+
+  function go() {
+    router.push(href);
+  }
+
+  function onClick(event: MouseEvent<HTMLTableRowElement>) {
+    const target = event.target as HTMLElement;
+    if (target.closest("a, button")) return;
+    go();
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLTableRowElement>) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      go();
+    }
+  }
+
+  return (
+    <tr className="ledger-row" tabIndex={0} onClick={onClick} onKeyDown={onKeyDown}>
+      {children}
+    </tr>
   );
 }

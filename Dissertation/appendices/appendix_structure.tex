@@ -7,6 +7,10 @@
 \input{exhibits/sys_t1_requirements_trust_boundary_matrix.tex}
 \input{exhibits/sys_t2_deterministic_adapter_capability_state_matrix.tex}
 \input{exhibits/sys_t3_failure_recovery_status_matrix.tex}
+\input{exhibits/sys_f2_canonical_data_provenance_model.tex}
+\input{exhibits/sys_f3_legal_identity_decision_flow.tex}
+\input{exhibits/sys_f5_company_research_evidence_funnel.tex}
+\input{exhibits/sys_public_web_capture.tex}
 
 \chapter{Dataset, Source, and Freeze Manifests}
 \label{app:dataset-source-freeze}
@@ -34,18 +38,32 @@
 \input{exhibits/lit_t1_review_source_admission.tex}
 \input{exhibits/lit_t2_signal_inference_boundary.tex}
 \input{exhibits/lit_t3_data_semantics_matrix.tex}
-\input{exhibits/disc_t2_transfer_conditions.tex}
-\input{exhibits/disc_t3_literature_result_alignment.tex}
+\input{exhibits/lit_t4_role_authority_matrix.tex}
+\input{exhibits/lit_f1_evidence_claim_admission_audit_chain.tex}
 \input{exhibits/gov_t1_governance_residual_risk.tex}
 \input{exhibits/conc_t1_sequenced_evidence.tex}
+
+\chapter{Literature search and screening}
+\label{app:literature-search}
+\input{appendices/appendix_literature_search.tex}
+
 \chapter{Generative-AI Use Disclosure}
 \label{app:generative-ai-disclosure}
 
 \section*{Acknowledgement and permitted purpose}
 
-OpenAI Codex (\url{https://openai.com/codex/}) was used as a support tool during this project. Its use was limited to five areas: planning and refining the report structure; creating and revising visualisations; supporting research and source-checking; providing feedback on clarity, flow and academic presentation; and assisting with technical implementation, tests, LaTeX changes and validation commands. It was not treated as an academic source, an empirical participant or evidence that an implementation or evaluation had succeeded.
+OpenAI Codex (\url{https://openai.com/codex/}) was used to assist research and review only:
+planning and refining the report structure; checking local sources against cited pages;
+commenting on clarity, flow and academic presentation; and drafting figure and table layouts
+for the candidate to accept or reject. It was not treated as an academic source, an empirical
+participant, or evidence that an implementation or evaluation had succeeded. The candidate
+built the prototype, wrote the evaluation, checked the sources and accepted or rejected every
+change.
 
-The candidate retained responsibility for the submitted work. Proposed text, code and visual changes were compared with the current repository, saved evaluation outputs and locally held sources. Suggestions that could not be verified were rejected, narrowed or recorded as missing evidence. Academic claims were retained only where the cited source had been checked, and generated technical changes were accepted only after the relevant checks were run.
+The candidate retained responsibility for the submitted work. Proposed wording and visual
+changes were compared with the current repository, saved evaluation outputs and locally held
+sources. Suggestions that could not be verified were rejected, narrowed or recorded as missing
+evidence. Academic claims were retained only where the cited source had been checked.
 
 \section*{Material prompts used for the final supervisor-feedback revision}
 
@@ -54,9 +72,9 @@ The material prompts for the final revision asked the tool to:
 \begin{enumerate}[leftmargin=*]
   \item review the existing dissertation against the supervisor's feedback, focusing on what was actually validated; the business problem, users and reporting process; the need for role separation rather than a simpler system; literature and technical flow; repeated limitations; appendix placement; accepted and rejected claims; the business pilot; plain language; direct research-question answers; and captions below tables and figures;
   \item update the remediation plan to use a 15,000-word main-body target with a ten-per-cent tolerance, tick the seven completed pro-forma content items while leaving ethics approval pending, consider whether bounded implementation and evaluation could repair an overclaim, and apply the supplied WMG generative-AI acknowledgement guidance; and
-  \item implement the remaining evidence, title, result, caption, Abstract, word-count, exhibit, review-status and PDF findings, then perform a final dissertation-reviewer gate.
+  \item review remaining evidence, title, result, caption, Abstract, word-count, exhibit and PDF findings against the supervisor-agreed seven-chapter outline.
 \end{enumerate}
 
 \section*{How the outputs were modified and checked}
 
-Report-structure suggestions were reconciled with the active research questions and the 13,500--16,500-word main-body range. Visual outputs were kept only when they supported a named part of the argument, used the shared print-safe style and remained legible in the compiled PDF. Research suggestions were checked against the local source library and were not cited as AI output. Feedback was applied selectively in British English, with repeated limitations consolidated and technical detail retained only where it supported the research argument. Technical and LaTeX changes were inspected against the current implementation, tested with the repository's focused checks, and then compiled and visually reviewed. The prompt list and disclosure scope follow the candidate-supplied WMG section 3.2 guidance preserved in \texttt{sources/WMG\_AI\_USE\_GUIDANCE\_CANDIDATE\_SUPPLIED.md}.
+Report-structure suggestions were reconciled with the active research questions and the 13,500--16,500-word main-body range. Visual outputs were kept only when they supported a named part of the argument, used the shared print-safe style and remained legible in the compiled PDF. Research suggestions were checked against the local source library and were not cited as AI output. Feedback was applied selectively in British English, with repeated limitations consolidated and technical detail retained only where it supported the research argument. The candidate built and checked the implementation and the evaluation. The prompt list and disclosure scope follow the candidate-supplied WMG section 3.2 guidance preserved in \texttt{sources/WMG\_AI\_USE\_GUIDANCE\_CANDIDATE\_SUPPLIED.md}.

@@ -60,7 +60,7 @@ export function IntakeConsole({ onCreated }: { onCreated?: () => void }) {
           />
         </div>
         <button className="btn" data-variant="primary" type="submit" disabled={busy || !number.trim()}>
-          {busy ? "Recording…" : "Open research case"}
+          {busy ? "Recording…" : "New company"}
         </button>
       </div>
       <p className="field-hint">

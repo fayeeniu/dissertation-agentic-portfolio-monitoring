@@ -7,10 +7,10 @@ import { AgentGraph } from "@/components/AgentGraph";
 import { ClaimLedger } from "@/components/ClaimLedger";
 import { Inspector, type InspectorSelection } from "@/components/Inspector";
 import { ReviewGate } from "@/components/ReviewGate";
-import { EmptyState, ErrorNote, NextActionBanner, Panel, Pill, Skeleton } from "@/components/ui";
+import { BoardSkeleton, EmptyState, ErrorNote, NextActionBanner, Panel, Pill, ServiceError, StatGrid } from "@/components/ui";
 import { ApiError, apiPost } from "@/lib/api";
 import { formatDate, formatDuration, humanize } from "@/lib/format";
-import { useElapsed, useResource } from "@/lib/hooks";
+import { useDocumentTitle, useElapsed, useResource } from "@/lib/hooks";
 import type { GraphNode, RunPayload, SessionPayload } from "@/lib/types";
 
 const ACTIVE_STATUSES = new Set(["pending", "running"]);
@@ -106,19 +106,20 @@ export default function RunPage({ params }: { params: Promise<{ id: string }> })
     }
   }, [id, router]);
 
-  if (run.error) return <ErrorNote message={run.error.message} />;
+  useDocumentTitle(payload ? `${payload.run.company_name} · Run` : "Research run");
+
+  if (run.error) {
+    return (
+      <ServiceError
+        title="This research run could not be loaded."
+        message={run.error.message}
+        onRetry={() => void run.refresh()}
+      />
+    );
+  }
 
   if (!payload) {
-    return (
-      <div className="stack">
-        <Skeleton lines={2} />
-        <div className="panel">
-          <div className="panel-body">
-            <Skeleton lines={6} />
-          </div>
-        </div>
-      </div>
-    );
+    return <BoardSkeleton />;
   }
 
   const { run: meta } = payload;
@@ -132,83 +133,147 @@ export default function RunPage({ params }: { params: Promise<{ id: string }> })
   const busy = inflight !== null || autoRun || restarting;
   const highlightSource = selection?.kind === "lane" ? selection.id : null;
 
+  const captured = payload.lanes.filter((lane) => lane.status === "fetched").length;
+  const withheld = payload.lanes.filter((lane) =>
+    lane.status === "blocked" || lane.status === "failed" || lane.status === "unsupported",
+  ).length;
+  const approved = payload.profile?.status === "approved";
+
   return (
-    <div className="stack">
-      <nav className="row" style={{ fontSize: "0.75rem", color: "var(--ink-4)" }}>
-        <Link href="/">Control room</Link>
+    <div className="overview">
+      <div className="page-head">
+      <nav className="crumb">
+        <Link href="/">Overview</Link>
         <span aria-hidden="true">/</span>
         <Link href={`/companies/${meta.company_id}`}>{meta.company_name}</Link>
         <span aria-hidden="true">/</span>
-        <span className="mono">Run</span>
+        <span>Run</span>
       </nav>
 
-      <header className="run-head">
-        <div className="stack-sm" style={{ gap: "0.4rem", minWidth: 0 }}>
-          <p className="eyebrow">Research run · {meta.company_number ?? "no number"}</p>
-          <div className="row" style={{ gap: "0.7rem" }}>
-            <h1 style={{ fontSize: "1.6rem" }}>{meta.company_name}</h1>
-            <Pill status={meta.status} />
-          </div>
-          <div className="run-meta">
-            <span>
-              cutoff <b>{formatDate(meta.cutoff)}</b>
-            </span>
-            <span>
-              model <b>{meta.model}</b>
-            </span>
-            <span>
-              policy <b>{meta.source_policy_version}</b>
-            </span>
-            <span>
-              started by <b>{meta.created_by}</b>
-            </span>
-          </div>
+      <section className="overview-hero stack-sm">
+        <p className="overview-kicker">
+          Research run · {meta.company_number ?? "no number"}
+        </p>
+        <div className="row" style={{ gap: "var(--space-3)" }}>
+          <h1 className="page-title">{meta.company_name}</h1>
+          <Pill status={meta.status} />
         </div>
-        <div className="run-controls">
-          {runnable ? (
-            <>
-              <button
-                type="button"
-                className="btn"
-                data-variant="primary"
-                disabled={busy}
-                onClick={() => void runToReview()}
-              >
-                {autoRun ? "Running…" : "Run to review"}
-              </button>
-              <button type="button" className="btn" disabled={busy} onClick={() => void advance(true)}>
-                {inflight && !autoRun ? "Executing…" : "Advance one stage"}
-              </button>
-              {autoRun ? (
-                <button
-                  type="button"
+        <p className="page-lede">
+          Cutoff {formatDate(meta.cutoff)}. Routed through {meta.model}. Started by {meta.created_by}.
+        </p>
+      </section>
+
+      <div className="command-band">
+        <NextActionBanner
+          size="hero"
+          label={payload.next_action.label}
+          detail={payload.next_action.detail}
+          href={payload.next_action.href}
+          action={
+            approved && payload.profile ? (
+              <div className="row">
+                <a
                   className="btn"
-                  data-variant="danger"
-                  onClick={() => {
-                    abort.current = true;
-                  }}
+                  data-variant="primary"
+                  href={`/deck/${payload.profile.id}/html`}
+                  target="_blank"
+                  rel="noreferrer noopener"
                 >
-                  Stop after this stage
-                </button>
-              ) : null}
-            </>
-          ) : null}
-          {restartable ? (
+                  HTML report
+                </a>
+                <a
+                  className="btn"
+                  href={`/deck/${payload.profile.id}/json`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  JSON
+                </a>
+              </div>
+            ) : undefined
+          }
+        />
+
+      <StatGrid
+        items={[
+          {
+            icon: "inbox",
+            label: "Sources captured",
+            value: captured,
+            tone: captured ? "evidence" : "muted",
+            hint: `${payload.lanes.length} planned lanes`,
+          },
+          {
+            icon: "withheld",
+            label: "Sources withheld",
+            value: withheld,
+            tone: withheld ? "danger" : "muted",
+            hint: withheld ? "Blocked, failed or unsupported — not in evidence" : "No captured source was withheld",
+          },
+          {
+            icon: "compare",
+            label: "Contradictions",
+            value: payload.contradictions.length,
+            tone: payload.contradictions.length ? "human" : "muted",
+            hint: payload.contradictions.length
+              ? "Neither value enters the supported summary"
+              : "No conflicting admitted statements",
+          },
+          {
+            icon: "quote",
+            label: "Claims admitted",
+            value: payload.claims.length,
+            tone: payload.claims.length ? "evidence" : "muted",
+            hint: "Exact-span statements that passed admission",
+          },
+        ]}
+      />
+      </div>
+      </div>
+
+      <div className="run-controls">
+        {runnable ? (
+          <>
             <button
               type="button"
               className="btn"
               data-variant="primary"
               disabled={busy}
-              onClick={() => void restartFromStageOne()}
+              onClick={() => void runToReview()}
             >
-              {restarting ? "Creating fresh run…" : "Restart from stage one"}
+              {autoRun ? "Running…" : "Run to review"}
             </button>
-          ) : null}
-          <button type="button" className="btn" data-size="sm" onClick={() => void run.refresh()}>
-            Refresh
+            <button type="button" className="btn" disabled={busy} onClick={() => void advance(true)}>
+              {inflight && !autoRun ? "Executing…" : "Advance one stage"}
+            </button>
+            {autoRun ? (
+              <button
+                type="button"
+                className="btn"
+                data-variant="danger"
+                onClick={() => {
+                  abort.current = true;
+                }}
+              >
+                Stop after this stage
+              </button>
+            ) : null}
+          </>
+        ) : null}
+        {restartable ? (
+          <button
+            type="button"
+            className="btn"
+            disabled={busy}
+            onClick={() => void restartFromStageOne()}
+          >
+            {restarting ? "Creating fresh run…" : "Restart from stage one"}
           </button>
-        </div>
-      </header>
+        ) : null}
+        <button type="button" className="btn" data-size="sm" onClick={() => void run.refresh()}>
+          Refresh
+        </button>
+      </div>
 
       {actionError ? <ErrorNote message={actionError} /> : null}
 
@@ -226,50 +291,57 @@ export default function RunPage({ params }: { params: Promise<{ id: string }> })
         </p>
       ) : null}
 
-      <AgentGraph
-        nodes={nodes}
-        lanes={payload.lanes}
-        selection={selection}
-        onSelect={setSelection}
-        runningSince={inflight?.since ?? null}
-      />
+      <section className="stack-sm">
+        <div className="section-head">
+          <h2>Execution</h2>
+          <span className="muted" style={{ fontSize: "0.8125rem" }}>
+            {payload.lanes.length} source lanes
+          </span>
+        </div>
+        <AgentGraph
+          nodes={nodes}
+          lanes={payload.lanes}
+          selection={selection}
+          onSelect={setSelection}
+          runningSince={inflight?.since ?? null}
+        />
+      </section>
 
-      <NextActionBanner label={payload.next_action.label} detail={payload.next_action.detail} />
-
-      <div className="split">
-        <div className="stack">
+      <div className="overview-grid">
+        <div className="overview-main">
           {payload.contradictions.length > 0 ? (
-            <Panel
-              title="Contradiction ledger"
-              eyebrow="Requires named resolution"
-              flush
-              aside={<Pill tone="human" label={`${payload.contradictions.length} open`} />}
-            >
-              {payload.contradictions.map((item) => (
-                <div className="contradiction" key={`${item.category}-${item.subject_key}`}>
-                  <div className="row">
-                    <span className="eyebrow">{humanize(item.category)}</span>
-                    <span className="mono muted" style={{ fontSize: "0.6875rem" }}>
-                      {item.subject_key}
-                    </span>
+            <section className="stack-sm">
+              <div className="section-head">
+                <h2>Needs attention</h2>
+                <Pill tone="human" label={`${payload.contradictions.length} contradictions`} />
+              </div>
+              <div className="plan-list" style={{ gridTemplateColumns: "minmax(0, 1fr)" }}>
+                {payload.contradictions.map((item) => (
+                  <div className="contradiction-card" key={`${item.category}-${item.subject_key}`}>
+                    <div className="row">
+                      <span className="eyebrow">{humanize(item.category)}</span>
+                      <span className="mono muted" style={{ fontSize: "0.6875rem" }}>
+                        {item.subject_key}
+                      </span>
+                    </div>
+                    <p className="muted" style={{ fontSize: "0.8125rem" }}>
+                      Different sources state different things about the same subject. Neither value
+                      enters the supported summary.
+                    </p>
+                    <ul className="contradiction-claims">
+                      {item.claims.map((claim, index) => (
+                        <li key={index}>
+                          {claim.statement}
+                          <div className="mono muted" style={{ fontSize: "0.625rem", marginTop: "0.2rem" }}>
+                            {claim.source_url}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="muted" style={{ fontSize: "0.8125rem" }}>
-                    Different sources state different things about the same subject. Neither value
-                    enters the supported summary.
-                  </p>
-                  <ul className="contradiction-claims">
-                    {item.claims.map((claim, index) => (
-                      <li key={index}>
-                        {claim.statement}
-                        <div className="mono muted" style={{ fontSize: "0.625rem", marginTop: "0.2rem" }}>
-                          {claim.source_url}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </Panel>
+                ))}
+              </div>
+            </section>
           ) : null}
 
           <Panel
@@ -314,9 +386,9 @@ export default function RunPage({ params }: { params: Promise<{ id: string }> })
           )}
         </div>
 
-        <div>
+        <aside className="overview-rail">
           <Inspector payload={payload} selection={selection} />
-        </div>
+        </aside>
       </div>
     </div>
   );

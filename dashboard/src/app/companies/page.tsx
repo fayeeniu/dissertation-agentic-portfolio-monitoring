@@ -1,62 +1,131 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import { IntakeConsole } from "@/components/IntakeConsole";
-import { EmptyState, ErrorNote, Panel, Pill, Skeleton, StatRail } from "@/components/ui";
+import {
+  EmptyState,
+  ErrorNote,
+  LedgerRow,
+  Panel,
+  Pill,
+  Skeleton,
+  StatGrid,
+} from "@/components/ui";
 import { formatDate, formatNumber, statusLabel } from "@/lib/format";
-import { useResource } from "@/lib/hooks";
+import { useDocumentTitle, useResource } from "@/lib/hooks";
 import type { CompaniesPayload } from "@/lib/types";
 
 export default function CompaniesPage() {
   const { data, error, refresh } = useResource<CompaniesPayload>("companies");
+  const [query, setQuery] = useState("");
+  useDocumentTitle("Companies");
+
+  const filtered = useMemo(() => {
+    if (!data) return [];
+    const needle = query.trim().toLowerCase();
+    if (!needle) return data.companies;
+    return data.companies.filter((company) => {
+      const number = company.identifier?.value ?? "";
+      return (
+        company.name.toLowerCase().includes(needle) || number.toLowerCase().includes(needle)
+      );
+    });
+  }, [data, query]);
 
   return (
-    <div className="stack">
-      <section className="stack-sm">
-        <p className="eyebrow">Hybrid intake</p>
-        <h1>Start from a company number</h1>
-        <p className="lede">
-          Every research case is rooted in one exact legal identity. A Companies House number opens
-          a case on its own; a name or a domain never does.
-        </p>
-      </section>
+    <div className="overview">
+      <div className="page-head">
+      <h1 className="visually-hidden">Companies</h1>
+      <p className="page-lede">
+        A Companies House number opens a case on its own; a name or a domain never does.
+      </p>
 
-      <Panel title="Register a company" eyebrow="Intake">
-        <IntakeConsole onCreated={refresh} />
-      </Panel>
+      <div className="command-band">
+        <Panel title="New company">
+          <IntakeConsole onCreated={refresh} />
+        </Panel>
 
-      {error ? <ErrorNote message={error.message} /> : null}
+        {error ? <ErrorNote message={error.message} /> : null}
 
-      {!data ? (
-        <div className="panel">
-          <div className="panel-body">
-            <Skeleton lines={5} />
+        {!data ? (
+          <div className="stat-grid" aria-hidden="true">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div className="stat-card" key={index}>
+                <Skeleton lines={2} />
+              </div>
+            ))}
           </div>
-        </div>
-      ) : (
-        <>
-          <StatRail
+        ) : (
+          <StatGrid
             items={[
-              { label: "Companies", value: formatNumber(data.counts.total) },
               {
+                icon: "building",
+                label: "Companies",
+                value: formatNumber(data.counts.total),
+                hint: "Each case starts from one Companies House number",
+              },
+              {
+                icon: "badge-check",
                 label: "Identity resolved",
                 value: formatNumber(data.counts.resolved),
                 tone: "evidence",
+                hint: "Accepted legal entities",
               },
               {
+                icon: "hourglass",
                 label: "Open decisions",
                 value: formatNumber(data.counts.identity_holds),
                 tone: data.counts.identity_holds ? "human" : "muted",
+                hint: data.counts.identity_holds
+                  ? "Held until a named reviewer accepts the number"
+                  : "No identity is waiting",
               },
-              { label: "With research runs", value: formatNumber(data.counts.with_runs) },
+              {
+                icon: "layers",
+                label: "With research runs",
+                value: formatNumber(data.counts.with_runs),
+                hint: "Cases that have at least one persisted run",
+              },
             ]}
           />
+        )}
+      </div>
+      </div>
 
-          <Panel title="Companies ledger" eyebrow="List to detail" flush>
-            {data.companies.length === 0 ? (
+      {!data ? (
+        <Panel title="Companies ledger">
+          <Skeleton lines={5} />
+        </Panel>
+      ) : (
+        <>
+
+          <Panel
+            title="Companies ledger"
+            eyebrow={`${data.companies.length} recorded`}
+            flush
+            aside={
+              data.companies.length > 8 ? (
+                <label className="ledger-filter">
+                  <span className="visually-hidden">Filter companies</span>
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder="Filter by name or number"
+                  />
+                </label>
+              ) : null
+            }
+          >
+            {filtered.length === 0 ? (
               <EmptyState
-                title="The ledger is empty."
-                detail="Register a Companies House number above to create the first research case."
+                title={query ? "No company matches that filter." : "The ledger is empty."}
+                detail={
+                  query
+                    ? "Clear the filter to see every recorded number."
+                    : "Register a Companies House number above to create the first research case."
+                }
               />
             ) : (
               <div className="table-wrap">
@@ -73,8 +142,8 @@ export default function CompaniesPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.companies.map((company) => (
-                      <tr key={company.id}>
+                    {filtered.map((company) => (
+                      <LedgerRow key={company.id} href={`/companies/${company.id}`}>
                         <td>
                           <Link href={`/companies/${company.id}`} style={{ fontWeight: 500 }}>
                             {company.name}
@@ -110,13 +179,13 @@ export default function CompaniesPage() {
                         </td>
                         <td>
                           <Link href={company.next_action.href ?? `/companies/${company.id}`}>
-                            {company.next_action.label} →
+                            {company.next_action.label}
                           </Link>
                           <div className="muted" style={{ fontSize: "0.6875rem" }}>
                             {statusLabel(company.lifecycle_status)}
                           </div>
                         </td>
-                      </tr>
+                      </LedgerRow>
                     ))}
                   </tbody>
                 </table>
