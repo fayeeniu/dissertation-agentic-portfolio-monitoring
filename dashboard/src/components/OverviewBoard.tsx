@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { RunPipeline } from "@/components/RunPipeline";
 import { EmptyState, LedgerRow, NextActionBanner, Panel, Pill, StatGrid } from "@/components/ui";
-import { chartTone, formatDate, formatNumber, statusLabel } from "@/lib/format";
+import { chartTone, formatNumber, statusLabel } from "@/lib/format";
 import type { OverviewPayload, RunSummary } from "@/lib/types";
 
 function modelRouteLabel(
@@ -79,7 +79,7 @@ export function OverviewBoard({
               icon: "identity-hold",
               label: "Identity holds",
               value: formatNumber(metrics.identity_holds),
-              tone: metrics.identity_holds ? "human" : "muted",
+              tone: metrics.identity_holds ? "danger" : "muted",
               hint: metrics.identity_holds
                 ? "Nothing collects evidence until these are accepted"
                 : "All recorded identities are accepted",
@@ -88,7 +88,7 @@ export function OverviewBoard({
               icon: "activity",
               label: "Runs executing",
               value: formatNumber(metrics.runs_active),
-              tone: metrics.runs_active ? "evidence" : "muted",
+              tone: metrics.runs_active ? "active" : "muted",
               hint: metrics.runs_active ? "Persisted stages still in flight" : "No run is executing",
             },
             {
@@ -147,7 +147,7 @@ export function OverviewBoard({
                           {item.detail}
                         </span>
                       </span>
-                      <span className="mono caption">
+                      <span className="plan-action">
                         {item.action_label} →
                       </span>
                     </Link>
@@ -252,7 +252,14 @@ export function OverviewBoard({
                             <span className="muted">—</span>
                           )}
                         </td>
-                        <td className="muted">{row.next_action.label}</td>
+                        <td>
+                          <Link
+                            href={row.next_action.href ?? `/companies/${row.id}`}
+                            className="ledger-action"
+                          >
+                            {row.next_action.label}
+                          </Link>
+                        </td>
                       </LedgerRow>
                     ))}
                   </tbody>
@@ -274,8 +281,14 @@ export function OverviewBoard({
                 <div className="progress-block">
                   <span
                     className="coverage-ring"
+                    data-mix
                     data-tone="evidence"
-                    style={{ ["--coverage" as string]: `${settled}%` }}
+                    style={{
+                      ["--coverage" as string]: `${settled}%`,
+                      ["--mix-a" as string]: `${(mix.complete / mixTotal) * 100}%`,
+                      ["--mix-b" as string]: `${((mix.complete + mix.review) / mixTotal) * 100}%`,
+                      ["--mix-c" as string]: `${((mix.complete + mix.review + mix.active) / mixTotal) * 100}%`,
+                    }}
                     aria-label={`${settled}% of recorded runs are complete`}
                   >
                     <strong>{settled}%</strong>
@@ -337,8 +350,8 @@ export function OverviewBoard({
             </p>
           </section>
 
-          <details className="rail-panel rail-disclose">
-            <summary>Agent roster</summary>
+          <section className="rail-panel roster-panel">
+            <h2>Agent roster</h2>
             <div className="roster-compact">
               {system.agents.map((agent) => (
                 <div key={agent.key} className="roster-compact-row">
@@ -354,7 +367,7 @@ export function OverviewBoard({
                 </div>
               ))}
             </div>
-          </details>
+          </section>
         </aside>
       </div>
 

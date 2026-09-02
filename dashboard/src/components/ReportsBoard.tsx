@@ -201,8 +201,8 @@ export function ReportsBoard({
         </div>
 
         <aside className="overview-rail" aria-label="Report process">
-          <details className="rail-panel rail-disclose">
-            <summary>How a report is made</summary>
+          <section className="rail-panel">
+            <h2>How a report is made</h2>
             <ol className="report-steps">
               {FLOW.map(([step, label, detail]) => (
                 <li key={step}>
@@ -212,7 +212,7 @@ export function ReportsBoard({
                 </li>
               ))}
             </ol>
-          </details>
+          </section>
         </aside>
       </div>
     </div>

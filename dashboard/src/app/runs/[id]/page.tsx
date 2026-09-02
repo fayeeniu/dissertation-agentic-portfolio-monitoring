@@ -291,12 +291,10 @@ export default function RunPage({ params }: { params: Promise<{ id: string }> })
         </p>
       ) : null}
 
-      <section className="stack-sm">
-        <div className="section-head">
+      <section className="stack-sm execution-block">
+        <div className="section-head execution-figure">
           <h2>Execution</h2>
-          <span className="muted" style={{ fontSize: "0.8125rem" }}>
-            {payload.lanes.length} source lanes
-          </span>
+          <span className="execution-figure-meta">{payload.lanes.length} source lanes</span>
         </div>
         <AgentGraph
           nodes={nodes}

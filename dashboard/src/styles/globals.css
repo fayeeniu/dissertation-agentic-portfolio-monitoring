@@ -1,7 +1,7 @@
 /* ==========================================================================
    Agentic research control room — design system
-   Light research workbench. Colour and motion are reserved for real
-   execution state; nothing here animates for decoration.
+   Solid raised cards on a flat canvas. Colour and motion are reserved for
+   real execution state. Execution graph keeps its own mint-frost treatment.
    ========================================================================== */
 
 :root,
@@ -13,8 +13,8 @@
     no pure black, each layer a step lighter, hairlines in white-alpha.
     Primary text is ~90% white to reduce bloom on dark fills.
   */
-  --canvas: #18191e;
-  --canvas-2: #1d1e24;
+  --canvas: #151518;
+  --canvas-2: #1b1b1e;
   --surface: #24252c;
   --surface-2: #2c2d35;
   --raised: #33343d;
@@ -53,35 +53,108 @@
   --model-wash: rgba(200, 154, 239, 0.14);
   --neutral-wash: rgba(255, 255, 255, 0.055);
   --focus: #409cff;
-  --glass: var(--surface);
-  --glass-edge: transparent;
-  --sheen: transparent;
+  /* Raised charcoal cards on a flat canvas — match the Overview screenshots. */
+  --glass: #24252c;
+  --glass-fallback: #24252c;
+  --glass-chrome: #1c1d23;
+  --glass-chrome-fallback: #1c1d23;
+  --glass-edge: rgba(255, 255, 255, 0.08);
+  --glass-rim: rgba(255, 255, 255, 0.06);
+  --sheen: none;
+  --glass-highlight: none;
+  --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 10px 28px rgba(6, 7, 10, 0.28);
+  --glass-blur: 0px;
+  --glass-blur-chrome: 0px;
+  --glass-sat: 1;
+  --canvas-bloom-1: transparent;
+  --canvas-bloom-2: transparent;
+  --canvas-bloom-3: transparent;
   --brand: var(--ink);
 
-  --chart-track: #45464f;
+  --chart-track: #4a4b55;
   --chart-complete: #3dcc70;
   --chart-active: #409cff;
   --chart-review: #e8b04a;
   --chart-fail: #f08b84;
+  --graph-spine: #6ed4ae;
+  --graph-ok: #6ed4ae;
+  --graph-fail: #e49a96;
+  --graph-stub-idle: #5c5d68;
+  --graph-human: #e0b35a;
+  --graph-grid: rgba(140, 220, 195, 0.08);
+  --graph-bloom: rgba(94, 196, 160, 0.22);
+  --graph-bloom-2: rgba(94, 196, 160, 0.1);
+  --graph-glass: rgba(22, 34, 33, 0.56);
+  --graph-glass-fallback: #1c2625;
+  --graph-glass-edge: rgba(170, 230, 205, 0.22);
+  --graph-glass-highlight: linear-gradient(
+    165deg,
+    rgba(200, 245, 225, 0.2) 0%,
+    rgba(255, 255, 255, 0.06) 28%,
+    transparent 62%
+  );
+  --graph-glass-shadow: inset 0 1px 0 rgba(210, 255, 235, 0.2),
+    inset 0 -1px 0 rgba(6, 10, 10, 0.28),
+    0 0 0 1px rgba(130, 210, 180, 0.1),
+    0 18px 48px rgba(4, 8, 8, 0.38);
+  --graph-glass-blur: 32px;
+  --graph-glass-sat: 1.85;
+  --graph-card-glass: rgba(40, 56, 54, 0.38);
+  --graph-card-fallback: #2a3634;
+  --graph-card-edge: rgba(180, 230, 210, 0.2);
+  --graph-card-highlight: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(170, 230, 205, 0.1) 32%,
+    transparent 68%
+  );
+  --graph-card-shadow: inset 0 1px 0 rgba(230, 255, 245, 0.2),
+    inset 0 -1px 0 rgba(8, 14, 13, 0.16),
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 28px rgba(4, 8, 8, 0.3);
+  --graph-plate: #24302e;
+  --graph-card: var(--graph-card-fallback);
+  --graph-lane-ok: rgba(94, 196, 160, 0.22);
+  --graph-lane-ok-edge: rgba(110, 212, 176, 0.42);
+  --graph-lane-ok-highlight: linear-gradient(
+    168deg,
+    rgba(190, 245, 220, 0.28) 0%,
+    transparent 64%
+  );
+  --graph-lane-fail: rgba(224, 139, 134, 0.18);
+  --graph-lane-fail-edge: rgba(228, 154, 150, 0.42);
+  --graph-lane-fail-highlight: linear-gradient(
+    168deg,
+    rgba(255, 196, 190, 0.22) 0%,
+    transparent 64%
+  );
+  --graph-lane-mute: rgba(70, 78, 80, 0.42);
+  --graph-lane-mute-edge: rgba(150, 160, 164, 0.2);
+  --graph-lane-mute-highlight: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 60%
+  );
 }
 
 [data-theme="light"] {
   color-scheme: light;
 
-  --canvas: #f5f5f7;
-  --canvas-2: #ebebed;
+  --canvas: #f4f4f4;
+  --canvas-2: #ececec;
   --surface: #ffffff;
-  --surface-2: #f5f5f7;
+  --surface-2: #f7f7f7;
   --raised: #f2f2f7;
   --raised-2: #e8e8ed;
-  --sidebar: #f5f5f7;
+  --sidebar: #ececf2;
   --sidebar-ink: #1d1d1f;
-  --sidebar-ink-dim: #6e6e73;
+  --sidebar-ink-dim: #55555c;
 
   --ink: #1d1d1f;
-  --ink-2: #424245;
-  --ink-3: #6e6e73;
-  --ink-4: #8e8e93;
+  --ink-2: #3a3a3e;
+  --ink-3: #55555c;
+  --ink-4: #6e6e73;
 
   --rule: rgba(60, 60, 67, 0.18);
   --rule-2: rgba(60, 60, 67, 0.24);
@@ -96,9 +169,9 @@
   --evidence-dim: #19662b;
   --evidence-wash: rgba(52, 199, 89, 0.12);
   --evidence-glow: rgba(36, 138, 61, 0.28);
-  --human: #c93400;
+  --human: #c77b00;
   --human-wash: rgba(255, 149, 0, 0.12);
-  --human-glow: rgba(201, 52, 0, 0.28);
+  --human-glow: rgba(199, 123, 0, 0.28);
   --danger: #c41c1c;
   --danger-wash: rgba(255, 59, 48, 0.1);
   --danger-glow: rgba(222, 7, 28, 0.28);
@@ -106,18 +179,94 @@
   --model-wash: rgba(175, 82, 222, 0.1);
   --neutral-wash: rgba(60, 60, 67, 0.06);
   --focus: #0071e3;
-  --glass: var(--surface);
-  --glass-edge: transparent;
-  --sheen: transparent;
+  --glass: #ffffff;
+  --glass-fallback: #ffffff;
+  --glass-chrome: #ffffff;
+  --glass-chrome-fallback: #ffffff;
+  --glass-edge: rgba(60, 60, 67, 0.08);
+  --glass-rim: rgba(60, 60, 67, 0.06);
+  --sheen: none;
+  --glass-highlight: none;
+  --glass-shadow: 0 0 0 1px rgba(60, 60, 67, 0.06),
+    0 8px 24px rgba(60, 60, 67, 0.06);
+  --glass-blur: 0px;
+  --glass-blur-chrome: 0px;
+  --glass-sat: 1;
+  --canvas-bloom-1: transparent;
+  --canvas-bloom-2: transparent;
+  --canvas-bloom-3: transparent;
   --brand: var(--ink);
-  --surface-ring: transparent;
-  --surface-highlight: none;
+  --surface-ring: var(--glass-rim);
+  --surface-highlight: var(--sheen);
 
   --chart-track: #d2d2d7;
   --chart-complete: #248a3d;
   --chart-active: #0071e3;
   --chart-review: #c77b00;
   --chart-fail: #de3b30;
+  --graph-spine: #2a9a80;
+  --graph-ok: #2a9a80;
+  --graph-fail: #c45c5c;
+  --graph-stub-idle: #c7c7cc;
+  --graph-human: #c9a227;
+  --graph-grid: rgba(47, 157, 130, 0.1);
+  --graph-bloom: rgba(47, 157, 130, 0.14);
+  --graph-bloom-2: rgba(47, 157, 130, 0.07);
+  --graph-glass: rgba(244, 250, 247, 0.7);
+  --graph-glass-fallback: #eef6f2;
+  --graph-glass-edge: rgba(47, 157, 130, 0.18);
+  --graph-glass-highlight: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(220, 244, 234, 0.5) 32%,
+    transparent 66%
+  );
+  --graph-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(47, 157, 130, 0.05),
+    0 0 0 1px rgba(47, 157, 130, 0.07),
+    0 16px 40px rgba(40, 70, 60, 0.1);
+  --graph-glass-blur: 28px;
+  --graph-glass-sat: 1.5;
+  --graph-card-glass: rgba(255, 255, 255, 0.52);
+  --graph-card-fallback: #f7fbf9;
+  --graph-card-edge: rgba(40, 90, 75, 0.12);
+  --graph-card-highlight: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(226, 244, 236, 0.4) 36%,
+    transparent 70%
+  );
+  --graph-card-shadow: inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(47, 157, 130, 0.04),
+    0 10px 24px rgba(40, 70, 60, 0.08);
+  --graph-plate: #f4faf7;
+  --graph-card: var(--graph-card-fallback);
+  --graph-lane-ok: rgba(47, 157, 130, 0.14);
+  --graph-lane-ok-edge: rgba(47, 157, 130, 0.32);
+  --graph-lane-ok-highlight: linear-gradient(
+    168deg,
+    rgba(210, 244, 228, 0.55) 0%,
+    transparent 64%
+  );
+  --graph-lane-fail: rgba(196, 92, 92, 0.1);
+  --graph-lane-fail-edge: rgba(196, 92, 92, 0.3);
+  --graph-lane-fail-highlight: linear-gradient(
+    168deg,
+    rgba(255, 214, 210, 0.5) 0%,
+    transparent 64%
+  );
+  --graph-lane-mute: rgba(235, 238, 237, 0.7);
+  --graph-lane-mute-edge: rgba(80, 90, 88, 0.12);
+  --graph-lane-mute-highlight: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    transparent 60%
+  );
+
+  --lift-1: 0 6px 18px rgba(60, 60, 67, 0.06);
+  --lift-2: 0 10px 26px rgba(60, 60, 67, 0.07);
+  --lift-3: 0 14px 36px rgba(60, 60, 67, 0.08);
+  --lift-card: 0 10px 28px rgba(60, 60, 67, 0.07);
 }
 
 :root {
@@ -127,16 +276,16 @@
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Roboto Mono",
     Consolas, monospace;
 
-  /* Shape. Grouped-list radii. No drop shadow. */
-  --r-xs: 6px;
-  --r-sm: 8px;
-  --r: 10px;
-  --r-lg: 12px;
-  --r-xl: 12px;
-  --lift-1: none;
-  --lift-2: none;
-  --lift-3: none;
-  --lift-card: none;
+  /* Shape. Cards sit in the 12–16px range from the Overview shots. */
+  --r-xs: 8px;
+  --r-sm: 10px;
+  --r: 12px;
+  --r-lg: 14px;
+  --r-xl: 16px;
+  --lift-1: 0 6px 20px rgba(15, 16, 20, 0.12);
+  --lift-2: 0 10px 28px rgba(15, 16, 20, 0.16);
+  --lift-3: 0 16px 40px rgba(15, 16, 20, 0.2);
+  --lift-card: 0 10px 32px rgba(15, 16, 20, 0.16);
 
   /* Motion. Every duration maps to a named purpose. */
   --t-feedback: 120ms;
@@ -161,7 +310,7 @@
   --content: 78rem;
   --rail: 20rem;
   --gutter: clamp(1.25rem, 2vw, 2rem);
-  --card-pad: var(--space-5);
+  --card-pad: var(--space-6);
 }
 
 * {
@@ -174,9 +323,14 @@ body {
   margin: 0;
 }
 
+html {
+  background-color: var(--canvas);
+}
+
 body {
   min-height: 100vh;
-  background: var(--canvas);
+  background-color: var(--canvas);
+  background-image: none;
   color: var(--ink);
   font-family: var(--sans);
   font-size: 1rem;
@@ -327,13 +481,24 @@ p {
   gap: var(--space-6);
   min-width: 0;
   padding: var(--space-6) var(--space-4);
-  background: var(--sidebar);
+  background: var(--glass-chrome-fallback);
   color: var(--sidebar-ink);
-  border-right: 1px solid var(--rule);
+  border-right: 1px solid var(--glass-edge);
 }
 
 .workspace {
+  position: relative;
   min-width: 0;
+}
+
+.workspace::before {
+  display: none;
+}
+
+.masthead,
+.workspace > main {
+  position: relative;
+  z-index: 1;
 }
 
 .masthead {
@@ -343,7 +508,7 @@ p {
   min-width: 0;
   padding: var(--space-6) 0 var(--space-3);
   background: var(--canvas);
-  border-bottom: 1px solid var(--surface-ring);
+  border-bottom: none;
 }
 
 .masthead-bar {
@@ -484,13 +649,13 @@ p {
 }
 
 .theme-toggle {
-  min-height: 2.5rem;
-  padding: 0 0.9rem;
-  border: none;
+  min-height: 2.25rem;
+  padding: 0 0.95rem;
+  border: 1px solid var(--rule-2);
   border-radius: 980px;
-  background: var(--btn-fill);
+  background: var(--surface);
   color: var(--ink);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 590;
   cursor: pointer;
 }
@@ -576,8 +741,8 @@ p {
     align-items: center;
     gap: 0.8rem;
     border-right: none;
-    border-bottom: 1px solid var(--rule);
-    background: var(--canvas);
+    border-bottom: 1px solid var(--glass-edge);
+    background: var(--glass-chrome-fallback);
     color: var(--ink);
   }
   .brand-copy,
@@ -644,15 +809,15 @@ main {
 }
 
 .panel-head h2 {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: var(--ink);
 }
 
 .panel-body {
   padding: var(--card-pad);
-  background: var(--surface);
+  background: var(--glass-fallback);
   border-radius: var(--r-lg);
 }
 
@@ -1044,23 +1209,15 @@ tbody tr:hover {
   padding: var(--space-5) var(--space-6);
   border-radius: var(--r-lg);
   border: none;
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .next-action .eyebrow {
   color: var(--ink-3);
 }
 
-.next-action[data-tone="evidence"] {
-  background: var(--surface);
-}
-
 .next-action[data-tone="evidence"] .eyebrow {
   color: var(--ink-3);
-}
-
-.next-action[data-tone="danger"] {
-  background: var(--surface);
 }
 
 .next-action[data-tone="danger"] .eyebrow {
@@ -1087,8 +1244,8 @@ tbody tr:hover {
 }
 
 .next-action[data-size="hero"] .next-action-title {
-  font-size: 1.4375rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .next-action[data-size="hero"] .btn {
@@ -1135,9 +1292,16 @@ tbody tr:hover {
 }
 
 .pipeline-step + .pipeline-step {
-  margin-left: 0.34rem;
-  padding-left: 0.55rem;
-  border-left: 1px solid var(--rule);
+  margin-left: 0.2rem;
+  padding-left: 0;
+  border-left: none;
+}
+
+.pipeline-step + .pipeline-step::before {
+  content: "·";
+  margin-right: 0.32rem;
+  color: var(--ink-4);
+  font-weight: 500;
 }
 
 .pipeline-step i {
@@ -1160,10 +1324,10 @@ tbody tr:hover {
   background: var(--evidence);
 }
 .pipeline-step[data-state="live"] {
-  color: var(--evidence);
+  color: var(--accent);
 }
 .pipeline-step[data-state="live"] i {
-  background: var(--evidence);
+  background: var(--accent);
   animation: beacon 1.5s var(--ease-move) infinite;
 }
 .pipeline-step[data-state="next"] i {
@@ -1238,14 +1402,16 @@ tbody tr:hover {
   padding: 1.15rem 1.2rem;
   border: none;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
   max-height: calc(100vh - 6.5rem);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
 .inspector h2 {
-  font-size: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 .inspector-section {
@@ -1504,7 +1670,7 @@ tbody tr:hover {
   overflow-x: auto;
   border: none;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .section-nav a {
@@ -1528,7 +1694,7 @@ tbody tr:hover {
   padding: clamp(1rem, 2vw, 1.5rem);
   border: none;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .assessment-head {
@@ -1551,7 +1717,7 @@ tbody tr:hover {
 
 .coverage-ring {
   --coverage: 0%;
-  --ring: var(--chart-complete);
+  --ring: var(--ink-3);
   width: 5.25rem;
   aspect-ratio: 1;
   flex: none;
@@ -1567,21 +1733,29 @@ tbody tr:hover {
 .coverage-ring[data-tone="evidence"] {
   --ring: var(--chart-complete);
 }
-
 .coverage-ring[data-tone="active"] {
   --ring: var(--chart-active);
 }
-
 .coverage-ring[data-tone="human"] {
   --ring: var(--chart-review);
 }
-
 .coverage-ring[data-tone="danger"] {
   --ring: var(--chart-fail);
 }
-
 .coverage-ring[data-tone="idle"] {
-  --ring: var(--ink-4);
+  --ring: var(--ink-3);
+}
+
+.coverage-ring[data-mix] {
+  background:
+    radial-gradient(circle closest-side, var(--surface) 70%, transparent 72%),
+    conic-gradient(
+      from -90deg,
+      var(--chart-complete) 0 var(--mix-a, 0%),
+      var(--chart-review) var(--mix-a, 0%) var(--mix-b, 0%),
+      var(--chart-active) var(--mix-b, 0%) var(--mix-c, 0%),
+      var(--chart-fail) var(--mix-c, 0%) 100%
+    );
 }
 
 .coverage-ring[data-size="sm"] {
@@ -1599,6 +1773,7 @@ tbody tr:hover {
 .coverage-ring strong {
   font-family: var(--sans);
   font-size: 1.15rem;
+  color: var(--ink);
 }
 
 .coverage-ring span {
@@ -1687,11 +1862,11 @@ tbody tr:hover {
   padding: var(--card-pad) var(--space-6);
   border: none;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .report-card[data-ready="false"] {
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .report-card-head {
@@ -1762,7 +1937,7 @@ tbody tr:hover {
   overflow: hidden;
   border: none;
   border-radius: var(--r);
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .metric-summary > div {
@@ -1803,7 +1978,7 @@ tbody tr:hover {
 .metric-category {
   border: none;
   border-radius: var(--r);
-  background: var(--surface);
+  background: var(--glass-fallback);
   overflow: hidden;
 }
 
@@ -1849,7 +2024,7 @@ tbody tr:hover {
   padding: 1rem;
   border: 1px solid var(--rule);
   border-radius: var(--r);
-  background: var(--surface-2);
+  background: var(--glass-fallback);
 }
 
 .metric-holds h3,
@@ -1939,10 +2114,10 @@ tbody tr:hover {
 .overview > .stat-grid,
 .command-band .stat-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  background: var(--surface);
-  border-radius: var(--r-lg);
-  overflow: hidden;
+  gap: var(--space-4);
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
 }
 
 .crumb {
@@ -1962,7 +2137,7 @@ tbody tr:hover {
   gap: 0.55rem;
   padding: 1.05rem 1.15rem;
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
   border: none;
 }
 
@@ -2024,10 +2199,36 @@ tbody tr:hover {
 }
 
 .section-head h2 {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: var(--ink);
+}
+
+.execution-block {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.execution-figure {
+  align-items: baseline;
+  margin-bottom: 0.15rem;
+}
+
+.execution-figure h2 {
+  font-size: 1.375rem;
+  font-weight: 650;
+  letter-spacing: -0.038em;
+  line-height: 1.15;
+}
+
+.execution-figure-meta {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .section-head a,
@@ -2061,13 +2262,15 @@ tbody tr:hover {
   align-items: start;
   padding: var(--card-pad);
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
   border: none;
-  transition: background var(--t-feedback) var(--ease-out);
+  transition: background var(--t-feedback) var(--ease-out),
+    border-color var(--t-feedback) var(--ease-out);
 }
 
 .case-card:hover {
-  background: var(--surface-2);
+  border-color: color-mix(in srgb, var(--glass-edge) 70%, #fff 30%);
+  box-shadow: var(--sheen), 0 0 0 1px var(--glass-rim), var(--lift-2);
 }
 
 .case-card:active {
@@ -2116,7 +2319,7 @@ tbody tr:hover {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 0;
-  background: var(--surface);
+  background: var(--glass-fallback);
   border-radius: var(--r-lg);
   overflow: hidden;
 }
@@ -2155,8 +2358,8 @@ tbody tr:hover {
 }
 
 .plan-mark {
-  padding: 0;
-  border-radius: 0;
+  padding: 0.16rem 0.4rem;
+  border-radius: 6px;
   display: grid;
   place-items: center;
   background: transparent;
@@ -2166,12 +2369,12 @@ tbody tr:hover {
   flex: none;
 }
 
-.plan-row[data-severity="danger"] .plan-mark {
+.plan-row[data-severity="danger"] .plan-mark,
+.plan-row[data-severity="hold"] .plan-mark {
   background: transparent;
   color: var(--danger);
 }
 
-.plan-row[data-severity="hold"] .plan-mark,
 .plan-row[data-severity="review"] .plan-mark {
   background: transparent;
   color: var(--human);
@@ -2195,6 +2398,20 @@ tbody tr:hover {
   white-space: nowrap;
 }
 
+.plan-action,
+.ledger-action {
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 590;
+  white-space: nowrap;
+}
+
+.plan-action:hover,
+.ledger-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2210,25 +2427,20 @@ tbody tr:hover {
   min-width: 0;
   padding: var(--space-6);
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
   border: none;
 }
 
 .command-band .stat-card,
 .overview > .stat-grid .stat-card {
-  border-radius: 0;
-  border-right: 1px solid var(--rule);
-}
-
-.command-band .stat-card:last-child,
-.overview > .stat-grid .stat-card:last-child {
+  border-radius: var(--r-lg);
   border-right: none;
 }
 
 .stat-card[data-tone="human"],
 .stat-card[data-tone="evidence"],
 .stat-card[data-tone="danger"] {
-  background: var(--surface);
+  background: var(--glass-fallback);
 }
 
 .stat-card::before {
@@ -2247,6 +2459,22 @@ tbody tr:hover {
   height: 1.375rem;
   flex: none;
   color: var(--ink-3);
+}
+
+.stat-card[data-tone="human"] .stat-card-icon {
+  color: var(--human);
+}
+
+.stat-card[data-tone="evidence"] .stat-card-icon {
+  color: var(--evidence);
+}
+
+.stat-card[data-tone="danger"] .stat-card-icon {
+  color: var(--danger);
+}
+
+.stat-card[data-tone="active"] .stat-card-icon {
+  color: var(--accent);
 }
 
 .stat-card-label {
@@ -2350,15 +2578,20 @@ tbody tr:hover {
 .rail-panel {
   padding: var(--card-pad);
   border-radius: var(--r-lg);
-  background: var(--surface);
+  background: var(--glass-fallback);
   border: none;
+}
+
+.roster-panel {
+  background: var(--surface);
+  background-image: none;
 }
 
 .rail-panel h2,
 .rail-disclose summary {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   color: var(--ink);
   margin-bottom: var(--space-4);
 }
@@ -2399,24 +2632,21 @@ tbody tr:hover {
   display: block;
   height: 100%;
   min-width: 0;
+  background: var(--ink-3);
 }
 
 .mix-bar > i[data-tone="evidence"] {
   background: var(--chart-complete);
 }
-
 .mix-bar > i[data-tone="human"] {
   background: var(--chart-review);
 }
-
-.mix-bar > i[data-tone="danger"] {
-  background: var(--chart-fail);
-}
-
 .mix-bar > i[data-tone="active"] {
   background: var(--chart-active);
 }
-
+.mix-bar > i[data-tone="danger"] {
+  background: var(--chart-fail);
+}
 .mix-bar > i[data-tone="idle"] {
   background: var(--chart-track);
 }
@@ -2441,20 +2671,24 @@ tbody tr:hover {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--chart-complete);
+  background: currentColor;
   flex: none;
 }
 
-.mix-legend span[data-tone="human"]::before {
-  background: var(--chart-review);
+.mix-legend span[data-tone="evidence"] {
+  color: var(--chart-complete);
 }
 
-.mix-legend span[data-tone="active"]::before {
-  background: var(--chart-active);
+.mix-legend span[data-tone="human"] {
+  color: var(--chart-review);
 }
 
-.mix-legend span[data-tone="danger"]::before {
-  background: var(--chart-fail);
+.mix-legend span[data-tone="active"] {
+  color: var(--chart-active);
+}
+
+.mix-legend span[data-tone="danger"] {
+  color: var(--chart-fail);
 }
 
 .mix-legend b {
@@ -2466,6 +2700,11 @@ tbody tr:hover {
 .roster-compact {
   display: grid;
   gap: 0.45rem;
+  background: var(--surface);
+  background-image: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .roster-compact-row {
@@ -2497,18 +2736,6 @@ tbody tr:hover {
   .command-band .stat-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .overview > .stat-grid .stat-card,
-  .command-band .stat-card {
-    border-bottom: 1px solid var(--rule);
-  }
-  .overview > .stat-grid .stat-card:nth-child(2n),
-  .command-band .stat-card:nth-child(2n) {
-    border-right: none;
-  }
-  .overview > .stat-grid .stat-card:nth-last-child(-n + 2),
-  .command-band .stat-card:nth-last-child(-n + 2) {
-    border-bottom: none;
-  }
 }
 
 @media (max-width: 52rem) {
@@ -2519,31 +2746,37 @@ tbody tr:hover {
   .command-band .stat-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .overview > .stat-grid .stat-card,
-  .command-band .stat-card {
-    border-right: none;
-    border-bottom: 1px solid var(--rule);
-  }
-  .overview > .stat-grid .stat-card:last-child,
-  .command-band .stat-card:last-child {
-    border-bottom: none;
-  }
 }
 
 @media (prefers-contrast: more) {
   html {
     --ink-3: var(--ink-2);
     --ink-4: var(--ink-2);
+    --glass: var(--glass-fallback);
+    --glass-chrome: var(--glass-chrome-fallback);
+    --glass-highlight: none;
+    --glass-blur: 0px;
+    --glass-blur-chrome: 0px;
+    --graph-glass: var(--graph-glass-fallback);
+    --graph-card-glass: var(--graph-card-fallback);
+    --graph-glass-highlight: none;
+    --graph-card-highlight: none;
+    --graph-lane-ok-highlight: none;
+    --graph-lane-fail-highlight: none;
+    --graph-lane-mute-highlight: none;
+    --graph-glass-blur: 0px;
   }
   html:not([data-theme="light"]) {
     --rule: rgba(255, 255, 255, 0.32);
     --rule-2: rgba(255, 255, 255, 0.4);
     --surface-ring: rgba(255, 255, 255, 0.32);
+    --glass-edge: rgba(255, 255, 255, 0.32);
   }
   [data-theme="light"] {
     --rule: rgba(60, 60, 67, 0.45);
     --rule-2: rgba(60, 60, 67, 0.55);
     --surface-ring: rgba(60, 60, 67, 0.28);
+    --glass-edge: rgba(60, 60, 67, 0.28);
   }
   .btn,
   .nav a,
@@ -2552,25 +2785,116 @@ tbody tr:hover {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Frosted glass. Solid fallback first; blur applies when the engine supports it.
+   -------------------------------------------------------------------------- */
+
 .panel-body,
 .next-action,
 .case-card,
-.rail-panel,
+.rail-panel:not(.roster-panel),
 .report-card,
 .contradiction-card,
 .plan-list,
 .inspector,
 .investment-brief,
-.graph,
 .section-nav,
 .metric-summary,
 .metric-category,
+.metric-holds,
+.report-proposal,
 .error-note,
 .service-error,
-.overview > .stat-grid,
-.command-band .stat-grid {
-  border: 1px solid var(--surface-ring);
-  box-shadow: var(--surface-highlight);
+.stat-card,
+.table-wrap,
+.run-notice {
+  background-color: var(--glass-fallback);
+  background-image: var(--glass-highlight);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+}
+
+.sidebar {
+  background-color: var(--sidebar);
+  background-image: none;
+  box-shadow: none;
+}
+
+.masthead {
+  background-color: var(--canvas);
+  background-image: none;
+  box-shadow: none;
+}
+
+.theme-toggle {
+  background-color: var(--glass-fallback);
+  background-image: var(--glass-highlight);
+  box-shadow: var(--sheen);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .panel-body,
+  .next-action,
+  .case-card,
+  .rail-panel:not(.roster-panel),
+  .report-card,
+  .contradiction-card,
+  .plan-list,
+  .inspector,
+  .investment-brief,
+  .section-nav,
+  .metric-summary,
+  .metric-category,
+  .metric-holds,
+  .report-proposal,
+  .error-note,
+  .service-error,
+  .stat-card,
+  .table-wrap,
+  .run-notice,
+  .theme-toggle {
+    background-color: var(--glass);
+    background-image: var(--glass-highlight);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  }
+
+  .sidebar {
+    background-color: var(--sidebar);
+    background-image: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .masthead {
+    background-color: var(--canvas);
+    background-image: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  thead th {
+    background-color: color-mix(in srgb, var(--glass) 88%, var(--glass-fallback));
+    background-image: var(--glass-highlight);
+    -webkit-backdrop-filter: blur(12px) saturate(var(--glass-sat));
+    backdrop-filter: blur(12px) saturate(var(--glass-sat));
+  }
+}
+
+/* Tables already sit in a raised card. */
+.panel-body .table-wrap {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (max-width: 62rem) {
+  .sidebar {
+    background-color: var(--sidebar);
+    background-image: none;
+  }
 }
 
 ::placeholder {
@@ -2580,4 +2904,23 @@ tbody tr:hover {
 
 html:not([data-theme="light"]) {
   scrollbar-color: #4a4b55 var(--canvas);
+}
+
+/* Agent roster stays a solid card. Execution uses mint-frost glass in graph.css. */
+.roster-panel {
+  background-color: var(--surface);
+  background-image: none;
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.roster-compact {
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+  border: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }

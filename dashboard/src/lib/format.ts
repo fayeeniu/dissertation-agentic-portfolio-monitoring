@@ -65,7 +65,7 @@ const STATUS_TONE: Record<string, "evidence" | "human" | "danger" | "idle" | "ac
   discovered: "idle",
   awaiting: "human",
   pending_review: "human",
-  identity_hold: "human",
+  identity_hold: "danger",
   failed: "danger",
   rejected: "danger",
   blocked: "danger",

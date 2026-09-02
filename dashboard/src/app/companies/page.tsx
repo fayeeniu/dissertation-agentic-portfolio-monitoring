@@ -76,7 +76,7 @@ export default function CompaniesPage() {
                 icon: "hourglass",
                 label: "Open decisions",
                 value: formatNumber(data.counts.identity_holds),
-                tone: data.counts.identity_holds ? "human" : "muted",
+                tone: data.counts.identity_holds ? "danger" : "muted",
                 hint: data.counts.identity_holds
                   ? "Held until a named reviewer accepts the number"
                   : "No identity is waiting",
@@ -178,7 +178,10 @@ export default function CompaniesPage() {
                           )}
                         </td>
                         <td>
-                          <Link href={company.next_action.href ?? `/companies/${company.id}`}>
+                          <Link
+                            href={company.next_action.href ?? `/companies/${company.id}`}
+                            className="ledger-action"
+                          >
                             {company.next_action.label}
                           </Link>
                           <div className="muted" style={{ fontSize: "0.6875rem" }}>
